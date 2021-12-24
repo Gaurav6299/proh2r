@@ -1,0 +1,99 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Computed Amount</h4>
+    <div class="tax_declaration_dialog_pannel">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <!-- <div class="panel-heading" role="tab" id="headingref">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseref" aria-expanded="true" aria-controls="collapseref">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="tax_declaration_pannel_dialog row_title">
+                                        Net Taxable Salary
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="tax_declaration_pannel_dialog">
+                                        {{netTaxableSalaryOld | number : '1.2-2'}}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="tax_declaration_pannel_dialog">
+                                        {{netTaxableSalarNew | number : '1.2-2'}}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </h4>
+                </div> -->
+                <div id="collapseref" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingref">
+                    <div class="panel-body">
+                        <table class="table table-striped" style="margin-bottom: 0;">
+                            <tbody>
+                                <tr style="background-color: #fde9d9;">
+                                    <th class="category">Section Name</th>
+                                    <th class="category">According To Old Regime</th>
+                                    <th class="category">According To New Regime(u/s 115BAC)</th>
+                                </tr>
+                                <tr class="split-row-hide-show">
+                                    <td class="category">Net Taxable Salary</td>
+                                    <td class="category">{{netTaxableSalaryOld | number : '1.2-2'}}</td>
+                                    <td class="category">{{netTaxableSalarNew | number : '1.2-2'}}</td>
+                                </tr>
+                                <tr class="split-row-hide-show">
+                                    <td class="category">Tax Payable on that Income</td>
+                                    <td class="category">{{totalTaxPayableOld | number : '1.2-2'}}</td>
+                                    <td class="category">{{totalTaxPayableNew | number : '1.2-2'}}</td>
+                                </tr>
+                                <tr class="split-row-hide-show">
+                                    <td class="category">Less: U/S 87(A) Rebate</td>
+                                    <td class="category">{{_87ARebate | number : '1.2-2'}}</td>
+                                    <td class="category">{{0 | number : '1.2-2'}}</td>
+                                </tr>
+                                <tr class="split-row-hide-show">
+                                    <td class="category">Surcharge</td>
+                                    <td class="category">{{surchargeOld | number : '1.2-2'}}</td>
+                                    <td class="category">{{surchargeNew | number : '1.2-2'}}</td>
+                                </tr>
+                                <tr class="split-row-hide-show">
+                                    <td class="category">Education Cess</td>
+                                    <td class="category">{{cessOld | number : '1.2-2'}}</td>
+                                    <td class="category">{{cessNew | number : '1.2-2'}}</td>
+                                </tr>
+                                <tr class="split-row-hide-show">
+                                    <td class="category"><strong>Total Tax Payable</strong></td>
+                                    <td class="category"><strong>{{totalTaxOld | number : '1.2-2'}}</strong></td>
+                                    <td class="category"><strong>{{totalTaxNew | number : '1.2-2'}}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tax_disclaimer_dialog_paraf">
+            <p>
+                <strong>Disclaimer :</strong> The above calculator is illustrative and designed to enable Employee to
+                get a quick
+                view toword Old vs New Regime tax calculation. Please follow your discretion in deciding which plan
+                suits
+                you the best. The data shown above does not get saved anywhere. The Actual Tax calculation could be
+                different
+                based on actual & additional variable payment and paydays, if applicable, which will be part of your
+                final
+                respective month payroll cycle.
+            </p>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="dialog-buttons" (click)="onNoClick()" cdkFocusInitial>Close</button>
+    </div>
+</mat-dialog-actions>

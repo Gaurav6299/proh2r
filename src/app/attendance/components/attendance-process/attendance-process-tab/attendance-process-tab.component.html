@@ -1,0 +1,27 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div class="pull-left">
+          <h6 class="title">Attendance Process</h6>
+        </div>
+        <div class="text-right">
+          <button class="btn header-button" routerLink="/attendance/attendance-process">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <mat-tab-group class="tabs" (selectedTabChange)="onTabChange($event);">
+          <mat-tab label="ACTIVE-EMPLOYEES">
+            <app-active-employees></app-active-employees>
+          </mat-tab>
+          <mat-tab label="PROCESSED-EMPLOYEES">
+            <app-processed-employees></app-processed-employees>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

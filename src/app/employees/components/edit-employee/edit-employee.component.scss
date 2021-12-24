@@ -1,0 +1,38 @@
+@import "~assets/sass/md/customCSS";
+
+label.control-label {
+    font-size: 13px;
+    color: #666;
+    padding: 0;
+    margin: 8px 0 0 0;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px #c8c7c7;
+}
+.donut-inner {
+    margin-top: -100px;
+    margin-bottom: 100px;
+ }
+ .donut-inner h5 {
+    margin-bottom: 5px;
+    margin-top: 0;
+ }
+ .donut-inner span {
+    font-size: 12px;
+ }
+ #profileImageInitials {border-radius: 50%;font-size: 30px;color: #fff;text-align: center;padding: 0;width: 200px;height: 200px;line-height: 200px;background: #012554;margin: 0 auto;}
+ .profile-media img{border-radius: 50%;position: relative;overflow: hidden;background: #ffffff;border: 3px solid #edf2fb;box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);width: 200px;height: 200px;}
+ .proimg-box:hover .proimg1 {opacity: 0.6;}
+ .proimg-box:hover .initial {opacity: 0.6;}
+ .proimg-box:hover .middle {opacity: 1;transition: opacity .25s ease-in-out;}
+ .proh-profile-media {border-radius: 50%;text-align: center;vertical-align: middle;width: 200px;height: 200px;cursor: pointer;}
+ .proh-profile-media:hover{background: #000;}
+ .middle {transition: .5s ease;opacity: 0; transform: translateY(-50%);position: relative;display: block;z-index: 500;bottom: 50%;}
+ .text {line-height: 1em;color: white !important;}
+ .text > i{font-size: 30px;color: white !important;}
+ .text > span{color: #fff;display: block;margin: 0 auto;text-align: center;font-size: 14px;font-weight: 600;}
+ //  .upload-button {font-size: 1.2em;}
+//  .upload-button:hover {transition: all .3s cubic-bezier(.175, .885, .32, 1.275);color: #999;}
+//  .upload-btns{text-align: center;margin: 5px 0px;}
+//  .upload-btns i {border: 1px solid #4b89dc;padding: 3px;border-radius: 3px;font-size: 18px;color: #ffffff;background: #4b89dc;}
+  
+ 

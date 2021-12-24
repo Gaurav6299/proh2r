@@ -1,0 +1,35 @@
+<div class="myModel">
+    <div class="card">
+        <div class="card-header" data-background-color="cyan" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+            <div data-background-color="blue">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h6 style="text-transform: uppercase;font-weight: 600">
+                            Are You Sure ?
+                        </h6>
+                    </div>
+                    <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                        <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="category"style="text-align: center; margin-top: 15px; margin-bottom:15px;color:#404A56;font-weight:600;">
+                Are you sure you want to delete rollover?
+            </p>
+          
+            <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+                <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;" data-background-color="cyan"> <span class="category" style="color:#fff; display: inline">     
+                  <i class="fa fa-times" aria-hidden="true"  style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                Cancel</span>
+              </button>
+                <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan"> <span class="category" style="color:#fff; display: inline">     
+                  <i class="fa fa-check" aria-hidden="true"  style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                Confirm</span>
+              </button>
+            </div>
+
+        </div>
+    </div>
+</div>

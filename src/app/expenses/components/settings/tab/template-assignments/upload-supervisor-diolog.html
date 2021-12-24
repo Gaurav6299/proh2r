@@ -1,0 +1,113 @@
+<!-- <div class="card">
+    <div class="card-header"
+        style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">Import Expense Approvers</h6>
+                </div>
+                <div class="col-md-2"
+                    style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;"
+                        (click)="onNoClick()">close</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+        <form [formGroup]="AddExpenceAssingment">
+            <div class="row">
+                <div class="col-md-12">
+                    <h6 style="text-transform: uppercase;font-weight: 600">Step 1: Download employee expense approvers
+                        global format Includes all your Employees with their available
+                        details.</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div style="text-align: left; padding-top: 7px;padding-bottom: 7px; ">
+                    <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;"
+                        data-background-color="cyan"> <span class="category" style="color:#fff; display: inline">
+                            <i class="fa fa-download" aria-hidden="true"
+                                style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                            Download</span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h6 style="text-transform: uppercase;font-weight: 600">Step 2: Make necessary changes in the
+                        downloaded file upload * For Reporting Supervisor use initials
+                        RS</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div style="text-align: left; padding-top: 7px;padding-bottom: 7px; ">
+                    <input id="fileToUpload" type="file">
+
+                </div>
+            </div>
+            <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+                <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;"
+                    data-background-color="cyan"> <span class="category" style="color:#fff; display: inline">
+                        <i class="fa fa-times" aria-hidden="true"
+                            style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                        Cancel</span>
+                </button>
+                <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan"> <span
+                        class="category" style="color:#fff; display: inline">
+                        <i class="fa fa-upload" aria-hidden="true"
+                            style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                        Upload</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+
+
+
+
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Import Expense Approvers</h4>
+    <form [formGroup]="AddExpenceAssingment">
+        <div class="row">
+            <h6 style="text-transform: uppercase;font-weight: 600">Step 1: Download employee expense approvers
+                global format Includes all your Employees with their available
+                details.</h6>
+        </div>
+        <div class="row">
+            <div style="text-align: left;">
+                <button class="btn header-button" cdkFocusInitial (click)="onNoClick()"> <span>
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        Download</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <h6 style="text-transform: uppercase;font-weight: 600">Step 2: Make necessary changes in the
+                downloaded file upload * For Reporting Supervisor use initials
+                RS</h6>
+        </div>
+        <div class="row">
+            <div style="text-align: left;">
+                <input id="fileToUpload" type="file">
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial>
+            Upload
+        </button>
+    </div>
+</mat-dialog-actions>

@@ -1,0 +1,54 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Upload Salary Structure</h4>
+    <div>
+        <!-- <div class="instruction-checkin-times">
+            <p>Step - 1: Select upload format </p>
+        </div>
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select CTC Template" formControlName="templateName">
+                <mat-option *ngFor="let item of ctcTemplateList" [value]="item.ctcTemplateId">
+                    {{item.templateName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> -->
+        <div class="instruction-checkin-times">
+            <p>Step - 1: Download salary structure global format</p>
+            <p>
+                <span>Includes all your Employees with their pre-existing attendance records as per Company's Attendance
+                    Cycle
+                    Dates </span>
+            </p>
+            <p>Please follow the below instructions when uploading salary structures: </p>
+            <p>1.
+                <span>Enter the values of various salary heads for individual employee</span>
+            </p>
+            <p>2.
+                <span> Enter the effective date in yyyy-MM-dd format. E.g. 2020-12-01</span>
+            </p>
+            <p>3.
+                <span> Enter the CTC Frequency in 'Monthly' or 'Annually'.</span>
+            </p>
+            <button (click)="downloadTemplate()" class="btn header-button">
+                <span>
+                    <i class="fa fa-cloud-download" aria-hidden="true"></i>Download</span>
+            </button>
+            <p>Step - 2: Make necessary changes in the downloaded file and upload</p>
+        </div>
+        <input type="file" id="uploadFile" (change)="selectFile($event)" required>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="uploadtemplate()">
+            Upload
+        </button>
+    </div>
+</mat-dialog-actions>

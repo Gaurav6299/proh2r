@@ -1,0 +1,36 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> LOP Reversal Arrears</h4>
+    <div class="card card-content">
+        <form [formGroup]="arrearForm">
+            <div class="table-responsive" formArrayName="fixedAllowanceList">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr *ngFor="let line of arrearForm.get('fixedAllowanceList')['controls']; let i = index;" [formGroupName]="i">
+                            <th>
+                                {{this.arrearForm.controls.fixedAllowanceList.controls[i].controls.allowanceName.value}}
+                            </th>
+                            <td style="width: 40%;">
+                                <mat-form-field class="fullLength">
+                                    <input matInput type="number" formControlName="amount" readonly/>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+    </div>
+    <mat-dialog-actions>
+        <div class="model-footer ">
+            <button class="dialog-buttons " cdkFocusInitial (click)="onNoClick();">OK
+            </button>
+        </div>
+    </mat-dialog-actions>
+</mat-dialog-content>

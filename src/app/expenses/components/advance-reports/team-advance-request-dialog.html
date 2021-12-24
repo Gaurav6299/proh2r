@@ -1,0 +1,54 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Apply Advances</h4>
+    <form [formGroup]="advanceRequestForm">
+        <ng-select [items]="employeeList" appendTo="body" [searchable]="true" bindLabel="fullName" bindValue="value"
+            (change)="changeEmployee()" formControlName="empCode" placeholder="Select Employee"
+            class="custom-ng-select-Style">
+        </ng-select>
+        <span class="dropDown-errorClass" [hidden]="(advanceRequestForm.controls.empCode.valid || 
+        advanceRequestForm.controls.empCode.untouched)">
+            This field is required.
+        </span>
+
+        <mat-form-field class="fullLength" disabled="!advanceRequestForm.controls.empCode.value">
+            <mat-select placeholder="Select Category" formControlName="advanceCategoryId">
+                <mat-option *ngFor="let item of advanceCategoryId" [value]="item.advanceCategoryId">
+                    {{item.categoryName }}
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(advanceRequestForm.controls.advanceCategoryId.valid || 
+            advanceRequestForm.controls.advanceCategoryId.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput type="text" placeholder="Advance Amount" formControlName="advanceAmount">
+            <mat-error [hidden]="(advanceRequestForm.controls.advanceAmount.valid || 
+                advanceRequestForm.controls.advanceAmount.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="fullLength">
+            <textarea matInput formControlName="comments" placeholder="Comment"></textarea>
+            <mat-error [hidden]="(advanceRequestForm.controls.comments.valid || 
+            advanceRequestForm.controls.comments.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" (click)="applyAdvanceRequest();" cdkFocusInitial>Apply
+        </button>
+    </div>
+</mat-dialog-actions>

@@ -1,0 +1,272 @@
+<!-- <div *ngIf="showHideErr" class="card" style="box-shadow: none !important;">
+  <div class="card-content">
+    <div *ngIf="success">
+      <div class="col-md-10">
+        <p class="category">
+          <i class="fa fa-check-circle err-icon" style="color:green;"></i>{{errorMessage}}
+        </p>
+      </div>
+      <div class="col-md-2" style="text-align: right;">
+        <i class="fa fa-times err-close-icon" aria-hidden="true" (click)="close();" style="color:green;"></i>
+      </div>
+    </div>
+  </div>
+</div> -->
+<div class="card" style="box-shadow: none !important;">
+  <form [formGroup]="employeeLeaveAssignment">
+    <div class="card-header">
+      <div class="pull-left">
+        <h6 class="title">Employee Leave Assignment</h6>
+      </div>
+      <div class="text-right">
+        <div class="btn-group dropleft btn-group-actionsList" style="margin: 0;">
+          <button class="btn btn-default-actionsList dropdown-toggle" type="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Actions <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropleft">
+            <li class="dropdown-menu-list"><a class="dropdown-menu-item"
+                (click)="selectedValue('assignLeaveTemplate')">Assign
+                Template</a></li>
+            <li class="dropdown-menu-list"><a class="dropdown-menu-item"
+                (click)="selectedValue('assignSupervisors')">Assign
+                Supervisors</a></li>
+            <li class="dropdown-menu-list"><a class="dropdown-menu-item"
+                (click)="openDialogToBulkUploadTemplateAssigment()">Bulk
+                Assign Template</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="row">
+        <div class="col-md-8 offset-md-8"></div>
+        <!-- <ng-template #bulkActionDisabled>
+          <div class="col-md-4">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Bulk Actions" formControlName="assignLeaveTemplate" (selectionChange)="selectedValue(this.employeeLeaveAssignment.controls.assignLeaveTemplate.value)"
+                disabled>
+                <mat-option value="assignLeaveTemplate">Assign Templates</mat-option>
+                <mat-option value="assignSupervisors">Assign Supervisors</mat-option>
+                 <mat-option value="uploadTemplateAssignmnet">Upload Template Assignment</mat-option>
+                    <mat-option value="uploadApprovers">Upload Approvers</mat-option> 
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </ng-template> -->
+
+        <!-- <div class="col-md-3">
+          <div style="text-align:right;">
+            <button class="btn header-button" (click)="showHideFilter = !showHideFilter"> 
+                  <span>
+                  <i class="fa fa-search-plus" aria-hidden="true"></i>
+                  Show Advance Search</span>
+              </button>
+          </div>
+        </div> -->
+      </div>
+      <!-- <div *ngIf="showHideFilter" class="row"
+        style="border:1px solid #ddd;box-shadow: none;padding:15px 10px;border-radius:3px;">
+        <div class="col-md-3" style="padding-left:5px;">
+          <mat-form-field class="fullLength">
+            <mat-select placeholder="Leave Policy" formControlName="leavePolicy">
+              <mat-option value="specialLeave">Special Leave</mat-option>
+              <mat-option value="demo">Demo</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="fullLength">
+            <mat-select placeholder="Supervisor" formControlName="supervisorsName">
+              <mat-option value="amazingHulk">Amazing Hulk</mat-option>
+              <mat-option value="amitKumar">Amit Kumar</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="fullLength">
+            <mat-select placeholder="Work Location" formControlName="worklocation">
+              <mat-option value="noida">Noida</mat-option>
+              <mat-option value="delhi">Delhi</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="fullLength">
+            <mat-select placeholder="Joining Month" formControlName="selectedMonth">
+              <mat-option value="jan">JAN</mat-option>
+              <mat-option value="feb">FEB</mat-option>
+              <mat-option value="mar">MAR</mat-option>
+              <mat-option value="apr">APR</mat-option>
+              <mat-option value="may">MAY</mat-option>
+              <mat-option value="jun">JUN</mat-option>
+              <mat-option value="jul">JUL</mat-option>
+              <mat-option value="aug">AUG</mat-option>
+              <mat-option value="sep">SEP</mat-option>
+              <mat-option value="oct">OCT</mat-option>
+              <mat-option value="nov">NOV</mat-option>
+              <mat-option value="dec">DEC</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="fullLength">
+            <mat-select placeholder="Employee Status" formControlName="employeeStatus">
+              <mat-option value="incomplete">Incomplete</mat-option>
+              <mat-option value="active">Active</mat-option>
+              <mat-option value="onhold">Onhold</mat-option>
+              <mat-option value="terminated">Terminated</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="fullLength">
+            <mat-select placeholder="Cost Center" formControlName="costCenter">
+              <mat-option value="Finance">Finance</mat-option>
+              <mat-option value="Accounts">Accounts</mat-option>
+              <mat-option value="Marketing">Marketing</mat-option>
+              <mat-option value="Sales">Sales</mat-option>
+              <mat-option value="hr">HR</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div> -->
+      <div class="searchBox" style="text-align: right">
+        <div style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+      </div>
+      <p-table #dt1 [columns]="displayedColumns" [value]="assignLeaveData" [rows]="5" [paginator]="true" [pageLinks]="5"
+        [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true" [autoLayout]="true"
+        [responsive]="true" [(selection)]="checkedRowData">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th>
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th>
+            </th>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+              <p-multiSelect *ngSwitchCase="'employeeName'" appendTo="body" defaultLabel="All" [options]="filterByEmp"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+              <p-multiSelect *ngSwitchCase="'location'" appendTo="body" defaultLabel="All" [options]="allLocation"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+              <p-multiSelect *ngSwitchCase="'band'" appendTo="body" defaultLabel="All" [options]="allBand"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')">
+              </p-multiSelect>
+              <p-multiSelect *ngSwitchCase="'department'" appendTo="body" defaultLabel="All" [options]="allDepartment"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+              <p-multiSelect *ngSwitchCase="'designation'" appendTo="body" defaultLabel="All" [options]="allDesignation"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car let-columns="columns">
+
+
+          <tr [pSelectableRow]="car">
+            <td>
+              <p-tableCheckbox [value]="car"></p-tableCheckbox>
+            </td>
+            <td *ngFor="let col of columns">
+              <div class="mat-cell">
+                <div class="mat-element-icon">
+                  <div *ngIf="col.field!='action'">{{car[col.field]}}</div>
+                  <div *ngIf="!(car.templateName==null) && col.field=='action'">
+                    <span class="edit"><i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                        (click)="editLeaveAssignmentFunction(car)"></i></span>
+                    <span class="delete"><i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                        (click)="leaveDelete(car)"></i></span>
+                  </div>
+                  <div *ngIf="car.templateName==null && col.field=='action'">
+                    <span class="add"><i class="fa fa-plus-square" aria-hidden="true" matTooltip="Add"
+                        (click)="addLeaveTemplateAssignment(car)"></i></span>
+                  </div>
+                </div>
+              </div>
+              <!-- <div *ngIf="!(car.currentAttendenceTemp===null)">
+                  <div *ngIf="col.field!='action'">{{car[col.field]}}</div>
+                  <div class="mat-cell">
+                    <div class="mat-element-icon">
+                      <span class="edit" *ngIf="col.field=='action'">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                          (click)="editAttendnceTemplate(car)"></i></span>
+                      <span class="delete" *ngIf="col.field=='action'">
+                        <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                          (click)="openDeleteTemplate(car)"></i></span>
+                    </div>
+                    <div *ngIf="car.currentAttendenceTemp===null">
+                      <span *ngIf="col.field!='action'">{{car[col.field]}}</span>
+                      <span class="add" *ngIf="col.field=='action'">
+                        <i class="fa fa-plus-square" aria-hidden="true" matTooltip="Add"
+                          (click)="addAttendenceTemplate(car)"></i></span>
+                    </div>
+                  </div>
+                </div> -->
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <!-- <mat-table #table [dataSource]="dataSource1">
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle(element , $event) : null"
+                [checked]="selection.hasValue(element) && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-checkbox (change)="getRowData(row , $event )" [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="employeeName">
+            <mat-header-cell *matHeaderCellDef>Employee Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span>{{element.employeeName}}</span><br>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="templateName">
+            <mat-header-cell *matHeaderCellDef>Current Leave Policy</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.templateName}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="primaryApprover">
+            <mat-header-cell *matHeaderCellDef>Primary Supervisors</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.primaryApprover}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="secondaryApprover">
+            <mat-header-cell *matHeaderCellDef>Secondary Supervisors</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.secondaryApprover}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <div class="mat-element-icon">
+                <div *ngIf="!(element.templateName===null)">
+                  <span class="edit"><i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                      (click)="editLeaveAssignmentFunction(element)"></i></span>
+                  <span class="delete"><i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                      (click)="leaveDelete(element)"></i></span>
+                </div>
+                <div *ngIf="element.templateName===null">
+                  <span class="add"><i class="fa fa-plus-square" aria-hidden="true" matTooltip="Add"
+                      (click)="addLeaveTemplateAssignment(element )"></i></span>
+                </div>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table> -->
+    </div>
+  </form>
+</div>

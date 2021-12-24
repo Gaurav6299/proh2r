@@ -1,0 +1,46 @@
+<div class="card" style="box-shadow: none !important;overflow: hidden;">
+  <div class="card-header">
+    <div style="text-align: right;">
+      <button class="btn header-button" matTooltip="Add Category Name" (click)="openAddCategoryDialog()">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add Category</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="searchBox" style="text-align: right;">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search"
+        (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="categoriesList" [rows]="5" [paginator]="true" [pageLinks]="5"
+      [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field!='action'"> {{car[col.field]}}</div>
+            <div class="mat-cell">
+              <div class="mat-element-icon">
+                <span class=" edit" matTooltip="Update" *ngIf="col.field=='action'">
+                  <i class="fa fa-pencil-square-o" (click)="openUpdateCategoryDialog(car)"></i>
+                </span>
+                <span class="delete" matTooltip="Delete" *ngIf="col.field=='action'">
+                  <i class="fa fa-trash-o" (click)="openDeleteCategoryDialog(car.assetCategoryId)"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

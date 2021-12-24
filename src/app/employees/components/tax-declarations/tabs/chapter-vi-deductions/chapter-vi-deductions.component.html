@@ -1,0 +1,95 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div class="pull-left">
+      <h6 class="title">Chapter VI Deductions</h6>
+    </div>
+    <div class="text-right">
+      <button class="btn header-button" (click)="backToNavigate()">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="searchBox text-right">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search" (input)="dt1.filterGlobal($event.target.value, 'contains')">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="employeeDeductinonsList" dataKey="id" [rows]="5" [paginator]="true" [pageLinks]="5"
+      [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr>
+          <td>
+            {{rowData.componentName}}
+          </td>
+          <td>
+            {{rowData.sectionName}}
+          </td>
+          <td>
+            {{rowData.maximumAmount}}
+          </td>
+          <td *ngIf="rowData.readwrite">
+            <mat-form-field class="full-width" *ngIf="rowData.approvalStatus!='Pending'">
+              <input matInput type="number" [(ngModel)]="rowData.appliedAmount">
+            </mat-form-field>
+            <div *ngIf="rowData.approvalStatus=='Pending'">
+              {{rowData.appliedAmount}}
+            </div>
+          </td>
+          <td *ngIf="!rowData.readwrite">
+            {{rowData.appliedAmount}}
+          </td>
+          <td>
+            {{rowData.approvedAmount}}
+          </td>
+          <td>
+            {{rowData.approvalStatus}}
+          </td>
+          <td *ngIf="rowData.readwrite">
+            <mat-form-field class="full-width" *ngIf="rowData.approvalStatus!='Pending'">
+              <input matInput type="text" [(ngModel)]="rowData.empRemarks">
+            </mat-form-field>
+            <div *ngIf="rowData.approvalStatus=='Pending'">
+              {{rowData.empRemarks}}
+            </div>
+          </td>
+          <td *ngIf="!rowData.readwrite">
+            {{rowData.empRemarks}}
+          </td>
+          <td>
+            <a href={{rowData.url}} target="_blank">{{rowData.attachmentName}}</a>
+          </td>
+          <td>
+            <div class="mat-cell">
+              <div class="mat-element-icon">
+                <span class="view" (click)="viewTrasactionHistoryDialog(rowData);">
+                  <i class="fa fa-eye" aria-hidden="true" matTooltip="View"></i>
+                </span>
+                <span class="download" (click)="uploadAttachmentDialog(rowData);" *ngIf="rowData.approvalStatus!='Pending' && rowData.readwrite && rowData.attachmentRequired">
+                  <i class="fa fa-upload" aria-hidden="true" matTooltip="Upload"></i>
+                </span>
+                <span class="edit" (click)="rowData.readwrite=!rowData.readwrite" *ngIf="!rowData.readwrite && rowData.approvalStatus!='Pending'">
+                  <i matTooltip="Edit" class="fa fa-pencil-square-o"></i>
+                </span>
+                <span class="check" (click)="saveComponents(rowData);" *ngIf="rowData.readwrite">
+                  <i matTooltip="Save" class="fa fa-check-square-o"></i>
+                </span>
+                <span class="reject" (click)="rowData.readwrite=!rowData.readwrite;resetRow(rowData);" *ngIf="rowData.readwrite">
+                  <i matTooltip="Cancel" class="fa fa-times-circle"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

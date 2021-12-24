@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Payroll Approval</h4>
+    <form>
+        <mat-form-field class="fullLength">
+            <span><i class="material-icons prefix">vpn_key</i></span>
+            <input matInput id="password" name="password" type="password" placeholder="" [(ngModel)]="password"/>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel</button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="validate()">Submit</button>
+    </div>
+</mat-dialog-actions>

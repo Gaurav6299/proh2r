@@ -1,0 +1,93 @@
+<div class="card">
+  <div class="card-header" data-background-color="cyan" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+    <div data-background-color="blue">
+      <div class="row">
+        <div class="col-md-10">
+          <h6 style="text-transform: uppercase;font-weight: 600">
+            {{header}}
+          </h6>
+        </div>
+        <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+          <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card-content">
+    <form [formGroup]="add_EditSection">
+      <div *ngIf="this.delete =='true'">
+
+        <mat-form-field class="fullLength">
+          <input matInput placeholder="Section Name *" formControlName="recSectionName">
+        </mat-form-field>
+        <span class="category col-md-12" style="color: red;padding:0px;" [hidden]="(add_EditSection.controls.recSectionName.valid ||
+        add_EditSection.controls.recSectionName.untouched)">
+          {{requiredTextField}}
+        </span>
+      
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Location" formControlName="recSectionLocation">
+              <mat-option value="PERSONAL_DETAILS">Personal Details</mat-option>
+              <mat-option value="EDUCATIONAL_DETAILS">Educational Details</mat-option>
+              <mat-option value="EMPLOYMENT_DETAILS">Employment Details</mat-option>
+            </mat-select>
+          </mat-form-field>
+      </div>
+ 
+      <div *ngIf="this.delete =='false'">
+        <mat-form-field class="fullLength">
+          <input matInput placeholder="Section Name *" formControlName="recSectionName">
+        </mat-form-field>
+        <span class="category col-md-12" style="color: red;padding:0px;" [hidden]="(add_EditSection.controls.recSectionName.valid ||
+        add_EditSection.controls.recSectionName.untouched)">
+          {{requiredTextField}}
+        </span>
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Location" formControlName="recSectionLocation">
+              <mat-option value="PERSONAL_DETAILS">Personal Details</mat-option>
+              <mat-option value="EDUCATIONAL_DETAILS">Educational Details</mat-option>
+              <mat-option value="EMPLOYMENT_DETAILS">Employment Details</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+        <button *ngIf="this.delete =='true'" class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan"
+          (click)="deleteSectionDetails()">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-trash-o" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Delete</span>
+        </button>
+
+        <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan" (click)="onNoClick()">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Cancel</span>
+        </button>
+        <button *ngIf="this.delete =='false'" class="dialog-button" style="width: 76px;" data-background-color="cyan" (click)="saveSectionDetails()">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-check" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Save</span>
+        </button>
+        <button *ngIf="this.delete =='true'" (click)="editSectionDetails();" class="dialog-button" cdkFocusInitial style="width: 76px;"
+          data-background-color="cyan">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-pencil-square-o" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Update</span>
+        </button>
+      </div>
+    </form>
+
+     <!-- <div class="margin-20">
+      <div>myForm details:-</div>
+      <pre>Is myForm valid?: <br>{{add_EditSection.valid | json}}</pre>
+      <pre>form value: <br>{{add_EditSection.value | json}}</pre>
+    </div>   -->
+
+
+
+  </div>
+</div>

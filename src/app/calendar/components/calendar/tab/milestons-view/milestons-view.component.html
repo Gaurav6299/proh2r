@@ -1,0 +1,207 @@
+<div class="card" style="box-shadow: none !important">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Calendar Settings</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" *ngIf="!isLeftVisible" (click)="addNewMileStone();  ">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Milestone</span>
+      </button>
+      <button class="btn header-button" *ngIf="isLeftVisible" (click)="cancelMileStoneForm(); ">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          Back</span>
+      </button>
+    </div>
+  </div>
+  <!-- <ng-template #calendarSettViewOnly>
+    <div class="card-header">
+      <h6 class="title">Calendar Settings</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <app-milestone-left-right [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="mileStonesTableData" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+                <div class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" *ngIf="col.field=='actions'">
+                      <i class="fa fa-pencil-square-o" matTooltip="Edit" aria-hidden="true"
+                        (click)="editMileStoneReocrd(car);"></i>
+                    </span>
+                    <span class="delete" *ngIf="col.field=='actions' && car.default===false">
+                      <i class=" fa fa-trash-o" matTooltip="Delete" aria-hidden="true"
+                        (click)="openDeleteDialog(car)"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div class="card" style="box-shadow: none !important; border:1px solid #ddd;">
+          <form [formGroup]="calendarSettingForm" #milestoneForm="ngForm">
+            <div class="row">
+              <div class="col-md-9">
+                <div style="text-align: left;">
+                  <h5 class="left-rights-slider-title" style="margin: 0;">
+                    Add New Calendar Settings
+                  </h5>
+                  <h6 class="left-rights-slider-Subtitle">
+                    You can now store calendar setting information for your Company's Employees
+                  </h6>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <p class="category">Milestone Color Code</p>
+                  <div style="padding-bottom: 10px;">
+                    <p-colorPicker formControlName="colorCode"></p-colorPicker>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf=!editTrue>
+              <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Milestone" formControlName="eventType">
+                  <mat-option value="OTHER_EVENT">Other Event</mat-option>
+                </mat-select>
+                <mat-error [hidden]="(this.calendarSettingForm.controls.eventType.valid
+                || this.calendarSettingForm.controls.eventType.untouched)">
+                  <div
+                    *ngIf="(this.calendarSettingForm.controls.eventType.value === '' || this.calendarSettingForm.controls.eventType.value === null)">
+                    {{requiredDropdownButton}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div *ngIf=editTrue>
+              <mat-form-field class="fullLength">
+                <input matInput placeholder="Please select the milestone *" formControlName="eventType" readonly>
+              </mat-form-field>
+            </div>
+            <mat-form-field class="fullLength">
+              <input matInput placeholder="Milestone Name" formControlName="eventName">
+              <mat-error [hidden]="(this.calendarSettingForm.controls.eventName.valid
+              || this.calendarSettingForm.controls.eventName.untouched)">
+                <div
+                  *ngIf="(this.calendarSettingForm.controls.eventName.value === '' || this.calendarSettingForm.controls.eventName.value === null)">
+                  {{requiredTextField}}
+                </div>
+                <div *ngIf="this.calendarSettingForm.controls.eventName.value !== ''">
+                  {{ this.calendarSettingForm.controls.eventName.errors != null ?
+                  this.calendarSettingForm.controls.eventName.errors.messages
+                  : ''}}
+                </div>
+              </mat-error>
+            </mat-form-field>
+            <p class="category">Map Employees to Milestone</p>
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="appliedType" (change)="selectEmployeeType()">
+                <mat-radio-button value='ALL'>All Employees </mat-radio-button>
+                <mat-radio-button value='SPECIFIC'>Specific Employees</mat-radio-button>
+              </mat-radio-group>
+              <div class="category" style="color: red;" [hidden]="(this.calendarSettingForm.controls.appliedType.valid
+                || this.calendarSettingForm.controls.appliedType.untouched)">
+                <div
+                  *ngIf="(this.calendarSettingForm.controls.appliedType.value === '' || this.calendarSettingForm.controls.appliedType.value === null)">
+                  {{requiredRadioButton}}
+                </div>
+              </div>
+            </div>
+            <div *ngIf="this.calendarSettingForm.controls.appliedType.value === 'SPECIFIC'">
+              <p class="category">Select Employee(s)</p>
+              <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Component" [formControl]="employeeIds" [(ngModel)]="mySelectedEmpList"
+                  multiple (click)="clearSearchControlAndEmployeeList()">
+                  <mat-select-trigger>
+                    {{employeeIds.value ? employeeIds.value[0] : ''}}
+                    <span *ngIf="employeeIds.value?.length > 1" class="example-additional-selection">
+                      (+{{employeeIds.value.length - 1}} others)
+                    </span>
+                  </mat-select-trigger>
+                  <mat-form-field class="fullLength">
+                    <input type="text" placeholder="Search" aria-label="Number" matInput [formControl]="myControl"
+                      (keyup)="searchEmployees($event)">
+                  </mat-form-field>
+                  <mat-option *ngFor="let employee of employeeList" [value]="employee.value"
+                    (click)="setSeletedEmployees(employee.value)">{{employee.viewValue}}</mat-option>
+                </mat-select>
+                <mat-error [hidden]="(this.employeeIds.valid
+                || this.employeeIds.untouched)">
+                  {{requiredDropdownButton}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <mat-form-field class="fullLength">
+              <input matInput type="date" placeholder="Select Date" formControlName="occurrenceDate">
+              <mat-error [hidden]="(this.calendarSettingForm.controls.occurrenceDate.valid
+                  || this.calendarSettingForm.controls.occurrenceDate.untouched)">
+                <div
+                  *ngIf="(this.calendarSettingForm.controls.occurrenceDate.value === '' || this.calendarSettingForm.controls.occurrenceDate.value === null)">
+                  {{requiredDateField}}
+                </div>
+              </mat-error>
+            </mat-form-field>
+            <p class="category"> Is this Recurring Event</p>
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="occurrenceRepeat">
+                <mat-radio-button value='true'>Yes</mat-radio-button>
+                <mat-radio-button value='false'>No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="category" style="color: red;" [hidden]="(this.calendarSettingForm.controls.occurrenceRepeat.valid
+                  || this.calendarSettingForm.controls.occurrenceRepeat.untouched)">
+              <div
+                *ngIf="(this.calendarSettingForm.controls.occurrenceRepeat.value === '' || this.calendarSettingForm.controls.occurrenceRepeat.value === null)">
+                {{requiredRadioButton}}
+              </div>
+            </div>
+            <div class="row" style="text-align: center;">
+              <button class="btn header-button" (click)="cancelMileStoneForm();">
+                <span>
+                  <i class="fa fa-times" aria-hidden="true "></i>
+                  Cancel</span>
+              </button>
+              <button class="btn header-button" *ngIf="saveButton" (click)="saveMileStoneForm(calendarSettingForm);">
+                <span>
+                  <i class="fa fa-floppy-o " aria-hidden="true "></i>
+                  Save</span>
+              </button>
+              <button class="btn header-button" *ngIf="updateButton"
+                (click)="updateMileStoneForm(calendarSettingForm); ">
+                <span>
+                  <i class="fa fa-pencil-square-o " aria-hidden="true "></i>
+                  Update</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </app-milestone-left-right>
+  </div>
+</div>

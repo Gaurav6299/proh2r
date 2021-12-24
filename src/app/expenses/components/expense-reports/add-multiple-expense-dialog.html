@@ -1,0 +1,99 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Bulk Expense Create</h4>
+    <div class="card-content">
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Employee" multiple>
+                <mat-option value="Akash Kumar">Akash Kumar</mat-option>
+                <mat-option value="Tania Andrew">Tania Andrew</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Report Name ">
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Advance Amount Received" type="number">
+        </mat-form-field>
+        <div class="table-responsive example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSourceForAddMulExp">
+                <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="border:1px solid #ddd">
+                        <mat-form-field style="width:95%;">
+                            <input matInput [matDatepicker]="date" placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                            <mat-datepicker #date></mat-datepicker>
+                        </mat-form-field>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="category">
+                    <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="border:1px solid #ddd">
+                        <mat-form-field style="width:95%;">
+                            <mat-select placeholder="Select Category">
+                                <mat-option value="phoneBill">Phone Bill</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="merchant">
+                    <mat-header-cell *matHeaderCellDef> Merchant </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="border:1px solid #ddd">
+                        <mat-form-field style="width:95%;">
+                            <input matInput placeholder="Merchant Name">
+                        </mat-form-field>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="border:1px solid #ddd">
+                        <mat-form-field style="width:95%;">
+                            <input matInput placeholder="Amount" type="number">
+                        </mat-form-field>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="reimbursable">
+                    <mat-header-cell *matHeaderCellDef> Reimbursable </mat-header-cell>
+                    <mat-cell *matCellDef="let element"
+                        style="border:1px solid #ddd;min-height: 59px; padding-top: 20px;">
+                        <mat-checkbox></mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let element"
+                        style="border:1px solid #ddd;min-height: 59px; padding-top: 20px;">
+                        <span style="padding:3px;">
+                            <i class="fa fa-paperclip" aria-hidden="true"
+                                style="font-size:20px;color:green;;vertical-align: middle;cursor:pointer;"></i>
+                        </span>
+                        <span style="padding:3px;">
+                            <i class="fa fa-trash" aria-hidden="true"
+                                style="font-size:20px;color:red;;vertical-align: middle;cursor:pointer;"
+                                (click)="deleteExpenses();"></i>
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumnsForAddMulExp"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsForAddMulExp;">
+                </mat-row>
+            </mat-table>
+        </div>
+        <span class="category" style="color: #039bad;cursor:pointer;" (click)="addMoreExpenses();"> <i
+                class="fa fa-plus-square" aria-hidden="true"></i>
+            Add More Expenses</span>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial>Submit
+        </button>
+    </div>
+</mat-dialog-actions>

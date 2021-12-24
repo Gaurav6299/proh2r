@@ -1,0 +1,116 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Leave Template Assignment</h4>
+    <form [formGroup]="editLeaveAssignment">
+        <div *ngIf="templateWiseHideShow">
+            <mat-form-field class="fullLength">
+                <input matInput placeholder="Select Template" formControlName="editLeaveTemplate" readonly>
+            </mat-form-field>
+            <div *ngIf="openPrimary">
+                <!-- <p class="category" style="color:#404A56;">Select Primary Approver:</p> -->
+
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Primary Approver" formControlName="editLeavePrimaryApprover"
+                        [disabled]="true">
+                        <mat-option *ngFor="let approver of approverList1" [value]="approver.value">
+                            {{approver.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <p class="category">Selected Primary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select"
+                    formControlName="editLeavePrimaryApprover" class="custom-ng-select-Style" [disabled]="true">
+                    <ng-option *ngFor="let approver of approverList1" [value]="approver.value">
+                        {{approver.viewValue}}
+                    </ng-option>
+                </ng-select>
+            </div>
+            <div *ngIf="openSecondary">
+                <!-- <p class="category" style="color:#404A56;">Select Secondary Approver:</p> -->
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Secondary Approver" formControlName="editLeaveSecondaryApprover"
+                        [disabled]="true">
+                        <mat-option *ngFor="let approver of approverList1" [value]="approver.value">
+                            {{approver.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <p class="category">Selected Secondary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select"
+                    formControlName="editLeaveSecondaryApprover" class="custom-ng-select-Style" [disabled]="true">
+                    <ng-option *ngFor="let approver of approverList1" [value]="approver.value">
+                        {{approver.viewValue}}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div *ngIf="employeeWiseHideShow">
+            <!-- <p class="category" style="color:#404A56;">Select Template:</p> -->
+            <mat-form-field class="fullLength">
+                <input matInput placeholder="Select Template" formControlName="editLeaveTemplate" readonly>
+            </mat-form-field>
+            <div *ngIf="openPrimary">
+                <!-- <p class="category" style="color:#404A56;">Select Primary Approver:*</p> -->
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Primary Approver" formControlName="editLeavePrimaryApprover"
+                        (click)="clearPrimaryApprover();">
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput
+                                [formControl]="primaryApproverControl"
+                                (keyup)="searchEmployeeNameForPrimarysupervisor($event)">
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of approverList1" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <p class="category">Selected Primary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select"
+                    formControlName="editLeavePrimaryApprover" (click)="clearPrimaryApprover();"
+                    class="custom-ng-select-Style" disabled>
+                    <ng-option *ngFor="let item of approverList1" [value]="item.value">
+                        {{item.viewValue}}
+                    </ng-option>
+                </ng-select>
+            </div>
+            <div *ngIf="openSecondary">
+                <!-- <p class="category" style="color:#404A56;">Select Secondary Approver:*</p> -->
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Secondary Approver" formControlName="editLeaveSecondaryApprover"
+                        (click)="clearSecondaryApprover();">
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput
+                                [formControl]="secondaryApproverControl"
+                                (keyup)="searchEmployeeNameForSecondarysupervisor($event)">
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of approverList2" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <p class="category">Selected Secondary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select"
+                    formControlName="editLeaveSecondaryApprover" (click)="clearSecondaryApprover();"
+                    class="custom-ng-select-Style" disabled>
+                    <ng-option *ngFor="let item of approverList2" [value]="item.value">
+                        {{item.viewValue}}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveAssignLeaveTemplate(editLeaveAssignment)">
+            Save
+        </button>
+    </div>
+</mat-dialog-actions>

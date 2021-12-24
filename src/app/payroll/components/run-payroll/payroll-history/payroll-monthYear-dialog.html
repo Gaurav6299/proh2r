@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Date For Run Payroll</h4>
+    <form>
+        <p>Enter month and year : </p>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Choose Month/Year" [formControl]="monthYear" type="month">
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel</button>
+        <button class="dialog-buttons" (click)="selectMonthYear()" cdkFocusInitial> Confirm</button>
+    </div>
+</mat-dialog-actions>

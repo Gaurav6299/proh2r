@@ -1,0 +1,141 @@
+<div class="myModel">
+  <div class="card">
+    <div class="card-header" data-background-color="cyan"
+      style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+      <div data-background-color="blue">
+        <div class="row">
+          <div class="col-md-10">
+            <h6 style="text-transform: uppercase;font-weight: 600">
+              Variable Pays
+            </h6>
+          </div>
+          <div class="col-md-2"
+            style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+            <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <form [formGroup]="offcycleVariablePaysForm">
+        <div formArrayName="fieldMaster">
+          <div *ngFor="let fieldMasterFields of fieldMaster.controls; let i=index">
+            <div class="col-md-12" [formGroupName]="i">
+              <!--Basic Information -->
+              <div class="card">
+                <div class="card-header" data-background-color="blue" style="padding-top:9px;    padding-bottom: 25px;">
+                  <div style="float:left">
+                    <h6 class="title">
+                      {{this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.sectionName.value}}</h6>
+                  </div>
+                  <div style="text-align: right;">
+
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="row" formArrayName="fields">
+                    <div *ngFor="let event of fieldMasterFields.controls['fields'].controls; let idx=index">
+                      <div [formGroupName]="idx">
+                        <div class="col-md-12">
+                          <div class="col-md-8">
+                            <p class="category" style="color:#404A56">
+                              {{ this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldDescription.value}}
+                            </p>
+                          </div>
+                          <!-- <div *ngIf="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.editable.value"> -->
+                          <div class="col-md-4"
+                            *ngIf="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'SingleLineText'">
+
+                            <mat-form-field class="fullLength">
+                              <input matInput
+                                placeholder="{{this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                formControlName="fieldValue"
+                                [required]="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4"
+                            *ngIf="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Dropdown'">
+                            <mat-form-field class="fullLength">
+                              <mat-select
+                                placeholder="{{this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                formControlName="fieldValue"
+                                [required]="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                                <mat-option
+                                  *ngFor="let option of this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.options.value"
+                                  [value]="option">
+                                  {{ option }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+
+                          <div class="col-md-4"
+                            *ngIf="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'MultiLineText'">
+                            <mat-form-field class="fullLength">
+                              <textarea matInput
+                                placeholder="{{this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                                formControlName="fieldValue"
+                                [required]="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value"></textarea>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4"
+                            *ngIf="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Number'">
+                            <mat-form-field class="fullLength">
+                              <input matInput
+                                placeholder="{{this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                type="number" formControlName="fieldValue"
+                                [required]="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4"
+                            *ngIf="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Date'">
+                            <mat-form-field class="fullLength">
+                              <input matInput [matDatepicker]="picker"
+                                placeholder="{{this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                formControlName="fieldValue"
+                                [required]="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4"
+                            *ngIf="this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Boolean'">
+                            <div class="radio-wrapper">
+                              <mat-radio-group formControlName="fieldValue">
+                                <mat-radio-button value="yes">Yes</mat-radio-button>
+                                <mat-radio-button value="no">No</mat-radio-button>
+                              </mat-radio-group>
+                            </div>
+                          </div>
+                          <!-- </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <!-- {{this.offcycleVariablePaysForm.value | json}} -->
+        </div>
+        <!-- <div class="col-md-12" style="text-align: center;">
+          <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan">
+            <span class="category" style="color:#fff; display: inline">
+              <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+              Cancel</span>
+          </button>
+          <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan">
+            <span class="category" style="color:#fff; display: inline">
+              <i class="fa fa-check" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+              Save</span>
+          </button>
+        </div> -->
+      </form>
+
+
+    </div>
+  </div>
+</div>

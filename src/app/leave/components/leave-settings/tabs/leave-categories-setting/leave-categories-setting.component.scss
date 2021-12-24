@@ -1,0 +1,19 @@
+@import "~assets/sass/md/customCSS";
+
+    
+  .dataTableHeaderColor{
+    font-weight: 600;
+    color: #848484;
+    text-align: center;
+    text-transform: uppercase;
+     /* font-size: 14px; */
+    font-weight: 700;
+    //font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+
+  ::ng-deep .mat-sort-header-container {
+  display:flex;
+  justify-content:center;
+  }
+
+  

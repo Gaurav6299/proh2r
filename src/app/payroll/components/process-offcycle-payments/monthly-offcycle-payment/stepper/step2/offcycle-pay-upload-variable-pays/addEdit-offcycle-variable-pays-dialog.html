@@ -1,0 +1,109 @@
+<div class="myModel">
+  <div class="card">
+    <div class="card-header" data-background-color="cyan" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+      <div data-background-color="blue">
+        <div class="row">
+          <div class="col-md-10">
+            <h6 style="text-transform: uppercase;font-weight: 600">
+              Variable Pays
+            </h6>
+          </div>
+          <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+            <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <form [formGroup]="offcycleVariablePaysForm">
+        <div formArrayName="fieldMaster">
+          <!--Basic Information -->
+          <div class="card">
+            <div class="card-header" data-background-color="blue" style="padding-top:9px;    padding-bottom: 25px;">
+              <div *ngFor="let fieldMaster of fieldMaster.controls; let i=index">
+                <div class="col-md-12" [formGroupName]="i">
+                  <div style="text-align: right;">
+                    <!-- <div class="col-md-12"> -->
+                    <div class="col-md-6" style="margin-top: 25px;text-align: center;">
+                      <p class="category" style="color:#404A56"> {{ this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fieldName.value}}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field class="fullLength">
+                        <input matInput placeholder="{{this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.fieldPlaceholderValue.value}}"
+                          type="number" formControlName="{{this.offcycleVariablePaysForm.controls.fieldMaster.controls[i].controls.variableAllowanceAmount.value}}">
+                      </mat-form-field>
+                    </div>
+                    <!-- </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div formArrayName="fieldMaster1">
+          <div class="card">
+              <!-- <div class="card-header" data-background-color="cyan" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;"> -->
+                  <div class="card-header" data-background-color="blue" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h6 style="text-transform: uppercase;font-weight: 600">
+                          Variable Pays
+                        </h6>
+                      </div>
+                      <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                        <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+                      </div>
+                    </div>
+                  </div>
+                <!-- </div> -->
+            <div class="card-content">
+              <div *ngFor="let fieldMaster1 of fieldMaster1.controls; let idx=index">
+                <div class="col-md-12" [formGroupName]="idx">
+                  <div style="text-align: right;">
+                    <div class="col-md-12">
+                      <div class="col-md-6" style="margin-top: 25px;text-align: center;">
+                        <p class="category" style="color:#404A56"> {{ this.offcycleVariablePaysForm.controls.fieldMaster1.controls[idx].controls.fieldName.value}}</p>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field class="fullLength">
+                          <input matInput placeholder="{{this.offcycleVariablePaysForm.controls.fieldMaster1.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            type="number"  formControlName="{{this.offcycleVariablePaysForm.controls.fieldMaster1.controls[idx].controls.variableDeductionAmount.value}}">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12" style="text-align: center;">
+          <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan">
+            <span class="category" style="color:#fff; display: inline">
+              <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+              Cancel</span>
+          </button>
+          <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan">
+            <span class="category" style="color:#fff; display: inline">
+              <i class="fa fa-check" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+              Save</span>
+          </button>
+        </div>
+
+        <div class="col-md-12" style="padding-top:50px">
+          <div class="clearfix">
+            <div class="margin-top:50px">
+              <pre>form value: <br>{{offcycleVariablePaysForm.value | json}}</pre>
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+
+
+    </div>
+  </div>
+</div>

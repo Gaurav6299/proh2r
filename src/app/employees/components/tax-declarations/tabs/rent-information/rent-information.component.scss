@@ -1,0 +1,19 @@
+@import "~assets/sass/md/customCSS";
+
+.rentInfoListGroup .list-group {
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+.rentInfoListGroup .list-group .list-group-item {
+  list-style: none;
+  border-radius: 0;
+  padding: 6px 10px;
+  display: inline-block;
+  border: 0;
+}
+
+.rentInfoListGroup .list-group,
+.rentInfoListGroup .list-group .list-group-item {
+  background-color: #edf2fb;
+}

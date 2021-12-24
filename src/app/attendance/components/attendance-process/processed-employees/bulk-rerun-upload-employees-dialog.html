@@ -1,0 +1,38 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Bulk Re-Run For Upload May-2020</h4>
+    <form>
+        <div class="form-group">
+            <span class="sub-Category"><b>Bulk Re-Run for your selected Employees in just 1 steps:</b></span>
+            <p class="category showFieldMandatory"><b>Step 1:</b> Create the upload sheet as per instructions given
+                below and upload</p>
+        </div>
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile">
+                <label class="custom-file-label" for="inputGroupFile"></label>
+            </div>
+            <button class="btn header-button">
+                <span>
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                    Bulk Re-Run Upload</span>
+            </button>
+        </div>
+        <div>
+            <p class="category"><b>Upload Instructions:</b></p>
+            <span class="sub-Category">The upload sheet must only include "Email", "Employee Name", "Employee Code"
+                (with the exact case and order). </span><br>
+            <span class="sub-Category">All the Employees whose details are provided would be taken for Re-Run</span>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="dialog-buttons" cdkFocusInitial (click)="onNoClick()">Close</button>
+    </div>
+</mat-dialog-actions>

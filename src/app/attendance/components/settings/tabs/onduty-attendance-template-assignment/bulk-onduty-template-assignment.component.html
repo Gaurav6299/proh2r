@@ -1,0 +1,173 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>{{title}}</h4>
+    <form [formGroup]="onDutyTemplateAssignment" #formDirective="ngForm">
+        <p class="category">Select Template</p>
+        <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="onDutyTemplate"
+            (change)="selectedTemplateValue()" class="custom-ng-select-Style">
+            <ng-option *ngFor="let template of onDutyTemplate" [value]="template.onDutyTemplateId">
+                {{ template.templateName}}
+            </ng-option>
+        </ng-select>
+        <span class="dropDown-errorClass" [hidden]="(onDutyTemplateAssignment.controls.onDutyTemplate.valid || 
+        onDutyTemplateAssignment.controls.onDutyTemplate.untouched)">
+            This field is required.
+        </span>
+        <!-- <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Template" formControlName="onDutyTemplate"
+                (selectionChange)="selectedTemplateValue()">
+                <mat-option *ngFor="let template of onDutyTemplate" [value]="template.onDutyTemplateId">
+                    {{ template.templateName}}
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(onDutyTemplateAssignment.controls.onDutyTemplate.valid || 
+            onDutyTemplateAssignment.controls.onDutyTemplate.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field> -->
+        <div *ngIf="selectedTemplate.approvalType=='TEMPLATEWISE'">
+            <div
+                *ngIf="selectedTemplate.approvalLevel=='FIRST_LEVEL' || selectedTemplate.approvalLevel=='SECOND_LEVEL'">
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Primary Approver" formControlName="primaryApprover" disabled>
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput>
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="onDutyTemplateAssignment.controls.primaryApprover.hasError('required') || (formDirective.submitted && onDutyTemplateAssignment.controls.primaryApprover.invalid)">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field> -->
+                <p class="category">Select Primary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="primaryApprover"
+                    class="custom-ng-select-Style" disabled>
+                    <ng-option *ngFor="let item of employeeList" [value]="item.value">
+                        {{item.viewValue}}
+                    </ng-option>
+                </ng-select>
+                <span class="dropDown-errorClass"
+                    *ngIf="onDutyTemplateAssignment.controls.primaryApprover.hasError('required') || (formDirective.submitted && onDutyTemplateAssignment.controls.primaryApprover.invalid)">
+                    This field is required.
+                </span>
+            </div>
+            <div *ngIf="selectedTemplate.approvalLevel=='SECOND_LEVEL'">
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Secondary Approver" formControlName="secondaryApprover" disabled>
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput>
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="onDutyTemplateAssignment.controls.secondaryApprover.hasError('required') || (formDirective.submitted && onDutyTemplateAssignment.controls.secondaryApprover.invalid)">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field> -->
+                <p class="category">Select Secondary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="secondaryApprover"
+                    class="custom-ng-select-Style" disabled>
+                    <ng-option *ngFor="let item of employeeList" [value]="item.value">
+                        {{item.viewValue}}
+                    </ng-option>
+                </ng-select>
+                <span class="dropDown-errorClass"
+                    *ngIf="onDutyTemplateAssignment.controls.secondaryApprover.hasError('required') || (formDirective.submitted && onDutyTemplateAssignment.controls.secondaryApprover.invalid)">
+                    This field is required.
+                </span>
+            </div>
+        </div>
+        <div *ngIf="selectedTemplate.approvalType=='EMPLOYEEWISE'">
+            <div
+                *ngIf="selectedTemplate.approvalLevel=='FIRST_LEVEL' ||  selectedTemplate.approvalLevel=='SECOND_LEVEL'">
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Primary Approver" formControlName="primaryApprover">
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput
+                                (keyup)="searchEmployeeNameForPrimarysupervisor($event)">
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="onDutyTemplateAssignment.controls.primaryApprover.hasError('required') || (formDirective.submitted && onDutyTemplateAssignment.controls.primaryApprover.invalid)">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field> -->
+                <p class="category">Select Primary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="primaryApprover"
+                    class="custom-ng-select-Style" disabled>
+                    <ng-option *ngFor="let item of employeeList" [value]="item.value">
+                        {{item.viewValue}}
+                    </ng-option>
+                </ng-select>
+                <span class="dropDown-errorClass"
+                    *ngIf="onDutyTemplateAssignment.controls.primaryApprover.hasError('required') || (formDirective.submitted && onDutyTemplateAssignment.controls.primaryApprover.invalid)">
+                    This field is required.
+                </span>
+            </div>
+
+            <div *ngIf="selectedTemplate.approvalLevel=='SECOND_LEVEL'">
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Secondary Approver" formControlName="secondaryApprover">
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput
+                                (keyup)="searchEmployeeNameForSecondarysupervisor($event)">
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="onDutyTemplateAssignment.controls.secondaryApprover.hasError('required') || (formDirective.submitted && onDutyTemplateAssignment.controls.secondaryApprover.invalid)">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field> -->
+                <p class="category">Select Secondary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="secondaryApprover"
+                    class="custom-ng-select-Style" disabled>
+                    <ng-option *ngFor="let item of employeeList" [value]="item.value">
+                        {{item.viewValue}}
+                    </ng-option>
+                </ng-select>
+                <span class="dropDown-errorClass"
+                    *ngIf="onDutyTemplateAssignment.controls.secondaryApprover.hasError('required') || (formDirective.submitted && onDutyTemplateAssignment.controls.secondaryApprover.invalid)">
+                    This field is required.
+                </span>
+            </div>
+
+        </div>
+
+        <mat-form-field class="fullLength">
+            <input matInput type="date" placeholder="Date" formControlName="effectiveDate">
+            <mat-error [hidden]="onDutyTemplateAssignment.controls.effectiveDate.value">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" (click)="onNoClick();">Cancel
+        </button>
+        <button *ngIf="this.data.option === 'assign'" class="dialog-buttons" cdkFocusInitial
+            (click)="assignTemplate();"> Save
+        </button>
+
+        <button *ngIf="this.data.option != 'assign'" class="dialog-buttons" cdkFocusInitial (click)="assignTemplate();">
+            Update
+        </button>
+    </div>
+</mat-dialog-actions>

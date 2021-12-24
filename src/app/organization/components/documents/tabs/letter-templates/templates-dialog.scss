@@ -1,0 +1,12 @@
+@import "~assets/sass/md/model";
+
+
+.selectedSectionField {
+    display: -webkit-inline-box;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+  .card form [class*="col-"] {
+    padding: 0 !important;
+}

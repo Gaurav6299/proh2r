@@ -1,0 +1,183 @@
+<div class="card" style="margin-bottom:20px;box-shadow: none !important;">
+  <div>
+    <div style="text-align: right;margin-bottom: 5px;">
+      <button class=" btn header-button" id="LetterTemplates" matTooltip="Generate Letters" (click)="generateLetter();">
+        <span>
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          Generate Letters</span>
+      </button>
+    </div>
+  </div>
+  <!-- <ng-template #letterInfoViewOnly>
+    <div class="card-header">
+      <h6 class="title">Generated Letters</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <div *ngIf="showHideFilter " class="row"
+      style="border:1px solid #ddd;box-shadow: none;padding:15px 10px;border-radius:3px;">
+      <div class="col-md-4 ">
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Letter Template">
+            <mat-option *ngFor="let item of letterData" [value]="item.letterTemplateId">
+              {{ item.templateLabel }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Published/UnPublished Letter" [formControl]="selectedEmployeeStatus" multiple>
+            <mat-select-trigger>
+              {{selectedEmployeeStatus.value ? selectedEmployeeStatus.value[0] : ''}}
+              <span *ngIf="selectedEmployeeStatus.value?.length > 1" class="example-additional-selection">
+                (+{{selectedEmployeeStatus.value.length - 1}} others)
+              </span>
+            </mat-select-trigger>
+            <mat-form-field style="width: 100%; margin-top: 10px;">
+              <input type="text" placeholder="Search Status" aria-label="Number" matInput
+                [formControl]="myControlEmployeeStatus">
+            </mat-form-field>
+            <mat-option *ngFor="let topping of statusData" [value]="topping.value">{{topping.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Employee Name" [formControl]="selectedCostCenter" multiple>
+            <mat-select-trigger>
+              {{selectedCostCenter.value ? selectedCostCenter.value[0] : ''}}
+              <span *ngIf="selectedCostCenter.value?.length > 1" class="example-additional-selection">
+                (+{{selectedCostCenter.value.length - 1}} others)
+              </span>
+            </mat-select-trigger>
+            <mat-form-field class="fullLength">
+              <input type="text" placeholder="Search Cost Centers" aria-label="Number" matInput
+                [formControl]="myControlCostCenter" (keyup)="searchCostCenter($event)">
+            </mat-form-field>
+            <mat-option *ngFor="let emp of employee" [value]="emp.value">{{emp.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="card-content">
+      <!-- <mat-table #table [dataSource]="dataSource">
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="documentName">
+            <mat-header-cell *matHeaderCellDef>Document Id</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.documentName}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="letterTemplateName">
+            <mat-header-cell *matHeaderCellDef>Letter Template</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.letterTemplateName}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="empName">
+            <mat-header-cell *matHeaderCellDef>Employee Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.empName}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="createdDate">
+            <mat-header-cell *matHeaderCellDef>Created at</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.createdDate | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="modifiedDate">
+            <mat-header-cell *matHeaderCellDef>Last Update at</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.modifiedDate | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <i class="fa fa-download action-icon" matTooltip="Download" aria-hidden="true" style="color:green;"
+                (click)="downloadLetter(element)"></i>
+              <span *ngIf="element.publishedStaus">
+                <i class="fa fa-eye-slash action-icon" matTooltip="Unpublish" aria-hidden="true "
+                  (click)="publishGeneratedLetter(element,false);" style="color:green;"></i>
+              </span>
+              <span *ngIf="!element.publishedStaus ">
+                <i class="fa fa-eye action-icon" matTooltip="Publish" aria-hidden="true "
+                  (click)="publishGeneratedLetter(element,true); " style="color:#4b88dc;"></i>
+              </span>
+              <i class="fa fa-trash-o action-icon" matTooltip="Delete" aria-hidden="true " (click)="deleteGeneratedLetter(element);
+                " style="color:#e03737;"></i>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns "></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns; "></mat-row>
+        </mat-table> -->
+
+      <div class="searchBox" style="text-align: right;">
+        <i class="fa fa-search"></i>
+        <input type="text" pInputText size="50" placeholder="Search"
+          (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </div>
+      <p-table #dt1 [columns]="columns" [value]="generatedLetter" [rows]="5" [paginator]="true" [pageLinks]="5"
+        [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              <div *ngIf="col.field!='actions' && col.field!='createdDate' && col.field!='modifiedDate'">
+                {{car[col.field]}}</div>
+              <div *ngIf="col.field!='actions' && col.field=='createdDate'">
+                {{car[col.field] | date:'dd/MM/yyyy'}}
+              </div>
+              <div *ngIf="col.field!='actions' && col.field=='modifiedDate'">
+                {{car[col.field] | date:'dd/MM/yyyy'}}
+              </div>
+              <div class="mat-cell">
+                <div class="mat-element-icon">
+                  <span class="download" *ngIf="col.field=='actions'">
+                    <i class="fa fa-download" matTooltip="Download" aria-hidden="true"
+                      (click)="downloadLetter(car)"></i>
+                  </span>
+
+                  <span class="action-icon" *ngIf="car.publishedStaus && col.field=='actions'">
+                    <i class="fa fa-eye-slash" matTooltip="Unpublish" aria-hidden="true "
+                      (click)="publishGeneratedLetter(car,false);"></i>
+                  </span>
+
+                  <span class="view" *ngIf="!car.publishedStaus && col.field=='actions'">
+                    <i class="fa fa-eye" matTooltip="Publish" aria-hidden="true "
+                      (click)="publishGeneratedLetter(car,true); "></i>
+                  </span>
+
+                  <span class="delete" matTooltip="Delete" *ngIf="col.field=='actions'">
+                    <i class="fa fa-trash-o" (click)="deleteGeneratedLetter(car)"></i>
+                  </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+
+<!--     card 1  ends      -->

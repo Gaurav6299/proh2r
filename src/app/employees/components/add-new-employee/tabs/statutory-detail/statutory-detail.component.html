@@ -1,0 +1,187 @@
+<div class="card" style="box-shadow: none !important">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Statutory Details</h6>
+    </div>
+    <div *ngIf="readOnly">
+      <div style="text-align: right;">
+        <!-- <button class=" btn header-button" (click)="editSatutoryDetails( )">
+          <span>
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Edit</span>
+        </button> -->
+        <button matStepperNext class=" btn header-button" (click)="saveSatutoryDetails( )">
+          <span>
+            <i class="fa fa-floppy-o" aria-hidden="true" style="margin-bottom: 2px;"></i>
+            Continue</span>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="readWrite">
+      <div style="text-align: right;">
+        <button class=" btn header-button" (click)="goBack( )" style="margin-right:10px;">
+          <span>
+            <i class="fa fa-times" aria-hidden="true" style="margin-bottom: 2px;"></i>
+            Cancel</span>
+        </button>
+        <button matStepperNext class=" btn header-button" (click)="saveSatutoryDetails( )">
+          <span>
+            <i class="fa fa-floppy-o" aria-hidden="true" style="margin-bottom: 2px;"></i>
+            Save</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card-content">
+    <form [formGroup]="satutoryDetails">
+
+      <div class="col-md-8">
+        <p class="category" id="firstline">Is this employee eligible for Provident Fund Deduction? </p>
+      </div>
+      <div class="col-md-4">
+        <div *ngIf="readOnly">
+          <div *ngIf="this.satutoryDetails.controls.isPFDeductible.value === 'true'">
+            <i class="fa fa-check text-success"></i>
+
+          </div>
+          <div *ngIf="!(this.satutoryDetails.controls.isPFDeductible.value === 'true')">
+            <i class="fa fa-times text-danger"></i>
+          </div>
+        </div>
+        <div *ngIf="readWrite">
+          <div>
+            <mat-radio-group formControlName="isPFDeductible">
+              <mat-radio-button value="false">No</mat-radio-button>
+              <mat-radio-button value="true">Yes</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-8">
+        <p class="category">If found eligible,would this employee have ESIC Deducted from his/her salary? </p>
+      </div>
+      <div class="col-md-4">
+        <div *ngIf="readOnly">
+          <div *ngIf="this.satutoryDetails.controls.isESICDeductible.value === 'true'">
+            <i class="fa fa-check text-success"> </i>
+          </div>
+          <div *ngIf="!(this.satutoryDetails.controls.isESICDeductible.value === 'true')">
+            <i class="fa fa-times text-danger"></i>
+          </div>
+        </div>
+        <div *ngIf="readWrite">
+          <div>
+            <mat-radio-group formControlName="isESICDeductible">
+              <mat-radio-button value="false">No</mat-radio-button>
+              <mat-radio-button value="true">Yes</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-8">
+        <p class="category">Should Professional Tax be deducted from this employee's payslip(if eligible for his/her
+          work location)?</p>
+      </div>
+      <div class="col-md-4">
+        <!-- <div>this.satutoryDetails.controls.isProfessionalTaxDeductible.value ==> {{this.satutoryDetails.controls.isProfessionalTaxDeductible.value}}</div> -->
+        <div *ngIf="readOnly">
+          <div *ngIf="this.satutoryDetails.controls.isProfessionalTaxDeductible.value === 'true'">
+            <i class="fa fa-check text-success"> </i>
+          </div>
+          <div *ngIf="!(this.satutoryDetails.controls.isProfessionalTaxDeductible.value === 'true')">
+            <i class="fa fa-times text-danger"></i>
+          </div>
+        </div>
+        <div *ngIf="readWrite">
+          <div>
+            <mat-radio-group formControlName="isProfessionalTaxDeductible">
+              <mat-radio-button value="false">No</mat-radio-button>
+              <mat-radio-button value="true">Yes</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="col-md-8">
+        <p class="category">Should LWF be deducted from this employee's payslip(if eligible for his/her work location)?
+        </p>
+      </div>
+      <div class="col-md-4">
+        <div *ngIf="readOnly">
+          <div *ngIf="this.satutoryDetails.controls.isLWFDeductible.value === 'true'">
+            <i class="fa fa-check text-success"></i>
+          </div>
+          <div *ngIf="!(this.satutoryDetails.controls.isLWFDeductible.value === 'true')">
+            <i class="fa fa-times text-danger"></i>
+          </div>
+        </div>
+        <div *ngIf="readWrite">
+          <div>
+            <mat-radio-group formControlName="isLWFDeductible">
+              <mat-radio-button value="false">No</mat-radio-button>
+              <mat-radio-button value="true">Yes</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-8">
+        <p class="category">If applicable,should Income Tax be deducted from this employee's salary?</p>
+      </div>
+      <div class="col-md-4">
+        <div *ngIf="readOnly">
+          <div *ngIf="this.satutoryDetails.controls.isIncomeTaxDeductible.value === 'true'">
+            <i class="fa fa-check text-success"></i>
+          </div>
+          <div *ngIf="!(this.satutoryDetails.controls.isIncomeTaxDeductible.value === 'true')">
+            <i class="fa fa-times text-danger"></i>
+          </div>
+        </div>
+        <div *ngIf="readWrite">
+          <div>
+            <mat-radio-group formControlName="isIncomeTaxDeductible">
+              <mat-radio-button value="false">No</mat-radio-button>
+              <mat-radio-button value="true">Yes</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-8">
+        <p class="category">Is this employee applicable for NPS? </p>
+      </div>
+      <div class="col-md-4">
+        <div *ngIf="readOnly">
+          <div *ngIf="this.satutoryDetails.controls.isNPSDeductible.value === 'true'">
+            <i class="fa fa-check text-success"></i>
+          </div>
+          <div *ngIf="!(this.satutoryDetails.controls.isNPSDeductible.value === 'true')">
+            <i class="fa fa-times text-danger"></i>
+          </div>
+        </div>
+        <div *ngIf="readWrite">
+          <div>
+            <mat-radio-group formControlName="isNPSDeductible">
+              <mat-radio-button value="false">No</mat-radio-button>
+              <mat-radio-button value="true">Yes</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <!-- <div>
+    {{this.satutoryDetails.value | json}}
+  </div> -->
+</div>

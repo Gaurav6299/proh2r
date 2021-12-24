@@ -1,0 +1,90 @@
+<div class="services-list">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="service-card" *ngIf="isDashboardAvailable">
+        <div class="service-body" routerLink='../dashboard'>
+          <span><img src="assets/images/002-house.png"></span>
+          <h2>Dashboard</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isOrganizationAvailable">
+        <div class="service-body" routerLink="../organization/organization-setup">
+          <span><img src="assets/images/001-work.png"></span>
+          <h2>Organization</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isEmployeesAvailable">
+        <div class="service-body" routerLink='../employees'>
+          <span><img src="assets/images/005-collaboration.png"></span>
+          <h2>Employees</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isCalendarAvailable">
+        <div class="service-body" routerLink='../calendar'>
+          <span><img src="assets/images/004-calendar.png"></span>
+          <h2>Calendar</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isAttendanceAvailable">
+        <div class="service-body" routerLink='../attendance/settings'>
+          <span><img src="assets/images/003-schedule.png"></span>
+          <h2>Attendance</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isTimesheetsAvailable">
+        <div class="service-body" routerLink='../timeSheets/settings'>
+          <span><img src="assets/images/timesheets.png"></span>
+          <h2>Time Sheets</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isLeaveAvailable">
+        <div class="service-body" routerLink='../leave'>
+          <span><img src="assets/images/006-airplane.png"></span>
+          <h2>Leave</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isExpensesAvailable">
+        <div class="service-body" routerLink='../expenses'>
+          <span><img src="assets/images/007-salary.png"></span>
+          <h2>Expenses</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isAlertsAvailable">
+        <div class="service-body" routerLink='../alerts'>
+          <span><img src="assets/images/alerts.png"></span>
+          <h2>Alerts</h2>
+        </div>
+      </div>      
+      <div class="service-card" *ngIf="isPayrollAvailable">
+        <div class="service-body" routerLink='../payroll/run-payroll'>
+          <span><img src="assets/images/008-get-money.png"></span>
+          <h2>Payroll</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isTaxationAvailable">
+        <div class="service-body" routerLink='../tds-configuration'>
+          <span><img src="assets/images/taxation.png"></span>
+          <h2>Taxation</h2>
+        </div>
+      </div>
+      <div class="service-card" *ngIf="isReportsAvailable">
+        <div class="service-body" routerLink='../reports'>
+          <span><img src="assets/images/reports.png"></span>
+          <h2>Reports</h2>
+        </div>
+      </div>
+      <!-- <div class="service-card">
+        <div class="service-body" routerLink='../recruitment'>
+          <span><img src="assets/images/009-recruitment.png"></span>
+          <h2>Recruitment</h2>
+        </div>
+      </div> -->
+      <div class="service-card" *ngIf="isSeparationAvailable">
+        <div class="service-body" routerLink='../separation'>
+          <span><img src="assets/images/010-retirement.png"></span>
+          <h2>Separation</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

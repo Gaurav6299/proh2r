@@ -1,0 +1,39 @@
+<form [formGroup]="empDetailForm">
+  <div formArrayName="fieldMaster">
+    <div *ngFor="let fieldMasterFields of fieldMaster.controls; let i=index">
+      <div class="col-md-12" [formGroupName]="i" style="padding:0px;">
+        <!--Basic Information  -->
+
+        <div class="card" style="box-shadow: none !important;">
+          <div class="card-header">
+            <h6 class="title">{{this.empDetailForm.controls.fieldMaster.controls[i].controls.recSectionName.value}}</h6>
+          </div>
+
+
+          <div class="card-content">
+            <div class="row" formArrayName="fields">
+              <div *ngFor="let field of fieldMasterFields.controls['fields'].controls; let idx=index">
+                <div [formGroupName]="idx">
+                  <div class="col-md-12" style="padding:5px 0px;" >
+                   
+                    <div class="col-md-8" *ngIf="this.empDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.recFieldValue.value !== ' '">
+                      <p class="category"> {{ this.empDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.recFieldDescription.value}}</p>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="this.empDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.recFieldType.value != 'Boolean'">
+                      <p class="category" style="color:#404A56;font-weight:600;">{{this.empDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.recFieldValue.value}}</p>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+  </div>
+
+</form>

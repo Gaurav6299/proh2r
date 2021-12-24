@@ -1,0 +1,360 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-header">
+            <h6 class="title">Employee Sections</h6>
+          </div>
+          <div class="card-content">
+            <mat-nav-list>
+              <div *ngFor="let item of fieldsInfoList">
+                <mat-list-item (click)="getFields(item.sectionName);">
+                  <!-- <a matLine href="...">{{ link }}</a> -->
+                  <a class="employee-section-name">
+                    {{item.sectionName}}
+                  </a>
+                </mat-list-item>
+              </div>
+            </mat-nav-list>
+            <div style="text-align: center;margin-bottom:10px; margin-top:15px; ">
+              <button class="btn header-button" matTooltip="Create and manage employee profile" (click)="addSection()">
+                <span>
+                  <i class="fa fa-plus-square" aria-hidden="true"></i>
+                  Add Section</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9" id="scrollingContent">
+        <div class="card">
+          <div class="card-header">
+            <div style="float: left;">
+              <h6 class="title">{{sectionName}} Fields</h6>
+            </div>
+            <div style="text-align: right;">
+              <button *ngIf="isSectionEdit" class="btn header-button" style="margin-right:10px;"
+                (click)="editSection(sectionName)">
+                <span>
+                  <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                  Edit Section</span>
+              </button>
+              <button *ngIf="isSectionEdit" class="btn header-button" style="margin-right:10px;"
+                (click)="deleteSection(sectionName)">
+                <span>
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  Delete Section</span>
+              </button>
+              <button *ngIf="!isLeftVisible" matTooltip="Create New Employee Field" class="btn header-button"
+                (click)="isLeftVisible = !isLeftVisible;addNewField(sectionName);">
+                <span>
+                  <i class="fa fa-plus-square" aria-hidden="true"></i>
+                  New Field</span>
+              </button>
+              <button *ngIf="isLeftVisible" class="btn header-button"
+                (click)="isLeftVisible = !isLeftVisible;setPanel(); ">
+                <span>
+                  <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                  Back</span>
+              </button>
+            </div>
+          </div>
+          <!-- <ng-template #fieldViewOnly>
+            <div class="card-header">
+              <h6 class="title">{{sectionName}} Fields</h6>
+            </div>
+          </ng-template> -->
+          <div class="card-content">
+            <app-mange-edit-content [activePane]="isLeftVisible ? 'right' : 'left'">
+              <div leftPane class="divtoggleDiv">
+                <!-- <div class="example-container mat-elevation-z8">
+                  <mat-table #table [dataSource]="dataSource">
+               
+                    <ng-container matColumnDef="fieldName">
+                      <mat-header-cell *matHeaderCellDef> Field </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.fieldName}} </mat-cell>
+                    </ng-container>
+          
+                    <ng-container matColumnDef="fieldMandantory">
+                      <mat-header-cell *matHeaderCellDef> Mandatory </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.fieldMandantory}} </mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="accessibility">
+                      <mat-header-cell *matHeaderCellDef> Access </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.accessibility}} </mat-cell>
+                    </ng-container>
+              
+                    <ng-container matColumnDef="fieldSensitive">
+                      <mat-header-cell *matHeaderCellDef> Sensitive Data </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.fieldSensitive}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="fieldDefault">
+                      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+            
+                        <div *ngIf="element.fieldDefault==true">
+                          <p>Default Field</p>
+                        </div>
+                        <div *ngIf="element.fieldDefault==false">
+                          <i class="fa fa-pencil-square-o action-icon" matTooltip="Edit" style="color:green;"
+                            (click)="editField(element)"></i>
+                          <i class="fa fa-trash-o action-icon" matTooltip="Delete" style="color:red;"
+                            (click)="deleteField(element);"></i>
+                        </div>
+                      </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  </mat-table>
+                </div> -->
+
+                <div class="searchBox" style="text-align: right;margin-top: 8px;">
+                  <i class="fa fa-search"></i>
+                  <input type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                </div>
+                <p-table #dt1 [columns]="columns" [value]="fieldsList" [rows]="5" [paginator]="true" [pageLinks]="5"
+                  [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-car let-columns="columns">
+                    <tr>
+                      <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='fieldDefault'"> {{car[col.field]}}</div>
+                        <div class="mat-cell">
+                          <div class="mat-element-icon">
+                            <span *ngIf="col.field=='fieldDefault' && car.fieldDefault==true">Default Field</span>
+                            <span class=" edit" matTooltip="Update"
+                              *ngIf="car.fieldDefault==false && col.field=='fieldDefault'">
+                              <i class="fa fa-pencil-square-o" (click)="editField(car)"></i>
+                            </span>
+                            <span class="delete" matTooltip="Delete"
+                              *ngIf="car.fieldDefault==false && col.field=='fieldDefault'">
+                              <i class="fa fa-trash-o" (click)="deleteField(car);"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+
+              <div rightPane class="divtoggleDiv">
+                <form #employeeform="ngForm" [formGroup]="employeeField">
+                  <div class="card" style="box-shadow: none !important;">
+                    <div class="row" style="text-align: center;">
+                      <h5 class="left-rights-slider-title">
+                        {{addEditHeader}}
+                      </h5>
+                    </div>
+                    <div>
+                      <h2 class="category">
+                        For example, if you want to store department name for each of your employees, you can create a
+                        Custom Field named Department.
+                        With Custom Fields, you can add your own unique prompts or questions and set rules around who
+                        completes
+                        the information.
+                      </h2>
+                    </div>
+                    <div class="form-group">
+                      <p class="category">Follow the steps below to add a new
+                        custom field:</p>
+                    </div>
+                    <div class="row" style="padding: 10px;">
+                      <div class="form-group">
+                        <p class="category showFieldMandatory">Please provide a Label for this
+                          Custom Field </p>
+                        <p class="category">e.g. Department, Cost Center etc</p>
+                        <mat-form-field class="fullLength">
+                          <input matInput placeholder="Custom Field Name" formControlName="fieldDescription">
+                          <mat-error [hidden]="(this.employeeField.controls.fieldDescription.valid
+                            || this.employeeField.controls.fieldDescription.untouched)">
+                            <div
+                              *ngIf="(this.employeeField.controls.fieldDescription.value === '' || this.employeeField.controls.fieldDescription.value === null)">
+                              {{requiredTextField}}
+                            </div>
+                            <div *ngIf="this.employeeField.controls.fieldDescription.value !== ''">
+                              {{ this.employeeField.controls.fieldDescription.errors != null ?
+                              this.employeeField.controls.fieldDescription.errors.messages
+                              : ''}}
+                            </div>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <p class="category showFieldMandatory">Please provide the placeholder for
+                          this Custom Field</p>
+                        <p class="category">e.g. First Name, Last Name, Select etc</p>
+                        <mat-form-field class="fullLength">
+                          <input matInput placeholder="Placeholder Name" formControlName="placeholder">
+                          <mat-error [hidden]="(this.employeeField.controls.placeholder.valid
+                            || this.employeeField.controls.placeholder.untouched)">
+                            <div
+                              *ngIf="(this.employeeField.controls.placeholder.value === '' || this.employeeField.controls.placeholder.value === null)">
+                              {{requiredTextField}}
+                            </div>
+                            <div *ngIf="this.employeeField.controls.placeholder.value !== ''">
+                              {{ this.employeeField.controls.placeholder.errors != null ?
+                              this.employeeField.controls.placeholder.errors.messages
+                              : ''}}
+                            </div>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                        <p class="category showFieldMandatory">What Type of answer is this Custom
+                          Field?</p>
+                        <p class="category">You can customize the type of answer you’re looking
+                          for. You can also offer multiple choices by selecting
+                          “Dropdown”.
+                        </p>
+                        <ng-select appendTo="body" [searchable]="true" formControlName="fieldType"
+                          (change)="selectFieldType();" placeholder="Select Answer Type" class="custom-ng-select-Style">
+                          <ng-option *ngFor="let car of cars" [value]="car.value">{{car.name}}</ng-option>
+                        </ng-select>
+                        <span class="dropDown-errorClass" [hidden]="(employeeField.controls.fieldType.valid ||
+                      employeeField.controls.fieldType.untouched)">
+                          {{requiredDropdownButton}}
+                        </span>
+                        <!-- <mat-form-field class="fullLength">
+                          <mat-select placeholder="Select Answer Type" formControlName="fieldType"
+                            (selectionChange)="selectFieldType()">
+                            <mat-option value="SingleLineText">Single-Line-Text</mat-option>
+                            <mat-option value="MultiLineText">Multiple-Line-Text</mat-option>
+                            <mat-option value="Number">Number</mat-option>
+                            <mat-option value="Dropdown">Dropdown</mat-option>
+                            <mat-option value="Date">Date</mat-option>
+                          </mat-select>
+                          <mat-error [hidden]="(employeeField.controls.fieldType.valid ||
+                        employeeField.controls.fieldType.untouched)">
+                            {{requiredDropdownButton}}
+                          </mat-error>
+                        </mat-form-field> -->
+                        <div *ngIf="this.employeeField.controls.fieldType.value == 'Dropdown'">
+                          <p class="category">What are the various dropdown
+                            options for this Custom Field?</p>
+                          <p class="category">e.g. OptionName1,OptionName2,OptionName3,etc</p>
+                          <mat-form-field class="fullLength">
+                            <textarea matInput placeholder="Options Name" formControlName="options"
+                              (change)="convertIntoStringArray();"></textarea>
+                            <mat-error [hidden]="(employeeField.controls.options.valid ||
+                                employeeField.controls.options.untouched)">
+                              Please provide atleast one option for dropdown.
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <p class="category showFieldMandatory">In which section of employee profile would you
+                          like to show this custom field?</p>
+                        <p class="category">e.g. Personal Details,Bank Details,Other
+                          Information
+                        </p>
+                        <ng-select appendTo="body" [searchable]="true" formControlName="fieldLocation"
+                          placeholder="Select Answer Type" class="custom-ng-select-Style">
+                          <ng-option *ngFor="let section of fieldsInfoList" [value]="section.sectionId"> {{
+                            section.sectionName }}</ng-option>
+                        </ng-select>
+                        <!-- <mat-form-field class="fullLength">
+                          <mat-select placeholder="Section Name" formControlName="fieldLocation">
+                            <mat-option *ngFor="let section of fieldsInfoList" [value]="section.sectionId">
+                              {{ section.sectionName }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field> -->
+                        <!-- <span class="category col-md-12" style="color: red;padding:0px;" [hidden]="(employeeField.controls.fieldLocation.valid ||
+                        employeeField.controls.fieldLocation.untouched)">
+                          {{requiredDropdownButton}}
+                        </span> -->
+                      </div>
+                      <div class="form-group">
+                        <p class="category">What level of access do your employees have on this custom field?</p>
+                        <div class="radio-wrapper">
+                          <mat-radio-group formControlName="accessLevel">
+                            <mat-radio-button value="Manage">Manage</mat-radio-button>
+                            <mat-radio-button value="View">View Only</mat-radio-button>
+                            <mat-radio-button value="Invisible">Invisible</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                        <span class="input-errorClass" [hidden]="(employeeField.controls.accessLevel.valid ||
+                        employeeField.controls.accessLevel.untouched)">
+                          {{requiredRadioButton}}
+                        </span>
+                      </div>
+                      <div class="form-group">
+                        <p class="category">Is this a sensitive field?</p>
+                        <div class="radio-wrapper">
+                          <mat-radio-group formControlName="sensitive">
+                            <mat-radio-button value='true'>Yes</mat-radio-button>
+                            <mat-radio-button value='false'>No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <p class="category">Is this Custom Field mandatory?</p>
+                        <div class="radio-wrapper">
+                          <mat-radio-group formControlName="mandatory">
+                            <mat-radio-button value='true'>Yes</mat-radio-button>
+                            <mat-radio-button value='false'>No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <p class="category">Would you like to display this Custom Field information in the Employees'
+                          payslips?</p>
+                        <div class="radio-wrapper">
+                          <mat-radio-group formControlName="includeInPayslips">
+                            <mat-radio-button value='true'>Yes</mat-radio-button>
+                            <mat-radio-button value='false'>No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <p class="category">Would you like to include this
+                          field
+                          during Employee Onboarding?</p>
+                        <div class="radio-wrapper">
+                          <mat-radio-group formControlName="includeInOnboarding">
+                            <mat-radio-button value='true'>Yes</mat-radio-button>
+                            <mat-radio-button value='false'>No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                      <div style="text-align: center;">
+                        <button class="btn header-button" (click)="cancel()">
+                          <span>
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            Cancel</span>
+                        </button>
+                        <button *ngIf="addField1" class="btn header-button" (click)="saveFieldRecords();">
+                          <span>
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                            Save</span>
+                        </button>
+                        <button *ngIf="updateField" class="btn header-button" (click)="updateFieldRecords();">
+                          <span>
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                            Update</span>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+            </app-mange-edit-content>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,198 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      <div style="float: left;">
+        <h6 class="title">All Separation Requests</h6>
+      </div>
+      <div style="text-align: right;">
+        <button *ngIf="!isLeftVisible" class="btn header-button" (click)="openAddRequestDialog()">
+          <span>
+            <i class="fa fa-plus-square" aria-hidden="true"></i>
+            Initiate Request</span>
+        </button>
+        <button *ngIf="isLeftVisible" class="btn header-button" (click)="back();">
+          <span>
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+            Back</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-content">
+      <app-add-request-left-right-panes [activePane]="isLeftVisible ? 'right' : 'left'">
+        <div leftPane class="divtoggleDiv">
+          <div class="resignation-list">
+            <div class="row">
+              <div class="resignation-card ">
+                <div *ngIf="resignationApplicationArrayComplete.length>=0" class="resignation-body">
+                  <span class="bg-blue">{{resignationApplicationArrayComplete.length}}</span>
+                  <h2>All</h2>
+                </div>
+              </div>
+              <div class="resignation-card">
+                <div *ngIf="resignationApplicationArrayComplete.length>=0" class="resignation-body">
+                  <span class="bg-orange">{{pendingCount}}</span>
+                  <h2>Pending</h2>
+                </div>
+              </div>
+              <div class="resignation-card">
+                <div *ngIf="resignationApplicationArrayComplete.length>=0" class="resignation-body">
+                  <span class="bg-green">{{approvedCount}}</span>
+                  <h2>Approved</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8 offset-md-8"></div>
+            <div class="col-md-4">
+              <div class="searchBox" style="text-align: right">
+                <div style="text-align: right">
+                  <i class="fa fa-search"></i>
+                  <input type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                </div>
+              </div>
+            </div>
+          </div>
+          <p-table #dt1 [columns]="displayedColumns" [value]="applicationList" [rows]="5" [paginator]="true"
+            [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+            [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+              <tr>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                  <p-multiSelect *ngSwitchCase="'location'" appendTo="body" defaultLabel="All" [options]="allLocation"
+                    [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'band'" appendTo="body" defaultLabel="All" [options]="allBand"
+                    [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')">
+                  </p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'department'" appendTo="body" defaultLabel="All"
+                    [options]="allDepartment" [style]="{'width':'100%'}"
+                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'designation'" appendTo="body" defaultLabel="All"
+                    [options]="allDesignation" [style]="{'width':'100%'}"
+                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns">
+                  <div *ngIf="col.field!='action' && col.field!='raisedOn'">{{car[col.field]}}</div>
+                  <div *ngIf="col.field!='action' && col.field=='raisedOn'">{{car[col.field] | date:'dd/MM/yyyy' }}
+                  </div>
+                  <div class="mat-cell">
+                    <div class="mat-element-icon">
+
+                      <i *ngIf="col.field=='action' && car.resignationStatus!='Revoked'" class="fa fa-eye action-icon"
+                        matTooltip=" View" style="color:#4b88dc;" (click)="viewResignationApplication(car)"></i>
+                      <i *ngIf="col.field=='action' && car.resignationStatus!='Approved' && car.resignationStatus!='Revoked'"
+                        class="fa fa-check action-icon" matTooltip="Force Approve"
+                        (click)="openApproveRequestDialog(car)" style="color:green;"></i>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div rightPane class="divtoggleDiv">
+          <div *ngIf="selectedSeparationRequest">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <th>Name</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.empName}}</td>
+                    <th>Employee ID</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.empCode}}</td>
+                  </tr>
+                  <tr>
+                    <th>Separation Type</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.separationType}}</td>
+                    <th>Raised On</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.raisedOn|date:'dd/MM/yyyy'}}</td>
+                  </tr>
+                  <tr>
+                    <th>Comments</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.comments}}</td>
+                    <th>Process Status</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.resignationStatus}}</td>
+                  </tr>
+                  <tr>
+                    <th>Relieving Date</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.relievingDate|date:'dd/MM/yyyy'}}</td>
+                    <th>Notice Period</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.noticePeriod}} days</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <th>L1 Supervisor</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.l1Supervisor}}</td>
+                    <th>Status</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.l1SupervisorStatus}}</td>
+                  </tr>
+                  <tr>
+                    <th>Comments</th>
+                    <td colspan="3">{{selectedSeparationRequest[0].seperationDetails.l1SupervisorComments}}</td>
+                  </tr>
+                  <tr>
+                    <th>L2 Supervisor</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.l2Supervisor}}</td>
+                    <th>Status</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.l2SupervisorStatus}}</td>
+                  </tr>
+                  <tr>
+                    <th>Comments</th>
+                    <td colspan="3">{{selectedSeparationRequest[0].seperationDetails.l2SupervisorComments}}</td>
+                  </tr>
+                  <tr>
+                    <th>HR Supervisor </th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.hrmanagerSupervisor}}</td>
+                    <th>Status</th>
+                    <td>{{selectedSeparationRequest[0].seperationDetails.hrmanagerSupervisorStatus}}</td>
+                  </tr>
+                  <tr>
+                    <th>Comments</th>
+                    <td colspan="3">{{selectedSeparationRequest[0].seperationDetails.hrmanagerSupervisorComments}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <ul class="timeline">
+                <div class="process-header">
+                  <h2>Process History</h2>
+                </div>
+                <li *ngFor="let item of selectedSeparationRequest[0].processHistory" class="timeline-inverted">
+                  <div [ngClass]="getClasses(item.status,'background')"><i
+                      [ngClass]="getClasses(item.status,'icons')"></i></div>
+                  <div class="timeline-panel">
+                    <div class="timeline-heading">
+                      <h4 class="timeline-title">{{item.stepValue}}</h4>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+      </app-add-request-left-right-panes>
+    </div>
+  </div>
+</div>

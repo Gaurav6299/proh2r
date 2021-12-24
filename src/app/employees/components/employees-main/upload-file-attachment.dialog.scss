@@ -1,0 +1,31 @@
+.instruction-Perquisites-label {
+  margin: 10px 0;
+}
+
+.instruction-Perquisites-label>label {
+  font-size: 14px;
+  color: #000;
+  font-weight: 500;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.file-upload_inputBar {
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.file-upload_inputBar .header-button.uploadFile_inputBTN:focus,
+.file-upload_inputBar .header-button.uploadFile_inputBTN:active {
+  background: 0 !important;
+}
+
+.file-upload_inputBar .header-button.uploadFile_inputBTN {
+  background: #fafafa;
+  box-shadow: none;
+  color: #000;
+  font-weight: 600;
+  border: 1px solid #999;
+  padding: 4px 10px;
+  border-radius: 2px;
+}

@@ -1,0 +1,75 @@
+<!-- 
+<div class="card">
+    <div class="card-header"
+        style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">History Of Employee Shift Allocations</h6>
+                </div>
+                <div class="col-md-2"
+                    style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;"
+                        (click)="onNoClick()">close</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+        <div class="table-responsive example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSource2">
+                <ng-container matColumnDef="shiftName">
+                    <mat-header-cell *matHeaderCellDef>Shift Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: left;">
+                        <span>{{element.shiftName}}</span><br>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="effectiveFrom">
+                    <mat-header-cell *matHeaderCellDef>Supervisors</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.effectiveFrom}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="effectiveTo">
+                    <mat-header-cell *matHeaderCellDef>Effective To</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{element.effectiveTo}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div> -->
+
+
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>History Of Employee Shift Allocations</h4>
+    <div class="card-content">
+        <div class="table-responsive example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSource2">
+                <!-- Position Column -->
+                <ng-container matColumnDef="shiftName">
+                    <mat-header-cell *matHeaderCellDef>Shift Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: left;">
+                        <span>{{element.shiftName}}</span><br>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="effectiveFrom">
+                    <mat-header-cell *matHeaderCellDef>Supervisors</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.effectiveFrom}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="effectiveTo">
+                    <mat-header-cell *matHeaderCellDef>Effective To</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{element.effectiveTo}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</mat-dialog-content>

@@ -1,0 +1,29 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="title">Tax Declarations</h6>
+      </div>
+      <div class="card-content">
+        <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)"
+          (animationDone)="onTabChange($event)">
+          <mat-tab label="Tax Year">
+            <app-tax-year></app-tax-year>
+          </mat-tab>
+          <mat-tab label="Tax Declaration Categories">
+            <app-tax-declaration-categories></app-tax-declaration-categories>
+          </mat-tab>
+          <mat-tab label="Tax Declaration Category Settings">
+            <app-tax-declaration-category-settings></app-tax-declaration-category-settings>
+          </mat-tab>
+          <mat-tab label="Lock/Unlock Employee">
+            <app-lock-unlock-employee></app-lock-unlock-employee>
+          </mat-tab>
+          <!-- <mat-tab label="Employee Tax Declarations">
+            <app-employee-tax-declarations></app-employee-tax-declarations>
+          </mat-tab> -->
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

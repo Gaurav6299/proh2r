@@ -1,0 +1,84 @@
+<div class="card" style="box-shadow: none !important;">
+  <div style="text-align: right;">
+    <button class="btn header-button" (click)="openAddReportCategoryDialog();">
+      <span>
+        <i class="fa fa-plus-square" aria-hidden="true"></i>
+        Add</span>
+    </button>
+  </div>
+  <div class="card-content">
+    <!-- <div class="table-responsive mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource">
+        <ng-container matColumnDef="reportCategoryId">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Category Id</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.reportCategoryId}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="reportCategoryName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Category Name</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.reportCategoryName}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Actions</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <div class="mat-element-icon">
+              <span class="edit">
+                <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                  (click)="openUpdateReportCategoryDialog(element);"></i>
+              </span>
+              <span class="delete">
+                <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                  (click)="openDeleteReportsDialog(element);"></i>
+              </span>
+            </div>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;">
+        </mat-row>
+      </mat-table>
+    </div> -->
+    <div class="searchBox" style="text-align: right">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search"
+        (input)="dt1.filterGlobal($event.target.value, 'contains')">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="reportCategoryList" [rows]="5" [paginator]="true" [pageLinks]="5"
+      [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true" [autoLayout]="true"
+      [responsive]="true">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+            <div class="mat-cell">
+              <div class="mat-element-icon">
+                <span class="edit" *ngIf="col.field=='actions'">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                    (click)="openUpdateReportCategoryDialog(car);"></i>
+                </span>
+                <span class="delete" *ngIf="col.field=='actions'">
+                  <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                    (click)="openDeleteReportsDialog(car);"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>
+</div>

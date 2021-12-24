@@ -1,0 +1,35 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="title">Attendance Settings</h6>
+            </div>
+            <div class="card-content">
+                <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)"
+                    [selectedIndex]="selectedTab" (animationDone)="onTabChange($event)">
+                    <mat-tab label="General Settings">
+                        <app-general-attendance-settings></app-general-attendance-settings>
+                    </mat-tab>
+                    <mat-tab label="Attendance Templates">
+                        <app-attendance-templates></app-attendance-templates>
+                    </mat-tab>
+                    <mat-tab label="Attendance Template Assignments">
+                        <app-template-assignment></app-template-assignment>
+                    </mat-tab>
+                    <mat-tab label="On Duty Templates">
+                        <app-onduty-attendance-template></app-onduty-attendance-template>
+                    </mat-tab>
+                    <mat-tab label="On Duty Template Assignments">
+                        <app-onduty-attendance-template-assignment></app-onduty-attendance-template-assignment>
+                    </mat-tab>
+                    <mat-tab label="Shift">
+                        <app-attendance-shift></app-attendance-shift>
+                    </mat-tab>
+                    <mat-tab label="Shift Assignments">
+                        <app-attendance-shift-assignment></app-attendance-shift-assignment>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

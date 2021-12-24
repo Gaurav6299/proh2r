@@ -1,0 +1,274 @@
+<form [formGroup]="personalDetailForm">
+  <div formArrayName="fieldMaster">
+    <div *ngFor="let fieldMasterFields of fieldMaster.controls; let i=index">
+      <div [formGroupName]="i">
+        <div
+          *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.sectionName.value === 'Bank Information';else noSensitve">
+          <div class="card" style="box-shadow: none !important;">
+            <div class="card-header">
+              <div style="float:left">
+                <h6 class="title">
+                  {{this.personalDetailForm.controls.fieldMaster.controls[i].controls.sectionName.value}}</h6>
+              </div>
+              <div style="text-align: right;">
+                <button *ngIf="!this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value"
+                  type="button" class="btn header-button"
+                  (click)="openInEditMode(i);this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value=true">
+                  <span>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Edit</span>
+                </button>
+                <button *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value"
+                  type="button"
+                  (click)="cancelForm();this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value=false"
+                  class="btn header-button">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel</span>
+                </button>
+                <button *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value"
+                  type="button" (click)=" save(this.personalDetailForm.controls.fieldMaster.controls[i],i)"
+                  class="btn header-button">
+                  <span>
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Save</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- <ng-template #noeditable>
+              <div class="card-header">
+                <h6 class="title">
+                  {{this.personalDetailForm.controls.fieldMaster.controls[i].controls.sectionName.value}}</h6>
+              </div>
+            </ng-template> -->
+
+            <div formArrayName="fields">
+              <div *ngFor="let field of fieldMasterFields.controls['fields'].controls; let idx=index">
+                <div [formGroupName]="idx">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <p class="category">
+                        {{ this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldDescription.value}}
+                      </p>
+                    </div>
+                    <div class="col-md-4"
+                      *ngIf="!this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value">
+                      <p class="category"
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Date'; else otherFields">
+                        {{ this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldValue.value
+                          | date:'dd/MM/yyyy'}}</p>
+                      <ng-template #otherFields>
+                        <p class="category"> {{ this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldValue.value
+                            }} </p>
+                      </ng-template>
+                    </div>
+
+                    <div class="col-md-4"
+                      *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value">
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'SingleLineText'">
+                        <mat-form-field class="fullLength">
+                          <input matInput
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Dropdown'">
+                        <mat-form-field class="fullLength">
+                          <mat-select
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                            <mat-option
+                              *ngFor="let option of this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.options.value"
+                              [value]="option">
+                              {{ option }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'MultiLineText'">
+                        <mat-form-field class="fullLength">
+                          <textarea matInput
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                            formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value"></textarea>
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Number'">
+                        <mat-form-field class="fullLength">
+                          <input matInput
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            type="number" formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Date'">
+                        <mat-form-field class="fullLength">
+                          <!-- <input matInput [matDatepicker]="picker" placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue" [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker> -->
+                          <input matInput type="date"
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Boolean'">
+                        <div class="radio-wrapper">
+                          <mat-radio-group formControlName="fieldValue">
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noSensitve>
+          <div class="card" style="box-shadow: none !important;">
+            <div class="card-header">
+              <div style="float:left">
+                <h6 class="title">
+                  {{this.personalDetailForm.controls.fieldMaster.controls[i].controls.sectionName.value}}</h6>
+              </div>
+              <div style="text-align: right;">
+                <button *ngIf="!this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value"
+                  type="button" class="btn header-button"
+                  (click)="openInEditMode(i);this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value=true">
+                  <span>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Edit</span>
+                </button>
+                <button *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value"
+                  type="button"
+                  (click)="cancelForm();this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value=false"
+                  class="btn header-button">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel</span>
+                </button>
+                <button *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value"
+                  type="button" (click)=" save(this.personalDetailForm.controls.fieldMaster.controls[i],i)"
+                  class="btn header-button">
+                  <span>
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Save</span>
+                </button>
+              </div>
+            </div>
+            <div formArrayName="fields">
+              <div *ngFor="let field of fieldMasterFields.controls['fields'].controls; let idx=index">
+                <div [formGroupName]="idx">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <p class="category">
+                        {{ this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldDescription.value}}
+                      </p>
+                    </div>
+                    <div *ngIf="!this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value"
+                      class="col-md-4">
+                      <p class="category"
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Date'; else otherFields">
+                        {{ this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldValue.value | date:'dd/MM/yyyy'}}
+                      </p>
+                      <ng-template #otherFields>
+                        <p class="category"> {{ this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldValue.value
+                            }} </p>
+                      </ng-template>
+                    </div>
+
+                    <div class="col-md-4"
+                      *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.editable.value">
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'SingleLineText'">
+                        <mat-form-field class="fullLength">
+                          <input matInput
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Dropdown'">
+                        <mat-form-field class="fullLength">
+                          <mat-select
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                            <mat-option
+                              *ngFor="let option of this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.options.value"
+                              [value]="option">
+                              {{ option }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'MultiLineText'">
+                        <mat-form-field class="fullLength">
+                          <textarea matInput
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                            formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value"></textarea>
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Number'">
+                        <mat-form-field class="fullLength">
+                          <input matInput
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            type="number" formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Date'">
+                        <mat-form-field class="fullLength">
+                          <!-- <input matInput [matDatepicker]="picker" placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                      formControlName="fieldValue" [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker> -->
+                          <input matInput type="date"
+                            placeholder="{{this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div
+                        *ngIf="this.personalDetailForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Boolean'">
+                        <div class="radio-wrapper">
+                          <mat-radio-group formControlName="fieldValue">
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div>
+  </div>
+</form>

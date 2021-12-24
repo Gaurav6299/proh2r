@@ -1,0 +1,44 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title *ngIf="showHide">Add Tax declaration Settings</h4>
+    <h4 mat-dialog-title *ngIf="!showHide">Update Tax declaration Settings</h4>
+    <form [formGroup]="taxComponentForm">
+        <mat-form-field class="fullLength">
+            <input matInput type="text" placeholder="Component Name" formControlName="componentName" />
+            <mat-error [hidden]="(taxComponentForm.controls.componentName.valid || 
+            taxComponentForm.controls.componentName.untouched)"> Field Required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput type="number" placeholder="Maximum Amount" formControlName="maximumAmount" />
+            <mat-error [hidden]="(taxComponentForm.controls.maximumAmount.valid || 
+            taxComponentForm.controls.maximumAmount.untouched)">
+                Field Required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="fullLength">
+            <input matInput type="text" placeholder="Section" formControlName="sectionName" />
+        </mat-form-field>
+        <span class="example-list-section">
+            <mat-checkbox class="example-margin" formControlName="activeStatus">Active</mat-checkbox>
+            <br>
+            <mat-checkbox class="example-margin" formControlName="workFlowRequired">Workflow Approval</mat-checkbox>
+            <br>
+            <mat-checkbox class="example-margin" formControlName="attachmentValidation">Attachment Required</mat-checkbox>
+        </span>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel</button>
+        <button class="dialog-buttons" cdkFocusInitial *ngIf="showHide" (click)="saveUpdate()">Save</button>
+        <button class="dialog-buttons" cdkFocusInitial *ngIf="!showHide" (click)="updatecategory()">Update</button>
+        <!-- <button class="dialog-buttons" cdkFocusInitial *ngIf="!showHide" (click)="saveUpdate()">Update</button> -->
+    </div>
+</mat-dialog-actions>

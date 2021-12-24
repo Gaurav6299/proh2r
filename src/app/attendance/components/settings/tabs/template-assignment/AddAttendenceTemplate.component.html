@@ -1,0 +1,75 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>{{title}}</h4>
+  <form [formGroup]="addTemplateAssignment">
+    <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Template" formControlName="attendenceTemplate"
+        (selectionChange)="applyValidation()">
+        <mat-option *ngFor="let addList of addTemplateList" [value]="addList.viewValue" (click)="checkRule(addList);">
+          {{addList.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="(!addTemplateAssignment.controls.attendenceTemplate.value && check)">
+        Required Field
+      </mat-error>
+    </mat-form-field>
+    <div *ngIf="showHideApproverField">
+      <!-- <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Approver" formControlName="attendenceApprover" (click)="resetSearch()">
+          <mat-form-field class="fullLength">
+            <input type="text" placeholder="Search Employee" aria-label="Number" matInput [formControl]="myControl"
+              (keyup)="searchEmployeeName($event)">
+          </mat-form-field>
+          <mat-option *ngFor="let aTL of optionsData" (click)="setValue()" [value]="aTL.value">
+            {{aTL.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="(!addTemplateAssignment.controls.attendenceApprover.value && check)">
+          Required Field
+        </mat-error>
+      </mat-form-field> -->
+      <p class="category">Select Approver</p>
+      <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="attendenceApprover"
+        class="custom-ng-select-Style">
+        <ng-option *ngFor="let aTL of optionsData" (click)="setValue()" [value]="aTL.value">
+          {{aTL.viewValue }}
+        </ng-option>
+      </ng-select>
+      <span class="dropDown-errorClass" *ngIf="(!addTemplateAssignment.controls.attendenceApprover.value && check)">
+        This field is required.
+      </span>
+    </div>
+    <mat-form-field class="fullLength">
+      <input matInput type="date" placeholder="Date" formControlName="effectiveDate">
+      <mat-error *ngIf="(!addTemplateAssignment.controls.effectiveDate.value && check)">
+        Required Field
+      </mat-error>
+    </mat-form-field>
+    <div *ngIf="showGeoLocation">
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Location" formControlName="restrictedGeoLocation" multiple>
+          <mat-option *ngFor="let aTL of geoLocations" [value]="aTL.locationRestrictionsId">
+            {{aTL.locationName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="(!addTemplateAssignment.controls.restrictedGeoLocation.value && check)">
+          Required Field
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" (click)="onNoClick();this.check = false">Cancel
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="saveAttdTemplateAssingleUser();"> Save
+    </button>
+  </div>
+</mat-dialog-actions>

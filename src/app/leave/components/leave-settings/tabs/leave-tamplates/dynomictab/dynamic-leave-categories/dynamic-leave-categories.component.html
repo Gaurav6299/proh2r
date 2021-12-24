@@ -1,0 +1,841 @@
+<div *ngIf="this.checkedListArray.index === currentStep">
+    <form [formGroup]="HideShowQuestion">
+        <div *ngIf="HideShowQuestion.controls.typeOfLeave.value==='Annual_Non_Accrual_Leave' ">
+            <div class="card-content" style="margin-top:15px;">
+                <div class="form-group">
+                    <p class="category">Do you want to limit number of times an employee can
+                        apply for this leave?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="isLimitApplyLeave">
+                            <mat-radio-button value='true'>Yes </mat-radio-button>
+                            <mat-radio-button value='false'> No</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isLimitApplyLeave.valid 
+                        || HideShowQuestion.controls.isLimitApplyLeave.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+                <div class="row" *ngIf="HideShowQuestion.controls.isLimitApplyLeave.value === 'true'">
+                    <div class="col-md-3">
+                        <p class="category">An employee can apply maximum</p>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="full-width">
+                            <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="times"
+                                formControlName="maxNoOfTimes">
+                        </mat-form-field>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.maxNoOfTimes.valid 
+                        || HideShowQuestion.controls.maxNoOfTimes.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="category text-center">times in a</p>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="fullLength">
+                            <mat-select placeholder="Select Mode" formControlName="inTimePeriod">
+                                <mat-option value="calendar_month">Calendar Month</mat-option>
+                                <mat-option value="calendar_year">Calendar Year</mat-option>
+                                <mat-option value="calendar_quarter">Calendar Quarter</mat-option>
+                                <mat-option value="financial_year">Financial Year</mat-option>
+                                <!-- <mat-option value="attendance_cycle">Attendance Cycle</mat-option> -->
+                                <mat-option value="leave_cycle">Leave Cycle</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.inTimePeriod.valid 
+                          || HideShowQuestion.controls.inTimePeriod.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p class="category">How would you like to deal with newly joined employees?
+                    </p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="isDealNewlyEmployeeImmediately">
+                            <mat-radio-button (click)="selectedRadioButton($event,'true')" value='true'>Make the
+                                employee
+                                eligible for leave immediately </mat-radio-button>
+                            <mat-radio-button (click)="selectedRadioButton($event,'false')" value='false'> Make the
+                                employee
+                                eligible for leave after completing a certain tenure</mat-radio-button>
+                            <mat-radio-button (click)="selectedRadioButton($event, 'confirmed')" value='confirmed'> Make
+                                the employee
+                                eligible for leave after getting confirmed </mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isDealNewlyEmployeeImmediately.valid 
+                            || HideShowQuestion.controls.isDealNewlyEmployeeImmediately.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'false'
+                && HideShowQuestion.controls.isDealNewlyEmployeeAfterConfirm.value === 'false'">
+                    <p class="category">How many days does the employee need to complete to
+                        become eligible for leave?</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="daysNeedToBeEligible">
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.daysNeedToBeEligible.valid || 
+                       HideShowQuestion.controls.daysNeedToBeEligible.untouched)">
+                        Invalid Input
+                    </span>
+                </div>
+                <div class="form-group"
+                    *ngIf="HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'false' || HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'confirmed'">
+                    <p class="category">Upon becoming eligible, does the employee get
+                        credited the entire amount of leave that he/she earned
+                        during the period of ineligibility?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="isCreditNonEligibleDays">
+                            <mat-radio-button value='true'>Yes </mat-radio-button>
+                            <mat-radio-button value='false'> No</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isCreditNonEligibleDays.valid 
+                            || HideShowQuestion.controls.isCreditNonEligibleDays.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-group">
+                        <p class="category">Need to extend this leave category?</p>
+                        <div class="radio-wrapper">
+                            <mat-radio-group formControlName="needToExtendDays" (change)="validation();">
+                                <mat-radio-button value='true'>Yes </mat-radio-button>
+                                <mat-radio-button value='false'> No</mat-radio-button>
+                            </mat-radio-group>
+                            <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.needToExtendDays.valid 
+                            || HideShowQuestion.controls.needToExtendDays.untouched)">
+                                Field is required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="HideShowQuestion.controls.needToExtendDays.value === 'true'">
+                    <div class="col-md-3">
+                        <p class="category">An employee can extend maximum</p>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="full-width">
+                            <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="days"
+                                formControlName="extendedDays">
+                        </mat-form-field>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.extendedDays.valid 
+                    || HideShowQuestion.controls.extendedDays.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="category text-center">days of the</p>
+                    </div>
+                    <div class="col-md-4">
+                        <ng-select [items]="leaveCategories" bindLabel="leaveName" bindValue="categoryId"
+                            placeholder="leave category" formControlName="extendedLeaveCategory">
+                        </ng-select>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.extendedLeaveCategory.valid 
+                      || HideShowQuestion.controls.extendedLeaveCategory.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p class="category">Is there any time slab for this leave category?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="needTimeSlab" (change)="validation1();">
+                            <mat-radio-button value='true'>Yes </mat-radio-button>
+                            <mat-radio-button value='false'> No</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.needTimeSlab.valid 
+                            || HideShowQuestion.controls.needTimeSlab.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="HideShowQuestion.controls.needTimeSlab.value == 'true'">
+                    <p class="category">Maximum number of days for time slab*</p>
+                    <mat-form-field class="fullLength">
+                        <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Number of Days"
+                            formControlName="timeSlabDays" required>
+                        <mat-error class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.timeSlabDays.valid || 
+                                HideShowQuestion.controls.timeSlabDays.untouched)">
+                            Invalid Input
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-group ">
+                    <p class="category">Maximum number of consecutive leave days allowed*</p>
+                    <mat-form-field class="fullLength">
+                        <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Number of Days"
+                            formControlName="consecutiveLeave" required>
+                        <mat-error class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.consecutiveLeave.valid || 
+                            HideShowQuestion.controls.consecutiveLeave.untouched)">
+                            Invalid Input
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <p class="category">Who is this category applicable to?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="employeeType" (change)="applyValidation();">
+                            <mat-radio-button value='ALL'> All the Employees </mat-radio-button>
+                            <mat-radio-button value='SPECIFIC'> Some Employees</mat-radio-button>
+
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.employeeType.valid|| 
+                        HideShowQuestion.controls.employeeType.untouched)">
+                            Field required
+                        </span>
+
+                    </div>
+
+                </div>
+                <div *ngIf="HideShowQuestion.controls.employeeType.value=='SPECIFIC' ">
+
+                    <p class="category">Select Employee</p>
+
+                    <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+                        [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+                        [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+                        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                        </ng-template>
+                    </ng-select>
+
+                    <!-- <mat-form-field class="fullLength">
+                        <mat-select placeholder="Select Employee " (selectionChange)="onClickEvent() " [formControl]="selectedEmployeeList
+                        " [(ngModel)]="mySelectedEmpList " multiple style="width:100%; ">
+                            <mat-select-trigger>
+                                {{selectedEmployeeList.value ? selectedEmployeeList.value[0] : ''}}
+                                <span *ngIf=" selectedEmployeeList.value?.length> 1"
+                                    class="example-additional-selection"> (+{{selectedEmployeeList.value.length - 1}}
+                                    others)
+                                </span>
+                            </mat-select-trigger>
+                            <mat-form-field style="width: 100%; margin-top: 10px;">
+                                <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                                    [formControl]="myControl" (keyup)="searchEmployeeName($event)">
+                            </mat-form-field>
+                            <mat-option *ngFor="let emp of listofSupervisor" [value]="emp.value"
+                                (click)="selectEmpCode(emp.value, $event)">{{emp.viewValue}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <span class="category" style="color: red;">
+                        <div *ngIf="!(this.HideShowQuestion.controls.selectedEmployee.valid)">
+                            Please Select Employee
+                        </div>
+                    </span> -->
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="text-center" style="margin-top:20px;">
+                    <button *ngIf="!isLeftVisible" class="btn header-button" (click)="onCancelClick();">
+                        <span>
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            Cancel</span>
+                    </button>
+
+                    <button class="btn header-button" *ngIf="currentStep!=0" (click)="setBackStep();"
+                        matStepperPrevious>
+                        <span>
+                            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                            Back </span>
+                    </button>
+                    <button class="btn header-button" type="submit" (click)="saveRecord();">
+                        <span>
+                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                            Proceed</span>
+                    </button>
+
+                    <!-- <button class="btn header-button" type="submit" *ngIf="!this.HideShowQuestion.valid">
+                            <span>
+                                <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                                Proceed</span>
+                        </button> -->
+                </div>
+            </div>
+        </div>
+        <div *ngIf="HideShowQuestion.controls.typeOfLeave.value==='General_Leave' ">
+            <div class="card-content" style="margin-top:15px;">
+
+                <div class="form-group"
+                    *ngIf="checkedListArray.encashmentOnRollover === true || checkedListArray.encashmentRecoveryOnFNF === true">
+                    <p class="category">Should the leaves be encashed before the rollover is
+                        run?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="encashmentBeforeRollover">
+                            <mat-radio-button value='true'>Yes </mat-radio-button>
+                            <mat-radio-button value='false'> No</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.encashmentBeforeRollover.valid || 
+                           HideShowQuestion.controls.encashmentBeforeRollover.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="checkedListArray.encashmentOnRollover === true">
+                    <p class="category">Enter maximum encashable days for rollover (leave blank
+                        for no limit)
+                    </p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="maxRolloverDaysForEncashment">
+                    </mat-form-field>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.maxRolloverDaysForEncashment.valid || 
+                           HideShowQuestion.controls.maxRolloverDaysForEncashment.untouched)">
+                    Invalid Input
+                </span>
+                <div class="form-group" *ngIf="checkedListArray.encashmentRecoveryOnFNF === true">
+                    <p class="category">Enter maximum encashable days for FNF (leave blank for
+                        no limit)</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="maxEncashableDaysForFNF">
+                    </mat-form-field>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.maxEncashableDaysForFNF.valid || 
+                           HideShowQuestion.controls.maxEncashableDaysForFNF.untouched)">
+                    Invalid Input
+                </span>
+
+                <div class="form-group">
+                    <p class="category">Do you want to limit number of times an employee can
+                        apply for this leave?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="isLimitApplyLeave">
+                            <mat-radio-button value='true'>Yes </mat-radio-button>
+                            <mat-radio-button value='false'> No</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isLimitApplyLeave.valid 
+                        || HideShowQuestion.controls.isLimitApplyLeave.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+                <div class="row" *ngIf="HideShowQuestion.controls.isLimitApplyLeave.value === 'true'">
+                    <div class="col-md-3">
+                        <p class="category">An employee can apply maximum</p>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="full-width">
+                            <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="times"
+                                formControlName="maxNoOfTimes">
+                        </mat-form-field>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.maxNoOfTimes.valid 
+                        || HideShowQuestion.controls.maxNoOfTimes.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="category text-center">times in a</p>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="fullLength">
+                            <mat-select placeholder="Select Mode" formControlName="inTimePeriod">
+                                <mat-option value="calendar_month">Calendar Month</mat-option>
+                                <mat-option value="calendar_year">Calendar Year</mat-option>
+                                <mat-option value="calendar_quarter">Calendar Quarter</mat-option>
+                                <mat-option value="financial_year">Financial Year</mat-option>
+                                <!-- <mat-option value="attendance_cycle">Attendance Cycle</mat-option> -->
+                                <mat-option value="leave_cycle">Leave Cycle</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.inTimePeriod.valid 
+                          || HideShowQuestion.controls.inTimePeriod.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p class="category">How would you like to deal with newly joined employees?
+                    </p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="isDealNewlyEmployeeImmediately">
+                            <mat-radio-button (click)="selectedRadioButton($event,'true')" value='true'>Make the
+                                employee
+                                eligible for leave immediately </mat-radio-button>
+                            <mat-radio-button (click)="selectedRadioButton($event,'false')" value='false'> Make the
+                                employee
+                                eligible for leave after completing a certain tenure</mat-radio-button>
+                            <mat-radio-button (click)="selectedRadioButton($event, 'confirmed')" value='confirmed'> Make
+                                the employee
+                                eligible for leave after getting confirmed </mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isDealNewlyEmployeeImmediately.valid 
+                          || HideShowQuestion.controls.isDealNewlyEmployeeImmediately.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'false'
+                    && HideShowQuestion.controls.isDealNewlyEmployeeAfterConfirm.value === 'false'">
+                    <p class="category">How many days does the employee need to complete to
+                        become eligible for leave?</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="daysNeedToBeEligible">
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.daysNeedToBeEligible.valid || 
+                           HideShowQuestion.controls.daysNeedToBeEligible.untouched)">
+                        Invalid Input
+                    </span>
+                </div>
+                    <div class="form-group" *ngIf="HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'false' || HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'confirmed'">
+                        <p class="category">Upon becoming eligible, does the employee get
+                            credited the entire amount of leave that he/she earned
+                            during the period of ineligibility?</p>
+                        <div class="radio-wrapper">
+                            <mat-radio-group formControlName="isCreditNonEligibleDays">
+                                <mat-radio-button value='true'>Yes </mat-radio-button>
+                                <mat-radio-button value='false'> No</mat-radio-button>
+                            </mat-radio-group>
+                            <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isCreditNonEligibleDays.valid 
+                          || HideShowQuestion.controls.isCreditNonEligibleDays.untouched)">
+                                Field is required
+                            </span>
+                        </div>
+                    </div>
+               
+
+                <div class="form-group" *ngIf="checkedListArray.negativeLeaveBalance === true">
+                    <p class="category">What is the negative balance cap? (set '0' for no
+                        limit)</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="negativeBalanceCap">
+                    </mat-form-field>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.negativeBalanceCap.valid || 
+                           HideShowQuestion.controls.negativeBalanceCap.untouched)">
+                    Invalid Input
+                </span>
+                <div class="form-group" *ngIf="checkedListArray.carryOverLimitsPolicy === 'Carryover_Cap'">
+                    <p class="category">Set the maximum amount of days that employees can
+                        rollover from year to year. (set '0' for no limit)?</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="maxRolloverLeave">
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.maxRolloverLeave.valid || 
+                           HideShowQuestion.controls.maxRolloverLeave.untouched)">
+                        Invalid Input
+                    </span>
+                    <p class="category">Set the minimum amount of days that employees can
+                        rollover from year to year. (set '0' for no limit)?</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="minRolloverLeave">
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.minRolloverLeave.valid || 
+                           HideShowQuestion.controls.minRolloverLeave.untouched)">
+                        Invalid Input
+                    </span>
+                    <p class="category">Number of days after rollover balance laps (set '0' for
+                        no limit)?</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="rolloverLeaveLaps">
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.rolloverLeaveLaps.valid || 
+                           HideShowQuestion.controls.rolloverLeaveLaps.untouched)">
+                        Invalid Input
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <p class="category">Please provide the accrual rate per
+                        period?({{this.checkedListArray.leaveAccrualPeriod}})*</p>
+                    <mat-form-field class="fullLength">
+                        <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Number of Days"
+                            formControlName="leaveAccrualRateListValue" required>
+                        <mat-error [hidden]="(HideShowQuestion.controls.leaveAccrualRateListValue.valid || 
+                            HideShowQuestion.controls.leaveAccrualRateListValue.untouched)">
+                            Invalid Input
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+                <div class="form-group">
+                    <p class="category">Who is this category applicable to?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="employeeType" (change)="applyValidation();">
+                            <mat-radio-button value='ALL'> All the Employees </mat-radio-button>
+                            <mat-radio-button value='SPECIFIC'> Some Employees</mat-radio-button>
+
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.employeeType.valid|| 
+                        HideShowQuestion.controls.employeeType.untouched)">
+                            Field required
+                        </span>
+                    </div>
+
+                </div>
+                <div *ngIf="HideShowQuestion.controls.employeeType.value=='SPECIFIC' ">
+
+                    <p class="category">Select Employee</p>
+
+                    <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+                        [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+                        [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+                        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <!-- <div class="form-group">
+                    <p class="category">Would you like to change leave accrual rate by tenure
+                        of employees in the company?</p>
+                    <div style="padding-top:10px;padding-bottom:10px;">
+                        <mat-radio-group formControlName="isChangeLeaveAccrualRate">
+                            <mat-radio-button value='true'>Yes </mat-radio-button>
+                            <mat-radio-button value='false'> No</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isChangeLeaveAccrualRate.valid 
+                        || HideShowQuestion.controls.isChangeLeaveAccrualRate.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div> -->
+
+                <!-- <div class="form-group"
+                    *ngIf="this.HideShowQuestion.controls.isChangeLeaveAccrualRate.value === 'true'">
+                    <p class="category">Please enter the accrual rate for each level of
+                        experience</p>
+                    <div formArrayName="accuralRateArray">
+                        <div *ngFor="let itemrow of HideShowQuestion.controls.accuralRateArray.controls; let i=index"
+                            [formGroupName]="i">
+                            <div class="col-md-3">
+                                <p class="category">Days Completed Is Greater
+                                    Than</p>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field>
+                                    <input matInput placeholder="Number of days" formControlName="daysCompleted">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2">
+                                <p class="category">Accrual Rate is </p>
+                            </div>
+                            <div class="col-md-2">
+                                <mat-form-field>
+                                    <input matInput placeholder="Accural Rate" formControlName="accuralRate">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2">
+                                <span style="margin-left: 40px;font-size: 18px;color: #da0606;">
+                                    <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn header-button" (click)="addNewRow()">
+                            <span>
+                                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                Add Experience Critaria</span>
+                        </button>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <div class="text-center" style="margin-top:20px; ">
+                        <button class="btn header-button" (click)="onCancelClick()">
+                            <span>
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Cancel</span>
+                        </button>
+
+                        <button class="btn header-button" *ngIf="currentStep !=0" (click)="setBackStep();"
+                            matStepperPrevious>
+                            <span>
+                                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                                Back </span>
+                        </button>
+                        <!-- <button class="btn header-button" type="submit" *ngIf="!this.HideShowQuestion.valid">
+                            <span>
+                                <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                                Proceed</span>
+                        </button> -->
+                        <button class="btn header-button" type="submit" (click)="saveRecord();">
+                            <span>
+                                <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                                Proceed</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="HideShowQuestion.controls.typeOfLeave.value==='Comp_Off' ">
+            <div class="card-content">
+                <div class="form-group">
+                    <p class="category">How would you like to deal with newly joined employees?
+                    </p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="isDealNewlyEmployeeImmediately">
+                            <mat-radio-button (click)="selectedRadioButton($event,'true')" value='true'>Make the
+                                employee
+                                eligible for leave immediately </mat-radio-button>
+                            <mat-radio-button (click)="selectedRadioButton($event,'false')" value='false'> Make the
+                                employee
+                                eligible for leave after completing a certain tenure</mat-radio-button>
+                            <mat-radio-button (click)="selectedRadioButton($event, 'confirmed')" value='confirmed'> Make
+                                the employee
+                                eligible for leave after getting confirmed </mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isDealNewlyEmployeeImmediately.valid 
+                        || HideShowQuestion.controls.isDealNewlyEmployeeImmediately.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'false'
+                && HideShowQuestion.controls.isDealNewlyEmployeeAfterConfirm.value === 'false'">
+                    <p class="category">How many days does the employee need to complete to
+                        become eligible for leave?</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="daysNeedToBeEligible">
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.daysNeedToBeEligible.valid || 
+                       HideShowQuestion.controls.daysNeedToBeEligible.untouched)">
+                        Invalid Input
+                    </span>
+                </div>
+                    <div class="form-group" *ngIf="HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'false' || HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'confirmed'">
+                        <p class="category">Upon becoming eligible, does the employee get
+                            credited the entire amount of leave that he/she earned
+                            during the period of ineligibility?</p>
+                        <div class="radio-wrapper">
+                            <mat-radio-group formControlName="isCreditNonEligibleDays">
+                                <mat-radio-button value='true'>Yes </mat-radio-button>
+                                <mat-radio-button value='false'> No</mat-radio-button>
+                            </mat-radio-group>
+                            <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isCreditNonEligibleDays.valid 
+                        || HideShowQuestion.controls.isCreditNonEligibleDays.untouched)">
+                                Field is required
+                            </span>
+                        </div>
+                    </div>
+                
+                <div class="form-group">
+                    <p class="category">Maximum number of consecutive leave days allowed (set
+                        '0' for no limit)</p>
+                    <mat-form-field class="fullLength">
+                        <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Number of Days"
+                            formControlName="consecutiveLeave" required>
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.consecutiveLeave.valid || 
+                           HideShowQuestion.controls.consecutiveLeave.untouched)">
+                        Invalid Input
+                    </span>
+                </div>
+                <div class="form-group">
+                    <p class="category">Who is this category applicable to?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="employeeType" (change)="applyValidation();">
+                            <mat-radio-button value='ALL'> All the Employees </mat-radio-button>
+                            <mat-radio-button value='SPECIFIC'> Some Employees</mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.employeeType.valid|| 
+                        HideShowQuestion.controls.employeeType.untouched)">
+                            Field required
+                        </span>
+                    </div>
+
+                </div>
+                <div *ngIf="HideShowQuestion.controls.employeeType.value=='SPECIFIC' ">
+
+                    <p class="category">Select Employee</p>
+
+                    <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+                        [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+                        [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+                        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="text-center" style="margin-top: 20px;">
+                        <button class="btn header-button" (click)="onCancelClick()">
+                            <span>
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Cancel</span>
+                        </button>
+                        <button class="btn header-button" *ngIf="currentStep!=0" (click)="setBackStep();"
+                            matStepperPrevious>
+                            <span>
+                                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                                Back </span>
+                        </button>
+
+                        <!-- <button class="btn header-button" type="submit" *ngIf="!this.HideShowQuestion.valid">
+                            <span>
+                                <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                                Proceed</span>
+                        </button> -->
+
+                        <button class="btn header-button" type="submit" (click)="saveRecord();">
+                            <span>
+                                <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                                Proceed</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="HideShowQuestion.controls.typeOfLeave.value==='Maternity_Leave' ">
+            <div class="card-content" style="margin-top:15px;">
+                <div class="form-group">
+                    <p class="category">How would you like to deal with newly joined employees?
+                    </p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="isDealNewlyEmployeeImmediately">
+                            <mat-radio-button (click)="selectedRadioButton($event,'true')" value='true'>Make the
+                                employee
+                                eligible for leave immediately </mat-radio-button>
+                            <mat-radio-button (click)="selectedRadioButton($event,'false')" value='false'> Make the
+                                employee
+                                eligible for leave after completing a certain tenure</mat-radio-button>
+                            <mat-radio-button (click)="selectedRadioButton($event, 'confirmed')" value='confirmed'> Make
+                                the employee
+                                eligible for leave after getting confirmed </mat-radio-button>
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isDealNewlyEmployeeImmediately.valid 
+                        || HideShowQuestion.controls.isDealNewlyEmployeeImmediately.untouched)">
+                            Field is required
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'false'
+            && HideShowQuestion.controls.isDealNewlyEmployeeAfterConfirm.value === 'false'">
+                    <p class="category">How many days does the employee need to complete to
+                        become eligible for leave?</p>
+                    <mat-form-field class="fullLength">
+                        <input matInput pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" placeholder="Number of Days"
+                            formControlName="daysNeedToBeEligible">
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.daysNeedToBeEligible.valid || 
+                   HideShowQuestion.controls.daysNeedToBeEligible.untouched)">
+                        Invalid Input
+                    </span>
+                </div>
+                    <div class="form-group" *ngIf="HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'false' || HideShowQuestion.controls.isDealNewlyEmployeeImmediately.value === 'confirmed'">
+                        <p class="category">Upon becoming eligible, does the employee get
+                            credited the entire amount of leave that he/she earned
+                            during the period of ineligibility?</p>
+                        <div class="radio-wrapper">
+                            <mat-radio-group formControlName="isCreditNonEligibleDays">
+                                <mat-radio-button value='true'>Yes </mat-radio-button>
+                                <mat-radio-button value='false'> No</mat-radio-button>
+                            </mat-radio-group>
+                            <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.isCreditNonEligibleDays.valid 
+                            || HideShowQuestion.controls.isCreditNonEligibleDays.untouched)">
+                                Field is required
+                            </span>
+                        </div>
+                    </div>
+               
+                <div class="form-group">
+                    <p class="category">Maximum number of consecutive leave days allowed (set
+                        '0' for no limit)</p>
+                    <mat-form-field class="fullLength">
+                        <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Number of Days"
+                            formControlName="consecutiveLeave" required>
+                    </mat-form-field>
+                    <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.consecutiveLeave.valid || 
+                       HideShowQuestion.controls.consecutiveLeave.untouched)">
+                        Invalid Input
+                    </span>
+                </div>
+                <div class="form-group">
+                    <p class="category">Who is this category applicable to?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="employeeType" (change)="applyValidation();">
+                            <mat-radio-button value='ALL'> All the Employees </mat-radio-button>
+                            <mat-radio-button value='SPECIFIC'> Some Employees</mat-radio-button>
+
+                        </mat-radio-group>
+                        <span class="category" style="color: red;" [hidden]="(HideShowQuestion.controls.employeeType.valid|| 
+                        HideShowQuestion.controls.employeeType.untouched)">
+                            Field required
+                        </span>
+                    </div>
+
+                </div>
+                <div *ngIf="HideShowQuestion.controls.employeeType.value=='SPECIFIC' ">
+
+                    <p class="category">Select Employee</p>
+
+                    <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+                        [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+                        [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+                        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="form-group">
+                    <div class="text-center" style="margin-top:20px; ">
+                        <button class="btn header-button" (click)="onCancelClick()">
+                            <span>
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Cancel</span>
+                        </button>
+                        <button class="btn header-button" *ngIf="currentStep!=0" (click)="setBackStep();"
+                            matStepperPrevious>
+                            <span>
+                                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                                Back </span>
+                        </button>
+
+                        <button class="btn header-button" type="submit" (click)="saveRecord();">
+                            <span>
+                                <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                                Proceed</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="clearfix">
+                <div class="margin-top:50px">
+                    <!-- <pre>form value: <br>{{HideShowQuestion.value | json}}</pre> -->
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

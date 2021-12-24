@@ -1,0 +1,98 @@
+@import "~assets/sass/md/customCSS";
+
+.profile-media img {
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  padding: 0;
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  background: #012554;
+}
+
+.employee-running-status li {
+  display: inline;
+}
+
+.employee-running-status li .onHold,
+.terminate {
+  padding: 3px 10px;
+  margin-right: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #fff;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.employee-running-status li .onHold {
+  background: #06BBAF;
+}
+
+.employee-running-status li .terminate {
+  background: #BDC672;
+}
+
+.btn-group-actionsList>.btn-default-actionsList.btn {
+  color: #ffffff;
+  background-color: #ffb229 !important;
+  border-color: #ffb229;
+  text-transform: capitalize;
+  font-weight: normal;
+  padding: 8px 24px;
+  margin: 0 0.2em;
+  letter-spacing: 0.6px;
+  font-size: 13px;
+  border: 0;
+  border-radius: 4px;
+}
+
+.btn-group-actionsList .dropdown-menu>.dropdown-menu-list>.dropdown-menu-item {
+  color: #505763;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  line-height: 1;
+  cursor: pointer;
+  overflow-wrap: break-word;
+}
+
+.btn-group-actionsList .dropdown-menu>.dropdown-menu-list>.dropdown-menu-item:hover {
+  color: #4b89dc;
+  background: #F8F8F8;
+  box-shadow: none;
+}
+
+.dropdown-menu.dropleft {
+  position: absolute;
+  transform: translate3d(-124px, 32px, 0px);
+  top: 10px;
+  left: 0px;
+  will-change: transform;
+}
+
+.dropdown-menu:before {
+  content: "" !important;
+  height: 0;
+  position: absolute;
+  left: 200px;
+  width: 0;
+  border-color: transparent transparent #a5a5a5;
+  border-style: solid;
+  border-width: 0 10px 13px;
+  top: -12px;
+}
+
+.dropdown-menu:after {
+  content: "" !important;
+  height: 0;
+  position: absolute;
+  left: 200px;
+  width: 0;
+  border-color: transparent transparent #fff;
+  border-style: solid;
+  border-width: 0 10px 13px;
+  top: -12px;
+}

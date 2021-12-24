@@ -1,0 +1,511 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div style="float: left;">
+          <h6 class="title">Custom Reports Template</h6>
+        </div>
+        <div style="text-align: right;">
+          <!-- <button class="btn header-button" routerLink="/reports/add-custom-report">
+            <span>
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              Custom Reports</span>
+          </button> -->
+          <button class="btn header-button" (click)="generateReport();">
+            <span>
+              <i aria-hidden="true"></i>Generate</span>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card-header">
+            <h5 class="title">Fields</h5>
+          </div>
+          <div class="example-container mat-elevation-z8" style="padding: 10px;">
+            <div class="card-content">
+              <h2 style="text-align: center;font-size: 16px;font-weight: 600;">Payroll Master</h2>
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Fixed Allowances
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of fixedAllowances">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Variable Allowances
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of variableAllowances">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Employer Contributions
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of employerContributions">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                    <br>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Fixed Deductions
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of fixedDeductions">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                    <br>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Employee Deductions
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of employeeDeductions">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                    <br>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <h2 style="text-align: center;font-size: 16px;font-weight: 600;">Employee Master</h2>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Personal Details
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of  personalDetails">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                    <br>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Bank Details
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of bankDetails">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                    <br>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Address Details
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of addressDetails">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                    <br>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+
+                <h2 style="text-align: center;font-size: 16px;font-weight: 600;">Attendance Master</h2>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Attendance Settings
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of attendanceSettings">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Attendance Records
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of attendanceRecords">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+
+                <h2 style="text-align: center;font-size: 16px;font-weight: 600;">Leave Master</h2>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Leave Settings
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of leaveSettings">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Leave Transactions
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of leaveTransactions">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <h2 style="text-align: center;font-size: 16px;font-weight: 600;">Expense Master</h2>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Expense Settings
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of expenseSettings">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                  </div>
+                </mat-expansion-panel>
+                <br>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                    <mat-panel-title>
+                      Expense Transactions
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let element of expenseTransactions">
+                    <mat-checkbox [checked]="element.fieldValue" (change)="onFieldCheck($event, element)">
+                      {{element.viewValue}}
+                    </mat-checkbox>
+                  </div>
+                </mat-expansion-panel>
+
+
+
+
+
+
+              </mat-accordion>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" style="box-shadow: none !important;">
+            <div class="card-header">
+              <h5 class="title">Selected Fields</h5>
+            </div>
+            <div class="card-content">
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">Fixed Allowances</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of fixedAllowances">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">Variable Allowances</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of variableAllowances">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">Employer Contributions</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of employerContributions">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">Fixed Deductions</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of fixedDeductions">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Employee Deductions
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of employeeDeductions">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Personal Details
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of personalDetails">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Bank Details
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of bankDetails">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Address Details
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of addressDetails">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Attendance Settings
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of attendanceSettings">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Attendance Records
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of attendanceRecords">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Leave Settings
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of leaveSettings">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Leave Transactions
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of leaveTransactions">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Expense Settings
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of expenseSettings">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">
+                    Expense Transactions
+                  </h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of expenseTransactions">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" (click)="onFieldDelete(element)" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row" style="text-align:center;">
+        <button class="btn header-button" (click)="generateReport();">
+          <span>
+            <i aria-hidden="true"></i>Generate</span>
+        </button>
+      </div> -->
+    </div>
+  </div>
+</div>

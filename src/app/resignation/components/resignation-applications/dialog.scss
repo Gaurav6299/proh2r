@@ -1,0 +1,26 @@
+@import "~assets/sass/md/model";
+
+.scroll::-webkit-scrollbar{
+    width: 0px;
+    border-radius: 20px;
+  }
+
+  .scroll:hover::-webkit-scrollbar{
+    width: 5px;
+    border-radius: 20px;
+  }
+
+  .scroll:hover::-webkit-scrollbar-track{
+    background: #9FD2D7;;
+    border-radius: 10px;
+  }
+   .scroll:hover::-webkit-scrollbar-thumb{
+    width: 3px;
+    background: #9FD2D7;
+    border: 3px solid #0fb6cb;
+    border-radius: 20px;
+  }
+  .pro-noti {
+    font-weight: 600;
+    font-size: 15px !important;
+  } 

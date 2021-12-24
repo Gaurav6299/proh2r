@@ -1,0 +1,129 @@
+<form [formGroup]="otherDetailsForm">
+  <div formArrayName="fieldMaster">
+    <div *ngFor="let fieldMasterFields of fieldMaster.controls; let i=index">
+      <div class="row" [formGroupName]="i">
+        <!--Basic Information -->
+        <div class="card" style="box-shadow: none !important;">
+          <div class="card-header">
+            <div style="float:left">
+              <h6 class="title">{{this.otherDetailsForm.controls.fieldMaster.controls[i].controls.sectionName.value}}
+              </h6>
+            </div>
+            <div style="text-align: right;">
+              <button *ngIf="!this.otherDetailsForm.controls.fieldMaster.controls[i].controls.editable.value"
+                type="button" class="btn header-button"
+                (click)="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.editable.value=true">
+                <span>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Edit</span>
+              </button>
+              <button *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.editable.value"
+                type="button"
+                (click)="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.editable.value=false"
+                class="btn header-button">
+                <span>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Cancel</span>
+              </button>
+              <button *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.editable.value"
+                type="button"
+                (click)="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.editable.value=false; save(this.otherDetailsForm.controls.fieldMaster.controls[i])"
+                class="btn header-button">
+                <span>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Save</span>
+              </button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="row" formArrayName="fields">
+              <div *ngFor="let event of fieldMasterFields.controls['fields'].controls; let idx=index">
+                <div [formGroupName]="idx">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <p class="category">
+                        {{ this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldDescription.value}}
+                      </p>
+                    </div>
+                    <div *ngIf="!this.otherDetailsForm.controls.fieldMaster.controls[i].controls.editable.value">
+                      <p class="category">
+                        {{ this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldValue.value}}
+                      </p>
+                    </div>
+                    <div *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.editable.value">
+                      <div class="col-md-4"
+                        *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'SingleLineText'">
+                        <mat-form-field class="fullLength">
+                          <input matInput
+                            placeholder="{{this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4"
+                        *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Dropdown'">
+                        <mat-form-field class="fullLength">
+                          <mat-select
+                            placeholder="{{this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                            <mat-option
+                              *ngFor="let option of this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.options.value"
+                              [value]="option">
+                              {{ option }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4"
+                        *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'MultiLineText'">
+                        <mat-form-field class="fullLength">
+                          <textarea matInput
+                            placeholder="{{this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                            formControlName="fieldValue"
+                            [required]="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value"></textarea>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4"
+                        *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Number'">
+                        <mat-form-field class="fullLength">
+                          <input matInput
+                            placeholder="{{this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            type="number" formControlName="fieldValue"
+                            [required]="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4"
+                        *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Date'">
+                        <mat-form-field class="fullLength">
+                          <input matInput type="date"
+                            placeholder="{{this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                            formControlName="fieldValue"
+                            [required]="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4" style="height: 68px;"
+                        *ngIf="this.otherDetailsForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Boolean'">
+                        <div class="radio-wrapper">
+                          <mat-radio-group formControlName="fieldValue">
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <!-- {{this.employmentDetailForm.value | json}} -->
+  </div>
+
+</form>

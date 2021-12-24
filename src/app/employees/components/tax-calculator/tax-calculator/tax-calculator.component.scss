@@ -1,0 +1,134 @@
+@import "~assets/sass/md/customCSS";
+
+.tax_declaration_card_pannel .panel-title a:after {
+  font-family: Fontawesome;
+  content: '\f077';
+  float: right;
+  font-size: 12px;
+  font-weight: 400;
+  position: relative;
+  bottom: 35px;
+  color: #4b89dc;
+}
+
+.tax_declaration_card_pannel .panel-title a.collapsed:after {
+  font-family: Fontawesome;
+  content: '\f078';
+}
+
+.tax_declaration_card_pannel .panel-group>.panel-default>.panel-collapse>.panel-body {
+  padding: 0;
+}
+
+.tax_declaration_panel-body_header>th,
+.split-row-hide-show>td {
+  padding: 10px;
+  font-weight: 400;
+}
+
+.table.table-striped .tax_declaration_panel-body_header {
+  background-color: #fde9d9;
+  border: 1px solid #ddd;
+}
+
+.tax_declaration_card_pannel .panel-group>.panel-default>.panel-collapse {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  bottom: 15px;
+}
+
+.table.table-striped .split-row-hide-show:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.tax_declaration_pannel_title.row_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b89dc;
+  align-items: center;
+  display: flex;
+  min-height: 48px;
+}
+
+.tax_declaration_pannel_title {
+  border: 0;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #666;
+}
+
+.tax_declaration_pannel_title>.total_tax_0Amount {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tax_disclaimer_paraf>p {
+  color: #666;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.Content_description>.category {
+  padding: 0 25px;
+}
+
+.card_tax_conatiner {
+  background: none repeat scroll 0 0 #fff;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px #00000029, 0 3px 6px #0000003b;
+  padding: 10px 20px;
+  margin: 10px 0 20px;
+}
+
+.profile-mediaFor\#taxCalc>.img-responsive {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 2px solid #edf2fb;
+  box-shadow: 0 0px 4px #00000080;
+  transition: all 0.5s ease-in-out;
+}
+
+.user_tax\#01Name>h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 5px;
+  text-align: center;
+  text-shadow: 1px 1px 2px #c8c7c7;
+}
+
+.user_tax\#01Name>h3>span {
+  font-size: 13px;
+}
+
+.divider {
+  margin: 15px 0;
+  border: 0;
+  border-top: 2px solid #eeeeee;
+}
+
+.profile\#descriptin_details .details_listing>li {
+  list-style: none;
+  position: relative;
+  color: #000;
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  transition: all 300ms ease;
+}
+
+.profile\#descriptin_details .details_listing>li>.list_items {
+  position: relative;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+  text-shadow: 1px 1px 2px #c8c7c7;
+  transition: all 300ms ease;
+}

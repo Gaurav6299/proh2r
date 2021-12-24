@@ -1,0 +1,32 @@
+<mat-dialog-content style="display: contents;">
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Assign Sub Departments</h4>
+
+    <div>
+        <ng-select [items]="subDepartments" [multiple]="true" bindLabel="subDeptName" groupBy="type" [selectableGroup]="true" [selectableGroupAsModel]="false"
+            [closeOnSelect]="false" [selectableGroupAsModel]="false" [(ngModel)]="mySelectedSubDepartmentList" [formControl]="selectedUserList">
+            <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.subDeptId}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.subDeptName}}
+            </ng-template>
+        </ng-select>
+    </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="assigSubDepartment()">
+            Assign
+        </button>
+    </div>
+</mat-dialog-actions>

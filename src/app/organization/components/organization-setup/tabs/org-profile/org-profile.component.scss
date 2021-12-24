@@ -1,0 +1,111 @@
+@import "~assets/sass/md/customCSS";
+
+::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #205081;
+}
+
+::ng-deep.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: #205081;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+.profile-media img {
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  padding: 0;
+  width: 100px;
+  height: 70px;
+  line-height: 70px;
+  background: #012554;
+}
+.dataTableHeaderColor {
+  font-weight: 600;
+  color: #848484;
+  text-align: center;
+  text-transform: uppercase;
+  /* font-size: 14px; */
+  font-weight: 700;
+  //font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+::ng-deep .mat-sort-header-container {
+  display: flex;
+  justify-content: center;
+}
+
+.image-card {
+  padding: 10px;
+  border: 1px solid #eee;
+}
+
+.proh-border-bottom {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+  display: inline-block;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.proh-profile-media {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+  height: 164px;
+  background: #ffffff;
+  border: 3px solid #edf2fb;
+  cursor: pointer;
+}
+
+.proh-profile-media:hover {
+  background: #000;
+}
+
+.img1:hover .image {
+  opacity: 0.6;
+}
+
+.img1:hover .middle {
+  opacity: 1;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  transform: translateY(-50%);
+  position: relative;
+  display: block;
+  z-index: 500;
+  bottom: 50%;
+}
+
+.text {
+  line-height: 1em;
+  color: white !important;
+}
+
+.text>i {
+  font-size: 30px;
+  color: white !important;
+}
+
+.text>span {
+  color: #fff;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.file-upload {
+  display: none;
+}
+
+.image-card img {
+  width: 100%;
+  height: 100%;
+}

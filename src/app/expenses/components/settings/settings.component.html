@@ -1,0 +1,34 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="title">Expense Settings</h6>
+            </div>
+            <div class="card-content">
+                <div class="card-content-tab">
+                    <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)"
+                        [(selectedIndex)]="selectedTab" (animationDone)="onTabChange()">
+                        <mat-tab label="Expense Categories">
+                            <app-expense-categories></app-expense-categories>
+                        </mat-tab>
+                        <mat-tab label="Expense Templates">
+                            <app-expense-templates></app-expense-templates>
+                        </mat-tab>
+                        <mat-tab label="Expense Template Assignment">
+                            <app-template-assignments></app-template-assignments>
+                        </mat-tab>
+                        <mat-tab label="Advance Categories">
+                            <app-advance-categories></app-advance-categories>
+                        </mat-tab>
+                        <mat-tab label="Advance Templates">
+                            <app-advance-templates></app-advance-templates>
+                        </mat-tab>
+                        <mat-tab label="Advance Template Assignment">
+                            <app-advance-template-assignment></app-advance-template-assignment>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

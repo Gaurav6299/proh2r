@@ -1,0 +1,67 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> View On-Duty Request</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Employee Name</th>
+                    <td>{{data.employeeName}}</td>
+                </tr>
+                <tr>
+                    <th>Start Date</th>
+                    <td>{{data.startDateObj}}</td>
+                </tr>
+                <tr>
+                    <th>End Date</th>
+                    <td>{{data.endDateObj}}</td>
+                </tr>
+                <tr>
+                    <th>Reason</th>
+                    <td>{{data.empReason}}</td>
+                </tr>
+                <tr>
+                    <th>Comments</th>
+                    <td>{{data.comments}}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{data.onDutyRequestStatus}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-content">
+        <p-table #dt1 [columns]="dataColumns" [value]="ondutyShowList" [rows]="5" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+            [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='actions'">
+                            {{car[col.field]}}</div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="dialog-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+    </div>
+</mat-dialog-actions>

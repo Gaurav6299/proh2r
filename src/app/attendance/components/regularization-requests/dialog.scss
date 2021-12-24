@@ -1,0 +1,51 @@
+@import "~assets/sass/md/model";
+.scrollable {
+    overflow-y: scroll;
+    max-height: 500px
+}
+.scrollable::-webkit-scrollbar {
+    width: 0px;
+    border-radius: 20px;
+}
+.scrollable:hover::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 20px;
+}
+.scrollable:hover::-webkit-scrollbar-track {
+    background: #9FD2D7;
+    ;
+    border-radius: 10px;
+}
+.scrollable:hover::-webkit-scrollbar-thumb {
+    width: 3px;
+    background: #9FD2D7;
+    border: 3px solid #0fb6cb;
+    border-radius: 20px;
+}
+.pro-top {
+    padding-top: 15px;
+}
+.full-width {
+    width: 100%;
+}
+::ng-deep #time-picker-wrapper.light #time-picker .time-picker-clock .time-picker-clock-origin {
+    background: #4b88dc !important;
+}
+::ng-deep #time-picker-wrapper.light #time-picker .time-picker-clock>button.active {
+    background: #4b88dc !important;
+    color: #fff;
+}
+::ng-deep #time-picker-wrapper.light #time-picker .time-picker-clock .time-picker-clock-arrow {
+    background: #4b88dc !important;
+}
+::ng-deep #time-picker-wrapper.light #time-picker .time-picker-header .time-picker-selected-time {
+    color: white !important;
+}
+::ng-deep #time-picker-wrapper.light #time-picker .time-picker-header .time-picker-selected-ampm {
+    color: white !important;
+}
+::ng-deep #time-picker-wrapper.light #time-picker .time-picker-header {
+    border-bottom: 1px solid #e1e1e1;
+    background-color: 1ca2ba;
+    background-color: #4b88dc;
+}

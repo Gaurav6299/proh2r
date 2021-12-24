@@ -1,0 +1,95 @@
+<div class="myModel">
+  <div class="card">
+    <div class="card-header" data-background-color="cyan"
+      style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+      <div data-background-color="blue">
+        <div class="row">
+          <div class="col-md-10">
+            <h6 style="text-transform: uppercase;font-weight: 600">
+              Add New Arrear Day
+            </h6>
+          </div>
+          <div class="col-md-2"
+            style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+            <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="col-md-12">
+        <div class="col-md-7">
+          <p class="category" style="color:#404A56;font-weight:200;padding-top: 20px;">What type of arrear is it? *</p>
+        </div>
+        <div class="col-md-5">
+          <mat-form-field style="width:100%;">
+            <mat-select placeholder="Select" [(ngModel)]="selecttypeOfArrear" (selectionChange)="clickOnTypeOfArrearAction()">
+              <mat-option value="pay">Pay</mat-option>
+              <mat-option value="recover">Recover</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-4">
+            <table class="table table-hover table-responsive" style="border: 1px solid #ddd;">
+              <thead>
+                <tr>
+                  <th>
+                    <h5>LOP Type</h5>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let type of lopTypes">
+                  <td>
+                    <div class="radio-wrapper">
+                      <mat-radio-group name="lopDayTypes" [(ngModel)]="lop" (change)="setData($event)">
+                        <mat-radio-button class="example-radio-button" [value]="type">
+                          {{type}}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-8">
+            <div id='calendar'></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="col-md-7">
+          <p class="category" style="color:#404A56;font-weight:200;padding-top: 20px;">What CTC Structure shall we
+            consider for paying this Arrear? *</p>
+        </div>
+        <div class="col-md-5">
+          <mat-form-field style="width:100%;">
+            <mat-select placeholder="Select CTC Structure" [(ngModel)]="selecttypeOfArrear">
+              <mat-option value="pay">Pay</mat-option>
+              <mat-option value="recover">Recover</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+        <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;"
+          data-background-color="cyan">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Cancel</span>
+        </button>
+        <button class="dialog-button" [mat-dialog-close]="lopDays" cdkFocusInitial style="width: 115px;"
+          data-background-color="cyan">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-plus" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Add Arrear Day</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

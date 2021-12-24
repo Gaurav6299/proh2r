@@ -1,0 +1,283 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="title mb-2">Employee Master Report</h6>
+          </div>
+          <div class="col-md-6 text-right">
+            <button class="btn header-button" (click)="downloadData()">
+              <span>
+                <i class="fa fa-plus-square" aria-hidden="true"></i>Download
+              </span>
+            </button>
+            <!-- </button> -->
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-9">
+          <div class="example-container mat-elevation-z8" style="padding: 10px;">
+            <div class="card-content">
+              <div *ngFor="let emp of this.sectionName">
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                      <mat-panel-title>
+                        {{emp.section}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div *ngFor="let item of emp.fields">
+                      <mat-checkbox [checked]="emp.fieldValue" [(ngModel)]="emp.fieldValue" (click)="getData(emp)">
+                        {{item.fieldPlaceholder}}
+                      </mat-checkbox>
+                    </div>
+                  </mat-expansion-panel>
+
+                  <!-- <mat-expansion-panel *ngIf="item.sectionName=='Address Information'">
+                    <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                      <mat-panel-title>
+                        {{addressInfo}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div *ngFor="let element of AddressInformation">
+                      <mat-checkbox [checked]="element.fieldValue" [(ngModel)]="element.fieldValue"
+                        (click)="getData(element)">
+                        {{element.viewValue}}
+                      </mat-checkbox>
+                    </div>
+
+                  </mat-expansion-panel> -->
+
+                  <!-- <mat-expansion-panel *ngIf="item.sectionName=='Bank Information'" >
+                    <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                      <mat-panel-title>
+                        {{bankInfo}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div *ngFor="let element of BankInformation">
+                      <mat-checkbox [checked]="element.fieldValue" [(ngModel)]="element.fieldValue"
+                        (click)="getData(element)">
+                        {{element.viewValue}}
+                      </mat-checkbox>
+                    </div>
+
+                  </mat-expansion-panel> -->
+
+                  <!-- <mat-expansion-panel *ngIf="item.sectionName=='Appointment Details'">
+                    <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                      <mat-panel-title>
+                        {{appointInfo}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div *ngFor="let element of AppointmentDetails">
+                      <mat-checkbox [checked]="element.fieldValue" [(ngModel)]="element.fieldValue"
+                        (click)="getData(element)">
+                        {{element.viewValue}}
+                      </mat-checkbox>
+                    </div>
+
+                  </mat-expansion-panel> -->
+
+                  <!-- <mat-expansion-panel *ngIf="item.sectionName=='Job Information'">
+                    <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                      <mat-panel-title>
+                        {{jobInfo}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div *ngFor="let element of JobInformation">
+                      <mat-checkbox [checked]="element.fieldValue" [(ngModel)]="element.fieldValue"
+                        (click)="getData(element)">
+                        {{element.viewValue}}
+                      </mat-checkbox>
+                    </div>
+
+                  </mat-expansion-panel> -->
+
+                  <!-- <mat-expansion-panel *ngIf="item.sectionName=='testing1'">
+                    <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                      <mat-panel-title>
+                        {{test}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div *ngFor="let element of Testing">
+                      <mat-checkbox [checked]="element.fieldValue" [(ngModel)]="element.fieldValue"
+                        (click)="getData(element)">
+                        {{element.viewValue}}
+                      </mat-checkbox>
+                    </div>
+
+                  </mat-expansion-panel> -->
+
+                  <!-- <mat-expansion-panel *ngIf="item.sectionName=='Employment Detals'" >
+                    <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                      <mat-panel-title>
+                        {{employee}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div *ngFor="let element of EmployeeDetails">
+                      <mat-checkbox [checked]="element.fieldValue" [(ngModel)]="element.fieldValue"
+                        (click)="getData(element)">
+                        {{element.viewValue}}
+                      </mat-checkbox>
+                    </div>
+
+                  </mat-expansion-panel> -->
+
+                </mat-accordion>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card" style="box-shadow: none !important;">
+            <div class="card-header">
+              <h5 class="title">Selected Fields</h5>
+            </div>
+            <!-- <div *ngFor="let data of this.sectionName"> -->
+            <div class="card-content" *ngFor="let item of this.sectionName">
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">{{item.section}}</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of item.fields">
+                  <div *ngIf="item.fieldValue">
+                    <span class="category" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteData(item)"
+                        style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                      {{element.fieldPlaceholder}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <!-- <div class="card-header">
+                <div class="head">
+                  <h5 class="title">{{addressInfo}}</h5>
+                </div>
+              </div> -->
+              <!-- <div class="body">
+                <div *ngFor="let element of AddressInformation">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true" style="font-size:16px;color:#e03737;cursor:pointer;"
+                        (click)="deleteData(element)"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br> -->
+              <!-- <div class="card-header">
+                <div class="head">
+                  <h5 class="title">{{bankInfo}}</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of BankInformation">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true" style="font-size:16px;color:#e03737;cursor:pointer;"
+                        (click)="deleteData(element)"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br> -->
+              <!-- <div class="card-header">
+                <div class="head">
+                  <h5 class="title">{{appointInfo}}</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of AppointmentDetails">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true" style="font-size:16px;color:#e03737;cursor:pointer;"
+                        (click)="deleteData(element)"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">{{jobInfo}}</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of JobInformation">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true" style="font-size:16px;color:#e03737;cursor:pointer;"
+                        (click)="deleteData(element)"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">{{test}}</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of Testing">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true" style="font-size:16px;color:#e03737;cursor:pointer;"
+                        (click)="deleteData(element)"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <div class="head">
+                  <h5 class="title">{{employee}}</h5>
+                </div>
+              </div>
+              <div class="body">
+                <div *ngFor="let element of EmployeeDetails">
+                  <div *ngIf="element.fieldValue">
+                    <span class="category" style="word-spacing: 5px;">
+                      <i class="fa fa-trash-o" aria-hidden="true" style="font-size:16px;color:#e03737;cursor:pointer;"
+                        (click)="deleteData(element)"></i>
+                      {{element.viewValue}}
+                    </span>
+                  </div>
+                </div>
+              </div> -->
+
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+
+      </div>
+      <!-- <div class="row" style="text-align:center;">
+        <button class="btn header-button" (click)="generateReport();">
+          <span>
+            <i aria-hidden="true"></i>Generate</span>
+        </button>
+      </div> -->
+    </div>
+  </div>
+</div>

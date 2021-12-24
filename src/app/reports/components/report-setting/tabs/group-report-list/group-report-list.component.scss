@@ -1,0 +1,14 @@
+@import "~assets/sass/md/customCSS";
+.toggle {
+    vertical-align: sub;
+  }
+
+  ::ng-deep .toggle .mat-slide-toggle-bar {
+    width: 28px;
+    height: 10px;
+  }
+
+  ::ng-deep .toggle .mat-slide-toggle-thumb {
+    height: 14px;
+    width: 14px;
+  }

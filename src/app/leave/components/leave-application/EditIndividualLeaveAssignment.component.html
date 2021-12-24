@@ -1,0 +1,72 @@
+<!-- <mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Edit Leave Request</h4>
+    <form [formGroup]="editIndividualLeavesRequest">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Leave Category</th>
+                        <td>{{leaveName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="uploadDoc">
+            <p class="category">Upload the Document</p>
+            <p class="category">Accepted Formats are .txt, .pdf, .jpg, .png, .xls,.xlsx,
+                .doc,.docx, </p>
+            <input name="myFile" type="file" (change)="onFileSelect($event)">
+        </div>
+        <p class="category">Select Date Range for this leave</p>
+        <mat-form-field class="fullLength">
+            <input matInput type="date" placeholder="Start Date" formControlName="startDate">
+            <mat-error [hidden]="(editIndividualLeavesRequest.controls.startDate.valid || 
+                        editIndividualLeavesRequest.controls.startDate.untouched)">
+                {{requiredRadioButton}}
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput type="date" [min]="this.editIndividualLeavesRequest.controls.startDate.value"
+                placeholder="End Date" formControlName="endDate">
+            <mat-error [hidden]="(editIndividualLeavesRequest.controls.startDate.valid || 
+                            editIndividualLeavesRequest.controls.startDate.untouched)">
+                {{requiredRadioButton}}
+            </mat-error>
+        </mat-form-field>
+        <div *ngIf="halfDayOption">
+            <p class="category" style="color:#404A56;">Are there any Half Day?</p>
+            <div class="radio-wrapper">
+                <mat-radio-group formControlName="halfDay">
+                    <mat-radio-button *ngFor="let item of halfDayvalue" [value]="item.value">{{item.name}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div *ngIf="this.editIndividualLeavesRequest.controls.halfDay.value">
+            <p class="category">Select Half Days</p>
+            <mat-form-field class="fullLength">
+                <input matInput type="date" [min]="this.editIndividualLeavesRequest.controls.startDate.value"
+                    [max]="this.editIndividualLeavesRequest.controls.endDate.value" placeholder="Half Day Date"
+                    formControlName="halfDayDate">
+            </mat-form-field>
+        </div>
+        <mat-form-field class="fullLength">
+            <textarea matInput placeholder="Enter Reason for Leave" formControlName="reason"></textarea>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="updateAppliation();">
+            Update
+        </button>
+    </div>
+</mat-dialog-actions> -->

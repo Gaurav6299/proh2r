@@ -1,0 +1,183 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div *ngIf="leaveCancellationCrudAdmin;else grantLeaveViewOnly">
+        <div class="card-header">
+          <h6 class="title">Leave Grant</h6>
+        </div>
+      </div>
+      <ng-template #grantLeaveViewOnly>
+        <div class="card-header">
+          <div class="pull-left">
+            <h6 class="title">Leave Grant</h6>
+          </div>
+          <div class="text-right">
+            <button class="btn header-button" (click)="applyLeaveRequest();">
+              <span>
+                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                Apply Leave Grant </span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <div class="card-content">
+        <div class="card-content-tab">
+          <mat-tab-group class="tabs" (animationDone)="onTabChange($event)">
+            <mat-tab label="Pending">
+              <app-comp-offs-pending (messageEvent)="receiveMessage($event)">
+              </app-comp-offs-pending>
+            </mat-tab>
+            <mat-tab label="Approved">
+              <app-comp-offs-approved (messageEvent)="receiveMessage($event)"></app-comp-offs-approved>
+            </mat-tab>
+            <mat-tab label="Rejected">
+              <app-comp-offs-rejected></app-comp-offs-rejected>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+      <!-- <div class="card-content">
+        <div class="row">
+          <div class="col-md-8 offset-md-8"></div>
+          <div class="col-md-4">
+            <button class="btn header-button" (click)="applyLeaveRequest();" style="float:right;margin-top: 20px;">
+              <span>
+                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                Apply Leave Grant </span>
+            </button>
+          </div>
+        </div>
+        <div class="row" *ngIf="showHideFilter" style="border:1px solid #ddd;box-shadow: none;">
+          <div class="col-md-3">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Leave Policy" multiple>
+                <mat-option value="specialLeave">Special Leave</mat-option>
+                <mat-option value="generalLeave">General Leave</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="CompOff Status" multiple>
+                <mat-option value="approved">Approved</mat-option>
+                <mat-option value="rejected">Rejected</mat-option>
+                <mat-option value="approvalPending">Approval Pending</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="fullLength">
+              <input matInput [matDatepicker]="picker" placeholder="Start date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="fullLength">
+              <input matInput [matDatepicker]="picker1" placeholder="End Date">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Cost Center" multiple>
+                <mat-option value="finance">Finance</mat-option>
+                <mat-option value="accounts">Accounts</mat-option>
+                <mat-option value="Marketing">Marketing</mat-option>
+                <mat-option value="sales">Sales</mat-option>
+                <mat-option value="hr">HR</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+        <p-table #dt1 [columns]="displayedColumns" [value]="leaveApplicationsInfo" [rows]="5" [paginator]="true"
+          [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+          [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                <p-multiSelect *ngSwitchCase="'location'" appendTo="body" defaultLabel="All" [options]="allLocation"
+                  [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                <p-multiSelect *ngSwitchCase="'band'" appendTo="body" defaultLabel="All" [options]="allBand"
+                  [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')">
+                </p-multiSelect>
+                <p-multiSelect *ngSwitchCase="'department'" appendTo="body" defaultLabel="All" [options]="allDepartment"
+                  [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                <p-multiSelect *ngSwitchCase="'designation'" appendTo="body" defaultLabel="All"
+                  [options]="allDesignation" [style]="{'width':'100%'}"
+                  (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                <p-multiSelect *ngSwitchCase="'empName'" appendTo="body" defaultLabel="All" [options]="filterByEmp"
+                  [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                <p-multiSelect *ngSwitchCase="'leaveStatus'" appendTo="body" defaultLabel="All"
+                  [options]="filterByStatus" [style]="{'width':'100%'}"
+                  (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='action' && col.field!='appliedOn' && col.field!='appliedFor'">{{car[col.field]}}
+                </div>
+                <div *ngIf="col.field!='action' && col.field=='appliedOn'">
+                  {{car[col.field] | date:'dd/MM/yyyy' }}
+                </div>
+                <div *ngIf="col.field!='action' && col.field=='appliedFor'">
+                  {{car[col.field] | date:'dd/MM/yyyy' }}
+                </div>
+                <div *ngIf="car.leaveStatus == 'Level 1 Approval Pending' && col.field=='action'">
+                  <i class="fa fa-check-square-o action-icon" aria-hidden="true" matTooltip="Approve"
+                    (click)="approveIndividualCompOffReq(car.compOffId)" style="color:green;"></i>
+                  <i class="fa fa-pencil-square-o action-icon" aria-hidden="true" matTooltip="Edit"
+                    (click)="editCompOffReq(car)" style="color:green;"></i>
+                  <i class="fa fa-times-circle action-icon" aria-hidden="true" style="color:#e03737;"
+                    matTooltip="Reject" (click)="rejectLeaveRequest(car.compOffId);"></i>
+                  <i class="fa fa-trash-o action-icon" aria-hidden="true" (click)="deleteCompOffRequest(car.compOffId)"
+                    matTooltip="Delete" style="color:#e03737;"></i>
+                </div>
+                <div *ngIf="car.leaveStatus == 'Level 2 Approval Pending' && col.field=='action'">
+                  <i class="fa fa-check-square-o action-icon" aria-hidden="true" matTooltip="Approve"
+                    (click)="approveIndividualCompOffReq(car.compOffId)" style="color:green;"></i>
+                  <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                    (click)="viewLeaveInfo(car);"></i>
+                  <i class="fa fa-times-circle action-icon" aria-hidden="true" style="color:#e03737;"
+                    matTooltip="Reject" (click)="rejectLeaveRequest(car.compOffId);"></i>
+                </div>
+                <div *ngIf="car.leaveStatus == 'Cancelled' && col.field=='action'">
+                  <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                    (click)="viewLeaveInfo(car);"></i>
+                  <i class="fa fa-trash-o action-icon" aria-hidden="true" (click)="deleteCompOffRequest(car.compOffId)"
+                    matTooltip="Delete" style="color:#e03737;"></i>
+                </div>
+                <div *ngIf="car.leaveStatus == 'Approved' && col.field=='action'">
+                  <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                    (click)="viewLeaveInfo(car);"></i>
+                  <i class="fa fa-trash-o action-icon" aria-hidden="true" (click)="deleteCompOffRequest(car.compOffId)"
+                    matTooltip="Delete" style="color:#e03737;"></i>
+                </div>
+                <div *ngIf="car.leaveStatus == 'Rejected' && col.field=='action'">
+                  <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                    (click)="viewLeaveInfo(car);"></i>
+                  <i class="fa fa-trash-o action-icon" aria-hidden="true" (click)="deleteCompOffRequest(car.compOffId)"
+                    matTooltip="Delete" style="color:#e03737;"></i>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div> -->
+    </div>
+  </div>
+</div>

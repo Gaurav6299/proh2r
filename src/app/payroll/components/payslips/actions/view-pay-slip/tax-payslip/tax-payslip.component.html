@@ -1,0 +1,301 @@
+<div class="main-content">
+  <div class="container-fluid">
+<div class="card">
+  <div class="card-content">
+    <div class="row">
+      <div class="col-md-12" style="text-align:center;">
+        <h6 style="text-transform: uppercase;font-weight: 600;font-size:20px;font-color:#848484">
+          Tax Payslip for December - 2017
+        </h6>
+      </div>
+      <hr>
+      <div>
+        <div class="col-md-12">
+          <div class="col-md-6 no-padding">
+            <div class="col-md-4 no-padding">
+              <p>Employee Code</p>
+            </div>
+            <div class="col-md-8 no-padding">
+              <p>:&nbsp;{{employeeCode}}</p>
+            </div>
+          </div>
+          <div class="col-md-6 no-padding">
+            <div class="col-md-4 no-padding">
+              <p>Joining Date</p>
+            </div>
+            <div class="col-md-8 no-padding">
+              <p>:&nbsp;{{joiningDate}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="col-md-6 no-padding">
+            <div class="col-md-4 no-padding">
+              <p>Name</p>
+            </div>
+            <div class="col-md-8 no-padding">
+              <p>:&nbsp;{{employeeName}}</p>
+            </div>
+          </div>
+          <div class="col-md-6 no-padding">
+            <div class="col-md-4 no-padding">
+              <p>Resignation Dater</p>
+            </div>
+            <div class="col-md-8 no-padding">
+              <p>:&nbsp;{{resignationDate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-6 no-padding">
+            <div class="col-md-4 no-padding">
+              <p>City</p>
+            </div>
+            <div class="col-md-8 no-padding">
+              <p>:&nbsp;{{city}}</p>
+            </div>
+          </div>
+          <div class="col-md-6 no-padding">
+            <div class="col-md-4 no-padding">
+              <p>PAN Number</p>
+            </div>
+            <div class="col-md-8 no-padding">
+              <p>:&nbsp;{{panNumber}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-6 no-padding">
+            <div class="col-md-4 no-padding">
+              <p>State</p>
+            </div>
+            <div class="col-md-8 no-padding">
+              <p>:&nbsp;{{state}}</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <hr>
+    <div class="col-md-12">
+      <div class="col-md-4 no-padding">
+        <div class="col-md-5 no-padding">
+          <p>Total Days</p>
+        </div>
+        <div class="col-md-7 no-padding">
+          <p>:&nbsp;{{totalDays}}</p>
+        </div>
+      </div>
+      <div class="col-md-4 no-padding">
+        <div class="col-md-5 no-padding">
+          <p>Days Paid</p>
+        </div>
+        <div class="col-md-7 no-padding">
+          <p>:&nbsp;{{daysPaid}}</p>
+        </div>
+      </div>
+      <div class="col-md-4 no-padding">
+        <div class="col-md-5 no-padding">
+          <p>Absent Days</p>
+        </div>
+        <div class="col-md-7 no-padding">
+          <p>:&nbsp;{{absentDays}}</p>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <div class="card-content table-responsive" style="margin-left: -20px;margin-right: -20px;">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>
+              <strong>Earning Heads</strong>
+            </th>
+            <th>
+              <strong>Previous Job</strong>
+            </th>
+            <th>
+              <strong>Paid Till Now</strong>
+            </th>
+            <th>
+              <strong>Yearly Projection</strong>
+            </th>
+            <th>
+              <strong>Total</strong>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody >
+          <tr *ngFor="let row of tableDataArray">
+            <td>&nbsp;{{row.earningHeads}}</td>
+            <td><i class="fa fa-inr"></i>&nbsp;{{row.previousJob}}</td>
+            <td><i class="fa fa-inr"></i>&nbsp;{{row.paidTillNow}}</td>
+            <td><i class="fa fa-inr"></i>&nbsp;{{row.yearProjection}}</td>
+            <td><i class="fa fa-inr"></i>&nbsp;{{row.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr>
+      <div class="col-md-12">
+        <div class="col-md-10" style="text-align:right;width:80%;">
+          <p style="font-size:17px; font-weight:600;color:#848484;margin-right: -125px;">Current Month Income Tax </p>
+        </div>
+        <div class="col-md-2" style="text-align:right;">
+          <p style="font-size:17px; font-weight:600;color:#848484;">&nbsp; :&nbsp;
+            <i class="fa fa-inr" aria-hidden="true"></i> 0</p>
+        </div>
+      </div>
+    </div>
+
+
+    <hr>
+    <div style="text-align: center;">
+      <button class=" form-button" style="margin-top:15px;width: 76px;">
+        <span class="category" style="color:#fff;">
+          <i class="fa fa-times" aria-hidden="true" style="  font-size: 18px; vertical-align: middle; margin-left: 0px;margin-right: 2px;"></i>
+          Cencel</span>
+      </button>
+
+
+      <button class=" form-button" style="margin-top:15px;width: 100px;">
+        <span class="category" style="color:#fff;">
+          <i class="fa fa-download" aria-hidden="true" style="  font-size: 18px; vertical-align: middle; margin-left: 0px;margin-right: 2px;"></i>
+          Download</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="card">
+  <div class="card-content">
+    <div class="row">
+
+      <div class="col-md-12" style="text-align:center;">
+        <h6 style="text-transform: uppercase;font-weight: 600;font-size:20px;">
+          Tax Payslip for December - 2017
+        </h6>
+      </div>
+      <hr>
+
+
+      <div class="col-md-12" style="margin-top:0px;margin-bottom:20px;">
+        <div class="col-md-10">
+          <div class="col-md-6">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">Employee Code :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500;">1138</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">Joining Date :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500">22-03-2017</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">Name :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500">Anand Kumar</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">Resignation Date :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500">---</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">City :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500">Noida</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">Pan No :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500">1 Jan 2018</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">State :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500">1 Jan 2018</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="col-md-12" style="margin-top:0px;margin-bottom:20px;">
+        <div class="col-md-10">
+          <div class="col-md-4">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">Total Days :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500;">31</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">Days Paid :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500;">6</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-5">
+              <label class="control-label" style="color:#848484;">Absent Days :</label>
+            </div>
+            <div class="col-md-7">
+              <label class="control-label" style="font-weight:500;">0</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+
+    </div>
+  </div>
+</div> -->

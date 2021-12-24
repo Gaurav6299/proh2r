@@ -1,0 +1,38 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>History Of Employee Attendance Assignments</h4>
+    <div class="card-content">
+        <div class="table-responsive example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSource2">
+                <!-- Position Column -->
+                <ng-container matColumnDef="currentAttendenceTemp">
+                    <mat-header-cell *matHeaderCellDef>Template</mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: left;">
+                        <span>{{element.currentAttendenceTemp}}</span><br>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="attendenceSupervisors">
+                    <mat-header-cell *matHeaderCellDef>Supervisors</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.attendenceSupervisors}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="effectiveFrom">
+                    <mat-header-cell *matHeaderCellDef>Effective From</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>{{element.effectiveFrom}}</span><br>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="effectiveTo">
+                    <mat-header-cell *matHeaderCellDef>Effective To</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{element.effectiveTo}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+    </mat-dialog-content>

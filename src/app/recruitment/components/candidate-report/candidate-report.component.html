@@ -1,0 +1,130 @@
+<div class="card">
+  <div class="card-header" style="width: 90%">
+    <h6 class="title">Candidates Report</h6>
+  </div>
+  <hr style="margin-top: -16px;">
+  <button *ngIf="isLeftVisible" style="float: right;margin-top: -54px;" class="btn header-button" (click)="tabReset();isLeftVisible = !isLeftVisible;">
+    <span>
+      <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+      Back</span>
+  </button>
+
+  <div class="card-content">
+    <app-left-right-panes [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="row">
+          <div class="col-md-3" style="width: 20%;float: right ">
+            <mat-form-field>
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+              <span matSuffix>
+                <i class="fa fa-search" aria-hidden="true" style="color:#404A56;"></i>
+              </span>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3" style="width: 20%;float: right;margin-left:27%;z-index: 0">
+            <mat-form-field>
+              <mat-select [(value)]="SelectedStatus" placeholder="Show candidates">
+                <mat-option value="" (click)="setStatus()">All</mat-option>
+                <mat-option value="PENDING" (click)="setStatus()">Pending</mat-option>
+                <mat-option value="SHORTLIST" (click)="setStatus()">ShortListed</mat-option>
+                <mat-option value="APPROVE" (click)="setStatus()">Approved</mat-option>
+                <mat-option value="REJECT" (click)="setStatus()">Rejected</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+        <div class="showLeaveCategoryList mat-elevation-z8">
+          <mat-table #table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="Name" style="color:red;">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Name</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" matTooltip="{{element.canName}}">{{element.canName}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Email">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Email Id</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" matTooltip="{{element.canEmail}}">{{element.canEmail}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Phone">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Phone</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" matTooltip="{{element.canPhone}}">{{element.canPhone}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Resume">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Resume</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" >
+                <i class="material-icons pointer" ng-href="element.Resume" (click)="downloadResume(element.canResume);" matTooltip="Download" style="color: rgba(35, 162, 186, 1);">
+                  get_app</i>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Status">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Status</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.canStatus}}
+                <i *ngIf="element.canStatus === 'PENDING'" class="fa fa-pencil-square-o" matTooltip="Edit" aria-hidden="true" style="font-size:20px;color:green;margin-left: 10px;vertical-align: middle;cursor:pointer;"
+                  (click)="CandidateDialog(element);"></i>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Registration Date">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Registration Date</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" matTooltip="{{element.canRegDate}}">{{element.canRegDate}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="viewDetails" style="color:red;">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Details</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View" (click)="getInfo(element.canID);"></i>
+
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <div class="col-md-12">
+            <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+
+
+      <div rightPane class="divtoggleDiv">
+        <div class="main-content" style="margin-top: 0px !important">
+          <!-- <div class="container-fluid"> -->
+
+
+
+          <!-- (animationDone)="onTabChange($event)" -->
+          <div class="card-content">
+            <mat-tab-group class="tabs" (selectedTabChange)="onLinkClick($event)" [selectedIndex]="currentTab">
+              <mat-tab label="Personal Details">
+                <app-personal-details [parentData]="sampleData"></app-personal-details>
+              </mat-tab>
+              <mat-tab label="Educational Details">
+                <app-educational-details [parentData]="sampleData"></app-educational-details>
+              </mat-tab>
+              <mat-tab label="Employment Details">
+                <app-employment-details [parentData]="sampleData"></app-employment-details>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+
+    </app-left-right-panes>
+  </div>
+</div>

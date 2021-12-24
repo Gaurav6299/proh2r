@@ -1,0 +1,163 @@
+<app-left-right-resignation-settings [activePane]="isLeftVisible ? 'right' : 'left'">
+  <div leftPane class="divtoggleDiv">
+    <div class="card" style="box-shadow: none !important;">
+      <div class="row">
+        <div class="col-md-8 offset-md-8"></div>
+        <div class="col-md-4" style="text-align: right;">
+          <button *ngIf="!isLeftVisible" class="btn header-button"
+            (click)="isLeftVisible = !isLeftVisible; resetFormValue();">
+            <span>
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              Add</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <!-- <div class="showLeaveCategoryList mat-elevation-z8">
+          <mat-table #table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="resignationTemplateName" style="color:red;">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Template Name</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.resignationTemplateName}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="levelOfApprovers">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Levels of Approval</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.showLevelOfApprovers}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="noticePeriod">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Notice Period</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.noticePeriod}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actionId">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span class="dataTableHeaderColor">Actions</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span>
+                  <i class="fa fa-pencil-square-o action-icon" aria-hidden="true" matTooltip="Edit" style="color:green;"
+                    (click)="editResignationTemplate(element);"></i>
+                </span>
+                <span>
+                  <i class="fa fa-trash-o action-icon" aria-hidden="true" matTooltip="Delete" style="color:#e03737;"
+                    (click)="openDeleteDialog(element)"></i>
+                </span>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+          </mat-paginator>
+        </div> -->
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="templateList" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr [pSelectableRow]="car">
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='actionId'">{{car[col.field]}}</div>
+                <div class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span *ngIf="col.field=='actionId'">
+                      <i class="fa fa-pencil-square-o action-icon" aria-hidden="true" matTooltip="Edit"
+                        style="color:green;" (click)="editResignationTemplate(car);"></i>
+                    </span>
+                    <span *ngIf="col.field=='actionId'">
+                      <i class="fa fa-trash-o action-icon" aria-hidden="true" matTooltip="Delete" style="color:#e03737;"
+                        (click)="openDeleteDialog(car)"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+
+      </div>
+    </div>
+  </div>
+  <div rightPane class="divtoggleDiv">
+    <div class="card">
+      <form [formGroup]="resignationTamplateSetting" #f="ngForm">
+        <div>
+          <div class="row" style="text-align: center;">
+            <h5 style="color:#4b88dc;font-weight: 500">
+              Separation Template Settings
+            </h5>
+          </div>
+          <div class="card-content">
+            <mat-form-field class="fullLength">
+              <input matInput placeholder="Template Name" formControlName="resignationTemplateName">
+            </mat-form-field>
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Levels of Approval" formControlName="levelOfApprovers" multiple>
+                <mat-option value="L1">L1 Manager</mat-option>
+                <mat-option value="L2">L2 Manager</mat-option>
+                <mat-option [disabled]="true" value="HR_Manager">HR Manager</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="fullLength">
+              <input matInput placeholder="Notice Period" type="number" formControlName="noticePeriod">
+            </mat-form-field>
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Asset Deallocation Supervisor" formControlName="assetDeallocationSupervisor">
+                <mat-option *ngFor="let emp of employee" [value]="emp.value">
+                  {{ emp.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div>
+              <p class="category">Select Locations Departments Bands or Designations for template </p>
+              <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+                [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+                [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+                <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                    [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                    [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="col-md-12" style="text-align: center;margin-top:15x; ">
+              <div class="row" style="text-align: center;margin-top:15x; ">
+                <button *ngIf="isLeftVisible" class="btn header-button"
+                  (click)="isLeftVisible = !isLeftVisible;setPanel();">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel</span>
+                </button>
+                <button class="btn header-button" (click)="saveTemplateRecord(resignationTamplateSetting)">
+                  <span>
+                    <i *ngIf="action === 'Add'" class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                    <i *ngIf="action === 'Update'" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    {{action}} </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-left-right-resignation-settings>

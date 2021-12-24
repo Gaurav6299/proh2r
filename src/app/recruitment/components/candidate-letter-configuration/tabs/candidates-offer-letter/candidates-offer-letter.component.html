@@ -1,0 +1,210 @@
+<div class="card" style="box-shadow: none !important">
+
+
+  <div class="card-header" style="    height: 30px;">
+    <div style="float: left;">
+      <h6 class="title">Generate Offer Letter</h6>
+    </div>
+    <div style="text-align: right;">
+      <button *ngIf="isLeftVisible" class="btn header-button"
+        (click)="backButtonFunction();isLeftVisible = !isLeftVisible; setPanel() ">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          Back</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="card-content">
+    <app-add-edit-offer-letter [activePane]="isLeftVisible ? 'right' : 'left'">
+
+      <div leftPane class="divtoggleDiv">
+        <div class="col-md-12" style="padding:0px;">
+          <div class="col-md-8">
+          </div>
+          <div class="col-md-4">
+            <mat-form-field style="width:100%;">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+              <span matSuffix>
+                <i class="fa fa-search" aria-hidden="true" style="color:#404A56;"></i>
+              </span>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-md-12 table-responsive example-container mat-elevation-z8" style="margin-top:15px;">
+          <mat-table #table [dataSource]="dataSource1">
+            <ng-container matColumnDef="canName">
+              <mat-header-cell *matHeaderCellDef>NAME</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span>{{element.canName}}</span>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="canEmail">
+              <mat-header-cell *matHeaderCellDef> EMAIL ID</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.canEmail}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="canPhone">
+              <mat-header-cell *matHeaderCellDef>PHONE</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.canPhone}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="canExp">
+              <mat-header-cell *matHeaderCellDef>EXPERIENCE(YEARS)</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.canExp}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="canSkills">
+              <mat-header-cell *matHeaderCellDef>SKILLS</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.canSkills}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="canRegDate">
+              <mat-header-cell *matHeaderCellDef>REGISTRATION DATE</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.canRegDate}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="canStatus">
+              <mat-header-cell *matHeaderCellDef>STATUS</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.canStatus}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span (click)="generateOffterLetter(element); isLeftVisible = !isLeftVisible; ">
+                  <i class="fa fa-download action-icon" aria-hidden="true" matTooltip="Generate"
+                    style="color:green;"></i>
+                </span>
+                <span>
+                  <i class="fa fa-eye action-icon" aria-hidden="true" matTooltip="Generate" style="color:#4b88dc;"></i>
+                </span>
+                <span>
+                  <i class="fa fa-envelope-o action-icon" aria-hidden="true" (click)="sendMailOffterLetter(element); "
+                    style="color:#29b2ca;" matTooltip="Send"></i>
+                </span>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+
+        </div>
+        <div class="col-md-12">
+          <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </div>
+
+      <div rightPane class="divtoggleDiv">
+        <div class="row">
+          <form [formGroup]="generateLetterForm">
+
+            <div class="col-md-12">
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Candidate Name" formControlName="candidateName" readonly>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Please Select" formControlName="candidateOfferLetterTemplateId">
+                    <mat-option *ngFor="let cl of letterTamplateList" [value]="cl.letterTemplateId">
+                      {{cl.templateLabel}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+
+
+            <div class="col-md-12">
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Contact No" formControlName="candidateContactNo" readonly>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Email Address" formControlName="candidateEmailAddr" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Experience" type="number" formControlName="candidateExperience" readonly>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Designation" formControlName="candidateDesignation" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Location" formControlName="candidateWorkLocation">
+                    <mat-option *ngFor="let locationObj of locationArrayList" [value]="locationObj.locationId">
+                      {{locationObj.state}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Salary" type="number" formControlName="candidateSalary">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                  <input matInput type="date" placeholder="Joining Date" formControlName="candidateJoiningDate">
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+
+              </div>
+            </div>
+
+
+
+            <div class="col-md-12" style="text-align: center;margin-top: 10px; margin-bottom: 15px">
+              <button class="dialog-button" cdkFocusInitial (click)="clickCancelForm()" style="width:76px;"
+                data-background-color="cyan">
+                <span class="category" style="color:#fff; display: inline;">
+                  <i class="fa fa-times" aria-hidden="true"
+                    style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+                  Cancel</span>
+              </button>
+
+              <button class="dialog-button" cdkFocusInitial
+                (click)="saveGeneratedOffterLetter();isLeftVisible = !isLeftVisible; setPanel();" style="width: 76px;"
+                data-background-color="cyan">
+                <span class="category" style="color:#fff; display: inline;">
+                  <i class="fa fa-check" aria-hidden="true"
+                    style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+                  Generate</span>
+              </button>
+            </div>
+
+
+            <!-- <div class="clearfix">
+              <div class="margin-top:50px">
+                <pre>form value: <br>{{generateLetterForm.value | json}}</pre>
+              </div>
+            </div> -->
+
+
+          </form>
+        </div>
+      </div>
+    </app-add-edit-offer-letter>
+
+
+
+  </div>
+</div>

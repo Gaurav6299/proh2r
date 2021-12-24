@@ -1,0 +1,22 @@
+@import "~assets/sass/md/model";
+
+.scrollable::-webkit-scrollbar{
+    width: 0px;
+    border-radius: 20px;
+  }
+  .scrollable:hover::-webkit-scrollbar{
+    width: 5px;
+    border-radius: 20px;
+  }
+  .scrollable:hover::-webkit-scrollbar-track{
+    background: #9FD2D7;;
+    border-radius: 10px;
+  }
+   .scrollable:hover::-webkit-scrollbar-thumb{ 
+    width: 3px;
+    background: #9FD2D7;
+    border: 3px solid #0fb6cb;
+    border-radius: 20px;
+  }
+
+  

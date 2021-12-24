@@ -1,0 +1,65 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Bulk Assign Supervisor To Employees</h4>
+    <form [formGroup]="leaveSupervisorAssignment">
+        <p class="category">Please Select Primary Approver</p>
+        <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="primaryApprover"
+            class="custom-ng-select-Style" [disabled]="true">
+            <ng-option *ngFor="let al of approverList" [value]="al.value">
+                {{al.viewValue}}
+            </ng-option>
+        </ng-select>
+        <span class="dropDown-errorClass" [hidden]="(leaveSupervisorAssignment.controls.primaryApprover.valid || 
+        leaveSupervisorAssignment.controls.primaryApprover.untouched)">
+            {{requiredDropdownButton}}
+        </span>
+        <!-- <mat-form-field class="fullLength">
+            <mat-select placeholder="Please Select Primary Approver" formControlName="primaryApprover">
+                <mat-option *ngFor="let al of approverList" [value]="al.value">
+                    {{al.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(leaveSupervisorAssignment.controls.primaryApprover.valid || 
+                       leaveSupervisorAssignment.controls.primaryApprover.untouched)">
+                {{requiredDropdownButton}}
+            </mat-error>
+        </mat-form-field> -->
+        <!-- <mat-form-field class="fullLength">
+            <mat-select placeholder="Please Select Secondary Approver" formControlName="secondaryApprover">
+                <mat-option *ngFor="let al of approverList" [value]="al.value">
+                    {{al.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(leaveSupervisorAssignment.controls.secondaryApprover.valid || 
+                leaveSupervisorAssignment.controls.secondaryApprover.untouched)">
+                {{requiredDropdownButton}}
+            </mat-error>
+        </mat-form-field> -->
+        <p class="category">Please Select Secondary Approver</p>
+        <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="secondaryApprover"
+            class="custom-ng-select-Style" [disabled]="true">
+            <ng-option *ngFor="let al of approverList" [value]="al.value">
+                {{al.viewValue}}
+            </ng-option>
+        </ng-select>
+        <span class="dropDown-errorClass" [hidden]="(leaveSupervisorAssignment.controls.secondaryApprover.valid || 
+        leaveSupervisorAssignment.controls.secondaryApprover.untouched)">
+            {{requiredDropdownButton}}
+        </span>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">
+            Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveApprover(leaveSupervisorAssignment)">
+            Save
+        </button>
+    </div>
+</mat-dialog-actions>

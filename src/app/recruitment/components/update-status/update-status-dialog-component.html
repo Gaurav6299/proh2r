@@ -1,0 +1,60 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Update Status</h4>
+    <form [formGroup]="updateStatusForm">
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Name" formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Email" formControlName="email">
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Phone" formControlName="phone">
+        </mat-form-field>
+
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Experience" formControlName="experience">
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Skills" formControlName="skills">
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Status" formControlName="canStatus">
+                <mat-option *ngFor="let status of canStatusList" [value]="status">
+                    {{status}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="updateStatusForm.controls.canStatus.value == 'SELECTED'">
+            <mat-form-field class="fullLength">
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="Joining Date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="fullLength">
+                <mat-select placeholder="Designation" formControlName="designation">
+                    <mat-option *ngFor="let designation of designationsList" [value]="designation">
+                        {{designation.designation}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">
+            Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="actionRequest()">
+            Submit
+        </button>
+    </div>
+</mat-dialog-actions>

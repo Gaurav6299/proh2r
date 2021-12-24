@@ -1,0 +1,102 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Regularization Reason</h4>
+  <form [formGroup]="addGneneralAttendanceSetting">
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="Label" formControlName="reason" />
+      <mat-error [hidden]="this.addGneneralAttendanceSetting.controls.reason.valid && check">
+        Field is required
+      </mat-error>
+    </mat-form-field>
+    <div class="row restriction-section">
+      <div class="frequency-restriction">
+        <p>Frequency Restriction </p>
+      </div>
+      <div class="frequency-restriction-mat-slide">
+        <mat-slide-toggle formControlName="frequencyRestriction" (change)="onChangeFrequencyRestriction($event)">
+        </mat-slide-toggle>
+      </div>
+    </div>
+    <div *ngIf="this.addGneneralAttendanceSetting.controls.frequencyRestriction.value">
+      <div class="employee-general-setting">
+        <p>An Employee Can Apply Maximum</p>
+      </div>
+      <mat-form-field class="fullLength">
+        <input matInput placeholder="Limit" pattern="(?<=\s|^)\d+(?=\s|$)" formControlName="applyLimit">
+        <mat-error [hidden]="(addGneneralAttendanceSetting.controls.applyLimit.valid || 
+          addGneneralAttendanceSetting.controls.applyLimit.untouched)">
+          Invalid Input
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="fullLength">
+        <mat-select [(value)]="selected" placeholder="select" formControlName="applyTo">
+          <mat-option>None</mat-option>
+          <mat-option value="WEEK">Week</mat-option>
+          <mat-option value="CALENDAR_MONTH">Calendar Month</mat-option>
+          <mat-option value="ATTENDANCE_CYCLE">Attendance Cycle</mat-option>
+        </mat-select>
+        <mat-error
+          [hidden]="(addGneneralAttendanceSetting.controls.applyTo.valid || this.addGneneralAttendanceSetting.controls.applyTo.untouched)">
+          Invalid Input
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="employee-general-setting">
+      <p class="showFieldMandatory">Which Employees Does this Reason Apply to?
+      </p>
+    </div>
+    <div class="radio-wrapper">
+      <mat-radio-group formControlName="applyOnEmployee" (change)="applyOnEmployee()">
+        <mat-radio-button value="ALL">All Employees </mat-radio-button>
+        <mat-radio-button value="SPECIFIC"> Specific Employees</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <mat-error *ngIf="(!addGneneralAttendanceSetting.controls.applyOnEmployee.value  && check)">
+      Field is required
+    </mat-error>
+    <div *ngIf="hideShowDivForSpecificEemployee">
+      <div class="employee-general-setting">
+        <p>Select Employee(s) From the List Below:</p>
+      </div>
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Employee" [formControl]="selectedEmployees" disableOptionCentering="true"
+          [(ngModel)]="myList1" multiple (click)="resetSearch()">
+          <mat-select-trigger>
+            {{selectedEmployees.value ? selectedEmployees.value[0] : ''}}
+            <span *ngIf="selectedEmployees.value?.length > 1" class="example-additional-selection">
+              (+{{selectedEmployees.value.length - 1}} others)
+            </span>
+          </mat-select-trigger>
+          <mat-form-field>
+            <input type="text" placeholder="Search Employee" aria-label="Number" matInput [formControl]="myControl"
+              (keyup)="searchEmployeeName($event)">
+          </mat-form-field>
+          {{optionsData.value}}
+          <mat-option *ngFor="let employeeData of optionsData" [value]="employeeData.value"
+            (click)="addEmp(employeeData.value)">{{employeeData.viewValue}}</mat-option>
+        </mat-select>
+        <mat-error [hidden]="this.addGneneralAttendanceSetting.valid">Field is
+          Required
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+    </button>
+    <button *ngIf="hideShowSaveButton" class="dialog-buttons" cdkFocusInitial
+      (click)="saveGenAttdSettingRegularizationReasonForm(addGneneralAttendanceSetting)">Save
+    </button>
+    <button *ngIf="hideShowUpdateButton" class="dialog-buttons" cdkFocusInitial
+      (click)="updateGenAttdSettingRegularizationReasonForm(addGneneralAttendanceSetting)">
+      Update
+    </button>
+  </div>
+</mat-dialog-actions>

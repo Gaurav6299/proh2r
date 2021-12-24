@@ -1,0 +1,29 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div>
+        <div style="text-align: right;">
+          <!-- <button class="btn header-button" routerLink="/payroll/add-ctc-template">
+            <span>
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              CTC Template</span>
+          </button> -->
+        </div>
+      </div>
+      <!-- <ng-template #CTCTemplateViewOnly>
+        <div class="card-header">
+          <h6 class="title">CTC Template settings</h6>
+        </div>
+      </ng-template> -->
+      <div class="card-content">
+        <!-- <div id="tabs"> -->
+        <mat-tab-group>
+          <mat-tab label="CTC Template">
+            <app-ctc-templates-settings></app-ctc-templates-settings>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>

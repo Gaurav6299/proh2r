@@ -1,0 +1,59 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>{{title}}</h4>
+    <div class="conatiner-fluid">
+        <form [formGroup]=addLocation>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="locationGoogleMap">
+                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                            (dragEnd)="markerDragEnd($event)"></agm-marker>
+                        <agm-circle [latitude]="latitude" [longitude]="longitude"
+                            [(radius)]="this.circleRadius" [fillColor]="'blue'"></agm-circle>
+                    </agm-map>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field class="fullLength">
+                    <input matInput (keydown.enter)="$event.preventDefault()" #search autocorrect="off"
+                        autocapitalize="off" spellcheck="off" placeholder="Search Location">
+                    <span matSuffix>
+                        <i class="fa fa-search" aria-hidden="true" style="color:#404A56;"></i>
+                    </span>
+                </mat-form-field>
+                <div class="form-header-title">
+                    <h4>Add Location</h4>
+                </div>
+                <div  class="locationformRow">
+                    <mat-form-field class="fullLength">
+                        <input matInput placeholder="Location Label*" formControlName="locationName" />
+                    </mat-form-field>
+                    <mat-form-field class="fullLength">
+                        <input matInput placeholder="Latitude*" formControlName="latitude" readonly />
+                    </mat-form-field>
+                    <mat-form-field class="fullLength">
+                        <input matInput placeholder="Longitude*" formControlName="longitude" readonly />
+                    </mat-form-field>
+                    <mat-form-field class="fullLength">
+                        <input matInput type="number" (keyup)="setRadius();" placeholder="Radius in meters*"
+                            formControlName="radius" />
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveLocation()">Save</button>
+    </div>
+</mat-dialog-actions>

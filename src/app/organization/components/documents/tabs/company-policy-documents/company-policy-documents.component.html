@@ -1,0 +1,109 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div style="text-align: right;">
+      <button *ngIf="!isLeftVisible" class="btn header-button" matTooltip="Add New Document"
+        (click)="openAddCompanyPolicyDialog();">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          New Document</span>
+      </button>
+      <button *ngIf="isLeftVisible" class="btn header-button" (click)="backButtonFormReset();">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          Back</span>
+      </button>
+    </div>
+  </div>
+  <!-- <ng-template #policyViewOnly>
+    <div class="card-header">
+      <h6 class="title">Company Policy Documents</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <!-- <div class="example-container mat-elevation-z8">
+      <mat-table #table [dataSource]="CompanyPolicydataSource">
+        <ng-container matColumnDef="documentName">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.documentName}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="employeeType">
+          <mat-header-cell *matHeaderCellDef> Applies To </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.employeeType}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="accessLevel">
+          <mat-header-cell *matHeaderCellDef> Employee Permissions </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.accessLevel}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="modifiedDate">
+          <mat-header-cell *matHeaderCellDef> Last Updated On </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.modifiedDate | date:'dd/MM/yyyy'}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="compPolicyDocId">
+          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <div class="mat-element-icon">
+              <span class="download">
+                <i class="fa fa-download" matTooltip="Download" (click)="downloadFunction(element)" aria-hidden="true"
+                  style=" color:green; "></i></span>
+              <span class="edit">
+                <i class="fa fa-pencil-square-o " matTooltip="Edit" aria-hidden="true" style=" color:green; "
+                  (click)="openEditCompanyPolicyDialog(element);"></i>
+              </span>
+              <span class="delete">
+                <i class="fa fa-trash-o" matTooltip="Delete" aria-hidden="true" style="color:#e03737; "
+                  (click)="openDeleteDialog(element)"></i>
+              </span>
+            </div>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="CompanyPolicyColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: CompanyPolicyColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+      </mat-paginator>
+    </div> -->
+
+    <div class="searchBox" style="text-align: right;">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search"
+        (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="tableDataArray" [rows]="5" [paginator]="true" [pageLinks]="5"
+      [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field!='compPolicyDocId' && col.field!='modifiedDate'"> {{car[col.field]}}</div>
+            <div *ngIf="col.field!='compPolicyDocId' && col.field=='modifiedDate'">
+              {{car[col.field] | date:'dd/MM/yyyy'}}
+            </div>
+            <div class="mat-cell">
+              <div class="mat-element-icon">
+                <span class="download" matTooltip="Download" *ngIf="col.field=='compPolicyDocId'">
+                  <i class="fa fa-download" (click)="downloadFunction(car)" aria-hidden="true"></i></span>
+                <span class=" edit" matTooltip="Update" *ngIf="col.field=='compPolicyDocId'">
+                  <i class="fa fa-pencil-square-o" (click)="openEditCompanyPolicyDialog(car);"></i>
+                </span>
+                <span class="delete" matTooltip="Delete" *ngIf="col.field=='compPolicyDocId'">
+                  <i class="fa fa-trash-o" (click)="openDeleteDialog(car)"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+
+
+<!--     card 1  ends      -->

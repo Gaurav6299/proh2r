@@ -1,0 +1,67 @@
+<div class="card" style="box-shadow: none !important">
+  <div class="card-content">
+    <div class="card-header">
+      <h6 class="title">Listing Variable Pays for June - 2020</h6>
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="" [rows]="5" [paginator]="true" [pageLinks]="5"
+      [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true"
+      [(selection)]="selectedRows">
+      <ng-template pTemplate="caption">
+        <div class="ui-table-globalfilter-container text-right">
+          <div class="main-globalfiterInput-form">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search" />
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr [pSelectableRow]="car">
+          <th>
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr [pSelectableRow]="car">
+          <td>
+            <p-tableCheckbox [value]="car"></p-tableCheckbox>
+          </td>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field">
+              {{car[col.field]}}
+            </div>
+            <div class="mat-cell">
+              <div class="mat-element-icon">
+                <span class="edit">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div style="position: relative;top: 20px;text-align: center;">
+    <button matStepperPrevious class="btn header-button" cdkFocusInitial (click)="onNoClick()">
+      <span>
+        <i class="fa fa-times" aria-hidden="true"></i>
+        Cancel</span>
+    </button>
+    <button matStepperPrevious class="btn header-button" cdkFocusInitial (click)="onBack()">
+      <span>
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+        Back</span>
+    </button>
+    <button matStepperNext class="btn header-button" cdkFocusInitial (click)="onProceed()">
+      <span>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Proceed</span>
+    </button>
+  </div>
+</div>

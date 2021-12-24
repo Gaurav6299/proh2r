@@ -1,0 +1,796 @@
+<div class="card" style="box-shadow: none !important">
+  <div>
+    <!-- *ngIf="!isLeftVisible" -->
+    <div class="matTab-sectionButtons">
+      <button *ngIf="!isLeftVisible" class="btn header-button" (click)="addNewTemplate();">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          New Template</span>
+      </button>
+      <button *ngIf="isLeftVisible" class="btn header-button" (click)="cancelPanel();getAttendanceTemplateData();this.check1 = false ">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          Back</span>
+      </button>
+    </div>
+  </div>
+  <!-- <ng-template #notEditableTemp>
+    <div class="card-header">
+      <h6 class="title">Attendance Templates</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <app-left-right-panes [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+
+        <p-table #dt1 [columns]="columns" [value]="getAttendanceTemplateDataArray" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='action'">{{car[col.field]}}</div>
+                <div class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" *ngIf="col.field=='action'">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit" (click)="editTemplate(car);"></i>
+                    </span>
+                    <span class="delete" *ngIf="col.field=='action'">
+                      <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete" (click)="deleteAttendanceTemplate(car)"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div *ngIf="templateSettingsSteps==1" class="card" style="border: 1px solid #ddd;box-shadow: none !important;">
+          <div class="row" style="text-align: center;">
+            <h5 class="left-rights-slider-title">
+              Step 1: General Template Settings
+            </h5>
+            <h6 class="left-rights-slider-Subtitle">
+              Select the categories and approvers for this template
+            </h6>
+          </div>
+          <div class="card-content">
+            <form [formGroup]="attendanceTemplateSettings">
+              <div class="form-group">
+                <mat-form-field *ngIf="editTemplateName == false" class="fullLength">
+                  <input matInput placeholder="Label" formControlName="templateName">
+                </mat-form-field>
+                <mat-form-field *ngIf="editTemplateName == true" class="fullLength">
+                  <input matInput placeholder="Label" formControlName="templateName" readonly>
+                </mat-form-field>
+                <mat-error *ngIf="(!this.attendanceTemplateSettings.controls.templateName.value && check1 )">
+                  Field is required
+                </mat-error>
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">Please select the mode of capturing attendance</p>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Mode" formControlName="attdcaptureModes" multiple>
+                    <mat-option value="WEBCHECKIN">Web Check-in</mat-option>
+                    <mat-option value="MANUALLYUPLOAD">Mannually Upload</mat-option>
+                    <mat-option value="MOBILE">Mobile</mat-option>
+                    <mat-option value="BIOMETRIC">Biometric</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-error *ngIf="(!this.attendanceTemplateSettings.controls.attdcaptureModes.value && check1 )">
+                  Field is required
+                </mat-error>
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">How do you want to handle single missing check in or check out in attendance process</p>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Process" formControlName="singleMissingCheckInCheckOut">
+                    <mat-option value="CONSIDER_AS_INVALID_RECORD">Consider as invalid record</mat-option>
+                    <mat-option value="REGULARIZE_CHECKIN_AND_CHECKOUT_TO_DEFAULT_SHIFT_START_AND_END_TIME">Regularize Check-in and Check-out to default shift start and end time</mat-option>
+                    <mat-option value="REGULARIZE_ONLY_CHECKOUT_TO_DEFAULT_SHIFT_END_TIME">Regularize Check-out to default </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-error *ngIf="(!this.attendanceTemplateSettings.controls.singleMissingCheckInCheckOut.value && check1 )">
+                  Field is required
+                </mat-error>
+              </div>
+              <!-- <span class="category" style="color: red;" [hidden]="(attendanceTemplateSettings.controls.singleMissingCheckInCheckOut.valid || 
+                            attendanceTemplateSettings.controls.singleMissingCheckInCheckOut.untouched)">
+                {{requiredDropdownButton}}
+              </span> -->
+              <p class="category showFieldMandatory">No. of minimum hours required per Week</p>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <mat-form-field class="fullLength">
+                    <input pattern="^[1-9]\d*$" matInput placeholder="Minimum number of hours" formControlName="minHourForWeek">
+                  </mat-form-field>
+                  <div class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.minHourForWeek.value && check1 )">
+                    Field is required
+                  </div>
+                  <div class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.minHourForWeek.valid && this.attendanceTemplateSettings.controls.minHourForWeek.value )">
+                    Invalid Input
+                  </div>
+                </div>
+                <div class="col-md-6 form-group">
+                  <mat-form-field class="fullLength">
+                    <input matInput pattern="^(?:([0-5]?\d))$" placeholder="Minimum number of minutes" formControlName="minMinutesForWeek">
+                  </mat-form-field>
+                  <div class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.minMinutesForWeek.value && check1 )">
+                    Field is required
+                  </div>
+                  <div class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.minMinutesForWeek.valid && this.attendanceTemplateSettings.controls.minMinutesForWeek.value )">
+                    Invalid Input
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="category showFieldMandatory"> Do you want to notify employee if Min Hours not accomplished
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="empReceiveNotification">
+                    <mat-radio-button value="true">Yes</mat-radio-button>
+                    <mat-radio-button value="false">No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceTemplateSettings.controls.empReceiveNotification.valid || 
+                           attendanceTemplateSettings.controls.empReceiveNotification.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <!-- <p class="category">What are the minimum number of hours in a day considered as full day?</p>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="fullLength">
+                    <input pattern="^\d+$" matInput placeholder="Minimum number of hours"
+                      formControlName="minHourForFullDay">
+                    <mat-error
+                      *ngIf="(!this.attendanceTemplateSettings.controls.minHourForFullDay.valid && this.attendanceTemplateSettings.controls.minHourForFullDay.value )">
+                      Invalid Input
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="fullLength">
+                    <input matInput pattern="^(?:([0-5]?\d))$" placeholder="Minimum number of minutes"
+                      formControlName="minMinuteForFullDay">
+                    <mat-error
+                      *ngIf="(!this.attendanceTemplateSettings.controls.minMinuteForFullDay.valid && this.attendanceTemplateSettings.controls.minMinuteForFullDay.value )">
+                      Invalid Input
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">Is half day Applicable?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="halfDayApplicable" (change)="isHalfDayApplicable()">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceTemplateSettings.controls.halfDayApplicable.valid || 
+                           attendanceTemplateSettings.controls.halfDayApplicable.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <div *ngIf="this.attendanceTemplateSettings.controls.halfDayApplicable.value === 'true'">
+                <p class="category showFieldMandatory">How many minimum hours of half day?</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-form-field class="fullLength">
+                      <input matInput placeholder="Minimum number of hours" pattern="^\d+$"
+                        formControlName="minHoursForHalfDay">
+                      <mat-error
+                        *ngIf="(!this.attendanceTemplateSettings.controls.minHoursForHalfDay.valid && this.attendanceTemplateSettings.controls.minHoursForHalfDay.value )">
+                        Invalid Input
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="fullLength">
+                      <input matInput pattern="^(?:([0-5]?\d))$" placeholder="Minimum number of minutes"
+                        formControlName="minMinuteForHalfDay">
+                      <mat-error
+                        *ngIf="(!this.attendanceTemplateSettings.controls.minMinuteForHalfDay.valid && this.attendanceTemplateSettings.controls.minMinuteForHalfDay.value )">
+                        Invalid Input
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div> -->
+
+              <div class="form-group">
+                <p class="category showFieldMandatory">Is late coming or early going allowed?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="isLateComingEarlyGoingAllowed" (change)="lateComingOrEarlyGoingApplicable($event)">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="input-errorClass" [hidden]="(attendanceTemplateSettings.controls.isLateComingEarlyGoingAllowed.valid || 
+                attendanceTemplateSettings.controls.isLateComingEarlyGoingAllowed.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div>
+
+              <div *ngIf="attendanceTemplateSettings.controls.isLateComingEarlyGoingAllowed.value=='true'">
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="category showFieldMandatory">Number of days late coming or early going allowed?</p>
+                    <mat-form-field class="fullLength">
+                      <input matInput placeholder="Number of days" pattern="^\d+$" formControlName="lateComingAndEarlyGoingDays">
+                    </mat-form-field>
+                    <div class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.lateComingAndEarlyGoingDays.value && check1 )">
+                      Field is required
+                    </div>
+                    <div class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.lateComingAndEarlyGoingDays.valid && this.attendanceTemplateSettings.controls.lateComingAndEarlyGoingDays.value )">
+                      Invalid Input
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="category showFieldMandatory">Grace Time Limit</p>
+                    <mat-form-field class="fullLength">
+                      <input matInput pattern="^\d+$" placeholder="Grace time in minutes" formControlName="graceTimeLimit">
+                    </mat-form-field>
+                    <div class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.graceTimeLimit.value && check1 )">
+                      Field is required
+                    </div>
+                    <div class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.graceTimeLimit.valid && this.attendanceTemplateSettings.controls.graceTimeLimit.value )">
+                      Invalid Input
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <p class="category showFieldMandatory">Are late coming or early going defaulters leave deductible?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="isDefaultersLeaveDeductible" (change)="isDefaultersLeaveDeductibleChange($event)">
+                      <mat-radio-button value='true'>Yes</mat-radio-button>
+                      <mat-radio-button value='false'>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="input-errorClass" [hidden]="(attendanceTemplateSettings.controls.isDefaultersLeaveDeductible.valid || 
+                        attendanceTemplateSettings.controls.isDefaultersLeaveDeductible.untouched)">
+                    {{requiredRadioButton}}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <p class="category showFieldMandatory">Please Select Frequency</p>
+                  <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Frequency" formControlName="templateFrequency">
+                      <mat-option value="week">Week</mat-option>
+                      <mat-option value="month">Month</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="input-errorClass" *ngIf="(!this.attendanceTemplateSettings.controls.templateFrequency.value && check1 )">
+                    Field is required
+                  </div>
+                  <div class="input-errorClass" *ngIf="(!this.attendanceTemplateSettings.controls.templateFrequency.valid && this.attendanceTemplateSettings.controls.templateFrequency.value )">
+                    Invalid Input
+                  </div>
+                </div>
+
+                <div *ngIf="attendanceTemplateSettings.controls.isDefaultersLeaveDeductible.value=='true'">
+                  <ng-select class="custom-ng-select-Style custom-ng-select-StyleModal" [items]="leaveCategory" bindLabel="leaveName" bindValue="categoryId"
+                    placeholder="Select Leave Category" formControlName="leaveCategory">
+                  </ng-select>
+                  <mat-error *ngIf="(!attendanceTemplateSettings.controls.leaveCategory.value && attendanceTemplateSettings.controls.leaveCategory.touched)">
+                    This field is required.
+                  </mat-error>
+                </div>
+
+              </div>
+
+              <div class="form-group">
+                <p class="category">Which days should be considered as weekly off?</p>
+                <div class="inlineSelectionMatCheckbox">
+                  <p-checkbox *ngFor="let i of weeklyOffs; let i = index" (onChange)="onChange($event,i.value);" [value]="i.value" label="{{i.viewValue}}"
+                    [formControl]="attendanceTemplateSettings.controls['weeklyOffs']"></p-checkbox>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="category">Which week off is a half day?</p>
+                <div class="inlineSelectionMatCheckbox">
+                  <p-checkbox *ngFor="let i of weeklyOffsHalfDays; let i = index" [value]="i.value" label="{{i.viewValue}}" [formControl]="attendanceTemplateSettings.controls['halfAppDays']"
+                    [disabled]="i.disabled"></p-checkbox>
+                </div>
+                <div class="input-errorClass" [hidden]="(attendanceTemplateSettings.controls.halfAppDays.valid || 
+                attendanceTemplateSettings.controls.halfAppDays.untouched)">
+                  {{requiredDropdownButton}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="category showFieldMandatory">Alternate week off routine</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="weekOffSequence" (change)="selectRoutineType()">
+                    <mat-radio-button value='ODD'>Odd</mat-radio-button>
+                    <mat-radio-button value='EVEN'>Even</mat-radio-button>
+                    <mat-radio-button value='NONE'>None</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="input-errorClass" [hidden]="(attendanceTemplateSettings.controls.weekOffSequence.valid || 
+                attendanceTemplateSettings.controls.weekOffSequence.untouched)">
+                  {{requiredDropdownButton}}
+                </div>
+              </div>
+
+              <div *ngIf="showHideSeqDays" class="form-group">
+                <p class="category">Days for alternate week off routine</p>
+                <div class="inlineSelectionMatCheckbox">
+                  <p-checkbox *ngFor="let i of seqAppDays; let i = index" [value]="i.value" label="{{i.viewValue}}" [formControl]="attendanceTemplateSettings.controls['seqAppDays']"
+                    [disabled]="i.disabled">
+                  </p-checkbox>
+                </div>
+                <div class="input-errorClass" [hidden]="(attendanceTemplateSettings.controls.seqAppDays.valid || 
+                attendanceTemplateSettings.controls.seqAppDays.untouched)">
+                  {{requiredDropdownButton}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="category showFieldMandatory">Do you want to send notification to supervisors?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="supervisorReceiveNotification">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceTemplateSettings.controls.supervisorReceiveNotification.valid || 
+                           attendanceTemplateSettings.controls.supervisorReceiveNotification.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">Is comment mandatory while submitting regularisation request
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="commentMandatoryforRegReq">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceTemplateSettings.controls.commentMandatoryforRegReq.valid || 
+                           attendanceTemplateSettings.controls.commentMandatoryforRegReq.untouched)">
+                {{requiredRadioButton}}
+              </div>
+
+              <div class="form-group">
+                <p class="category">Select Locations Departments Bands or Designations for template </p>
+                <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type" [selectableGroup]="true"
+                  dropdownPosition="auto" [selectableGroupAsModel]="false" [closeOnSelect]="false" [selectableGroupAsModel]="false"
+                  formControlName="allSelections">
+                  <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">Approvers Type for each employee
+                </p>
+                <mat-radio-group formControlName="attendanceApprovalType" (change)="attendanceApprovalType()">
+                  <mat-radio-button value='TEMPLATEWISE'>Template Wise</mat-radio-button>
+                  <mat-radio-button value='EMPLOYEEWISE'>Employee Wise</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <span class="category" style="color: red;" [hidden]="(attendanceTemplateSettings.controls.attendanceApprovalType.valid || 
+                           attendanceTemplateSettings.controls.attendanceApprovalType.untouched)">
+                {{requiredRadioButton}}
+              </span>
+              <div *ngIf="this.attendanceTemplateSettings.controls.attendanceApprovalType.value ==='TEMPLATEWISE'" class="form-group">
+                <p class="category">
+                  Please select the primary approver for this template
+                </p>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Reporting Supervisor" formControlName="templateApprover" (click)="resetSearch()">
+                    <mat-form-field style="width: 100%; margin-top: 10px;">
+                      <input type="text" placeholder="Search Employee" aria-label="Number" matInput [formControl]="myControl" (keyup)="searchEmployeeName($event)">
+                    </mat-form-field>
+                    <mat-option *ngFor="let sl of optionsData" [value]="sl.value">
+                      {{sl.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <p class="category">
+                Please choose the hierarchy for which absent days/half days (due to insufficient hours, or missing clock-in or clock-outs)
+                get treated?
+              </p>
+              <p-pickList [source]="hierarchy" [target]="selectedHierarchy" (onMoveToSource)="onMove($event)">
+                <ng-template let-car pTemplate="item">
+                  <div class="ui-helper-clearfix">
+                    <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{car.viewValue}}</div>
+                  </div>
+                </ng-template>
+              </p-pickList>
+
+              <!-- <pre>
+                {{attendanceTemplateSettings.value | json}}
+              </pre> -->
+
+
+              <div class="row" style="text-align: center;">
+                <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible; setPanel();this.check1 = false">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true" (click)="this.attendanceTemplateSettings.reset()"></i>
+                    Cancel</span>
+                </button>
+                <button class="btn header-button" (click)="saveFirstStepRecord(attendanceTemplateSettings);">
+                  <span>
+                    <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                    Proceed</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div *ngIf="templateSettingsSteps == 2" class="card" style="border:1px solid #ddd;border-radius:3px;box-shadow: none !important;">
+          <div class="row" style="text-align: center;">
+            <h5 style="color:#4b88dc;font-weight: 500">
+              Step 2: Attendance Regularization
+            </h5>
+            <h6 style="color:#4b88dc;font-weight: 500;text-transform: none;">
+              Set permissions and notifications
+            </h6>
+          </div>
+          <div class="card-content">
+            <form [formGroup]="attendanceRegularizationSettings">
+              <div class="form-group">
+                <p class="category showFieldMandatory">Would you like to restrict the IP address that the employee can check-in/check-out?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="restrictIpAddress">
+                    <mat-radio-button (change)=selectedIpAddress($event) value=true>Yes</mat-radio-button>
+                    <mat-radio-button (change)=selectedIpAddress($event) value=false>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.restrictIpAddress.valid || 
+                           attendanceRegularizationSettings.controls.restrictIpAddress.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <div class="sub-group" *ngIf="this.attendanceRegularizationSettings.controls.restrictIpAddress.value === 'true'">
+                <h6 class="sub-content-title">IP Configurations</h6>
+                <p class="category-sub-content">Please enter all IP addresses that the employee can log in from to check-in/check-out
+                </p>
+                <div formArrayName="attdIPconfig" class="fullLength">
+                  <div class="row" *ngFor="let itemrow of attendanceRegularizationSettings.controls.attdIPconfig.controls; let i=index" [formGroupName]="i">
+                    <div class="col-md-10">
+                      <mat-form-field class="fullLength">
+                        <input matInput placeholder='000.000.000.000' formControlName="ipAddress">
+                        <mat-error [hidden]="this.attendanceRegularizationSettings.valid">Invalid IP address
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <span style="font-size: 18px;color: #da0606;float: right;margin-right: 12%;">
+                      <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"></i>
+                    </span>
+                  </div>
+                </div>
+                <button class="btn header-button" (click)="addNewRow()">
+                  <span>
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    Add Another IP Address</span>
+                </button>
+              </div>
+              <div class="form-group">
+                <p class="category">Would you like to restrict Locations from which employee can mark check in/check out using Mobile?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="restrictCheckInCheckOutLocation" (change)="applyValidation();">
+                    <mat-radio-button (change)=selectedIpAddress($event) value=true>Yes</mat-radio-button>
+                    <mat-radio-button (change)=selectedIpAddress($event) value=false>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.restrictCheckInCheckOutLocation.valid || 
+                           attendanceRegularizationSettings.controls.restrictCheckInCheckOutLocation.untouched)">
+                {{requiredRadioButton}}
+              </div>
+
+              <div class="sub-group" *ngIf="this.attendanceRegularizationSettings.controls.restrictCheckInCheckOutLocation.value === 'true'">
+                <h6 class="sub-content-title">Location Restrictions</h6>
+                <div class="form-group">
+                  <p class="category-sub-content">How would you like assign Locations for each employee?</p>
+                  <mat-radio-group formControlName="restrictedGeoLocationType">
+                    <mat-radio-button value='TEMPLATEWISE'>Template Wise</mat-radio-button>
+                    <mat-radio-button value='EMPLOYEEWISE'>Employee Wise</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div *ngIf="this.attendanceRegularizationSettings.controls.restrictCheckInCheckOutLocation.value === 'true'">
+                  <span class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.restrictedGeoLocationType.valid || 
+                attendanceRegularizationSettings.controls.restrictedGeoLocationType.untouched)">
+                    {{requiredRadioButton}}
+                  </span>
+                </div>
+                <div style="text-align: right;">
+                  <button class="btn header-button" matTooltip="Add New Location" (click)="openAddLocationDialog();">
+                    <span>
+                      <i class="fa fa-plus-square" aria-hidden="true"></i>
+                      Add Location</span>
+                  </button>
+                </div>
+                <div class="row">
+                  <div class="col-md-8 offset-md-8"></div>
+                  <div class="col-md-4">
+                    <mat-form-field class="fullLength">
+                      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                      <span matSuffix>
+                        <i class="fa fa-search" aria-hidden="true" style="color:#404A56;"></i>
+                      </span>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="table-responsive mat-elevation-z8">
+                  <mat-table #table [dataSource]="locationDataSource">
+                    <ng-container matColumnDef="locationName">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="dataTableHeaderColor">Location Name</span>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.locationName}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="longitude">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="dataTableHeaderColor">Longitude</span>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.longitude}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="latitude">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="dataTableHeaderColor">Latitude</span>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.latitude}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="radius">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="dataTableHeaderColor">Radius</span>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.radius}}</mat-cell>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="actions">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="dataTableHeaderColor">Actions</span>
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <div class="mat-element-icon">
+                          <span class="edit">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="openUpdateLocation(element)" matTooltip="Edit"></i>
+                          </span>
+                          <span class="delete">
+                            <i class="fa fa-trash-o" aria-hidden="true" (click)="openDeleteLocationDialog(element.locationRestrictionsId)" matTooltip="Delete"></i>
+                          </span>
+                        </div>
+                      </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumnsLocations"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsLocations;">
+                    </mat-row>
+                  </mat-table>
+                </div>
+                <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+                </mat-paginator>
+
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">Can employees regularize their own attendance entries?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="empRegularizeOwnAttendance">
+                    <mat-radio-button (change)=selectedEmpReg($event) value=true>Yes</mat-radio-button>
+                    <mat-radio-button (change)=selectedEmpReg($event) value=false>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.empRegularizeOwnAttendance.valid || 
+                           attendanceRegularizationSettings.controls.empRegularizeOwnAttendance.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <!-- <div *ngIf="this.attendanceRegularizationSettings.controls.empRegularizeOwnAttendance.value === 'true'"
+                class="sub-group">
+                <h6 style="color:#4b88dc;font-weight: 600;text-transform: none;">
+                  Employee Regularization Settings
+                </h6>
+                <div class="form-group sub-content">
+                  <p class="category">Should the admin receive a notification every time an
+                    employee regularizes?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="adminRegReqNotifToEmp">
+                      <mat-radio-button value=true>Yes</mat-radio-button>
+                      <mat-radio-button value=false>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.adminRegReqNotifToEmp.valid || 
+                           attendanceRegularizationSettings.controls.adminRegReqNotifToEmp.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <div class="form-group sub-content">
+                  <p class="category">Should the supervisor receive a notification every time
+                    an employee regularizes?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="empRegReqNotifToSupervisor">
+                      <mat-radio-button value=true>Yes</mat-radio-button>
+                      <mat-radio-button value=false>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.empRegReqNotifToSupervisor.valid || 
+                           attendanceRegularizationSettings.controls.empRegReqNotifToSupervisor.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div> -->
+              <div class="form-group">
+                <p class="category showFieldMandatory">Can supervisors regularize their subordinate's attendance entries?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="supervisorRegSubordinateAtt">
+                    <mat-radio-button (change)=selectedSubordinate($event) value=true>Yes</mat-radio-button>
+                    <mat-radio-button (change)=selectedSubordinate($event) value=false>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.supervisorRegSubordinateAtt.valid || attendanceRegularizationSettings.controls.supervisorRegSubordinateAtt.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <!-- <div *ngIf="this.attendanceRegularizationSettings.controls.supervisorRegSubordinateAtt.value === 'true'"
+                class="sub-group">
+                <h6 style="color:#4b88dc;font-weight: 600;text-transform: none;">
+                  Supervisor Regularization Settings
+                </h6>
+                <div class="form-group sub-content">
+                  <p class="category">Should the admin receive a notification every time a
+                    supervisor regularizes on behalf of an employee?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="supRegReqNotifToAdmin">
+                      <mat-radio-button value=true>Yes</mat-radio-button>
+                      <mat-radio-button value=false>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.supRegReqNotifToAdmin.valid || 
+                           attendanceRegularizationSettings.controls.supRegReqNotifToAdmin.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <div class="form-group sub-content">
+                  <p class="category">Should the employee receive a notification every time a
+                    supervisor regularizes on behalf of employee?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="supRegReqNotifToEmp">
+                      <mat-radio-button value=true>Yes</mat-radio-button>
+                      <mat-radio-button value=false>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.supRegReqNotifToEmp.valid || 
+                           attendanceRegularizationSettings.controls.supRegReqNotifToEmp.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div> -->
+              <div class="form-group">
+                <p class="category showFieldMandatory">Can the admin edit regularize attendance entries?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="adminEditRegularizeAtt">
+                    <mat-radio-button (change)="selectedRegularize($event)" value=true>Yes</mat-radio-button>
+                    <mat-radio-button (change)="selectedRegularize($event)" value=false>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.adminEditRegularizeAtt.valid || attendanceRegularizationSettings.controls.adminEditRegularizeAtt.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <!-- <div *ngIf="this.attendanceRegularizationSettings.controls.adminEditRegularizeAtt.value === 'true'"
+                class="sub-group">
+                <h6 style="color:#4b88dc;font-weight: 600;text-transform: none;">
+                  Admin Regularization Settings
+                </h6>
+                <div class="form-group sub-content">
+                  <p class="category">Should the supervisor receive a notification every time
+                    an admin regularizes on behalf of employee?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="adminRegReqNotifToSup">
+                      <mat-radio-button value=true>Yes</mat-radio-button>
+                      <mat-radio-button value=false>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.adminRegReqNotifToSup.valid || 
+                           attendanceRegularizationSettings.controls.adminRegReqNotifToSup.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <div class="form-group sub-content">
+                  <p class="category">Should the employee receive a notification every time an
+                    admin regularizes on behalf of employee?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="adminRegReqNotifToEmp">
+                      <mat-radio-button value=true>Yes</mat-radio-button>
+                      <mat-radio-button value=false>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.adminRegReqNotifToEmp.valid || 
+                           attendanceRegularizationSettings.controls.adminRegReqNotifToEmp.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div> -->
+              <div class="form-group">
+                <p class="category">Should weekly email notification for missing check in/check out be sent?</p>
+                <p class="category">
+                  <strong>Note:</strong> Email notification will be sent out every week on Monday and on 1st day of a new attendance
+                  cycle.
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="attdEmailNotification">
+                    <mat-radio-button (change)=selectedRadioButton1($event) value='DONTNOTIFY'>Don't notify
+                    </mat-radio-button>
+                    <br>
+                    <mat-radio-button value='CHECKOUTMISSINGNOTIFICATION'>
+                      Send notification when only check out is missing on a working day
+                    </mat-radio-button>
+                    <br>
+                    <mat-radio-button value='CHECKINOUTMISSINGNOTIFICATION'>
+                      Send notification when both check in and check out are missing on a working day
+                    </mat-radio-button>
+                    <br>
+                    <mat-radio-button value='NOENTRYNOTIFICATION'>
+                      Send notification when either check out is missing or there is no entry on a working day
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <!-- <span class="category" style="color:red" *ngIf="(!this.attendanceTemplateSettings.controls.minHourForWeek.value && check1 )">
+                                Choose atleast one
+                            </span> -->
+              <!-- <span class="category" style="color: red;" [hidden]="(attendanceRegularizationSettings.controls.attdEmailNotification.valid || 
+                           attendanceRegularizationSettings.controls.attdEmailNotification.untouched)">
+                {{requiredRadioButton}}
+              </span> -->
+              <div *ngIf="!(this.attendanceRegularizationSettings.controls.attdEmailNotification.value === 'DONTNOTIFY') || (this.attendanceRegularizationSettings.controls.attdEmailNotification.value === null)"
+                class="form-group">
+                <p class="category">Who should receive weekly email notification for missing check in/check out?</p>
+                <div style="padding-top:10px;padding-bottom:10px;">
+                  <mat-checkbox formControlName="adminShouldReceiveNotification">Admin</mat-checkbox>
+                  <br>
+                  <mat-checkbox formControlName="supervisorShouldReceiveNotification">Supervisor</mat-checkbox>
+                  <br>
+                  <mat-checkbox formControlName="employeesShouldReceiveNotification">Employees</mat-checkbox>
+                </div>
+              </div>
+
+              <div class="row" style="text-align: center;">
+                <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible; setPanel();this.attendanceTemplateSettings.reset();getData()">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel</span>
+                </button>
+                <button class="btn header-button" (click)="saveSecondStep()">
+                  <span>
+                    <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                    Proceed</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </app-left-right-panes>
+  </div>
+</div>

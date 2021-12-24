@@ -1,0 +1,189 @@
+<div class="card" style="box-shadow: none !important">
+
+
+    <div class="card-header">
+     
+        <h6 class="title">Listing Active Employees</h6>
+     
+    </div>
+    <div class="card-content">
+      <div class="col-md-12" style="padding:0px;">
+        <div class="col-md-5"></div>
+       
+        <div class="col-md-4">
+          <mat-form-field style="width:100%;">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+            <span matSuffix>
+              <i class="fa fa-search" aria-hidden="true" style="color:#404A56;"></i>
+            </span>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3" style="text-align: right;padding-top:20px;">
+          <button class="btn header-button" (click)="showHideFilter = !showHideFilter">
+            <span>
+              <i class="fa fa-search-plus" aria-hidden="true"></i>
+              Show Advance Search</span>
+          </button>
+          <!-- <a style="font-weight: 600;color:#205081;cursor:pointer" (click)="showHideFilter = !showHideFilter">Show Advance Search Filter</a> -->
+        </div>
+        <div *ngIf="showHideFilter" class="col-md-12" style="border:1px solid #ddd;box-shadow: none;padding:15px 10px;border-radius:3px;">
+  
+          <div class="col-md-3">
+  
+            <mat-form-field>
+              <mat-select placeholder="Select Location" [formControl]="selectedWorkLocation" multiple  (selectionChange)="selectLocation()">
+                <mat-select-trigger>
+                  {{selectedWorkLocation.value ? selectedWorkLocation.value[0] : ''}}
+                  <span *ngIf="selectedWorkLocation.value?.length > 1" class="example-additional-selection">
+                    (+{{selectedWorkLocation.value.length - 1}} others)
+                  </span>
+                </mat-select-trigger>
+                <mat-form-field style="width: 100%; margin-top: 10px;">
+                  <input type="text" placeholder="Search Location" aria-label="Number" matInput [formControl]="myControl" (keyup)="searchLocation($event)">
+                </mat-form-field>
+                <mat-option *ngFor="let topping of optionsData" [value]="topping.value">{{topping.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-3">
+            <mat-form-field>
+              <mat-select placeholder="Joining Month" [formControl]="selectedYear" multiple style="margin-left: 19px;" (selectionChange)="selectYear()">
+                <mat-select-trigger>
+                  {{selectedYear.value ? selectedYear.value[0] : ''}}
+                  <span *ngIf="selectedYear.value?.length > 1" class="example-additional-selection">
+                    (+{{selectedYear.value.length - 1}} others)
+                  </span>
+                </mat-select-trigger>
+                <mat-form-field style="width: 100%; margin-top: 10px;">
+                  <input type="text" placeholder="Search Year" aria-label="Number" matInput [formControl]="myControlYear" (keyup)="searchYear($event)">
+                </mat-form-field>
+                <mat-option *ngFor="let topping of yearsData" [value]="topping.value">{{topping.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+          </div>
+          <div class="col-md-3">
+            <mat-form-field>
+              <mat-select placeholder="Employee Status" [formControl]="selectedEmployeeStatus" multiple style="margin-left: 19px;" (selectionChange)="selectEmployeeStatus()">
+                <mat-select-trigger>
+                  {{selectedEmployeeStatus.value ? selectedEmployeeStatus.value[0] : ''}}
+                  <span *ngIf="selectedEmployeeStatus.value?.length > 1" class="example-additional-selection">
+                    (+{{selectedEmployeeStatus.value.length - 1}} others)
+                  </span>
+                </mat-select-trigger>
+                <mat-form-field style="width: 100%; margin-top: 10px;">
+                  <input type="text" placeholder="Search Status" aria-label="Number" matInput [formControl]="myControlEmployeeStatus" (keyup)="searchEmployeeStatus($event)">
+                </mat-form-field>
+                <mat-option *ngFor="let topping of statusData" [value]="topping.value">{{topping.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field>
+              <mat-select placeholder="Cost Center" [formControl]="selectedCostCenter" multiple style="margin-left: 19px;" (selectionChange)="selectCostCenter()">
+                <mat-select-trigger>
+                  {{selectedCostCenter.value ? selectedCostCenter.value[0] : ''}}
+                  <span *ngIf="selectedCostCenter.value?.length > 1" class="example-additional-selection">
+                    (+{{selectedCostCenter.value.length - 1}} others)
+                  </span>
+                </mat-select-trigger>
+                <mat-form-field style="width: 100%; margin-top: 10px;">
+                  <input type="text" placeholder="Search Cost Centers" aria-label="Number" matInput [formControl]="myControlCostCenter" (keyup)="searchCostCenter($event)">
+                </mat-form-field>
+                <mat-option *ngFor="let topping of costCenterData" [value]="topping.value">{{topping.viewValue}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 table-responsive example-container mat-elevation-z8" style="margin-top:15px;margin-bottom:15px;padding-bottom: 15px;
+        padding-top: 10px;">
+        <mat-table #table [dataSource]="dataSource">
+  
+  
+          <ng-container matColumnDef="employeeCode">
+            <mat-header-cell *matHeaderCellDef>Employee Code</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.employeeCode}}
+            </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="employeeName">
+            <mat-header-cell *matHeaderCellDef>Employee Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.employeeName}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="eligibiltyCurrentCycle">
+              <mat-header-cell *matHeaderCellDef>Eligibilty for <br>Current Cycle( In <i class="fa fa-inr"></i>)</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.eligibiltyCurrentCycle}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="paidViaOffcycle">
+                <mat-header-cell *matHeaderCellDef>Paid via <br> Offcycle ( In  <i class="fa fa-inr"></i> )</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  {{element.paidViaOffcycle}}
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="additionalAmount">
+                  <mat-header-cell *matHeaderCellDef>Additional Amount ( In  <i class="fa fa-inr"></i> )</mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{element.additionalAmount}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="taxablePaidAmt">
+                    <mat-header-cell *matHeaderCellDef>Taxable Paid <br> Amount ( In   <i class="fa fa-inr"></i>)</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      {{element.taxablePaidAmt}}
+                    </mat-cell>
+                  </ng-container>
+  
+         
+  
+  
+          <ng-container matColumnDef="recordId">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span style="padding:3px;" (click)="onClickReimbursableAmountDialog(element)">
+                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:20px;color:green;vertical-align: middle;cursor:pointer;"></i>
+              </span>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+       
+  
+      </div>
+      
+          <div class="col-md-12" style="text-align: center;">
+            <button  matStepperPrevious class="btn header-button" cdkFocusInitial (click)="onNoClick()">
+              <span>
+                <i class="fa fa-times" aria-hidden="true"></i>
+                Cancel</span>
+            </button>
+            <button matStepperPrevious class="btn header-button" cdkFocusInitial  >
+              <span >
+                <i class="fa fa-arrow-circle-left" aria-hidden="true" ></i>
+                Back</span>
+            </button>
+            <!-- mat-button matStepperNext -->
+            <button matStepperNext class="btn header-button" cdkFocusInitial 
+              (click)="onProceed()">
+              <span >
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Complete</span>
+            </button>
+  
+          </div>
+       
+    </div>
+  
+  
+  </div>

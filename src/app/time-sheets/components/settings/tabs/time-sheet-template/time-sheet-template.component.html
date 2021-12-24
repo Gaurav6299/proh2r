@@ -1,0 +1,331 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="matTab-sectionButtons">
+    <button *ngIf="!isLeftVisible" class="btn header-button" (click)="addNewTemplate();">
+      <span><i class="fa fa-plus-square" aria-hidden="true"></i>New Template</span></button>
+    <button *ngIf="isLeftVisible" class="btn header-button" (click)="cancelPanel();getTimeSheetsTemplate();">
+      <span><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+    </button>
+  </div>
+  <div class="card-content">
+    <app-projects-left-right [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="getTimeSheetsTemplateList" [rows]="5" [paginator]="true"
+          [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true"
+          [responsive]="true">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+                <div class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" *ngIf="col.field == 'actions'">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editTemplate(car)"></i>
+                    </span>
+                    <span class="delete" *ngIf="col.field == 'actions'">
+                      <i class="fa fa-trash-o" (click)="openDeleteTimeSheetsTemplateDialog(car)" aria-hidden="true"></i>
+                    </span>
+                    <!-- <button class="edit" *ngIf="col.field == 'actions'" (click)="editTemplate(car)">up
+                    </button>
+                    <button class="delete" *ngIf="col.field == 'actions'" (click)="openDeleteOndutyAttendanceTemplateDialog(car)">
+                     del
+                    </button> -->
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <div rightPane class="divtoggleDiv">
+        <div class="card templateAssignmentForm">
+          <div class="card-content">
+            <form [formGroup]="timeSheetsTemplateSettings" #formDirective="ngForm">
+              <div class="form-group">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Template Name" formControlName="templateName">
+                  <mat-error
+                    [hidden]="(timeSheetsTemplateSettings.controls.templateName.valid || timeSheetsTemplateSettings.controls.templateName.untouched)">
+                    Field is Required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">How do you want to capture time ?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="timeCaptureType">
+                    <mat-radio-button value='HOURWISE'>Hourly Basis</mat-radio-button>
+                    <mat-radio-button value='TIMEWISE'>Time Basis</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="input-errorClass" [hidden]="(timeSheetsTemplateSettings.controls.timeCaptureType.valid || 
+              timeSheetsTemplateSettings.controls.timeCaptureType.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">No. of hours required in a work week</p>
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead class="workWeeks-table-head">
+                      <tr>
+                        <th>SUN</th>
+                        <th>MON</th>
+                        <th>TUE</th>
+                        <th>WED</th>
+                        <th>THU</th>
+                        <th>FRI</th>
+                        <th>SAT</th>
+                        <th>TOTAL</th>
+                      </tr>
+                    </thead>
+                    <tbody class="workWeeks-table-body">
+                      <tr>
+                        <td>
+                          <mat-form-field class="fullLength" appearance="none">
+                            <input (change)="calculateHours()" matInput formControlName="sunday">
+                            <mat-error class="text-center" [hidden]="(timeSheetsTemplateSettings.controls.sunday.valid || 
+                            timeSheetsTemplateSettings.controls.sunday.untouched)">
+                              This field is required.
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field class="fullLength" appearance="none">
+                            <input (change)="calculateHours()" matInput formControlName="monday">
+                            <mat-error class="text-center" [hidden]="(timeSheetsTemplateSettings.controls.monday.valid || 
+                            timeSheetsTemplateSettings.controls.monday.untouched)">
+                              This field is required.
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field class="fullLength" appearance="none">
+                            <input (change)="calculateHours()" matInput formControlName="tuesday">
+                            <mat-error class="text-center" [hidden]="(timeSheetsTemplateSettings.controls.tuesday.valid || 
+                            timeSheetsTemplateSettings.controls.tuesday.untouched)">
+                              This field is required.
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field class="fullLength" appearance="none">
+                            <input (change)="calculateHours()" matInput formControlName="wednesday">
+                            <mat-error class="text-center" [hidden]="(timeSheetsTemplateSettings.controls.wednesday.valid || 
+                            timeSheetsTemplateSettings.controls.wednesday.untouched)">
+                              This field is required.
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field class="fullLength" appearance="none">
+                            <input (change)="calculateHours()" matInput formControlName="thursday">
+                            <mat-error class="text-center" [hidden]="(timeSheetsTemplateSettings.controls.thursday.valid || 
+                            timeSheetsTemplateSettings.controls.thursday.untouched)">
+                              This field is required.
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field class="fullLength" appearance="none">
+                            <input (change)="calculateHours()" matInput formControlName="friday">
+                            <mat-error class="text-center" [hidden]="(timeSheetsTemplateSettings.controls.friday.valid || 
+                            timeSheetsTemplateSettings.controls.friday.untouched)">
+                              This field is required.
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field class="fullLength" appearance="none">
+                            <input (change)="calculateHours()" matInput formControlName="saturday">
+                            <mat-error class="text-center" [hidden]="(timeSheetsTemplateSettings.controls.saturday.valid || 
+                            timeSheetsTemplateSettings.controls.saturday.untouched)">
+                              This field is required.
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                        <td>{{timeSheetsTemplateSettings.controls.totalhours.value}}</td>
+                        <!-- <td>
+                          {{ ConvertToInt(sunday) + ConvertToInt(monday) + ConvertToInt(tuesday) + ConvertToInt(wednesday) + ConvertToInt(thursday) + ConvertToInt(friday) + ConvertToInt(saturday)}}
+                        </td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="category">Assign timesheet template by Location , Department , Band or Designation</p>
+                <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+                  [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+                  [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+                  <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">Level of Approval</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="approvalLevel" (change)="selectedApproval()">
+                    <mat-radio-button value='LEVEL1'> Level 1 </mat-radio-button>
+                    <mat-radio-button value='LEVEL2'> Level 2 </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="input-errorClass" [hidden]="(timeSheetsTemplateSettings.controls.approvalLevel.valid || 
+              timeSheetsTemplateSettings.controls.approvalLevel.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div>
+
+
+
+              <!-- <div class="form-group">
+                <p class="category showFieldMandatory">Would you lock the timeheet?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="timeLock" (change)="selectedTimelock()">
+                    <mat-radio-button value=true>Yes</mat-radio-button>
+                    <mat-radio-button value=false>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="input-errorClass" [hidden]="(timeSheetsTemplateSettings.controls.timeLock.valid || 
+                timeSheetsTemplateSettings.controls.timeLock.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div>
+
+              <div *ngIf="(timeSheetsTemplateSettings.controls.timeLock.value == 'true')">
+                <div class="form-group">
+                  <p class="category showFieldMandatory">Select Date on when timesheets lock</p>
+                  <mat-form-field class="fullLength">
+                    <input matInput type="date" placeholder="Select Date On Which Expense Was Incurred"
+                      formControlName="timeLockDate">
+                  </mat-form-field>
+                  <div class="input-errorClass" [hidden]="(timeSheetsTemplateSettings.controls.timeLockDate.valid || 
+                timeSheetsTemplateSettings.controls.timeLockDate.untouched)">
+                    {{requiredRadioButton}}
+                  </div>
+                </div>
+              </div> -->
+
+
+              <div class="form-group">
+                <p class="category showFieldMandatory">Who can fill the timesheets for employees ?</p>
+                <div *ngFor="let i of requestInitiators; let i = index">
+                  <mat-checkbox class="example-margin" (change)="onChange($event)" [checked]="i.selected"
+                    [value]="i.value">{{i.viewValue}}</mat-checkbox>
+                </div>
+
+                <div class="input-errorClass" [hidden]="(timeSheetsTemplateSettings.controls.timeSheetsApplicants.valid || 
+              timeSheetsTemplateSettings.controls.timeSheetsApplicants.untouched)">
+                  {{requiredDropdownButton}}
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="category showFieldMandatory">How do you want to select approvers ?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="timeSheetsApprovalType" (change)="selectApprovalType()">
+                    <mat-radio-button value='TEMPLATEWISE'>Template Wise</mat-radio-button>
+                    <mat-radio-button value='EMPLOYEEWISE'>Employee Wise</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="input-errorClass" [hidden]="(timeSheetsTemplateSettings.controls.timeSheetsApprovalType.valid || 
+              timeSheetsTemplateSettings.controls.timeSheetsApprovalType.untouched)">
+                  {{requiredDropdownButton}}
+                </div>
+              </div>
+              <div
+                *ngIf="(timeSheetsTemplateSettings.controls.approvalLevel.value === 'LEVEL1') && (timeSheetsTemplateSettings.controls.timeSheetsApprovalType.value ==='TEMPLATEWISE')">
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select first level approver" formControlName="primaryApprover"
+                    (click)=" resetSearch()">
+                    <mat-form-field class="fullLength">
+                      <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                        [formControl]="myControl" (keyup)="searchEmployeeName($event)">
+                    </mat-form-field>
+                    <mat-option *ngFor="let supervisor of optionsData" [value]="supervisor.value">
+                      {{ supervisor.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="timeSheetsTemplateSettings.controls.primaryApprover.hasError('required') || (formDirective.submitted && timeSheetsTemplateSettings.controls.primaryApprover.invalid)">
+                    {{requiredDropdownButton}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div
+                *ngIf="(timeSheetsTemplateSettings.controls.approvalLevel.value === 'LEVEL2') && (timeSheetsTemplateSettings.controls.timeSheetsApprovalType.value ==='TEMPLATEWISE')">
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select first level approver" formControlName="primaryApprover"
+                    (click)=" resetSearch()">
+                    <mat-form-field class="fullLength">
+                      <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                        [formControl]="myControl" (keyup)="searchEmployeeName($event)">
+                    </mat-form-field>
+                    <mat-option *ngFor="let supervisor of optionsData" [value]="supervisor.value">
+                      {{ supervisor.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="timeSheetsTemplateSettings.controls.primaryApprover.hasError('required') || (formDirective.submitted && timeSheetsTemplateSettings.controls.primaryApprover.invalid)">
+                    {{requiredDropdownButton}}
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select second level approver" formControlName="secondaryApprover"
+                    (click)="secondaryResetSearch()">
+                    <mat-form-field class="fullLength">
+                      <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                        [formControl]="myControl1" (keyup)="secondarySearchEmpName($event)">
+                    </mat-form-field>
+                    <mat-option *ngFor="let supervisor of secondaryOptionsData" [value]="supervisor.value">
+                      {{ supervisor.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="timeSheetsTemplateSettings.controls.secondaryApprover.hasError('required') || (formDirective.submitted && timeSheetsTemplateSettings.controls.secondaryApprover.invalid)">
+                    {{requiredDropdownButton}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <!-- <pre>{{timeSheetsTemplateSettings.value | json}}</pre> -->
+              <div class="row" style="text-align: center;">
+                <button class="btn header-button"
+                  (click)="isLeftVisible = !isLeftVisible; setPanel();this.timeSheetsTemplateSettings.reset();getData()">
+                  <span><i class="fa fa-times" aria-hidden="true"></i>Cancel</span>
+                </button>
+                <button class="btn header-button" (click)="saveTimeSheetTemplate();">
+                  <span><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>Submit</span>
+                </button>
+              </div>
+            </form>
+            <!-- <p>{{timeSheetsTemplateSettings.value | json}}</p> -->
+          </div>
+        </div>
+      </div>
+    </app-projects-left-right>
+  </div>
+</div>

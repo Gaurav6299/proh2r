@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title *ngIf="hideShowRegDeleteButton"> {{title1}}</h4>
+    <h4 mat-dialog-title *ngIf="hideShowOndutyDeleteButton"> {{title2}}</h4>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button *ngIf="hideShowRegDeleteButton" class="dialog-buttons" cdkFocusInitial (click)="onDelete()"> Confirm
+        </button>
+        <button *ngIf="hideShowOndutyDeleteButton" class="dialog-buttons" cdkFocusInitial (click)="onDutyDelete()">
+            Confirm
+        </button>
+    </div>
+</mat-dialog-actions>

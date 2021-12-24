@@ -1,0 +1,48 @@
+<!-- <div class="card">
+    <div class="card-header"
+        style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">Are you sure you want to delete Shift
+                        Templates?</h6>
+                </div>
+                <div class="col-md-2"
+                    style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;"
+                        (click)="onNoClick()">close</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+        <h5 style="text-align: center; margin-top: 15px; margin-bottom:15px;">
+            Do you really want to delete this Attendance Allocation?
+        </h5>
+        <button class="cancel-buttons" (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" [mat-dialog-close]=" " cdkFocusInitial (click)="confirmDelete()"> Confirm
+        </button>
+    </div>
+</div> -->
+
+
+
+
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Do you really want to delete this Attendance Allocation?</h4>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="confirmDelete()"> Confirm
+        </button>
+    </div>
+</mat-dialog-actions>

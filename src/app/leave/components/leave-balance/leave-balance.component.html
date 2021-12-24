@@ -1,0 +1,139 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card" style="padding-bottom: 15px !important; margin-bottom:20px;">
+      <div class="card-header">
+        <div class="pull-left">
+          <h6 class="title">Leave Balances</h6>
+        </div>
+        <div class="text-right">
+          <button class="btn header-button" (click)="bulkUploadLeaveBalanceDialog();">
+            <span>
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i>Bulk Update Leave Balances</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <form [formGroup]="leaveBalance">
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;font-weight:500;">
+                Select Employee
+              </p>
+            </div>
+            <div class="col-md-4">
+              <ng-select [searchable]="true" appendTo="body" placeholder="Select Employee"
+                formControlName="employeeName" class="custom-ng-select-Style" (click)="showLeaveBalances = false;"
+                (change)="getLeaveBalance();">
+                <ng-option *ngFor="let item of employeeList" [value]="item.value" (click)="onChangeEmployee();">
+                  {{item.fullName}}
+                </ng-option>
+              </ng-select>
+              <span class="dropDown-errorClass" [hidden]="(leaveBalance.controls.employeeName.valid || 
+              leaveBalance.controls.employeeName.untouched)">
+                Invalid Input
+              </span>
+              <!-- <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Employee" formControlName="employeeName"
+                  (click)="showLeaveBalances = false;">
+                  <mat-form-field class="fullLength">
+                    <input type="text" placeholder="Search Employee" matInput [formControl]="myControl"
+                      (keyup)="searchEmployeeName($event)">
+                  </mat-form-field>
+                  <mat-option *ngFor="let item of employeeList" [value]="item.value" (click)="onChangeEmployee();">
+                    {{item.fullName}}
+                  </mat-option>
+                </mat-select>
+                <mat-error [hidden]="(leaveBalance.controls.employeeName.valid || 
+                leaveBalance.controls.employeeName.untouched)">
+                  Invalid Input
+                </mat-error>
+              </mat-form-field> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;font-weight:500;">
+                Select a leave cycle which you want
+              </p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Leave Cycle" formControlName="leaveCycle"
+                  (selectionChange)="showLeaveBalances = false;this.getLeaveBalance();"
+                  [disabled]="leaveBalance.controls.employeeName.value===''">
+                  <mat-option *ngFor="let item of empLeaveCycleList" [value]="item.leaveCycleName">
+                    {{item.leaveCycleName}}
+                  </mat-option>
+                </mat-select>
+                <mat-error [hidden]="(leaveBalance.controls.leaveCycle.valid || 
+                leaveBalance.controls.leaveCycle.untouched)">
+                  Invalid Input
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;font-weight:500;">
+                Select a leave category which you want
+              </p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Leave Category" formControlName="leaveName"
+                  (selectionChange)="showLeaveBalances = false;onChangeCategory(this.leaveBalance.controls.leaveName.value);">
+                  <mat-option *ngFor="let item of leaveCategory" [value]="item">
+                    {{item}}
+                  </mat-option>
+                </mat-select>
+                <mat-error [hidden]="(leaveBalance.controls.leaveName.valid || 
+                leaveBalance.controls.leaveName.untouched)">
+                  Invalid Input
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div style="text-align: right;padding-bottom: 5px;">
+            <button class="btn header-button" (click)="checkLeaveBalance();">
+              <span>
+                <i class="fa fa-search" aria-hidden="true"></i>
+                Check Leave Balance</span>
+            </button>
+          </div>
+        </form>
+        <div *ngIf="showLeaveBalances">
+          <p-table #dt1 [columns]="columns" [value]="leaveBalanceList" [rows]="5" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" exportFilename="Expense_Report" [resizableColumns]="true"
+            exportFilename="Leave_Balance_Report" [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="caption">
+              <div class="ui-helper-clearfix">
+                <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Download"
+                  (click)="dt1.exportCSV()" class="pull-right"></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="colgroup" let-columns>
+              <colgroup>
+                <col *ngFor="let col of columns">
+              </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+              <tr [pSelectableRow]="car">
+                <td *ngFor="let col of columns">
+                  <div *ngIf="col.field">{{car[col.field]}}</div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

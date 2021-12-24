@@ -1,0 +1,20 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="title">Timesheet Settings</h6>
+            </div>
+            <div class="card-content">
+                <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)"
+                    [selectedIndex]="selectedTab" (animationDone)="onTabChange($event)">
+                    <mat-tab label="Timesheet Templates">
+                        <app-time-sheet-template></app-time-sheet-template>
+                    </mat-tab>
+                    <mat-tab label="Timesheet Template Assignments">
+                        <app-time-sheet-template-assignment></app-time-sheet-template-assignment>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

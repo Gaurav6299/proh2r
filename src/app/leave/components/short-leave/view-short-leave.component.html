@@ -1,0 +1,39 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> View Short Leave Details</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Status</th>
+                    <td>{{data.status}}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{data.slDate}}</td>
+                </tr>
+                <tr>
+                    <th>Start Time</th>
+                    <td>{{data.startTime}}</td>
+                </tr>
+                <tr>
+                    <th>End Time</th>
+                    <td>{{data.endTime}}</td>
+                </tr>
+                <tr>
+                    <th>Total Duration(in minutes)</th>
+                    <td>{{data.durationInMinutes}}</td>
+                </tr>  
+                <tr>
+                    <th>Reason</th>
+                    <td>{{data.reason}}</td>
+                </tr>            
+            </tbody>
+        </table>
+    </div>
+</mat-dialog-content>

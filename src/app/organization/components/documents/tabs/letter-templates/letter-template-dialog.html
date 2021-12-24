@@ -1,0 +1,100 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> {{templateName| titlecase}}</h4>
+    <form [formGroup]="tempalteFormGroup">
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Section Name" formControlName="selectedSectionField"
+                        (selectionChange)="selectedSection()">
+                        <mat-option *ngFor="let section of sectionName" [value]="section.value">
+                            {{section.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select field" formControlName="selectedPlaceholder"
+                        (selectionChange)="choosePlaceholder()">
+                        <mat-option *ngFor="let field of fields" [value]="field.fieldName">
+                            {{field.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row" *ngIf="templateName=='LETTER TEMPLATE'">
+            <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Header" formControlName="selectedHeaderId">
+                        <mat-option *ngFor="let header of headerArr" [value]="header.headerId">
+                            {{header.templateHeaderName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="( this.tempalteFormGroup.controls.selectedHeaderId.valid || 
+                    this.tempalteFormGroup.controls.selectedHeaderId.untouched)">
+                        {{requiredDropdownButton}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Footer" formControlName="selectedFooterId">
+                        <mat-option *ngFor="let footer of footerArr" [value]="footer.footerId">
+                            {{footer.templateFooterName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="( this.tempalteFormGroup.controls.selectedFooterId.valid || 
+                    this.tempalteFormGroup.controls.selectedFooterId.untouched)">
+                        {{requiredDropdownButton}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field class="fullLength">
+                    <input matInput formControlName="newTemplateName" placeholder="Template Name">
+                    <mat-error
+                        [hidden]="(this.tempalteFormGroup.controls.newTemplateName.valid || this.tempalteFormGroup.controls.newTemplateName.untouched)">
+                        <div
+                            *ngIf="(this.tempalteFormGroup.controls.newTemplateName.value === '' || this.tempalteFormGroup.controls.newTemplateName.value === null)">
+                            {{requiredTextField}}
+                        </div>
+                        <div *ngIf="this.tempalteFormGroup.controls.newTemplateName.value !== ''">
+                            {{ this.tempalteFormGroup.controls.newTemplateName.errors != null ?
+                            this.tempalteFormGroup.controls.newTemplateName.errors.messages:
+                            ''}}
+                        </div>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+    <!-- <app-templateeditor></app-templateeditor> -->
+    <div style="margin-top: 20px;">
+
+        <!-- <app-templateeditor [(ngModel)]="mycontent" #myckeditor="ngModel" name="myckeditor" required
+            [config]="ckeConfig" debounce="500">
+        </app-templateeditor> -->
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveTemplate(templateName);"> Save
+        </button>
+    </div>
+</mat-dialog-actions>
+<!-- </div> -->

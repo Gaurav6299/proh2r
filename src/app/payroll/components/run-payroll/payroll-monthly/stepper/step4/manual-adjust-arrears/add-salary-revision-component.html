@@ -1,0 +1,95 @@
+<div class="myModel">
+  <div class="card">
+    <div class="card-header" data-background-color="cyan" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+      <div data-background-color="blue">
+        <div class="row">
+          <div class="col-md-10">
+            <h6 style="text-transform: uppercase;font-weight: 600">
+              Add Salary Revision
+            </h6>
+          </div>
+          <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+            <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+
+
+      <p class="category" style="margin-top: 15px; margin-bottom:15px;color:#f44336;font-weight:600;">We will consider all the Absent Days between the Salary Revision Period provided and auto exclude them while calculating
+        the Revision Amount.</p>
+      <div class="col-md-12">
+        <p class="category" style="color:#404A56;font-weight:200;">Select date range to revise salary for</p>
+      </div>
+      <div class="col-md-5">
+        <mat-form-field class="fullLength">
+          <input matInput [matDatepicker]="startDate" placeholder="Start Date">
+          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+          <mat-datepicker #startDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <p class="category" style="color:#404A56;font-weight:200;margin-top: 20px;">To</p>
+      </div>
+      <div class="col-md-5">
+        <mat-form-field class="fullLength">
+          <input matInput [matDatepicker]="endDate" placeholder="End Date">
+          <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+          <mat-datepicker #endDate></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+
+      <div class="col-md-7">
+        <p class="category" style="color:#404A56;font-weight:200;padding-top: 20px;">Select old salary structure</p>
+      </div>
+      <div class="col-md-5">
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Select Old CTC Structure">
+            <mat-option *ngFor="let food of foods" [value]="food.value">
+              {{ food.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-7">
+        <p class="category" style="color:#404A56;font-weight:200;padding-top: 20px;">Select new revised salary structure</p>
+      </div>
+      <div class="col-md-5">
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Select New CTC Structure">
+            <mat-option *ngFor="let food of foods" [value]="food.value">
+              {{ food.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-7">
+        <p class="category" style="color:#404A56;font-weight:200;padding-top: 20px;">Comments</p>
+      </div>
+      <div class="col-md-5" style="padding-right:5px;">
+        <mat-form-field class="fullLength">
+          <textarea matInput placeholder="Comment"></textarea>
+        </mat-form-field>
+      </div>
+
+
+      <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+        <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;" data-background-color="cyan">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Cancel</span>
+        </button>
+        <button class="dialog-button" cdkFocusInitial style="width: 150px;" data-background-color="cyan">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-plus" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Add Salary Revision</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

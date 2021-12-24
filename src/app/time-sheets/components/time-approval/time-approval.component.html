@@ -1,0 +1,266 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h6 class="title">Time Approvals</h6>
+        </div>
+      </div>
+      <div class="card-content">
+        <div>
+          <ul class="calender-listing">
+            <li class="monthTitle">
+              <h2>{{values[0].toDateString()}} - {{values[1].toDateString()}}</h2>
+            </li>
+            <li (click)="previousWeek();">
+              <span>
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+              </span>
+            </li>
+            <li class="times-calendar-class">
+              <div class="ui-g ui-fluid">
+                <p-calendar #myCalendar [(ngModel)]="values" selectionMode="range" [minDate]="calendarStartDate"
+                  [maxDate]="calendarEndDate" (onSelect)="getDateRange($event)" [style]=" { width: '100%' }"
+                  [showIcon]="true" styleClass="only-icon" dateFormat="yyyy-dd-mm">
+                </p-calendar>
+              </div>
+            </li>
+            <li (click)="nextWeek();">
+              <span>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </span>
+            </li>
+            <!-- <li>
+              <button class="calender-button" (click)="setCurrentDate('click');">Today</button>
+            </li> -->
+          </ul>
+          <!-- <ul class="calender-listing">
+            <li (click)="previousWeek();">
+              <span>
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+              </span>
+            </li>
+            <li (click)="nextWeek();">
+              <span>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+              </span>
+            </li>
+            <li class="monthTitle">
+              <h2> {{startDate.toDateString()}} - {{endDate.toDateString()}}</h2>
+            </li>
+          </ul> -->
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <!-- <mat-form-field class="fullLength">
+              <mat-select placeholder="Select Month" [(ngModel)]="selectedMonthYear" (selectionChange)="selectMonth();">
+                <mat-option *ngFor="let item of monthList" [value]="item">
+                  {{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+            <ng-select [items]="monthList" appendTo="body" [(ngModel)]="selectedMonthYear" [searchable]="true"
+              bindLabel="item" bindValue="item" (change)="selectMonth();" placeholder="Select Month"
+              class="custom-ng-select-Style">
+            </ng-select>
+          </div>
+          <div class="col-md-8 offset-md-8">
+            <div class="searchBox" style="text-align: right">
+              <i class="fa fa-search"></i>
+              <input type="text" pInputText size="50" placeholder="Search"
+                (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+          </div>
+        </div>
+        <div class="timeSheetsApprovalRecordsList">
+          <ul>
+            <li>
+              <span class="draft">Draft</span>
+            </li>
+            <li>
+              <span class="approved">Approved</span>
+            </li>
+            <!-- <li>
+              <span class="cancel">Cancel</span>
+            </li> -->
+            <li>
+              <span class="pending">Level1 Pending</span>
+            </li>
+            <li>
+              <span class="pending">Level2 Pending</span>
+            </li>
+            <li>
+              <span class="rejected">Level1 Rejected</span>
+            </li>
+            <li>
+              <span class="rejected">Level2 Rejected</span>
+            </li>
+            <li>
+              <span class="notApplicable">Not Applicable</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="card-content timeApproval-table-card-content">
+        <p-table #dt1 [columns]="columns" [value]="visibleTimesheets" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                <span *ngIf="col.field==='day0'" class="text-center">
+                  {{day0.format('ddd').toString() + " " + day0.format('D')}}</span>
+                <span *ngIf="col.field==='day1'" class="text-center">
+                  {{day1.format('ddd').toString() + " " + day1.format('D')}}</span>
+                <span *ngIf="col.field==='day2'" class="text-center">
+                  {{day2.format('ddd').toString() + " " + day2.format('D')}}</span>
+                <span *ngIf="col.field==='day3'"> {{day3.format('ddd').toString() + " " + day3.format('D')}}</span>
+                <span *ngIf="col.field==='day4'"> {{day4.format('ddd').toString() + " " + day4.format('D')}}</span>
+                <span *ngIf="col.field==='day5'"> {{day5.format('ddd').toString() + " " + day5.format('D')}}</span>
+                <span *ngIf="col.field==='day6'"> {{day6.format('ddd').toString() + " " + day6.format('D')}}</span>
+
+                <span *ngIf="col.field==='empName'"> {{col.header}}</span>
+                <span *ngIf="col.field==='workWeekHours'"> {{col.header}}</span>
+                <span *ngIf="col.field==='totalHours'"> {{col.header}}</span>
+                <span *ngIf="col.field==='timeSheetApprovalStatus'"> {{col.header}}</span>
+                <span *ngIf="col.field==='action'"> {{col.header}}</span>
+                <span *ngIf="col.field==='empCode'"> {{col.header}}</span>
+
+                <p-sortIcon *ngIf="col.field" [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                <p-multiSelect *ngSwitchCase="'timeSheetApprovalStatus'" appendTo="body" defaultLabel="All"
+                  [options]="statusFilter" [style]="{'width':'100%'}"
+                  (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div
+                  *ngIf="col.field!='action' && col.field!='day0' && col.field!='day1' && col.field!='day2' && col.field!='day3' && col.field!='day4' && col.field!='day5'  && col.field!='day6'  && col.field!='timeSheetApprovalStatus'">
+                  {{car[col.field]}}</div>
+                <div class="timeApprovalRecord"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day0' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus==='N/A'">
+                  {{car[col.field].timeSheetApprovalStatus |
+                  customUnderscorePipe:'car[col.field].timeSheetApprovalStatus'}}
+                </div>
+                <div class="timeApprovalRecord"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day1' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus==='N/A'">
+                  {{car[col.field].timeSheetApprovalStatus |
+                  customUnderscorePipe:'car[col.field].timeSheetApprovalStatus'}}
+                </div>
+                <div class="timeApprovalRecord"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day2' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus==='N/A'">
+                  {{car[col.field].timeSheetApprovalStatus |
+                  customUnderscorePipe:'car[col.field].timeSheetApprovalStatus'}}
+                </div>
+                <div class="timeApprovalRecord"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day3' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus==='N/A'">
+                  {{car[col.field].timeSheetApprovalStatus |
+                  customUnderscorePipe:'car[col.field].timeSheetApprovalStatus'}}
+                </div>
+                <div class="timeApprovalRecord"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day4' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus==='N/A'">
+                  {{car[col.field].timeSheetApprovalStatus |
+                  customUnderscorePipe:'car[col.field].timeSheetApprovalStatus'}}
+                </div>
+                <div class="timeApprovalRecord"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day5' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus==='N/A'">
+                  {{car[col.field].timeSheetApprovalStatus |
+                  customUnderscorePipe:'car[col.field].timeSheetApprovalStatus'}}
+                </div>
+                <div class="timeApprovalRecord"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day6' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus==='N/A'">
+                  {{car[col.field].timeSheetApprovalStatus |
+                  customUnderscorePipe:'car[col.field].timeSheetApprovalStatus'}}
+                </div>
+
+                <div class="timeApprovalRecord" (click)="showTimesheetDescriptions(car[col.field]);"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day0' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus!='N/A'">
+                  {{(car[col.field].totalDayHours!=undefined)?car[col.field].totalDayHours:'--'}}
+                </div>
+                <div class="timeApprovalRecord" (click)="showTimesheetDescriptions(car[col.field]);"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day1' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus!='N/A'">
+                  {{(car[col.field].totalDayHours!=undefined)?car[col.field].totalDayHours:'--'}}
+                </div>
+                <div class="timeApprovalRecord" (click)="showTimesheetDescriptions(car[col.field]);"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day2' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus!='N/A'">
+                  {{(car[col.field].totalDayHours!=undefined)?car[col.field].totalDayHours:'--'}}
+                </div>
+                <div class="timeApprovalRecord" (click)="showTimesheetDescriptions(car[col.field]);"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day3' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus!='N/A'">
+                  {{(car[col.field].totalDayHours!=undefined)?car[col.field].totalDayHours:'--'}}
+                </div>
+                <div class="timeApprovalRecord" (click)="showTimesheetDescriptions(car[col.field]);"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day4' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus!='N/A'">
+                  {{(car[col.field].totalDayHours!=undefined)?car[col.field].totalDayHours:'--'}}
+                </div>
+                <div class="timeApprovalRecord" (click)="showTimesheetDescriptions(car[col.field]);"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day5' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus!='N/A'">
+                  {{(car[col.field].totalDayHours!=undefined)?car[col.field].totalDayHours:'--'}}
+                </div>
+                <div class="timeApprovalRecord" (click)="showTimesheetDescriptions(car[col.field]);"
+                  [ngStyle]="{'background-color': changeColor(car[col.field].timeSheetApprovalStatus)}"
+                  *ngIf="col.field=='day6' && car[col.field]!=null && col.field!='timeSheetApprovalStatus' && car[col.field].timeSheetApprovalStatus!='N/A'">
+                  {{(car[col.field].totalDayHours!=undefined)?car[col.field].totalDayHours:'--'}}
+                </div>
+
+                <div
+                  *ngIf="col.field=='timeSheetApprovalStatus' && car[col.field]!='undefined' && car[col.field]!=null">
+                  {{car[col.field] | customUnderscorePipe:'car[col.field]'}}</div>
+                <div class=" mat-cell " *ngIf="col.field=='action' ">
+                  <div class="mat-element-icon ">
+                    <span class="check " matTooltip="Approve "
+                      *ngIf="car.timeSheetId!=null && car.timeSheetApprovalStatus!='DRAFT' && car.timeSheetApprovalStatus!='APPROVED' && car.timeSheetApprovalStatus!='LEVEL_1_REJECTED' && car.timeSheetApprovalStatus!='LEVEL_2_REJECTED'"
+                      (click)="openApproveRejectTimesheetDialog('approve',car);">
+                      <i class="fa fa-check-square " aria-hidden="true "></i>
+                    </span>
+                    <span class="reject" matTooltip="Reject "
+                      *ngIf="car.timeSheetId!=null && car.timeSheetApprovalStatus!='DRAFT' && car.timeSheetApprovalStatus!='APPROVED' && car.timeSheetApprovalStatus!='LEVEL_1_REJECTED' && car.timeSheetApprovalStatus!='LEVEL_2_REJECTED'"
+                      (click)="openApproveRejectTimesheetDialog('reject',car);">
+                      <i class="fa fa-window-close " aria-hidden="true "></i>
+                    </span>
+                    <span class="view " matTooltip="Send Reminder " *ngIf="car.timeSheetApprovalStatus!='APPROVED'"
+                      (click)="openApproveRejectTimesheetDialog('send reminder for ',car);">
+                      <i class="fa fa-bell " aria-hidden="true "></i>
+                    </span>
+                    <span class="reject " matTooltip="Cancel"
+                      *ngIf="car.timeSheetId!=null && car.timeSheetApprovalStatus=='APPROVED'"
+                      (click)="openApproveRejectTimesheetDialog('cancel',car);">
+                      <i class="fa fa-ban" aria-hidden="true "></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+
+    </div>
+  </div>
+</div>

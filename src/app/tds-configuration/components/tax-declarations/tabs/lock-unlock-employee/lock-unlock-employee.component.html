@@ -1,0 +1,160 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card-content">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="title">Filters</h6>
+            </div>
+            <div class="card-content">
+              <form [formGroup]="lockUnlockFilterForm">
+                <div class="section_index">
+                  <mat-checkbox formControlName="allFilter" (change)="selectAllFilter($event)">All</mat-checkbox><br>
+                  <mat-checkbox formControlName="employeeFilter" (change)="applyValidation($event);">Name</mat-checkbox>
+                  <br>
+                  <div
+                    *ngIf="lockUnlockFilterForm.controls.employeeFilter.value && lockUnlockFilterForm.controls.allFilter.value != true">
+                    <div style="margin-bottom: 10px;">
+                      <ng-select appendTo="body" [clearable]="false" [searchable]="true" [selectableGroup]="true"
+                        [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="empCodes"
+                        placeholder="Select Employee" class="custom-ng-select-Style" multiple="true">
+                        <ng-option *ngFor="let employee of empList" [value]="employee.empCode">
+                          {{employee.name}}-{{employee.empCode}}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <mat-checkbox formControlName="locationsFilter" (change)="applyValidation($event);">Work Location
+                  </mat-checkbox><br>
+                  <div
+                    *ngIf="lockUnlockFilterForm.controls.locationsFilter.value && lockUnlockFilterForm.controls.allFilter.value != true">
+                    <div style="margin-bottom: 10px;">
+                      <ng-select appendTo="body" [clearable]="false" [searchable]="true" [selectableGroup]="true"
+                        [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="locations"
+                        placeholder="Select Location" class="custom-ng-select-Style" multiple="true">
+                        <ng-option *ngFor="let location of locationsList " [value]="location">
+                          {{location}}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <mat-checkbox formControlName="departmentFilter" (change)="applyValidation($event);">Department
+                  </mat-checkbox><br>
+                  <div
+                    *ngIf="lockUnlockFilterForm.controls.departmentFilter.value && lockUnlockFilterForm.controls.allFilter.value != true">
+                    <div style="margin-bottom: 10px;">
+                      <ng-select appendTo="body" [clearable]="false" [searchable]="true" [selectableGroup]="true"
+                        [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="department"
+                        placeholder="Select Department" class="custom-ng-select-Style" multiple="true">
+                        <ng-option *ngFor="let department of departmentsList" [value]="department.name">
+                          {{department.name}}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <mat-checkbox formControlName="designationFilter" (change)="applyValidation($event);">Designation
+                  </mat-checkbox><br>
+                  <div
+                    *ngIf="lockUnlockFilterForm.controls.designationFilter.value && lockUnlockFilterForm.controls.allFilter.value != true">
+                    <div style="margin-bottom: 10px;">
+                      <ng-select appendTo="body" [clearable]="false" [searchable]="true" [selectableGroup]="true"
+                        [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="designation"
+                        placeholder="Select Designation" class="custom-ng-select-Style" multiple="true">
+                        <ng-option *ngFor="let designation of designationList" [value]="designation.name">
+                          {{designation.name}}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <mat-checkbox formControlName="taxYearFilter" (change)="applyValidation($event);">Tax Year
+                  </mat-checkbox>
+                  <br>
+                  <span class="input-errorClass" [hidden]="(lockUnlockFilterForm.controls.taxYearFilter.valid || 
+                    lockUnlockFilterForm.controls.taxYearFilter.untouched)">
+                    This field is required.
+                  </span>
+                  <div *ngIf="lockUnlockFilterForm.controls.taxYearFilter.value">
+                    <div style="margin-bottom: 10px;">
+                      <ng-select [clearable]="false" appendTo="body" [searchable]="true" placeholder="Select Tax Year"
+                        formControlName="taxYearId" class="custom-ng-select-Style">
+                        <ng-option *ngFor="let year of taxYear" [value]="year.taxYearId">{{year.taxYear}}
+                        </ng-option>
+                      </ng-select>
+                      <span class="dropDown-errorClass" [hidden]="(lockUnlockFilterForm.controls.taxYearId.valid || 
+                  lockUnlockFilterForm.controls.taxYearId.untouched)">
+                        This field is required.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="text-center" style="padding: 10px 0;">
+                <button class="btn header-button" (click)="CancelFilter();"><span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel</span>
+                </button>
+                <button class="btn header-button" (click)="applyFilter();">
+                  <span><i class="fa fa-plus-square" aria-hidden="true"></i>Apply</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <pre>{{lockUnlockFilterForm.value | json}}</pre> -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-pannel">
+              <div class="text-right">
+                <button class="btn header-button" (click)="lockUnlockEmployeesDialog();">
+                  <span><i class="fa fa-lock" aria-hidden="true"></i>
+                    Lock Employees</span>
+                </button>
+                <button class="btn header-button" (click)="unLockUnlockEmployeesDialog();">
+                  <span><i class="fa fa-unlock" aria-hidden="true"></i>
+                    UnLock Employees</span>
+                </button>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="searchBox" style="text-align: right">
+                <i class="fa fa-search"></i>
+                <input type="text" pInputText size="50" placeholder="Search"
+                  (input)="dt1.filterGlobal($event.target.value, 'contains')">
+              </div>
+              <p-table #dt1 [columns]="columns" [value]="filterDataList" [rows]="5" [paginator]="true" [pageLinks]="5"
+                [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true"
+                [(selection)]="selectedRows">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th>
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                      {{col.header}}
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-car let-columns="columns">
+                  <tr>
+                    <td>
+                      <p-tableCheckbox [value]="car"></p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let col of columns">
+                      <div *ngIf="col.field">{{car[col.field]}}</div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<!-- <div class="myModel">
+    <div class="card">
+        <div class="card-header" data-background-color="cyan"
+            style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+            <div data-background-color="blue">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h6 style="text-transform: uppercase;font-weight: 600">
+                            Are You Sure ?
+                        </h6>
+                    </div>
+                    <div class="col-md-2"
+                        style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                        <i class="material-icons" style="cursor:pointer;vertical-align: middle;"
+                            (click)="onNoClick()">close</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="category"
+                style="text-align: center; margin-top: 15px; margin-bottom:15px;color:#404A56;font-weight:600;">
+                Do you really want to delete authorize signatory?
+
+            </p>
+
+            <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+                <button class="dialog-button" cdkFocusInitial (click)="onNoClick()"> Cancel
+                </button>
+                <button class="dialog-button" cdkFocusInitial (click)="onDelete()"> Confirm
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div> -->
+
+
+
+
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Do you really want to delete authorize signatory?</h4>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="onDelete()"> Confirm
+        </button>
+    </div>
+</mat-dialog-actions>

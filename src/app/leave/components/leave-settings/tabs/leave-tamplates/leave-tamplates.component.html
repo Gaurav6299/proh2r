@@ -1,0 +1,366 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div style="float: left;">
+      <h6 class="title">Leave Policies
+      </h6>
+    </div>
+    <div style="text-align: right;">
+      <button *ngIf="!isLeftVisible" class="btn header-button"
+        (click)="isLeftVisible = !isLeftVisible; resetFormValue();">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Leave Policies</span>
+      </button>
+      <button *ngIf="isLeftVisible" class="btn header-button" (click)="isLeftVisible = !isLeftVisible;nextStepValue();">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          Back</span>
+      </button>
+    </div>
+  </div>
+  <!-- <ng-template #leaveTempViewOnly>
+    <div class="card-header">
+      <h6 class="title">Leave Policies</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <app-left-right-leavetemplate-setting [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="left-right-pane-card">
+          <p-table #dt1 [columns]="displayedColumns" [value]="LeaveTemplateSetting" [rows]="5" [paginator]="true"
+            [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+            [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns">
+                  <div *ngIf="col.field!='action'">{{car[col.field]}}</div>
+                  <div class="mat-cell">
+                    <div class="mat-element-icon">
+
+                      <span class="edit" *ngIf="col.field=='action'">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                          (click)="saveEditedTemplate(car , $event);"></i>
+                      </span>
+                      <span class="delete" *ngIf="col.field=='action'">
+                        <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                          (click)="openDeleteDialog(car)"></i>
+                      </span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div class="left-right-pane-card">
+          <form [formGroup]="LeaveTamplateSetting" #leaveFormTemplateform="ngForm">
+            <div *ngIf="nextStep == 1">
+              <div class="text-center">
+                <h5 class="left-rights-slider-title">
+                  Step 1: General Template Settings
+                </h5>
+                <h6 class="left-rights-slider-Subtitle">
+                  Select the categories and approvers for this template
+                </h6>
+              </div>
+              <div class="card-content">
+                <p class="category showFieldMandatory">Please provide a label for this Policy</p>
+                <mat-form-field *ngIf="editTemplateName == false" class="fullLength">
+                  <input matInput placeholder="Custom Label" formControlName="leaveTemplateName">
+                  <mat-error [hidden]="(LeaveTamplateSetting.controls.leaveTemplateName.valid || 
+                  LeaveTamplateSetting.controls.leaveTemplateName.untouched)">
+                    This Field is required
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field *ngIf="editTemplateName == true" class="fullLength">
+                  <input matInput placeholder="Custom Label" formControlName="leaveTemplateName" readonly>
+                </mat-form-field>
+                <p class="category showFieldMandatory">What leave categories are applicable in this leave template?
+                </p>
+                <div *ngIf="openDiv">
+                  <div *ngFor="let element of leaveCategories">
+                    <mat-checkbox formControlName="activeLeaveCategories" (change)="checkedStatus($event, element)">
+                      {{element.leaveName}}</mat-checkbox>
+                  </div>
+                  <span class="category" style="color: red;" [hidden]="(LeaveTamplateSetting.controls.activeLeaveCategories.valid || 
+                  LeaveTamplateSetting.controls.activeLeaveCategories.untouched)">
+                    {{requiredDropdownButton}}
+                  </span>
+                </div>
+                <div *ngIf="!openDiv">
+                  <div formArrayName="dynamicCheckBoxLeaveCategories">
+                    <div
+                      *ngFor="let itemrow of LeaveTamplateSetting.controls.dynamicCheckBoxLeaveCategories.controls; let i=index"
+                      [formGroupName]="i">
+                      <mat-checkbox formControlName="leaveCategoryValue"
+                        (change)="checkedStatus($event, this.LeaveTamplateSetting.controls.dynamicCheckBoxLeaveCategories.controls[i].controls.leaveCategoriesElement.value)">
+                        {{this.LeaveTamplateSetting.controls.dynamicCheckBoxLeaveCategories.controls[i].controls.activeLeaveCategories.value}}
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <p class="category">How many levels of approvals you want to add?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="leaveApprovalLevel" (change)="selectedApproval()">
+                    <mat-radio-button value='FIRST_LEVEL'> 1 Level </mat-radio-button>
+                    <mat-radio-button value='SECOND_LEVEL'> 2 Level </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div [hidden]="(LeaveTamplateSetting.controls.leaveApprovalLevel.valid || 
+                           LeaveTamplateSetting.controls.leaveApprovalLevel.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <p class="category">Select Locations Departments Bands or Designations for template </p>
+                  <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+                    [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+                    [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+                    <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                      <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                        [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                      <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                        [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                    </ng-template>
+                  </ng-select>
+                </div>
+
+                <p class="category showFieldMandatory">How would you like to add approvers?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="leaveApprovalType" (change)="selectedApproval();">
+                    <mat-radio-button value='TEMPLATEWISE'>Template Wise </mat-radio-button>
+                    <mat-radio-button value='EMPLOYEEWISE'> Employee Wise</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveTamplateSetting.controls.leaveApprovalType.valid || 
+                           LeaveTamplateSetting.controls.leaveApprovalType.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <div
+                  *ngIf="(LeaveTamplateSetting.controls.leaveApprovalLevel.value==='FIRST_LEVEL' || LeaveTamplateSetting.controls.leaveApprovalLevel.value==='SECOND_LEVEL') && (LeaveTamplateSetting.controls.leaveApprovalType.value==='TEMPLATEWISE')">
+                  <p class="category showFieldMandatory">Please Select An Employee For Primary Approver</p>
+                  <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Employee" formControlName="supervisorObject">
+                      <mat-form-field class="fullLength">
+                        <input type="text" placeholder="Search Employee" matInput [formControl]="myControl1"
+                          (keyup)="searchEmployeeNameForPrimarysupervisor($event)">
+                      </mat-form-field>
+                      <mat-option *ngFor="let item of supervisorList1" [value]="item.value"
+                        (click)="clearPrimaryMyControl();">
+                        {{item.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(LeaveTamplateSetting.controls.supervisorObject.valid || 
+                    LeaveTamplateSetting.controls.supervisorObject.untouched)">
+                      {{requiredDropdownButton}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div
+                  *ngIf="(LeaveTamplateSetting.controls.leaveApprovalLevel.value==='SECOND_LEVEL') && (LeaveTamplateSetting.controls.leaveApprovalType.value==='TEMPLATEWISE')">
+                  <p class="category showFieldMandatory">Please Select An Employee For secondary Approver</p>
+                  <mat-form-field class="fullLength">
+                    <mat-select placeholder="Supervisor List" formControlName="supervisorObject1">
+                      <mat-form-field class="fullLength">
+                        <input type="text" placeholder="Search Employee" matInput [formControl]="myControl2"
+                          (keyup)="searchEmployeeNameForSecondarysupervisor($event)">
+                      </mat-form-field>
+                      <mat-option *ngFor="let sl of supervisorList2" [value]="sl.value"
+                        (click)="clearSecondaryMyControl();">
+                        {{sl.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(LeaveTamplateSetting.controls.supervisorObject1.valid || 
+                    LeaveTamplateSetting.controls.supervisorObject1.untouched)">
+                      {{requiredDropdownButton}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <p class="category showFieldMandatory">Would you like to make comment mandatory while applying or
+                  cancellation of leave application?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="isCommentMadatory">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveTamplateSetting.controls.isCommentMadatory.valid || 
+                           LeaveTamplateSetting.controls.isCommentMadatory.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <p class="category showFieldMandatory">Would you like to add clubbing restrictions?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="isClubRestrictions">
+                    <mat-radio-button (click)="selectedClubRestriction($event)" value='true'>Yes</mat-radio-button>
+                    <mat-radio-button (click)="selectedClubRestriction($event)" value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveTamplateSetting.controls.isClubRestrictions.valid || 
+                           LeaveTamplateSetting.controls.isClubRestrictions.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <div *ngIf="LeaveTamplateSetting.controls.isClubRestrictions.value==='true' ">
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p class="category">Category</p>
+                      </div>
+                      <div class="col-md-6">
+                        <p class="category">Can not be clubbed with</p>
+                      </div>
+                    </div>
+                    <div formArrayName="leaveClubRestrictions"
+                      *ngFor="let itemrow of LeaveTamplateSetting.get('leaveClubRestrictions').controls; let i = index;">
+                      <div [formGroupName]="i">
+                        <div class="row">
+                          <div class="col-md-5">
+                            <mat-form-field class="fullLength">
+                              <mat-select placeholder="select leave categorires"
+                                formControlName="leaveClubRestrictName">
+                                <mat-option *ngFor=" let leavecategory of leaveCategories"
+                                  [value]="leavecategory.leaveName">
+                                  {{ leavecategory.leaveName}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-1 offset-md-1"></div>
+                          <div class="col-md-5">
+                            <mat-form-field class="fullLength">
+                              <mat-select placeholder="Select LeaveCategory" formControlName="leaveNotClubCategory">
+                                <mat-option *ngFor="let leavecategory of clubbingRestrictionLeaveCategories"
+                                  [value]="leavecategory.leaveName">
+                                  {{leavecategory.leaveName}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-1">
+                            <span style="font-size: 20px;float: right;margin: 10px auto;">
+                              <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"
+                                style="color: #da0606;vertical-align: -webkit-baseline-middle;cursor: pointer;"></i>
+                            </span>
+                          </div>
+                        </div>
+
+                        <!-- <div formArrayName="leaveClubRestrictions"
+                          *ngFor="let itemrow of LeaveTamplateSetting.get('leaveClubRestrictions').controls; let i = index;">
+                          <div [formGroupName]="i">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <mat-form-field>
+                                  <mat-select placeholder="select leave categorires"
+                                    formControlName="leaveClubRestrictName">
+                                    <mat-option *ngFor=" let leavecategory of leaveCategories"
+                                      [value]="leavecategory.leaveName">
+                                      {{ leavecategory.leaveName}}
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                              <div class="col-md-6">
+                                <mat-form-field style="margin-left:25px;">
+                                  <mat-select placeholder="Select LeaveCategory" formControlName="leaveNotClubCategory">
+                                    <mat-option *ngFor="let leavecategory of clubbingRestrictionLeaveCategories"
+                                      [value]="leavecategory.leaveName">
+                                      {{leavecategory.leaveName}}</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <span
+                              style="margin-left: 40px;font-size: 18px;color: #da0606;float: right;position: relative;right: 7rem;bottom: 5rem;">
+                              <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"></i>
+                            </span> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-bottom: 10px;">
+                    <button class="btn header-button" (click)="addNewRow()">
+                      <span>
+                        <i class="fa fa-plus-square" aria-hidden="true"></i>
+                        Add Clubbing Restriction</span>
+                    </button>
+                  </div>
+                  <p class="category">Are leaves separated by a weekly off,
+                    considered as clubbed together?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="isIncludeClubWeeklyoffs">
+                      <mat-radio-button value='true'>Yes</mat-radio-button>
+                      <mat-radio-button value='false'>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="category" style="color: red;" [hidden]="(LeaveTamplateSetting.controls.isIncludeClubWeeklyoffs.valid || 
+                           LeaveTamplateSetting.controls.isIncludeClubWeeklyoffs.untouched)">
+                    {{requiredTextField}}
+                  </div>
+                  <p class="category">Are leaves separated by a holiday, considered as clubbed together?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="isIncludeClubHoliday">
+                      <mat-radio-button value='true'>Yes</mat-radio-button>
+                      <mat-radio-button value='false'>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="category" style="color: red;" [hidden]="(LeaveTamplateSetting.controls.isIncludeClubHoliday.valid || 
+                           LeaveTamplateSetting.controls.isIncludeClubHoliday.untouched)">
+                    {{requiredTextField}}
+                  </div>
+                </div>
+                <div class="row" style="text-align: center;margin-top:15x; ">
+                  <button *ngIf="isLeftVisible" class="btn header-button"
+                    (click)="isLeftVisible = !isLeftVisible;setPanel();">
+                    <span>
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                      Cancel</span>
+                  </button>
+                  <button class="btn header-button" (click)="saveFirstStepRecord(LeaveTamplateSetting)">
+                    <span>
+                      <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                      Proceed </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="nextStep == 2">
+              <div class="text-center">
+                <h5 class="left-rights-slider-title">
+                  Step 2: Leave Category Settings
+                </h5>
+                <h6 class="left-rights-slider-Subtitle">
+                  Set the accrual rates and rollover caps for each category
+                </h6>
+              </div>
+              <div class="card-content" id="fxLayout">
+                <mat-horizontal-stepper #stepper *ngIf="checkedList.length">
+                  <div *ngFor="let element of checkedList">
+                    <mat-step>
+                      <ng-template matStepLabel>
+                        {{element.leaveName}}
+                      </ng-template>
+                      <app-dynamic-leave-categories (messageEvent)="receiveMessage($event,stepper)"
+                        [backStep]="nextStep" [checkedListArray]="element" [templateResponseObj]="templateResponseObj"
+                        [checkedListLength]="checkedList.length"
+                        [firstTemplateCompleteData]="firstTemplateCompleteData">
+                      </app-dynamic-leave-categories>
+                    </mat-step>
+                  </div>
+                </mat-horizontal-stepper>
+              </div>
+            </div>
+          </form>
+          <!-- <pre>{{LeaveTamplateSetting.value|json}}</pre> -->
+        </div>
+      </div>
+    </app-left-right-leavetemplate-setting>
+  </div>
+</div>

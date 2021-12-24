@@ -1,0 +1,152 @@
+<div class="myModel">
+  <div class="card">
+    <div class="card-header" data-background-color="cyan"
+      style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+      <div data-background-color="blue">
+        <div class="row">
+          <div class="col-md-10">
+            <h6 style="text-transform: uppercase;font-weight: 600">
+              Manual Arrear
+            </h6>
+          </div>
+          <div class="col-md-2"
+            style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+            <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <form [formGroup]="manualArrearAdditionForm">
+        <div formArrayName="fieldMaster">
+          <div *ngFor="let fieldMasterFields of fieldMaster.controls; let i=index">
+            <div class="col-md-12" [formGroupName]="i">
+              <!--Basic Information -->
+              <div class="card">
+                <div class="card-header" data-background-color="blue" style="padding-top:9px;    padding-bottom: 10px;">
+                  <div style="float:left">
+                    <h6 class="title">
+                      {{this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.sectionName.value}}</h6>
+                  </div>
+                  <div style="text-align: right;">
+                    <button class=" btn header-button" (click)="onNoClick()" style="margin-right: 10px;">
+                      <span class="category" style="color:#205081;">
+                        <i class="fa fa-times" aria-hidden="true" style="margin-bottom: 2px;"></i>
+                        Cancel</span>
+                    </button>
+                    <button class=" btn header-button" (click)="save()">
+                      <span class="category" style="color:#205081;">
+                        <i class="fa fa-floppy-o" aria-hidden="true" style="margin-bottom: 2px;"></i>
+                        Save</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="row" formArrayName="fields">
+                    <div *ngFor="let event of fieldMasterFields.controls['fields'].controls; let idx=index">
+                      <div [formGroupName]="idx">
+                        <div class="col-md-12">
+                          <div class="col-md-8">
+                            <p class="category" style="color:#404A56">Enter the Amount for
+                              {{ this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldDescription.value}}
+                            </p>
+                          </div>
+                          <!-- <div *ngIf="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.editable.value"> -->
+                          <div class="col-md-4"
+                            *ngIf="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'SingleLineText'">
+
+                            <mat-form-field class="fullLength">
+                              <input matInput
+                                placeholder="{{this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                formControlName="fieldValue"
+                                [required]="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4"
+                            *ngIf="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Dropdown'">
+                            <mat-form-field class="fullLength">
+                              <mat-select
+                                placeholder="{{this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                formControlName="fieldValue"
+                                [required]="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                                <mat-option
+                                  *ngFor="let option of this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.options.value"
+                                  [value]="option">
+                                  {{ option }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+
+                          <div class="col-md-4"
+                            *ngIf="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'MultiLineText'">
+                            <mat-form-field class="fullLength">
+                              <textarea matInput
+                                placeholder="{{this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                                formControlName="fieldValue"
+                                [required]="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value"></textarea>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4"
+                            *ngIf="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Number'">
+                            <mat-form-field class="fullLength">
+                              <input matInput
+                                placeholder="{{this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}} Paid"
+                                type="number" formControlName="fieldValue"
+                                [required]="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value"
+                                (keyup)="doTotal(this.manualArrearAdditionForm.controls.fieldMaster.controls[i])">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4"
+                            *ngIf="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Date'">
+                            <mat-form-field class="fullLength">
+                              <input matInput [matDatepicker]="picker"
+                                placeholder="{{this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldPlaceholderValue.value}}"
+                                formControlName="fieldValue"
+                                [required]="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.mandatory.value">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4" style="height: 68px;"
+                            *ngIf="this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.fields.controls[idx].controls.fieldType.value === 'Boolean'">
+                            <div class="radio-wrapper">
+                              <mat-radio-group formControlName="fieldValue">
+                                <mat-radio-button value="yes">Yes</mat-radio-button>
+                                <mat-radio-button value="no">No</mat-radio-button>
+                              </mat-radio-group>
+                            </div>
+                          </div>
+                          <!-- </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row"
+                    *ngIf="!(this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.totalLabel.value ==='')">
+                    <div style="float:left">
+                      <h6 class="title" style="margin-left: 30px;margin-top: 15px;">
+                        {{this.manualArrearAdditionForm.controls.fieldMaster.controls[i].controls.totalLabel.value}}
+                      </h6>
+                    </div>
+                    <div style="float:right">
+                      <mat-form-field>
+                        <span matPrefix>
+                          <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; &nbsp;
+                        </span>
+                        <input type="number" formControlName="totalValue" matInput placeholder="Total Amount">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

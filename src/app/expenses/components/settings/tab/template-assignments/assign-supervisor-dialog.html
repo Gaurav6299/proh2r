@@ -1,0 +1,64 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Bulk Assign Expense Supervisor's To Employees</h4>
+  <form [formGroup]="addExpenceAssingment">
+    <p class="category">Select Primary Approver</p>
+    <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="primaryApprover"
+      class="custom-ng-select-Style">
+      <ng-option *ngFor="let emp of optionsData" [value]="emp.value">
+        {{ emp.viewValue }}
+      </ng-option>
+    </ng-select>
+    <span class="dropDown-errorClass" [hidden]="(this.addExpenceAssingment.controls.primaryApprover.valid 
+    || this.addExpenceAssingment.controls.primaryApprover.untouched)">
+      Field is Required
+    </span>
+    <!-- <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Primary Approver" formControlName="primaryApprover" (click)=" resetSearch()">
+        <mat-form-field class="fullLength">
+          <input type="text" placeholder="Search Employee" aria-label="Number" matInput [formControl]="myControl"
+            (keyup)="searchEmployeeName($event)">
+        </mat-form-field>
+        <mat-option *ngFor="let emp of optionsData" [value]="emp.value" (click)=" resetSearch()">
+          {{ emp.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(this.addExpenceAssingment.controls.primaryApprover.valid 
+      || this.addExpenceAssingment.controls.primaryApprover.untouched)">
+        Field is Required
+      </mat-error>
+    </mat-form-field> -->
+    <p class="category">Select Secondary Approver</p>
+    <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="secondaryApprover"
+      class="custom-ng-select-Style">
+      <ng-option *ngFor="let emp of secondaryOptionsData" [value]="emp.value">
+        {{ emp.viewValue }}
+      </ng-option>
+    </ng-select>
+    <!-- <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Secondary Approver" formControlName="secondaryApprover"
+        (click)="secondaryResetSearch()">
+        <mat-form-field class="fullLength">
+          <input type="text" placeholder="Search Employee" aria-label="Number" matInput [formControl]="myControl1"
+            (keyup)="secondarySearchEmpName($event)">
+        </mat-form-field>
+        <mat-option *ngFor="let emp of secondaryOptionsData" [value]="emp.value" (click)="secondaryResetSearch()">
+          {{ emp.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+    </button>
+    <button class="dialog-buttons" (click)="updateSupervisor();" cdkFocusInitial>Submit
+    </button>
+  </div>
+</mat-dialog-actions>

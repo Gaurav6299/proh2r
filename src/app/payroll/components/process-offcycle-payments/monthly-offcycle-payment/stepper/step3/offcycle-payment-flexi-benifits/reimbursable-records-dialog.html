@@ -1,0 +1,43 @@
+<div class="myModel">
+  <div class="card">
+    <div class="card-header" data-background-color="cyan"
+      style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+      <div data-background-color="blue">
+        <div class="row">
+          <div class="col-md-10">
+            <h6 style="text-transform: uppercase;font-weight: 600">
+              Reimbursable Records
+            </h6>
+          </div>
+          <div class="col-md-2"
+            style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+            <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="example-container mat-elevation-z8">
+        <mat-table #table [dataSource]="dataSource" matSort>
+          <!-- Position Column -->
+          <ng-container matColumnDef="category">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+          </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="eligibleAmount">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Eligible Amount </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.eligibleAmount}} </mat-cell>
+          </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="reimbursableAmount">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Reimbursable Amount </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.reimbursableAmount}} </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+  </div>
+</div>

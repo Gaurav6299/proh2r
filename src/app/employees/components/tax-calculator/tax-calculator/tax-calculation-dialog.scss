@@ -1,0 +1,73 @@
+// Dialog_css
+.tax_declaration_dialog_pannel .panel-group .panel-title a:after {
+  font-family: Fontawesome;
+  content: '\f077';
+  float: right;
+  font-size: 12px;
+  font-weight: 400;
+  color: #4b89dc;
+  position: relative;
+  bottom: 24px;
+}
+
+.tax_declaration_dialog_pannel .panel-group .panel-title a.collapsed:after {
+  font-family: Fontawesome;
+  content: '\f078';
+}
+
+.tax_declaration_dialog_pannel .tax_declaration_panel-dialog_body:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.tax_declaration_dialog_pannel .tax_declaration_panel-dialog_header {
+  background-color: #fde9d9;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+.tax_declaration_dialog_pannel .tax_declaration_panel-dialog_header label {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+}
+
+.tax_declaration_pannel_dialog.row_title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tax_declaration_dialog_pannel .tax_declaration_panel-dialog_body label {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.tax_disclaimer_dialog_paraf>p {
+  color: #666;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.tax_declaration_pannel_dialog {
+  border: 0;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #666;
+}
+
+.tax_declaration_panel-dialog_body label {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+.tax_declaration_dialog_pannel .panel-group>.panel-default>.panel-collapse>.panel-body {
+  padding: 0;
+}
+
+.tax_declaration_panel-dialog_body,
+.tax_declaration_panel-dialog_header {
+  padding: 10px;
+}

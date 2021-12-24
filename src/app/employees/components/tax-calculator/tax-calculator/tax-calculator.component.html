@@ -1,0 +1,594 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-content">
+        <div class="card_tax_conatiner">
+          <div class="text-center">
+            <h5 class="left-rights-slider-title" style="margin: 0;">Employee Tax Calculator</h5>
+            <!-- <h6 class="left-rights-slider-Subtitle">Income Tax Calculator - {{allowances.financialYear}}</h6> -->
+          </div>
+          <div class="text-right" style="position: absolute;right: 30px;top: 32px;">
+            <button class="btn header-button" (click)="backToNavigate()">
+              <span>
+                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+            </button>
+          </div>
+          <div class="row">
+            <div class="col-md-2 col-sm-4">
+              <div class="profile-mediaFor#taxCalc">
+                <img src={{allowances.profilePic}} onerror="this.src='assets/images/noUser.jpg'"
+                  class="img-responsive" />
+              </div>
+              <div class="user_tax#01Name">
+                <h3>{{allowances.name}}
+                  <span>{{allowances.empCode}}</span>
+                </h3>
+              </div>
+            </div>
+
+            <div class="col-md-10 col-sm-8">
+              <div class="profile#descriptin_details">
+                <ul class="details_listing">
+                  <li>DOJ -
+                    <a class="list_items">{{allowances.dateOfJoining}}</a>
+                  </li>
+                  <li>DOB -
+                    <a class="list_items">{{allowances.dob}}</a>
+                  </li>
+                  <li>Gender -
+                    <a class="list_items">{{allowances.gender}}</a>
+                  </li>
+                  <li>PAN -
+                    <a class="list_items">{{allowances.pan}}</a>
+                  </li>
+                  <li>Status -
+                    <a class="list_items">{{allowances.employeeStatus}}</a>
+                  </li>
+                  <li>Age -
+                    <a class="list_items">{{allowances.age}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tax_declaration_card_pannel" [formGroup]="taxCalculatorForm">
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading1">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true"
+                    aria-controls="collapse1">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <div class="tax_declaration_pannel_title row_title">
+                          Gross Salary
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalFixedAllowances | number : '1.2-2'}}</span>
+                          Total Fixed Allowances
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalVariableAllowance | number :
+                            '1.2-2'}}</span>
+                          Total Variable Allowances
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalPerquisites | number : '1.2-2'}}</span>
+                          Total Perquisites
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{taxCalculatorForm.controls.totalGross.value | number :
+                            '1.2-2'}}</span>
+                          Gross Annual Income/Salary(with all allowances)
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <tbody>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Section Name</th>
+                        <th colspan="0">Total Gross (Last Processed Salary)</th>
+                        <th colspan="0">Annual Gross Salary</th>
+                      </tr>
+                      <tr class="split-row-hide-show">
+                        <td class="category">Gross Salary</td>
+                        <td class="category" width="25%">{{allowances.totalGrossLastProcessed | number : '1.2-2'}}</td>
+                        <td width="25%">
+                          <mat-form-field class="fullLength">
+                            <input matInput type="number" formControlName="totalGross">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading2">
+                <h4 class="panel-title">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse2"
+                    aria-expanded="false" aria-controls="collapse2">
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div class="tax_declaration_pannel_title row_title">
+                          Exemptions
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{taxCalculatorForm.controls.totalSection10Exemption.value |
+                            number : '1.2-2'}}</span>
+                          Old Regime
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <tbody>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Section Name</th>
+                        <th colspan="0">Old Regime</th>
+                      </tr>
+                      <tr class="split-row-hide-show">
+                        <td class="category">Exemptions U/S 10 (like children education allowance, LTA, etc. And not
+                          including HRA)
+                        </td>
+                        <td width="25%">
+                          <mat-form-field class="fullLength">
+                            <input matInput type="number" formControlName="totalSection10Exemption">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- HRA Exemptions -->
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading3">
+                <h4 class="panel-title">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse3"
+                    aria-expanded="false" aria-controls="collapse3">
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div class="tax_declaration_pannel_title row_title">
+                          HRA Exemptions
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalHRAExemption | number : '1.2-2'}}</span>
+                          Old Regime
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <thead>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Month</th>
+                        <th colspan="0">Basic + DA</th>
+                        <th colspan="0">Actual HRA</th>
+                        <th colspan="0">Rent Paid</th>
+                        <th colspan="0">City of Residence</th>
+                        <th colspan="0">Monthly Exemption</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="houseRentDetailsVo"
+                      *ngFor="let line of taxCalculatorForm.get('houseRentDetailsVo')['controls']; let i = index;">
+                      <tr class="split-row-hide-show" [formGroupName]="i">
+                        <td class="category">{{taxCalculatorForm.controls['houseRentDetailsVo']?.value[i]?.monthName}}
+                        </td>
+                        <td width="20%">
+                          <mat-form-field class="fullLength" (keyup)="calculateHRAExemption(i);">
+                            <input matInput type="number" formControlName="basicPlusDa">
+                          </mat-form-field>
+                        </td>
+                        <td width="20%">
+                          <mat-form-field class="fullLength" (keyup)="calculateHRAExemption(i);">
+                            <input matInput type="number" formControlName="actualHra">
+                          </mat-form-field>
+                        </td>
+                        <td width="20%">
+                          <mat-form-field class="fullLength" (keyup)="calculateHRAExemption(i);">
+                            <input matInput type="number" formControlName="rentPaid">
+                          </mat-form-field>
+                        </td>
+                        <td width="20%">
+                          <ng-select appendTo="body" [clearable]="false" [searchable]="true" placeholder="Select Type"
+                            class="custom-ng-select-Style" formControlName="cityType"
+                            (change)="calculateHRAExemption(i);">
+                            <ng-option value="METRO">Metro</ng-option>
+                            <ng-option value="NON_METRO">Non Metro</ng-option>
+                          </ng-select>
+                        </td>
+                        <td class="category">
+                          <mat-form-field class="fullLength" (keyup)="calculateTotalHRAExemption();">
+                            <input matInput type="number" formControlName="monthlyExemption">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Investment Deducted From Salary -->
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading4">
+                <h4 class="panel-title">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse4"
+                    aria-expanded="false" aria-controls="collapse4">
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div class="tax_declaration_pannel_title row_title">
+                          Investment Deducted From Salary
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalPFDeductedFromSalary | number :
+                            '1.2-2'}}</span>
+                          Old Regime
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <tbody>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Section Name</th>
+                        <th colspan="0">Old Regime</th>
+                      </tr>
+                      <tr class="split-row-hide-show">
+                        <td class="category">PF Deductions from Salary</td>
+                        <td class="category" width="25%">{{allowances.totalPFDeductedFromSalary | number : '1.2-2'}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Chapter-VIA -->
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading5">
+                <h4 class="panel-title">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse5"
+                    aria-expanded="false" aria-controls="collapse5">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="tax_declaration_pannel_title row_title">
+                          Chapter-VIA
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.chapterVILimit}}</span>
+                          Maximum Amount
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalChapterVIDeclaration | number :
+                            '1.2-2'}}</span>
+                          Old Regime
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <thead>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Section Name</th>
+                        <th colspan="0">Maximum Amount</th>
+                        <th colspan="0">Old Regime</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="chapterVIAVO"
+                      *ngFor="let line of taxCalculatorForm.get('chapterVIAVO')['controls']; let i = index;">
+                      <tr class="split-row-hide-show" [formGroupName]="i">
+                        <td class="category">{{taxCalculatorForm.controls['chapterVIAVO']?.value[i]?.componentName}}
+                        </td>
+                        <td class="category">{{taxCalculatorForm.controls['chapterVIAVO']?.value[i]?.maximumAmount}}
+                        </td>
+                        <td width="25%">
+                          <mat-form-field class="fullLength" (keyup)="calculateChapterVIExemption();">
+                            <input matInput type="number" formControlName="approvedAmount">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Section 80C & 80CCC -->
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading6">
+                <h4 class="panel-title">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse6"
+                    aria-expanded="false" aria-controls="collapse6">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="tax_declaration_pannel_title row_title">
+                          Section 80C & 80CCC
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.section80CLimit}}</span>
+                          Maximum Amount
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalSection80CDeclaration | number :
+                            '1.2-2'}}</span>
+                          Old Regime
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading6">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <thead>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Section Name</th>
+                        <th colspan="0">Maximum Amount</th>
+                        <th colspan="0">Old Regime</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="section80C"
+                      *ngFor="let line of taxCalculatorForm.get('section80C')['controls']; let i = index;">
+                      <tr class="split-row-hide-show" [formGroupName]="i">
+                        <td class="category">{{taxCalculatorForm.controls['section80C']?.value[i]?.componentName}}</td>
+                        <td class="category">{{taxCalculatorForm.controls['section80C']?.value[i]?.maximumAmount}}</td>
+                        <td width="25%">
+                          <mat-form-field class="fullLength" (keyup)="calculate80CExemption();">
+                            <input matInput type="number" formControlName="approvedAmount">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Income From Other Source -->
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading7">
+                <h4 class="panel-title">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse7"
+                    aria-expanded="false" aria-controls="collapse7">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="tax_declaration_pannel_title row_title">
+                          Income From Other Source
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.incomeFromOtherSourcesLimit}}</span>
+                          Maximum Amount
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalIncomeFromOtherSources | number :
+                            '1.2-2'}}</span>
+                          Old Regime
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading7">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <thead>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Section Name</th>
+                        <th colspan="0">Maximum Amount</th>
+                        <th colspan="0">Old Regime</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="incomeFromOtherSources"
+                      *ngFor="let line of taxCalculatorForm.get('incomeFromOtherSources')['controls']; let i = index;">
+                      <tr class="split-row-hide-show" [formGroupName]="i">
+                        <td class="category">
+                          {{taxCalculatorForm.controls['incomeFromOtherSources']?.value[i]?.componentName}}</td>
+                        <td class="category">
+                          {{taxCalculatorForm.controls['incomeFromOtherSources']?.value[i]?.maximumAmount}}</td>
+                        <td width="25%">
+                          <mat-form-field class="fullLength" (keyup)="calculateIncomeFromOtherSourcesExemption();">
+                            <input matInput type="number" formControlName="approvedAmount">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Previous Employment Information -->
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading8">
+                <h4 class="panel-title">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse8"
+                    aria-expanded="false" aria-controls="collapse8">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="tax_declaration_pannel_title row_title">
+                          Previous Employment Information
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.previousEmploymentLimit}}</span>
+                          Maximum Amount
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalPreviousEmployment | number :
+                            '1.2-2'}}</span>
+                          Old Regime
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading8">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <thead>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Section Name</th>
+                        <th colspan="0">Maximum Amount</th>
+                        <th colspan="0">Old Regime</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="previousEmploymentInformation"
+                      *ngFor="let line of taxCalculatorForm.get('previousEmploymentInformation')['controls']; let i = index;">
+                      <tr class="split-row-hide-show" [formGroupName]="i">
+                        <td class="category">
+                          {{taxCalculatorForm.controls['previousEmploymentInformation']?.value[i]?.componentName}}</td>
+                        <td class="category">
+                          {{taxCalculatorForm.controls['previousEmploymentInformation']?.value[i]?.maximumAmount}}</td>
+                        <td width="25%">
+                          <mat-form-field class="fullLength"
+                            (keyup)="calculatePreviousEmploymentInformationExemption();">
+                            <input matInput type="number" formControlName="approvedAmount">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Interest On Home Loan -->
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading9">
+                <h4 class="panel-title">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse9"
+                    aria-expanded="false" aria-controls="collapse9">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="tax_declaration_pannel_title row_title">
+                          Interest On Home Loan
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.interestOnHomeLoanLimit}}</span>
+                          Maximum Amount
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="tax_declaration_pannel_title">
+                          <span class="total_tax_0Amount">{{allowances.totalInterestOnHomeLoan | number :
+                            '1.2-2'}}</span>
+                          Old Regime
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse9" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading9">
+                <div class="panel-body">
+                  <table class="table table-striped" style="margin-bottom: 0;">
+                    <thead>
+                      <tr class="tax_declaration_panel-body_header">
+                        <th colspan="0">Section Name</th>
+                        <th colspan="0">Maximum Amount</th>
+                        <th colspan="0">Old Regime</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="interestOnHomeLoan"
+                      *ngFor="let line of taxCalculatorForm.get('interestOnHomeLoan')['controls']; let i = index;">
+                      <tr class="split-row-hide-show" [formGroupName]="i">
+                        <td class="category">
+                          {{taxCalculatorForm.controls['interestOnHomeLoan']?.value[i]?.componentName}}</td>
+                        <td class="category">
+                          {{taxCalculatorForm.controls['interestOnHomeLoan']?.value[i]?.maximumAmount}}</td>
+                        <td width="25%">
+                          <mat-form-field class="fullLength" (keyup)="calculateInterestOnHomeLoanExemption();">
+                            <input matInput type="number" formControlName="approvedAmount">
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tax_disclaimer_paraf">
+            <p>
+              <strong>Disclaimer :</strong> The above calculator is illustrative and designed to enable Employee to get
+              a quick view
+              toword Old vs New Regime tax calculation. Please follow your discretion in deciding which plan suits you
+              the
+              best. The data shown above does not get saved anywhere. The Actual Tax calculation could be different
+              based
+              on actual & additional variable payment and paydays, if applicable, which will be part of your final
+              respective
+              month payroll cycle.
+            </p>
+          </div>
+          <div class="tax_calculate_buttons text-right" style="padding-bottom: 10px;">
+            <button class="btn header-button" (click)="resetData();">
+              <span>
+                <i class="fa fa-close" aria-hidden="true"></i>RESET</span>
+            </button>
+            <button class="btn header-button" (click)="taxCalculationDialog();">
+              <span>
+                <i class="material-icons">calculate</i>CALCULATE</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

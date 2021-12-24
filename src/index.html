@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>ProH2R Admin App</title>
+    <base href="/">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/images/icon.png" type="image/x-icon" />
+    <!-- <link rel="icon" type="image/png" href="icon.png" /> -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap"
+        rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
+        type='text/css'>
+
+    <!-- <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxd-Rce45qk0zl-Q4128bKpaNGXoZMTy8&libraries=geometry,places&language=en"></script> -->
+
+    <!-- <script src="http://localhost:8080/auth/js/keycloak.js" type="text/javascript"></script> -->
+    <script src="https://proh2r.com/auth/js/keycloak.js" type="text/javascript"></script>
+    <!-- <script src='assets/fullCalendar/bootstrap.min.js'></script> -->
+    <script src='assets/fullCalendar/jquery.min.js'></script>
+    <link href='assets/fullCalendar/fullcalendar.min.css' rel='stylesheet' />
+    <link href='assets/fullCalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <script src='assets/fullCalendar/moment.min.js'></script>
+    <script src='assets/fullCalendar/fullcalendar.min.js'></script>
+    <link href='assets/treant/treant/Treant.css' rel='stylesheet' />
+    <!-- <link href='assets/treant/vendor/custom-color-plus-scrollbar.css' rel='stylesheet' /> -->
+    <link href='assets/treant/collapseble/collapsable.css' rel='stylesheet' />
+    <link href='assets/treant/perfect-scrollbar/perfect-scrollbar.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="assets/treant/vendor/raphael.js"></script>
+    <script src="assets/treant/treant/Treant.js"></script>
+    <!-- <script src="assets/treant/vendor/custom-color-plus-scrollbar.js"></script> -->
+    <script src="assets/treant/collapseble/collapsable.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script> -->
+    <!-- <script>
+        CKEDITOR.config.forcePasteAsPlainText = true;
+    </script> -->
+
+</head>
+
+<body>
+    <app-root>
+        <style>
+            app-root {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background: #edf2fb
+            }
+
+            @keyframes dots {
+                50% {
+                    transform: translateY(-.4rem);
+                }
+
+                100% {
+                    transform: translateY(0);
+                }
+            }
+
+            .d {
+                animation: dots 1.5s ease-out infinite;
+            }
+
+            .d-2 {
+                animation-delay: .5s;
+            }
+
+            .d-3 {
+                animation-delay: 1s;
+            }
+
+            #overlay h2 {
+                margin: 0 auto;
+                font-size: 20px;
+                font-weight: 600;
+                letter-spacing: 1.5px;
+                color: #205081
+            }
+
+        </style>
+        <div id="overlay">
+            <img id="loading" src="assets/images/loading-icon.png">
+            <h2>Loading<span class="d">.</span><span class="d d-2">.</span><span class="d d-3">.</span></h2>
+        </div>
+
+    </app-root>
+    <script>
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("loading").style.display = "block";
+        window.onload = function () {
+            // document.body.setAttribute("class", "noscroll");
+
+            // document.getElementById("overlay").style.display = "none";
+            // document.getElementById("spinner").style.display = "none";
+
+            // document.body.className = document.body.className.replace(/\bnoscroll\b/,'');
+        }
+    </script>
+</body>
+
+</html>

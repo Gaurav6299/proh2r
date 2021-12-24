@@ -1,0 +1,56 @@
+<div class="card">
+    <div class="card-header"
+        style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">Upload Shift Allocations</h6>
+                </div>
+                <div class="col-md-2"
+                    style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;"
+                        (click)="onNoClick()">close</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+        <p class="category" style="color:#404A56;"> Shift Allocation upload helps you assign shifts to your employees in
+            bulk.</p>
+        <br>
+
+        <p class="category" style="color:#404A56;"> Upload Personal, Employment and Salary Details for your Employees in
+            just 2 steps:</p>
+        <br>
+        <p class="category" style="color:#404A56;"> Step 1: Download Shift Allocations Global Format</p>
+        <p class="category" style="color:#404A56;"> Includes all your Employees with their available details.</p>
+        <br>
+        <button class="dialog-button" cdkFocusInitial (click)="onNoClick()"
+            style="width:115px; margin-left:3px;margin-bottom:22px;padding-bottom:0px;" data-background-color="cyan">
+            <span class="category" style="color:#fff; display: inline;">
+                <i class="fa fa-download" aria-hidden="true"
+                    style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+                Download</span>
+        </button>
+        <br>
+        <p class="category" style="color:#404A56;">Step 2: Make necessary changes in the downloaded file and upload *
+        </p>
+        <br>
+
+        <div style="border-style:ridge;">
+            <input type="file" name="upload_file" />
+        </div>
+    </div>
+    <button class="dialog-button" cdkFocusInitial (click)="onNoClick()"
+        style="width:115px; margin-left:130px;margin-bottom:22px;padding-bottom:0px;" data-background-color="cyan">
+        <span class="category" style="color:#fff; display: inline;">
+            <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+            cancel</span>
+    </button>
+    <button class="dialog-button" cdkFocusInitial (click)="onNoClick()"
+        style="width:115px; margin-left:3px;margin-bottom:22px;padding-bottom:0px;" data-background-color="cyan">
+        <span class="category" style="color:#fff; display: inline;">
+            <i class="fa fa-upload" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+            upload</span>
+    </button>
+</div>

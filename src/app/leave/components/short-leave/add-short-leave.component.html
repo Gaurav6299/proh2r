@@ -1,0 +1,70 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Add New Short Leave</h4>
+    <form [formGroup]="shortLeaveForm">
+        <ng-select appendTo="body" [searchable]="true" placeholder="Please Select Employee"
+            formControlName="selectedEmployee" class="custom-ng-select-Style">
+            <ng-option *ngFor="let item of employeeList" [value]="item.value">
+                {{item.fullName}}
+            </ng-option>
+        </ng-select>
+        <span class="input-errorClass" [hidden]="shortLeaveForm.controls.selectedEmployee.valid || shortLeaveForm.controls.selectedEmployee.untouched">
+            Field is Required
+        </span>
+        <div class="fullLength">
+            <label class="input-label">Select Date</label>
+            <p-calendar placeholder="Select" appendTo="body" [style]="{'width':'100%'}" [inputStyle]="{'width':'95%'}"
+                dateFormat="dd-mm-yy" [showIcon]="true" showButtonBar="true" formControlName="slDate" [readonlyInput]="true">
+            </p-calendar>
+            <span class="input-errorClass" [hidden]="shortLeaveForm.controls.slDate.valid || shortLeaveForm.controls.slDate.untouched">
+                Field is Required
+            </span>
+        </div><br>
+        <div class="fullLength">
+            <label class="input-label">Select Start Time</label>
+            <p-calendar placeholder="Select" appendTo="body" [style]="{'width':'100%'}" [inputStyle]="{'width':'95%'}"
+                dateFormat="dd-mm-yy" [showTime]="true" [showIcon]="true" showButtonBar="true" formControlName="startTime"
+                (onSelect)="onTimeChange($event)" [readonlyInput]="true">
+            </p-calendar>
+            <span class="input-errorClass" [hidden]="shortLeaveForm.controls.startTime.valid || shortLeaveForm.controls.startTime.untouched">
+                Field is Required
+            </span>
+        </div><br>
+        <div class="fullLength">
+            <label class="input-label">Select End Time</label>
+            <p-calendar placeholder="Select" appendTo="body" [style]="{'width':'100%'}" [inputStyle]="{'width':'95%'}"
+                dateFormat="dd-mm-yy" [showTime]="true" [showIcon]="true" showButtonBar="true" formControlName="endTime"
+                (onSelect)="onTimeChange($event)" [readonlyInput]="true" >
+            </p-calendar>
+            <span class="input-errorClass" [hidden]="shortLeaveForm.controls.endTime.valid || shortLeaveForm.controls.endTime.untouched">
+                Field is Required
+            </span>
+        </div>
+        <mat-form-field class="fullLength">
+            <label class="input-label">Total Duration(in minutes)</label>
+            <input matInput formControlName="durationInMinutes" readonly>
+            <mat-error *ngIf="shortLeaveForm.controls.durationInMinutes.errors?.max">
+                Duration cannot exceed {{maxDuration}} minutes
+            </mat-error>
+            <mat-error *ngIf="shortLeaveForm.controls.durationInMinutes.errors?.min">
+                Duration cannot be less than 1 minutes
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <textarea matInput placeholder="Enter Reason for Leave" formControlName="reason"></textarea>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="addNewShortLeave()"> Apply
+        </button>
+    </div>
+</mat-dialog-actions>

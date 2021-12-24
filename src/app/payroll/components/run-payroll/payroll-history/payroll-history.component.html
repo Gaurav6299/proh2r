@@ -1,0 +1,93 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Payroll History</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" (click)="selectMonthYearDialog()" [disabled]="!runPayrollButtonHide">
+            <span>
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              Run Payroll</span>
+          </button>
+        </div>
+      </div>
+      <!-- <ng-template #payrollHistoryViewOnly>
+        <div class="card-header">
+          <h6 class="title">Payroll History</h6>
+        </div>
+      </ng-template> -->
+      <div class="card-content">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search" (input)="dt1.filterGlobal($event.target.value, 'contains')">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="getProcessHistoryList" [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+          [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='actions' && col.field!='payrollDetails' && col.field!='payrollStatus'">
+                  {{car[col.field]}}
+                </div>
+                <div *ngIf="col.field!='actions' && col.field!='payrollDetails' && col.field=='payrollStatus'">
+                  {{car[col.field] | customUnderscorePipe:'car[col.field].timeSheetApprovalStatus' }}
+                </div>
+
+
+                <div *ngIf="col.field=='payrollDetails'">
+                  <span>
+                    <b>No of Processed Employees: {{car.payrollDetails.processedCount}}</b>
+                  </span>
+                  <br>
+                  <span>
+                    <b>No of Active Employees: {{car.payrollDetails.pendingCount}}</b>
+                  </span>
+                  <br>
+                  <span>
+                    <b>No of On-Hold Employees: {{car.payrollDetails.onHoldCount}}</b>
+                  </span>
+                </div>
+
+                <div *ngIf="col.field=='actions'" class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="download" *ngIf="car.payrollStatus != 'INCOMPLETE'" (click)="download(car)">
+                      <i class="fa fa-download" matTooltip="Download Register"></i>
+                    </span>
+                    <span class="check" *ngIf="car.payrollStatus == 'COMPLETE_APPROVAL_PENDING' && showHideApprovalButton" (click)="payrollApprovalDialog(car,'APPROVED')">
+                      <i class="fa fa-check" matTooltip="Approve"></i>
+                    </span>
+                    <span class="reject" *ngIf="car.payrollStatus == 'COMPLETE_APPROVAL_PENDING' && showHideApprovalButton" (click)="payrollApprovalDialog(car,'REJECTED')">
+                      <i class="fa fa-times" matTooltip="Reject"></i>
+                    </span>
+                    <span class="edit" *ngIf="car.payrollStatus != 'COMPLETE_APPROVED'" (click)="updateProcesshistory(car)">
+                      <i class="fa fa-pencil-square-o" matTooltip="Edit"></i>
+                    </span>
+                    <span class="delete" *ngIf="car.payrollStatus != 'COMPLETE_APPROVED'" (click)="deletePayrollRecord(car)">
+                      <i class="fa fa-trash-o" matTooltip="Delete"></i>
+                    </span>
+                    <span class="view" *ngIf="car.payrollStatus == 'COMPLETE_APPROVED' && car.payslipGenStatus == 'INCOMPLETE'" (click)="generatePayslips(car)">
+                      <i class="fa fa-cloud-upload" matTooltip="Generate Payslips"></i>
+                    </span>
+                    <span class="delete" *ngIf="car.payrollStatus == 'COMPLETE_APPROVED' && showHideApprovalButton" (click)="unlock(car)">
+                      <i class="fa fa-unlock" matTooltip="Unlock Payroll"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

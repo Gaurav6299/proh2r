@@ -1,0 +1,21 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card" style="margin-bottom:15px;">
+      <div class="card-content">
+        <div class="backToPreviousModule">
+          <button class="btn header-button" routerLink='/timeSheets/projects'>
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              Back To Projects</span>
+          </button>
+        </div>
+        <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)"
+          (animationDone)="onTabChange()">
+          <mat-tab label="Task Tracker">
+            <app-task-tracker></app-task-tracker>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

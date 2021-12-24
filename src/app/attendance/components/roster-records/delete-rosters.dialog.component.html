@@ -1,0 +1,30 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Delete shifts on</h4>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="radio-wrapper">
+                <mat-radio-group [formControl]="deletionType">
+                    <mat-radio-button value="CURRENT">This date only</mat-radio-button>
+                    <mat-radio-button value="ALL">All future dates</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(deletionType.valid || deletionType.untouched)">
+                Field is required
+            </div>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+
+        <button class="dialog-buttons" cdkFocusInitial (click)="deleteRoster()">Confirm</button>
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel</button>
+    </div>
+</mat-dialog-actions>

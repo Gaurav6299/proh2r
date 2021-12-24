@@ -1,0 +1,49 @@
+<div class="myModel">
+    <div class="card">
+        <div class="card-header" data-background-color="cyan" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+            <div data-background-color="blue">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h6 style="text-transform: uppercase;font-weight: 600">
+                            Bulk Re-Run for Upload September - 2017
+                        </h6>
+                    </div>
+                    <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                        <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+
+
+            <p>Bulk Re-Run for your selected Employees in just 1 steps:</p>
+            <p class="category" style="margin-top: 15px; margin-bottom:15px;color:#404A56;font-weight:600;">Step 1: Create the Upload Sheet as per instructions given below and Upload *</p>
+            <div class="col-md-12">
+                <div style="float: left;">
+                    <input type="file" />
+                </div>
+                <div style="float: right;">
+                    <button class="dialog-button" cdkFocusInitial (click)="employeeOnHold()"  data-background-color="cyan">
+                        <span class="category" style="color:#fff; display: inline">
+                            <i class="fa fa-check" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                            Bulk Re-Run Upload</span>
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- <button class="btn header-button" data-background-color="cyan" style="margin-top: 10px;width: 150px;">
+                <span class="category" style="color:#404A56">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                    Bulk Re-Run Upload</span>
+            </button> -->
+            <div>
+                <h4 class="no-margin">Upload Instructions:</h4>
+                <p>The upload sheet must only include "Email", "Employee Name", "Employee Code" (with the exact case and order).</p>
+                <p>All the Employees' whose details are provided would be taken for Re-Run</p>
+            </div>
+
+        </div>
+    </div>
+</div>

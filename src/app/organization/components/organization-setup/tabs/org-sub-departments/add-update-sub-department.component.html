@@ -1,0 +1,33 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Sub Department Details</h4>
+    <form [formGroup]="subDepartmentFormGroup">
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Sub Department Name" formControlName="subDeptName" />
+            <mat-error [hidden]="(subDepartmentFormGroup.controls.subDeptName.valid || 
+            subDepartmentFormGroup.controls.subDeptName.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Sub Department Code" formControlName="subDeptCode" />
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button *ngIf="!subDepartmentFormGroup.controls.subDeptId.value" class="dialog-buttons" cdkFocusInitial (click)="createSubDepartment()">
+            Save
+        </button>
+        <button *ngIf="subDepartmentFormGroup.controls.subDeptId.value" class="dialog-buttons" cdkFocusInitial (click)="updateSubDepartment()">
+            Update
+        </button>
+    </div>
+</mat-dialog-actions>

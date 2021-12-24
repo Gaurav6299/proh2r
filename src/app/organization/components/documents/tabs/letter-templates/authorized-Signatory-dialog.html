@@ -1,0 +1,129 @@
+<!-- <div class="myModel">
+    <div class="card">
+        <div class="card-header" data-background-color="cyan"
+            style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+            <div data-background-color="blue">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h6 style="text-transform: uppercase;font-weight: 600">
+                            Authorize Signatory
+                        </h6>
+                    </div>
+                    <div class="col-md-2">
+                        <p style="text-align: right; padding-top: 8px;"><i class="material-icons"
+                                (click)="onNoClick()">close</i></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-content">
+            <div class="row" [formGroup]="addSignatory"
+                style="display: flex; justify-content: center;align-items: center;">
+                <div class="col-md-6">
+                    <div class="row selectedSectionField">
+                        <div class="col-md-6">
+                            <p class="category" style="color:#404A56;">Select Employee: </p>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field style="float: left;">
+                                <mat-select placeholder="Select Employee" formControlName="empName">
+                                    <mat-option *ngFor="let emp of employee" [value]="emp.empName"
+                                        (click)="showDesignation(emp.empCode);">
+                                        {{ emp.empName }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <span class="category" style="color: red;position: absolute;top: 40px;left: 15px;" [hidden]="( this.addSignatory.controls.empName.valid || 
+            this.addSignatory.controls.empName.untouched)">
+                                {{requiredDropdownButton}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div *ngIf="designation">
+                        <div class="row selectedSectionField">
+                            <div class="col-md-6">
+                                <p class="category" style="color:#404A56;">Designation:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <mat-form-field class="fullLength" style="font-weight:bold;">
+                                        <input matInput formControlName="empdesignation">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align:center;margin-top:20px;margin-top: 20px">
+                <button class="dialog-button" cdkFocusInitial (click)="onNoClick()">Cancel
+                </button>
+                <button class="dialog-button" cdkFocusInitial (click)="saveSignatory();">Save
+                </button>
+            </div>
+        </div>
+    </div> -->
+
+
+
+
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Authorize Signatory</h4>
+    <div class="row" [formGroup]="addSignatory">
+        <div class="col-md-6">
+            <div class="row selectedSectionField">
+                <div class="col-md-6">
+                    <p class="category" style="color:#404A56;">Select Employee: </p>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field>
+                        <mat-select placeholder="Select Employee" formControlName="empName">
+                            <mat-option *ngFor="let emp of employee" [value]="emp.empName"
+                                (click)="showDesignation(emp.empCode);">
+                                {{ emp.empName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            [hidden]="( this.addSignatory.controls.empName.valid || this.addSignatory.controls.empName.untouched)">
+                            {{requiredDropdownButton}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div *ngIf="designation">
+                <div class="row selectedSectionField">
+                    <div class="col-md-6">
+                        <p class="category" style="color:#404A56;">Designation:</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div>
+                            <mat-form-field class="fullLength" style="font-weight:bold;">
+                                <input matInput formControlName="empdesignation">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveSignatory();">Save
+        </button>
+    </div>
+</mat-dialog-actions>

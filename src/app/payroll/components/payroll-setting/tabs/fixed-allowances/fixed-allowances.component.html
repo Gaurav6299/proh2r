@@ -1,0 +1,255 @@
+<div class="card" style="box-shadow: none !important">
+  <div style="text-align: right;margin-bottom: 10px;">
+    <button class="btn header-button" *ngIf="!isLeftVisible" (click)="addFixedAllowance(); isLeftVisible = !isLeftVisible; ">
+      <span>
+        <i class="fa fa-plus-square" aria-hidden="true"></i>
+        Add</span>
+    </button>
+
+    <button class="btn header-button" *ngIf="isLeftVisible" (click)="cancelAddAllowanceForm(); isLeftVisible = !isLeftVisible; setPanel() ">
+      <span>
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+        Back</span>
+    </button>
+  </div>
+  <div class="card-content">
+    <app-add-edit-allowance [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+            style="width:auto">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="fixedAllowanceTableData" [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+          [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='actions' && col.field!='allowanceName'">
+                  <span *ngIf="car[col.field]==true" style="padding:3px;">
+                    <i class="fa fa-check-circle" aria-hidden="true" style="font-size:20px;color:green;vertical-align: middle;cursor:pointer;"></i>
+                  </span>
+                  <span *ngIf="car[col.field]==false" style="padding:3px;">
+                    <i class="fa fa-times-circle" aria-hidden="true" style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i>
+                  </span>
+                </div>
+                <div *ngIf="col.field ==='allowanceName'">
+                  {{car[col.field]}}</div>
+
+                <div *ngIf="col.field ==='exemptionType'">
+                  {{car[col.field] | titlecase}}</div>
+
+                <div *ngIf="col.field=='actions'" class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" matTooltip="Update" *ngIf="car.allowanceType != 'SPECIAL'">
+                      <i class="fa fa-pencil-square-o" (click)="editAllowance(car)"></i>
+                    </span>
+                    <span *ngIf="!car.isDefault && car.allowanceType != 'SPECIAL'" class="delete" matTooltip="Delete">
+                      <i class="fa fa-trash-o" (click)="deleteFixedAllowanceData(car)"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <div rightPane class="divtoggleDiv">
+        <div style="border: 1px solid rgb(221, 221, 221); padding: 15px;">
+          <div class="row" style="text-align: center;">
+            <h5 class="left-rights-slider-title">
+              {{formHeader}}
+            </h5>
+            <h6 class="left-rights-slider-Subtitle">
+              Fixed Payroll Earning Head for your Employees
+            </h6>
+          </div>
+          <div style="margin-top:15px;">
+            <form #myAllowanceInformationForm="ngForm" [formGroup]="allowanceInformationForm">
+              <p class="category showFieldMandatory">What is the label of this fixed allowance? </p>
+              <mat-form-field class="fullLength">
+                <input matInput placeholder="Custom Label" formControlName="allowanceName" [readonly]="this.allowanceInformationForm.controls.isDefault.value == 'true'">
+                <mat-error [hidden]="(this.allowanceInformationForm.controls.allowanceName.valid
+              || this.allowanceInformationForm.controls.allowanceName.untouched)">
+                  <div *ngIf="(this.allowanceInformationForm.controls.allowanceName.value === '' || this.allowanceInformationForm.controls.allowanceName.value === null)">
+                    {{requiredTextField}}
+                  </div>
+                  <div *ngIf="this.allowanceInformationForm.controls.allowanceName.value !== ''">
+                    {{ this.allowanceInformationForm.controls.allowanceName.errors != null ? this.allowanceInformationForm.controls.allowanceName.errors.messages
+                    : ''}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+              <p class="category">Select Allowance Type</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="exemptionType">
+                  <mat-radio-button value=FORECAST>Forecast</mat-radio-button>
+                  <mat-radio-button value=PRORATE>Prorate</mat-radio-button>
+                  <mat-radio-button value=NONE>None</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.exemptionType.valid || 
+            this.allowanceInformationForm.controls.exemptionType.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">Does this allowance affect Arrears?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="arrearsEnable" (change)="selectArrearEligibility($event);">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.arrearsEnable.valid || 
+            this.allowanceInformationForm.controls.arrearsEnable.untouched)">
+                Field is required
+              </div>
+
+              <div *ngIf="this.allowanceInformationForm.controls.arrearsEnable.value=='true'">
+                <p class="category">How do you want the arrears to be calculated? *</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="arrearCalculationType">
+                    <mat-radio-button value="MONTHLY">Monthly</mat-radio-button>
+                    <mat-radio-button value="BASED_ON_PAYABLE_DAYS">Based on Payable Days</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.arrearCalculationType.valid || 
+              this.allowanceInformationForm.controls.arrearCalculationType.untouched)">
+                  Field is required
+                </div>
+              </div>
+
+
+
+              <p class="category">Is this allowance one time tax enable?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="oneTimeTaxEnable">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.oneTimeTaxEnable.valid || 
+            this.allowanceInformationForm.controls.oneTimeTaxEnable.untouched)">
+                Field is required
+              </div>
+
+
+              <p class="category">Does this allowance affect Provident Fund?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="pfEnable">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.pfEnable.valid || 
+            this.allowanceInformationForm.controls.pfEnable.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">Does this allowance affect ESIC?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="esicEnable">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.esicEnable.valid || 
+            this.allowanceInformationForm.controls.esicEnable.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">Does this allowance affect Gratuity Fund?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="gratuityBase">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.gratuityBase.valid || 
+            this.allowanceInformationForm.controls.gratuityBase.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">Does this allowance affect LWF?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="lwfEnable">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.lwfEnable.valid || 
+            this.allowanceInformationForm.controls.lwfEnable.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">Does this allowance affect Professional Tax?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="ptEnable">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.ptEnable.valid || 
+            this.allowanceInformationForm.controls.ptEnable.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">Does this allowance affect TDS?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="tdsEnable">
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.tdsEnable.valid || 
+            this.allowanceInformationForm.controls.tdsEnable.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">Do you want attendance to effect the eligibility? *</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="isEffectByAttendance">
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.allowanceInformationForm.controls.isEffectByAttendance.valid || 
+            this.allowanceInformationForm.controls.isEffectByAttendance.untouched)">
+                Field is required
+              </div>
+
+
+              <div class="row" style="text-align: center;">
+                <button class="btn header-button" (click)="cancelAddAllowanceForm(); isLeftVisible = !isLeftVisible; setPanel()">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true "></i>
+                    Cancel</span>
+                </button>
+                <button class="btn header-button" *ngIf="saveButton" (click)="saveFixedAllowanceData();">
+                  <span>
+                    <i class="fa fa-floppy-o " aria-hidden="true "></i>
+                    Save</span>
+                </button>
+                <button class="btn header-button" *ngIf="updateButton" (click)="updateFixedAllowanceData();">
+                  <span>
+                    <i class="fa fa-pencil-square-o " aria-hidden="true "></i>
+                    Update</span>
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- <pre>{{this.allowanceInformationForm.value | json}}</pre> -->
+        </div>
+      </div>
+    </app-add-edit-allowance>
+  </div>
+</div>

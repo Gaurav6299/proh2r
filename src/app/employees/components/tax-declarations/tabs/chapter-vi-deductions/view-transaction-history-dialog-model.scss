@@ -1,0 +1,20 @@
+@import "~assets/sass/md/model";
+
+.card-content .table-responsive .table.table-bordered>thead {
+  background: #fafafa;
+}
+
+.card-content .table-responsive .table.table-bordered>thead>tr>th {
+  font-size: 13px;
+  padding: 10px;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  color: #444444;
+  text-align: center;
+}
+
+.card-content .table-responsive .table.table-bordered>tbody>tr>td {
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+}

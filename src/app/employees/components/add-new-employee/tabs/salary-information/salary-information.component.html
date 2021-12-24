@@ -1,0 +1,717 @@
+<form [formGroup]="salaryForm" autocomplete="off">
+  <div class="card" style="box-shadow: none !important;">
+    <div class="card-header">
+      <div style="float:left;">
+        <h6 class="title">Current Month Salary Information</h6>
+      </div>
+      <div style="text-align: right;">
+        <button matStepperNext class=" btn header-button" (click)="save()">
+          <span>
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            Save & Continue</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">Which date is this salary structure effective from?</p>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="fullLength">
+            <input matInput type="date" formControlName="salaryEffectiveDate" placeholder="Effective Date" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">For what frequency would you like to enter the CTC amount?</p>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Time Period" formControlName="ctcFrequency"
+              (selectionChange)="resetForm();onCTCFrequencyChnage();">
+              <mat-option value="Monthly">Monthly</mat-option>
+              <mat-option value="Annually">Annually</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">Select CTC Template</p>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="fullLength">
+            <mat-select formControlName="templateName" (selectionChange)="resetForm();loadTemplate()"
+              placeholder="Select Template">
+              <mat-option *ngFor="let templatesName of templatesNames" [value]="templatesName.ctcTemplateId">
+                {{templatesName.templateName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8" *ngIf="this.salaryForm.controls.templateName.value !== '0'">
+          <p class="category">Enter Gross Salary Annual</p>
+        </div>
+        <div class="col-md-4" *ngIf="this.salaryForm.controls.templateName.value !== '0'">
+          <mat-form-field class="fullLength">
+            <input formControlName="annualGrossSalary" (keyup)="resetForm();calculateGorssSalary()" matInput
+              placeholder="Gross Salary">
+          </mat-form-field>
+        </div>
+      </div>
+      <!----------------  Tax And Statutory settings Start ---------------------- -->
+      <!-- <div class="card" style="box-shadow: none !important;">
+        <div class="card-header" style="background:linear-gradient(#a1c2fc,#a1c2fc);"
+          (click)="showHideTaxStatutorySettings();">
+          <div style="float:left;">
+            <h6 class="title">Tax And Statutory Settings</h6>
+          </div>
+          <div style="text-align: right;">
+            <div *ngIf="showTaxStatutorySettings == false">
+              <i class="fa fa-chevron-down" aria-hidden="true"
+                style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+            <div *ngIf="showTaxStatutorySettings == true">
+              <i class="fa fa-chevron-up" aria-hidden="true" style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showTaxStatutorySettings" class="card-content">
+          <div class="row">
+            <div class="col-md-8">.
+              <p class="category">PF Deduction</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isPFDeductible" (selectionChange)="isPFDeductibleChnage();" placeholder="Select">
+                  <mat-option value='true'>Yes</mat-option>
+                  <mat-option value='false'>No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">Provident Pension Deduction</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isProvidentPensionDeductible" placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">Employee's Provident Fund contribution capped at the PF Ceiling?</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isEmployeePFCaped" placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">Employer's Provident Fund contribution capped at the PF Ceiling?</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isEmployersPFCaped" placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">Would you like to set a fixed amount for your Provident Fund Wage? (leave blank for no
+                amount)</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <input formControlName="providentFundWageAmount" matInput placeholder="Amount">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">ESIC Deduction</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isESICDeductible" (selectionChange)="isESICDeductibleChange()" placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">PT Deduction</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isProfessionalTaxDeductible" (selectionChange)="isProfessionalTaxDeductibleChange()"
+                  placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">LWF Deduction </p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isLWFDeductible" (selectionChange)="isLWFDeductibleChange()" placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">Gratuity Applicable</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isGratuityApplicable" placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">Income Tax Deduction </p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isIncomeTaxDeductible" (selectionChange)="isIncomeTaxDeductibleChange()"
+                  placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">NPS Deduction </p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select formControlName="isNPSDeductible" (selectionChange)="isNPSDeductibleChange()" placeholder="Select">
+                  <mat-option value="true">Yes</mat-option>
+                  <mat-option value="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <!----------------  Tax And Statutory settings end ---------------------- -->
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <h6 class="title">CTC Components</h6>
+    </div>
+    <div class="card-content">
+      <!----------------  Fixed Allowance Start ---------------------- -->
+      <div class="card" style="box-shadow: none !important;">
+        <div class="card-header" data-background-color="blue" style="background:linear-gradient(#a1c2fc,#a1c2fc);"
+          (click)="showHideFixedAllowance()">
+          <div style="float:left;">
+            <h6 class="title">Fixed Allowances</h6>
+          </div>
+          <div style="text-align: left;">
+            <span class="title" style="font-weight:500">Monthly
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:170px;">
+                <span style="margin-left:3px;">{{totalMonthlyAllowances}}</span>
+              </i>
+            </span>
+            <span class="title" style="margin-left:5px;font-weight:500">Annually
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:130px;">
+                <span style="margin-left:3px;">{{totalYearlyAllowances}}</span>
+              </i>
+            </span>
+            <div style="float:right;" *ngIf="showFiexedAllowance == false">
+              <i class="fa fa-chevron-down" aria-hidden="true"
+                style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+            <div style="float:right;" *ngIf="showFiexedAllowance == true">
+              <i class="fa fa-chevron-up" aria-hidden="true" style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showFiexedAllowance" class="card-content">
+          <div formArrayName="ctcAllowances">
+            <div *ngFor="let ctcAllowances of  ctcAllowances.controls; let i=index">
+              <div [formGroupName]="i">
+                <div formGroupName="fixedAllowance">
+                  <div class="row" style="padding-top:0px;padding-bottom:0px;padding-left:6px;">
+                    <div class="col-md-5">
+                      <p class="category">Enter the Amount for
+                        {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceName.value}}
+                      </p>
+                    </div>
+                    <div class="col-md-7" *ngIf="this.salaryForm.controls.templateName.value === '0'">
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                          <mat-form-field class="fullLength" style="padding:0px 15px;">
+                            <input matInput formControlName="allowanceValue" (keyup)="calculateNetSalaryMonthly();"
+                              placeholder="{{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceName.value}} Paid">
+                          </mat-form-field>
+
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value/12}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">{{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                            * 12}}</p>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <mat-form-field class="fullLength" style="padding:0px 20px;">
+                            <input matInput formControlName="allowanceValue" (keyup)="calculateNetSalaryAnually()"
+                              placeholder="{{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceName.value}} Paid">
+                          </mat-form-field>
+
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-md-7" *ngIf="this.salaryForm.controls.templateName.value !== '0'">
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value}}
+                          </p>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value/12}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">{{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                            * 12}}</p>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!----------------  Fixed Allowance end ---------------------- -->
+
+      <!----------------  Statutory Contributions Start ---------------------- -->
+
+      <div class="card" style="box-shadow: none !important;padding-bottom:0px;margin-top:5px;">
+        <div class="card-header" (click)="showHideStatutoryContributions();">
+
+          <div style="float:left;min-width:415px;">
+            <h6 class="title">Total Employer Statutory Contributions</h6>
+          </div>
+
+          <div style="text-align: left;">
+            <span class="title" style="font-weight:500">Monthly
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:170px;">
+                <!-- <span style="margin-left:3px;">{{totalEmployerStatutoryContributionM}}</span> -->
+                <span style="margin-left:3px;">{{totalEmployerStatutoryContributionY/12}}</span>
+              </i>
+            </span>
+            <span class="title" style="margin-left:5px;font-weight:500">Annually
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:130px;">
+                <span style="margin-left:3px;">{{totalEmployerStatutoryContributionY}}</span>
+              </i>
+            </span>
+
+            <div style="float:right;" *ngIf="showStatutoryContributions == false">
+              <i class="fa fa-chevron-down" aria-hidden="true"
+                style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+            <div style="float:right;" *ngIf="showStatutoryContributions == true">
+              <i class="fa fa-chevron-up" aria-hidden="true" style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showStatutoryContributions" class="card-content" style="padding:0px;">
+          <div formArrayName="employerContribution">
+            <div *ngFor="let employerContribution of  employerContribution.controls; let i=index">
+              <div class="col-md-12" [formGroupName]="i" style="padding:0px;">
+                <div formGroupName="employerContribution">
+                  <div class="col-md-12" style="padding-top:0px;padding-bottom:0px;padding-left:6px;">
+                    <div class="col-md-5">
+                      <p class="category">Enter the Amount for
+                        {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContribution.controls.employerContributionName.value}}
+                      </p>
+                    </div>
+                    <div class="col-md-7">
+
+
+
+
+
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                          <!-- <mat-form-field class="fullLength" style="padding:0px 15px;" >
+                                <input matInput formControlName="employeeDeductionValue" (keyup)="calculateNetSalaryMonthly();" placeholder="{{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionName.value}} Paid">
+                              </mat-form-field> -->
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContribution.controls.employerContributionValue.value}}
+                          </p>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContribution.controls.employerContributionValue.value/12}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <!-- <mat-form-field class="fullLength" style="padding:0px 20px;" >
+                                <input matInput formControlName="employeeDeductionValue"(keyup)="calculateNetSalaryAnually();"  placeholder="{{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionName.value}} Paid">
+                              </mat-form-field> -->
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContribution.controls.employerContributionValue.value}}
+                          </p>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">{{this.salaryForm.controls.employerContribution.controls[i].controls.employerContribution.controls.employerContributionValue.value
+                            * 12}}</p>
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!----------------  Statutory Contributions end ---------------------- -->
+
+      <!----------------  Statutory Deductions Start   ---------------------- -->
+      <div class="card" style="box-shadow: none !important;padding-bottom:0px;margin-top:5px;">
+        <div class="card-header" (click)="showHideStatutoryDeductions();">
+
+          <div style="float:left;min-width:415px;">
+            <h6 class="title">Total Employee Statutory Deductions</h6>
+          </div>
+          <div style="text-align: left;">
+            <span class="title" style="font-weight:500">Monthly
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:170px;">
+                <!-- <span style="margin-left:3px;">{{totalEmployeeStatutoryDeductionM}}</span> -->
+                <span style="margin-left:3px;">{{totalEmployeeStatutoryDeductionM}}</span>
+              </i>
+            </span>
+            <span class="title" style="margin-left:5px;font-weight:500">Annually
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:130px;">
+                <span style="margin-left:3px;">{{totalEmployeeStatutoryDeductionY}}</span>
+              </i>
+            </span>
+
+            <div style="float:right;" *ngIf="showStatutoryDeductions == false">
+              <i class="fa fa-chevron-down" aria-hidden="true"
+                style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+            <div style="float:right;" *ngIf="showStatutoryDeductions == true">
+              <i class="fa fa-chevron-up" aria-hidden="true" style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showStatutoryDeductions" class="card-content" style="padding:0px;">
+          <div formArrayName="employeeDeduction">
+            <div *ngFor="let employeeDeduction of  employeeDeduction.controls; let i=index">
+              <div class="col-md-12" [formGroupName]="i" style="padding:0px;">
+                <div formGroupName="employeeDeduction">
+                  <div class="col-md-12" style="padding-top:0px;padding-bottom:0px;padding-left:6px;">
+                    <div class="col-md-5">
+                      <p class="category">Enter the Amount for
+                        {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionName.value}}
+                      </p>
+                    </div>
+                    <div class="col-md-7" *ngIf="this.salaryForm.controls.templateName.value === '0'">
+
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                          <mat-form-field class="fullLength" style="padding:0px 15px;">
+                            <input matInput formControlName="employeeDeductionValue"
+                              (keyup)="calculateEmployerContribution();calculateNetSalaryMonthly();"
+                              placeholder="{{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionName.value}} Paid">
+                          </mat-form-field>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionValue.value/12}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <mat-form-field class="fullLength" style="padding:0px 20px;">
+                            <input matInput formControlName="employeeDeductionValue"
+                              (keyup)="calculateEmployerContribution();calculateNetSalaryAnually();"
+                              placeholder="{{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionName.value}} Paid">
+                          </mat-form-field>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">{{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionValue.value
+                            * 12}}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-7" *ngIf="this.salaryForm.controls.templateName.value !== '0'">
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionValue.value}}
+                          </p>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionValue.value/12}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">{{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionValue.value
+                            * 12}}</p>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeduction.controls.employeeDeductionValue.value}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!----------------  Statutory Diductions end ---------------------- -->
+      <!----------------  fixed Deductions Start   ---------------------- -->
+      <div class="card" style="box-shadow: none !important;padding-bottom:0px;margin-top:5px;">
+        <div class="card-header" (click)="showHideFixedDeductions();">
+          <div style="float:left;min-width:415px;">
+            <h6 class="title">Fixed Deductions</h6>
+          </div>
+          <div style="text-align: left;">
+            <span class="title" style="font-weight:500">Monthly
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:170px;">
+                <!-- <span style="margin-left:3px;">{{totalMonthlyDeductions}}</span> -->
+                <span style="margin-left:3px;">{{totalMonthlyDeductions}}</span>
+              </i>
+            </span>
+            <span class="title" style="margin-left:5px;font-weight:500">Annually
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:130px;">
+                <span style="margin-left:3px;">{{totalYearlyDeductions}}</span>
+              </i>
+            </span>
+            <div style="float:right;" *ngIf="showFixedDeductions == false">
+              <i class="fa fa-chevron-down" aria-hidden="true"
+                style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+            <div style="float:right;" *ngIf="showFixedDeductions == true">
+              <i class="fa fa-chevron-up" aria-hidden="true" style="font-size: 14px; margin:3px 3px;color:#205081;"></i>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showFixedDeductions" class="card-content" style="padding:0px; ">
+          <div formArrayName="ctcDeductions">
+            <div *ngFor="let ctcDeductions of  ctcDeductions.controls; let i=index">
+              <div class="col-md-12" [formGroupName]="i" style="padding:0px;">
+                <div formGroupName="deductionId">
+                  <div class="col-md-12" style="padding-top:0px;padding-bottom:0px;padding-left:6px;">
+                    <div class="col-md-5">
+                      <p class="category">Enter the Amount for
+                        {{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionName.value}}
+                      </p>
+                    </div>
+                    <div class="col-md-7" *ngIf="this.salaryForm.controls.templateName.value === '0'">
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                          <mat-form-field class="fullLength" style="padding:0px 15px;">
+                            <input matInput formControlName="deductionValue" (keyup)="calculateNetSalaryMonthly()"
+                              placeholder="{{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionName.value}} Paid">
+                          </mat-form-field>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionValue.value/12}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <mat-form-field class="fullLength" style="padding:0px 20px;">
+                            <input matInput formControlName="deductionValue" (keyup)="calculateNetSalaryAnually()"
+                              placeholder="{{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionName.value}} Paid">
+                          </mat-form-field>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">{{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionValue.value
+                            * 12}}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-7" *ngIf="this.salaryForm.controls.templateName.value !== '0'">
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                          <mat-form-field class="fullLength" style="padding:0px 15px;">
+                            <input matInput formControlName="deductionValue" (keyup)="calculateNetSalaryMonthly()"
+                              placeholder="{{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionName.value}} Paid">
+                          </mat-form-field>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">
+                            {{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionValue.value/12}}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-md-6" style="padding-bottom:0px;">
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annually'">
+                          <mat-form-field class="fullLength" style="padding:0px 20px;">
+                            <input matInput formControlName="deductionValue" (keyup)="calculateNetSalaryAnually()"
+                              placeholder="{{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionName.value}} Paid">
+                          </mat-form-field>
+                        </div>
+                        <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                          <p class="category" style="text-align: left;padding:0px 15px;">{{this.salaryForm.controls.ctcDeductions.controls[i].controls.deductionId.controls.deductionValue.value
+                            * 12}}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!----------------  fixed Diductions end ---------------------- -->
+
+      <!---------------- Consolidated output Start   ---------------------- -->
+      <div class="card" style="box-shadow: none !important;padding-bottom:0px;margin-top:5px;">
+        <div class="card-header">
+
+          <div style="float:left;min-width:415px;">
+            <h6 class="title">Consolidated Output</h6>
+          </div>
+          <div style="text-align: left;">
+            <span class="title" style="font-weight:500">Monthly
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:170px;">
+                <span style="margin-left:3px;"></span>
+              </i>
+            </span>
+            <span class="title" style="margin-left:5px;font-weight:500">Annually
+              <i class="fa fa-inr" aria-hidden="true" style="margin-left:2px;margin-right:5px;width:130px;">
+                <span style="margin-left:3px;"></span>
+              </i>
+            </span>
+          </div>
+        </div>
+        <div class="card-content" style="padding:0px;">
+
+          <div class="col-md-12" style="padding-top:0px;padding-bottom:0px;padding-left:6px;">
+            <div class="col-md-5" style="padding:0px;">
+              <p class="category" style="font-weight: 600;">Total Take Home (excluding Variable)</p>
+            </div>
+            <div class="col-md-7">
+              <div class="col-md-6" style="padding-bottom:0px;">
+                <p class="category" style="font-weight: 600;text-align: left;padding:0px 15px;">{{totalNetSalaryM}}</p>
+              </div>
+              <div class="col-md-6" style="padding-top:0px;padding-bottom:0px;">
+                <p class="category" style="font-weight: 600;text-align: left;padding:0px 15px;">{{totalNetSalaryY}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12" style="padding-top:0px;padding-bottom:0px;">
+            <div class="col-md-5" style="padding:0px;">
+              <p class="category" style="font-weight: 600;margin-top:0px;">Total CTC (excluding Variable)</p>
+            </div>
+            <div class="col-md-7">
+              <div class="col-md-6" style="padding-bottom:0px;">
+                <p class="category" style="font-weight: 600;text-align: left;padding:0px 15px;margin-top:0px;">
+                  {{totalGrossSalaryM}}</p>
+              </div>
+              <div class="col-md-6" style="padding-top:0px;padding-bottom:0px;">
+                <p class="category" style="font-weight: 600;text-align: left;padding:0px 15px;margin-top:0px;">
+                  {{totalGrossSalaryY}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12" style="padding-top:0px;padding-bottom:0px;padding-right:6px;">
+            <div class="col-md-5" style="padding:0px;">
+              <p class="category" style="font-weight: 600;margin-top:0px;">Total CTC</p>
+            </div>
+            <div class="col-md-7">
+              <div class="col-md-6" style="padding-bottom:0px;">
+                <p class="category" style="font-weight: 600;text-align: left;padding:0px 15px;margin-top:0px;"></p>
+              </div>
+              <div class="col-md-6" style="padding-top:0px;padding-bottom:0px;">
+                <p class="category" style="font-weight: 600;text-align: left;padding:0px 15px;margin-top:0px;">
+                  {{totalGrossSalaryY}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!----------------  Consolidated end ---------------------- -->
+    </div>
+  </div>
+  <!-- <div class="col-md-12" style="padding-top:50px">
+    <div class="clearfix">
+      <div class="margin-top:50px">
+        <pre>form value: <br>{{salaryForm.value | json}}</pre>
+      </div>
+    </div>
+  </div> -->
+</form>

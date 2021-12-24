@@ -1,0 +1,46 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>{{title}}</h4>
+    <form [formGroup]="pfTemplateForm">
+        <mat-form-field class="fullLength">
+            <input matInput formControlName="templateName" placeholder="Template Name" />
+            <mat-error [hidden]="(pfTemplateForm.controls.templateName.valid || 
+            pfTemplateForm.controls.templateName.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+        <p class="category">Allowances Applicable</p>
+        <ng-select #select [items]="options" class="custom-ng-select-StyleModal" [multiple]="true" bindLabel="name" bindValue="fixedAllowanceId"
+            bind groupBy="type" [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false" [closeOnSelect]="false"
+            [selectableGroupAsModel]="false" formControlName="allowancesList">
+            <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone : true }" /> {{item.name}}
+            </ng-template>
+        </ng-select>
+        <div class="input-errorClass" [hidden]="(pfTemplateForm.controls.allowancesList.valid || 
+        pfTemplateForm.controls.allowancesList.untouched)">
+            Field is required
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial *ngIf="this.action === 'add'" (click)="createPFTemplate()">
+            Save
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial *ngIf="this.action === 'update'" (click)="updatePFTemplate()">
+            Update
+        </button>
+    </div>
+</mat-dialog-actions>

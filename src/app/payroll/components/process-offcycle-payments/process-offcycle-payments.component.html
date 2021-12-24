@@ -1,0 +1,95 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card" style="padding-bottom: 15px;margin-bottom:20px;">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Offcycle Payments</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" routerLink="/payroll/monthly-Offcycle-payment">
+            <span>
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              Payment Batch for Month {{date | date: 'MM-yyyy'}}</span>
+          </button>
+
+        </div>
+      </div>
+
+
+      <div class="card-content">
+
+        <div class="col-md-12 table-responsive example-container mat-elevation-z8" style="margin-top:15px;">
+          <mat-table #table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="generatedDate">
+              <mat-header-cell *matHeaderCellDef>Payroll Period</mat-header-cell>
+              <mat-cell *matCellDef="let element" style="text-align: left;">{{element.generatedDate}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="payrollCycle">
+              <mat-header-cell *matHeaderCellDef>Run Date</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.payrollCycle}} </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="grossAllowance">
+              <mat-header-cell *matHeaderCellDef>Gross
+                <br> Allowancs ( In
+                <i class="fa fa-inr" aria-hidden="true"></i> )</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.grossAllowance}}</mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="grossDeduction">
+              <mat-header-cell *matHeaderCellDef>Gross
+                <br> Deductions ( In
+                <i class="fa fa-inr" aria-hidden="true"></i>)</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.grossDeduction}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="netPayment">
+              <mat-header-cell *matHeaderCellDef>Net
+                <br> Payment ( In
+                <i class="fa fa-inr" aria-hidden="true"></i>)</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.netPayment}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="OffcycleDetails">
+              <mat-header-cell *matHeaderCellDef>Offcycle Details</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.OffcycleDetails}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="batchStatus">
+              <mat-header-cell *matHeaderCellDef>Batch Status</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.batchStatus}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actionId">
+              <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span style="padding:3px;" (click)="generateOffcyclePayrollRecord(element)">
+                  <i class="fa fa-download" aria-hidden="true" style="font-size:20px;color:green;vertical-align: middle;cursor:pointer;"></i>
+                </span>
+
+                <span style="padding:3px;">
+                  <i class="fa fa-unlock" aria-hidden="true" (click)="processPayrollLockRecord(element)" style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i>
+                </span>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+        <div class="col-md-12">
+          <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>

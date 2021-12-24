@@ -1,0 +1,165 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>{{title}}</h4>
+    <form [formGroup]="timeSheetsTemplateAssignment" #formDirective="ngForm">
+        <ng-select [items]="timeSheetsTemplate" bindLabel="templateName" bindValue="timeSheetsTemplateId"
+            appendTo="body" placeholder="Select Template" formControlName="timeSheetsTemplate"
+            (click)="selectedTemplateValue()" class="custom-ng-select-Style">
+        </ng-select>
+        <div class="dropDown-errorClass" [hidden]="(timeSheetsTemplateAssignment.controls.timeSheetsTemplate.valid || 
+            timeSheetsTemplateAssignment.controls.timeSheetsTemplate.untouched)">
+            This field is required.
+        </div>
+
+        <!-- <mat-form-field class="fullLength">
+            
+         <mat-select placeholder="Select Template" formControlName="timeSheetsTemplate"
+                (selectionChange)="selectedTemplateValue()">
+                <mat-option *ngFor="let template of timeSheetsTemplate" [value]="template.timeSheetsTemplateId">
+                    {{ template.templateName}}
+                </mat-option>
+            </mat-select> 
+            <mat-error [hidden]="(timeSheetsTemplateAssignment.controls.timeSheetsTemplate.valid || 
+            timeSheetsTemplateAssignment.controls.timeSheetsTemplate.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field> -->
+        <div *ngIf="selectedTemplate.approvalType=='TEMPLATEWISE'">
+            <div *ngIf="selectedTemplate.approvalLevel=='LEVEL1' || selectedTemplate.approvalLevel=='LEVEL2'">
+                <ng-select class="custom-ng-select-Style custom-ng-select-StyleModal" [items]="employeeList"
+                    bindLabel="viewValue" bindValue="value" placeholder="Select Primary Approver"
+                    formControlName="primaryApprover">
+                </ng-select>
+                <mat-error
+                    *ngIf="(!timeSheetsTemplateAssignment.controls.primaryApprover.value && timeSheetsTemplateAssignment.controls.primaryApprover.touched)">
+                    This field is required.
+                </mat-error>
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Primary Approver" formControlName="primaryApprover" disabled>
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput>
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+
+
+                    <mat-error
+                        *ngIf="timeSheetsTemplateAssignment.controls.primaryApprover.hasError('required') || (formDirective.submitted && timeSheetsTemplateAssignment.controls.primaryApprover.invalid)">
+                        This field is required.
+                    </mat-error>
+
+                </mat-form-field> -->
+            </div>
+            <div *ngIf="selectedTemplate.approvalLevel=='LEVEL2'">
+                <ng-select class="custom-ng-select-Style custom-ng-select-StyleModal" [items]="employeeList"
+                    bindLabel="viewValue" bindValue="value" placeholder="Select Secondary Approver"
+                    formControlName="secondaryApprover">
+                </ng-select>
+                <mat-error
+                    *ngIf="!timeSheetsTemplateAssignment.controls.secondaryApprover.value && timeSheetsTemplateAssignment.controls.secondaryApprover.touched ">
+                    This field is required.
+                </mat-error>
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Secondary Approver" formControlName="secondaryApprover" disabled>
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput>
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+
+                    <mat-error
+                        *ngIf="timeSheetsTemplateAssignment.controls.secondaryApprover.hasError('required') || (formDirective.submitted && timeSheetsTemplateAssignment.controls.secondaryApprover.invalid)">
+                        This field is required.
+                    </mat-error>
+
+                </mat-form-field> -->
+
+            </div>
+        </div>
+        <div *ngIf="selectedTemplate.approvalType=='EMPLOYEEWISE'">
+            <div *ngIf="selectedTemplate.approvalLevel=='LEVEL1' ||  selectedTemplate.approvalLevel=='LEVEL2'">
+                <ng-select class="custom-ng-select-Style custom-ng-select-StyleModal" [items]="employeeList"
+                    bindLabel="viewValue" bindValue="value" placeholder="Select Primary Approver"
+                    formControlName="primaryApprover">
+                </ng-select>
+                <mat-error
+                    *ngIf="(!timeSheetsTemplateAssignment.controls.primaryApprover.value && timeSheetsTemplateAssignment.controls.primaryApprover.touched)">
+                    This field is required.
+                </mat-error>
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Primary Approver" formControlName="primaryApprover">
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput
+                                (keyup)="searchEmployeeNameForPrimarysupervisor($event)">
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="timeSheetsTemplateAssignment.controls.primaryApprover.hasError('required') || (formDirective.submitted && timeSheetsTemplateAssignment.controls.primaryApprover.invalid)">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field> -->
+            </div>
+
+            <div *ngIf="selectedTemplate.approvalLevel=='LEVEL2'">
+                <ng-select class="custom-ng-select-Style custom-ng-select-StyleModal" [items]="employeeList"
+                    bindLabel="viewValue" bindValue="value" placeholder="Select Secondary Approver"
+                    formControlName="secondaryApprover">
+                </ng-select>
+                <mat-error
+                    *ngIf="!timeSheetsTemplateAssignment.controls.secondaryApprover.value && timeSheetsTemplateAssignment.controls.secondaryApprover.touched ">
+                    This field is required.
+                </mat-error>
+                <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Secondary Approver" formControlName="secondaryApprover">
+                        <mat-form-field class="fullLength">
+                            <input type="text" placeholder="Search Employee" matInput
+                                (keyup)="searchEmployeeNameForSecondarysupervisor($event)">
+                        </mat-form-field>
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="timeSheetsTemplateAssignment.controls.secondaryApprover.hasError('required') || (formDirective.submitted && timeSheetsTemplateAssignment.controls.secondaryApprover.invalid)">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field> -->
+            </div>
+
+        </div>
+
+        <mat-form-field class="fullLength">
+            <input matInput type="date" placeholder="Date" formControlName="effectiveDate">
+            <mat-error [hidden]="timeSheetsTemplateAssignment.controls.effectiveDate.value">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+    </form>
+    <!-- <pre>{{timeSheetsTemplateAssignment.value|json}}</pre> -->
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" (click)="onNoClick()">Cancel
+        </button>
+        <button *ngIf="this.data.option === 'assign'" class="dialog-buttons" cdkFocusInitial
+            (click)="assignTemplate();"> Save
+        </button>
+
+        <button *ngIf="this.data.option != 'assign'" class="dialog-buttons" cdkFocusInitial (click)="assignTemplate();">
+            Update
+        </button>
+    </div>
+</mat-dialog-actions>

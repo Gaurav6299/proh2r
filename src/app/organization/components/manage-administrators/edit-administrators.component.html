@@ -1,0 +1,32 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title> Locations Details</h4>
+  <form [formGroup]="locationDialog">
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="Provident Fund Registration Code" formControlName="pfRegistrationCode">
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="ESIC Registration Code" formControlName="esicRegistrationCode">
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="Professional Tax Registration Code"
+        formControlName="professionalTaxRegistrationCode">
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="LWF Registration Code" formControlName="lwfRegistrationCode">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="saveLocation()">Save
+    </button>
+  </div>
+</mat-dialog-actions>

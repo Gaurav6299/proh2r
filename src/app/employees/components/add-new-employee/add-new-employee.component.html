@@ -1,0 +1,81 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card" style="margin-bottom:20px;padding-bottom:15px;">
+      <div class="card-header" style="margin-bottom:0px;">
+        <div style="float:left;">
+          <h6 class="title">Add New Employee</h6>
+        </div>
+        <div style="text-align: right;">
+
+          <button class="btn header-button" routerLink="/employees">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              Back</span>
+          </button>
+        </div>
+      </div>
+
+
+
+      <div class="card-content">
+        <mat-horizontal-stepper >
+          <mat-step>
+            <mat-tab-group class="tabs" >
+              <mat-tab label="Basic Details">
+                <app-basic-information (currentTabEvent)="receiveMessage($event)" [currentTab]="currentTab"></app-basic-information>
+              </mat-tab>
+            </mat-tab-group>
+          </mat-step>
+          <mat-step>
+            <mat-tab-group class="tabs"  *ngIf="!(currentTab === '1'); else fillPreviousStep">
+              <mat-tab label="Employment Details" disabled>
+                <app-employment-information  (currentTabEvent)="receiveMessage($event)" [currentTab]="currentTab"></app-employment-information>
+              </mat-tab>
+            </mat-tab-group>
+            <ng-template #fillPreviousStep>
+              <div style="color: red;margin-left:7px">Please Fill Previous Step</div>
+              <button class="btn header-button" mat-button matStepperPrevious>Back</button>
+            </ng-template>
+            
+          </mat-step>
+          <!-- <mat-step>
+            <mat-tab-group class="tabs" *ngIf="!( currentTab === '1' || currentTab === '2'); else fillPreviousStep ">
+              <mat-tab label="Salary Details" disabled >
+                <app-salary-information  (currentTabEvent)="receiveMessage($event)" [currentTab]="currentTab"></app-salary-information>
+              </mat-tab>
+            </mat-tab-group>
+            <ng-template #fillPreviousStep>
+              <div style="color: red;margin-left:7px">Please Fill Previous Step</div>
+              <button class="btn header-button" mat-button matStepperPrevious>Back</button>
+            </ng-template>
+          </mat-step> -->
+          <!-- <mat-step>
+            <mat-tab-group class="tabs" *ngIf="!( currentTab === '1' || currentTab === '2' || currentTab === '3'); else fillPreviousStep">
+              <mat-tab label="Statutory Details" disabled>
+                <app-statutory-detail  (currentTabEvent)="receiveMessage($event)" [currentTab]="currentTab"></app-statutory-detail>
+              </mat-tab>
+            </mat-tab-group>
+            <ng-template #fillPreviousStep>
+              <div style="color: red;margin-left:7px">Please Fill Previous Step</div>
+              <button class="btn header-button" mat-button matStepperPrevious>Back</button>
+            </ng-template>
+          </mat-step> -->
+          <!-- <mat-step>
+            <mat-tab-group class="tabs" *ngIf="!( currentTab === '1' || currentTab === '2' || currentTab === '3'); else fillPreviousStep">
+              <mat-tab label="Other Details" disabled>
+                <app-other-information  (currentTabEvent)="receiveMessage($event)" [currentTab]="currentTab"></app-other-information>
+              </mat-tab>
+            </mat-tab-group>
+            <ng-template #fillPreviousStep>
+              <div style="color: red;margin-left:7px">Please Fill Previous Step</div>
+              <button class="btn header-button" mat-button matStepperPrevious>Back</button>
+            </ng-template>
+          </mat-step> -->
+        </mat-horizontal-stepper>
+      </div>
+    </div>
+  </div>
+
+
+</div>

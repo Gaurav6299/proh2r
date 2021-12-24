@@ -1,0 +1,175 @@
+<div class="card" style="box-shadow: none !important;">
+  <div>
+    <div style="text-align: right;margin-bottom: 10px;">
+      <div *ngIf="!isLeftVisible">
+        <button class="btn header-button" (click)="addDeductions();isLeftVisible = !isLeftVisible;button=true">
+          <span>
+            <i class="fa fa-plus-square" aria-hidden="true"></i>Add</span>
+        </button>
+      </div>
+      <div *ngIf="isLeftVisible">
+        <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible;button=false;setPanel()">
+          <span>
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- <ng-template #variableDeductionViewOnly>
+    <div class="card-header">
+      <h6 class="title">Employee Contribution</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <app-variable-deductions-content [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="table-responsive example-container mat-elevation-z8">
+          <mat-table #table [dataSource]="dataSource">
+            <ng-container matColumnDef="employerContributionName">
+              <mat-header-cell  *matHeaderCellDef>Label
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.employerContributionName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <mat-header-cell  *matHeaderCellDef> Actions </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="mat-element-icon">
+                  <span class="edit">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                      (click)="editEmployerContribution(element);"></i>
+                  </span>
+                  <span *ngIf="element.default!=true" class="delete">
+                    <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                      (click)="deleteEmployerContributionData(element)"></i>
+                  </span>
+                </div>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div class="row" style="text-align: center;">
+          <h5 style="color:#4b88dc;font-weight: 500">
+            {{formHeader}}
+          </h5>
+          <h6 style="color:#4b88dc;font-weight: 500;text-transform: none;">
+            Payroll Contribution Head for your Employer
+          </h6>
+        </div>
+        <form [formGroup]="employerContributionForm">
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category"> What is the label of this employer Contribution?</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <input matInput formControlName="employerContributionName" placeholder="Employee Contribution Name *">
+                <mat-error [hidden]="(this.employerContributionForm.controls.employerContributionName.valid 
+              || this.employerContributionForm.controls.employerContributionName.untouched)">
+                  <div
+                    *ngIf="(this.employerContributionForm.controls.employerContributionName.value === '' || this.employerContributionForm.controls.employerContributionName.value === null)">
+                    {{requiredTextField}}
+                  </div>
+                  <div *ngIf="this.employerContributionForm.controls.employerContributionName.value !== ''">
+                    {{ this.employerContributionForm.controls.employerContributionName.errors != null ? this.employerContributionForm.controls.employerContributionName.errors.messages
+                  : ''}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category">How would you like to enter the amount for this employer Contribution?</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select placeholder="Select" formControlName="criteria" (selectionChange)="selectDeductionType()">
+                  <mat-option *ngFor="let deduct of EnterDeductions" [value]="deduct.value">
+                    {{ deduct.viewValue }}
+                  </mat-option>
+                </mat-select>
+                <mat-error [hidden]="(this.employerContributionForm.controls.criteria.valid 
+              || this.employerContributionForm.controls.criteria.untouched)">
+                  <div
+                    *ngIf="(this.employerContributionForm.controls.criteria.value === '' || this.employerContributionForm.controls.criteria.value === null)">
+                    {{requiredDropdownField}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row"
+            *ngIf="(employerContributionForm.controls.criteria.value==='AMOUNT' || employerContributionForm.controls.criteria.value==='PERCENTAGE')">
+            <div class="col-md-8">
+              <p class="category"> Provide the {{this.creteriaType}}</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <input matInput formControlName="value" placeholder="Enter value">
+                <mat-error [hidden]="(this.employerContributionForm.controls.value.valid 
+                || this.employerContributionForm.controls.value.untouched)">
+                  <div
+                    *ngIf="(this.employerContributionForm.controls.value.value === '' || this.employerContributionForm.controls.value.value === null)">
+                    {{requiredTextField}}
+                  </div>
+                  <div *ngIf="this.employerContributionForm.controls.value.value !== null">
+                    {{ this.employerContributionForm.controls.value.errors != null ? this.employerContributionForm.controls.value.errors.messages
+                      : ''}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" *ngIf="employerContributionForm.controls.criteria.value==='PERCENTAGE'">
+            <div class="col-md-8">
+              <p class="category">Select Components on which Employer Contribution is
+                calculated</p>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Component" [formControl]="selectedDependentVal"
+                  (selectionChange)="selectDependentComponenet()" multiple>
+                  <mat-select-trigger>
+                    {{selectedDependentVal.value ? selectedDependentVal.value[0] : ''}}
+                    <span *ngIf="selectedDependentVal.value?.length > 1" class="example-additional-selection">
+                      (+{{selectedDependentVal.value.length - 1}} others)
+                    </span>
+                  </mat-select-trigger>
+                  <mat-option *ngFor="let fixedallowanceValue of fixedAllowanceList"
+                    [value]="fixedallowanceValue.value">{{fixedallowanceValue.viewValue}}</mat-option>
+                </mat-select>
+                <mat-error [hidden]="(this.selectedDependentVal.valid || !this.selectedDependentVal.untouched)">
+                  {{requiredDropdownField}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" style="text-align:center;">
+            <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible;button=false;setPanel()">
+              <span>
+                <i class="fa fa-times " aria-hidden="true "></i>Cancel</span>
+            </button>
+            <span *ngIf="!button">
+              <button class="btn header-button" (click)="saveUpdateEmployerContribution(employerContributionForm);">
+                <span>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true "></i>Update
+                </span>
+              </button>
+            </span>
+            <span *ngIf="button">
+              <button class="btn header-button" (click)="saveEmployerContribution(employerContributionForm);">
+                <span>
+                  <i class="fa fa-floppy-o " aria-hidden="true "></i>Save
+                </span>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </app-variable-deductions-content>
+  </div>
+</div>

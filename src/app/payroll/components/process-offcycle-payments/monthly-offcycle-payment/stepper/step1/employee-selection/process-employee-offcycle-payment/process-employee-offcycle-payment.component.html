@@ -1,0 +1,76 @@
+<div class="card" style="box-shadow: none !important">
+    <div class="card-header">
+      <div>
+        <h6 class="title">Listing Processed Employees</h6>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="row" style="margin:0px;background-color:#fff;border:1px solid #ddd;border-radius:3px;">
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
+          <mat-form-field class="fullLength">
+            <mat-select placeholder="Bulk Actions" (selectionChange)="actionRerurnSelectedEmployeeProcessed($event)">
+              <mat-option *ngFor="let actionList of actionList" [value]="actionList.value">
+                {{ actionList.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="fullLength">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+            <span matSuffix>
+              <i class="fa fa-search" aria-hidden="true" style="color:#404A56;"></i>
+            </span>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="table-responsive example-container mat-elevation-z8">
+        <mat-table #table [dataSource]="dataSource">
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">Select All
+              </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="employeeCode">
+            <mat-header-cell *matHeaderCellDef>Employee Code</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.employeeCode}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="employeeName">
+            <mat-header-cell *matHeaderCellDef>Employee Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.employeeName}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="joiningDate">
+            <mat-header-cell *matHeaderCellDef>Joining Date</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.joiningDate}}
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+          <div class="row" style="text-align: center;">
+            <button class="btn header-button" cdkFocusInitial>
+              <span >
+                <i class="fa fa-times" aria-hidden="true" ></i>
+                Cancel</span>
+            </button>
+            <button class="btn header-button" cdkFocusInitial >
+              <span>
+                <i class="fa fa-check" aria-hidden="true" ></i>
+                Proceed</span>
+            </button>
+          </div>
+    </div>
+  </div>

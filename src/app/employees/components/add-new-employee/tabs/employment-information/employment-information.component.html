@@ -1,0 +1,117 @@
+<div class="card" style="box-shadow: none !important;overflow-y: hidden;">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Employment Information</h6>
+    </div>
+    <div style="text-align: right;">
+      <button *ngIf="employmentInfoForm.valid" matStepperNext class="btn header-button" (click)="saveFormData()">
+        <span>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          Finish Onboarding</span>
+      </button>
+      <button *ngIf="!employmentInfoForm.valid" class="btn header-button" (click)="saveFormData()">
+        <span>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          Finish Onboarding</span>
+      </button>
+
+    </div>
+  </div>
+  <div class="card-content">
+    <form [formGroup]="employmentInfoForm">
+      <div formArrayName="fields">
+
+        <div *ngFor="let fields of  fields.controls; let i=index">
+          <div [formGroupName]="i">
+            <div class="col-md-8">
+              <p class="category">
+                {{this.employmentInfoForm.controls.fields.controls[i].controls.fieldDescription.value}}</p>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.employmentInfoForm.controls.fields.controls[i].controls.fieldType.value === 'SingleLineText'">
+              <mat-form-field class="fullLength">
+                <input matInput
+                  placeholder="{{this.employmentInfoForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  formControlName="fieldValue"
+                  [required]="this.employmentInfoForm.controls.fields.controls[i].controls.mandatory.value">
+                <mat-error
+                  *ngIf="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldName.value != 'empEmail')"
+                  [hidden]="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.valid || 
+                  this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.untouched)">
+                  Field is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.employmentInfoForm.controls.fields.controls[i].controls.fieldType.value === 'MultiLineText'">
+              <mat-form-field class="fullLength">
+                <textarea matInput
+                  placeholder="{{this.employmentInfoForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"
+                  [required]="this.employmentInfoForm.controls.fields.controls[i].controls.mandatory.value"
+                  formControlName="fieldValue"></textarea>
+                <mat-error
+                  *ngIf="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldName.value != 'empEmail')"
+                  [hidden]="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.valid || 
+                            this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.untouched)">
+                  Field is required
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.employmentInfoForm.controls.fields.controls[i].controls.fieldType.value === 'Number'">
+              <mat-form-field class="fullLength">
+                <input matInput
+                  placeholder="{{this.employmentInfoForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  type="number" formControlName="fieldValue"
+                  [required]="this.employmentInfoForm.controls.fields.controls[i].controls.mandatory.value">
+                <mat-error
+                  *ngIf="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldName.value != 'empEmail')"
+                  [hidden]="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.valid || 
+                             this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.untouched)">
+                  Field is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.employmentInfoForm.controls.fields.controls[i].controls.fieldType.value === 'Dropdown'">
+              <mat-form-field class="fullLength">
+                <mat-select
+                  placeholder="{{this.employmentInfoForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  formControlName="fieldValue"
+                  [required]="this.employmentInfoForm.controls.fields.controls[i].controls.mandatory.value">
+                  <mat-option
+                    *ngFor="let option of this.employmentInfoForm.controls.fields.controls[i].controls.options.value"
+                    [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span *ngIf="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldName.value != 'empEmail')"
+                class="category" style="color: red;" [hidden]="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.valid || 
+                           this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.untouched)">
+                Field is required
+              </span>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.employmentInfoForm.controls.fields.controls[i].controls.fieldType.value === 'Date'">
+              <mat-form-field class="fullLength">
+                <input matInput type="date"
+                  placeholder="{{this.employmentInfoForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  formControlName="fieldValue"
+                  [required]="this.employmentInfoForm.controls.fields.controls[i].controls.mandatory.value">
+                <mat-error
+                  *ngIf="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldName.value != 'empEmail')"
+                  [hidden]="(this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.valid || 
+                              this.employmentInfoForm.controls.fields.controls[i].controls.fieldValue.untouched)">
+                  Field is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

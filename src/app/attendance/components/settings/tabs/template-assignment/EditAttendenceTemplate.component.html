@@ -1,0 +1,52 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Edit Attendance Template</h4>
+    <form [formGroup]="editTemplateAssignment">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Effective From</th>
+                        <td>{{data.effectiveFrom | date:'dd/MM/yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Select Template</th>
+                        <td>{{data.currentAttendenceTemp}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Approver" formControlName="editAttendneceApprover" [disabled]=attendanceTemplateType>
+                <mat-option *ngFor="let approverList of approverEmployeeList" [value]="approverList.value">
+                    {{ approverList.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="fullLength" *ngIf="this.data.showLocationFilter">
+            <mat-select placeholder="Select Location" formControlName="restrictedGeoLocation" [disabled]=locationRestrictionType multiple>
+                <mat-option *ngFor="let aTL of geoLocations" [value]="aTL.locationRestrictionsId">
+                    {{aTL.locationName }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="(!editTemplateAssignment.controls.restrictedGeoLocation.value && check)">
+                Required Field
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveUpdatedAssignment(editTemplateAssignment)">
+            Update
+        </button>
+    </div>
+</mat-dialog-actions>

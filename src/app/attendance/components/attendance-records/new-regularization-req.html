@@ -1,0 +1,141 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>New Regularization Request</h4>
+    <form [formGroup]="NewRegularizeRequest">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Employee Name</th>
+                        <td>{{data.empName}}</td>
+                    </tr>
+                    <tr>
+                        <th>Employee Code</th>
+                        <td>{{data.empCode}}</td>
+                    </tr>
+                    <tr>
+                        <th>Shift Name</th>
+                        <td>{{assignShift?.shiftName}}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>{{request.regularizationStatus}}</td>
+                    </tr>
+                    <tr>
+                        <th>Regularization Date</th>
+                        <td>{{data.singleDate | date:'MMM dd, yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Type of Request" formControlName="requestType"
+                (selectionChange)="onChangeReqType(NewRegularizeRequest.controls.requestType.value);">
+                <mat-option value="CHECK_IN">Check-in Request</mat-option>
+                <mat-option value="CHECK_OUT">Check-out Request</mat-option>
+                <mat-option value="CHECKIN_AND_CHECKOUT">Check-in and Check-out Request</mat-option>
+            </mat-select>
+            <mat-error [hidden]="(NewRegularizeRequest.controls.requestType.valid || 
+                        NewRegularizeRequest.controls.requestType.untouched)">
+                Field is Required
+            </mat-error>
+        </mat-form-field>
+        <div
+            *ngIf="NewRegularizeRequest.controls.requestType.value == 'CHECK_IN' || NewRegularizeRequest.controls.requestType.value == 'CHECKIN_AND_CHECKOUT'">
+            <!-- <mat-form-field class="fullLength">
+                <input matInput type="time" placeholder="Chech-in Time" atp-time-picker type="time"
+                    formControlName="checkInTime">
+                <mat-error [hidden]="(NewRegularizeRequest.controls.checkInTime.valid || 
+                                NewRegularizeRequest.controls.checkInTime.untouched)">
+                    Field is Required
+                </mat-error>
+            </mat-form-field> -->
+            <div style="margin-bottom: 10px;">
+                <label class="input-label">Select Check-in Time</label>
+                <p-calendar placeholder="Check-in Time" appendTo="body" [style]="{'width':'100%'}"
+                    [inputStyle]="{'width':'95%'}" [showTime]="true" [showIcon]="true" showButtonBar="true"
+                    dateFormat="dd-mm-yy" formControlName="checkInTime">
+                </p-calendar>
+                <span class="input-errorClass" [hidden]="(NewRegularizeRequest.controls.checkInTime.valid || 
+                NewRegularizeRequest.controls.checkInTime.untouched)">
+                    Field is Required
+                </span>
+            </div>
+        </div>
+        <div
+            *ngIf="NewRegularizeRequest.controls.requestType.value == 'CHECK_OUT' || NewRegularizeRequest.controls.requestType.value == 'CHECKIN_AND_CHECKOUT'">
+            <!-- <mat-form-field class="fullLength">
+                <input matInput type="time" placeholder="Chech-out Time" atp-time-picker type="time"
+                    formControlName="checkOutTime">
+                <mat-error [hidden]="(NewRegularizeRequest.controls.checkOutTime.valid || 
+                                NewRegularizeRequest.controls.checkOutTime.untouched)">
+                    Field is Required
+                </mat-error>
+            </mat-form-field> -->
+            <div style="margin-bottom: 10px;">
+                <label class="input-label">Select Check-out Time</label>
+                <p-calendar placeholder="Check-out Time" appendTo="body" [style]="{'width':'100%'}"
+                    [inputStyle]="{'width':'95%'}" [showTime]="true" [showIcon]="true" showButtonBar="true"
+                    dateFormat="dd-mm-yy" formControlName="checkOutTime">
+                </p-calendar>
+                <span class="input-errorClass" [hidden]="(NewRegularizeRequest.controls.checkOutTime.valid || 
+                NewRegularizeRequest.controls.checkOutTime.untouched)">
+                    Field is Required
+                </span>
+            </div>
+        </div>
+
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Shift" formControlName="shift">
+                <mat-option *ngFor="let item of regShiftList" [value]="item.shiftRecordId">
+                    <span class="mat-option-text" *ngIf="item.offShift==true">
+                        {{item.shiftName}}
+                    </span>
+                    <span class="mat-option-text" *ngIf="item.offShift==false">
+                        {{item.shiftName}} [{{item.shiftStartTime}} - {{item.shiftEndTime}}]
+                    </span>
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(NewRegularizeRequest.controls.shift.valid || 
+            NewRegularizeRequest.controls.shift.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+        <div *ngIf="isRegReason">
+            <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Reason" formControlName="reason">
+                    <mat-option *ngFor="let item of regReasonList" [value]="item.reasonId">
+                        {{item.assignedReason }}
+                    </mat-option>
+                </mat-select>
+                <mat-error [hidden]="(NewRegularizeRequest.controls.reason.valid || 
+                NewRegularizeRequest.controls.reason.untouched)">
+                    Field is Required
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <mat-form-field class="fullLength">
+            <textarea matInput placeholder="Leave a comment" formControlName="comment"></textarea>
+            <mat-error [hidden]="(NewRegularizeRequest.controls.comment.valid || 
+            NewRegularizeRequest.controls.comment.untouched)">
+                Field is Required
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<!-- <pre>{{NewRegularizeRequest.value | json}}</pre> -->
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="onSubmitRequest();">Submit
+        </button>
+    </div>
+</mat-dialog-actions>

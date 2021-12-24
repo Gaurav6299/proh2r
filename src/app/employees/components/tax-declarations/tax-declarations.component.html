@@ -1,0 +1,45 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div class="pull-left">
+          <h6 class="title">Income Tax Declarations</h6>
+        </div>
+        <div class="text-right">
+          <button class="btn header-button" (click)="backToNavigate()">
+            <span><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="text-center" style="padding-bottom: 15px;">
+          <h5 class="left-rights-slider-title">Form 12BB - Employee Tax Details</h5>
+          <h6 class="left-rights-slider-Subtitle">Manage Tax Declarations For Year {{taxationYear}}</h6>
+        </div>
+        <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)">
+          <mat-tab label="80C Deductions">
+            <app-employees80-c-deductions></app-employees80-c-deductions>
+          </mat-tab>
+          <mat-tab label="Chapter vi Deductions">
+            <app-chapter-vi-deductions></app-chapter-vi-deductions>
+          </mat-tab>
+          <mat-tab label="Rent Information">
+            <app-rent-information></app-rent-information>
+          </mat-tab>
+          <mat-tab label="Perquisites">
+            <app-perquisites></app-perquisites>
+          </mat-tab>
+          <mat-tab label="Interest On Home Loan">
+            <app-income-loss-on-house-property></app-income-loss-on-house-property>
+          </mat-tab>
+          <mat-tab label="Previous Employment Information">
+            <app-previous-employment-information></app-previous-employment-information>
+          </mat-tab>
+          <mat-tab label="Other Income Info">
+            <app-other-income-info></app-other-income-info>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title *ngIf="requestType == 'approveMultiple'">Are you sure you would like to Approve the selected
+        Expense requests?</h4>
+    <form [formGroup]="multiActionDialog">
+        <mat-form-field class="fullLength">
+            <textarea matInput placeholder="Comment" formControlName="usrComment"></textarea>
+            <mat-error [hidden]="(multiActionDialog.controls.usrComment.valid || 
+                             multiActionDialog.controls.usrComment.untouched)">
+                Field is Required
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial *ngIf="requestType == 'approveMultiple'"
+            (click)="approveMultiRequest()"> Confirm
+        </button>
+    </div>
+</mat-dialog-actions>

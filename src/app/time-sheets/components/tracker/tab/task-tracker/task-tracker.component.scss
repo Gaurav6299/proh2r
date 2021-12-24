@@ -1,0 +1,11 @@
+@import "~assets/sass/md/customCSS";
+
+.card-content .table-responsive .time-sheets-table-head {
+  background: #fafafa;
+}
+
+.card-content .table-responsive .time-sheets-table-head tr>th {
+  font-size: 14px;
+  padding: 5px;
+  font-weight: 500 !important;
+}

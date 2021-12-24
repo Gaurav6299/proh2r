@@ -1,0 +1,18 @@
+@import "~assets/sass/md/customCSS";
+
+
+::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color:#205081;
+  }
+  
+  ::ng-deep.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color:#205081;
+  }
+  ul li {
+    padding:3px 0px;
+    cursor: pointer;
+  }
+  ul li a {
+  font-weight:600;
+  margin-left: -15px;
+  }

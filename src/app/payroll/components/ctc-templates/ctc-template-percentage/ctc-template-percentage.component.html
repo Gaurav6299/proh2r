@@ -1,0 +1,16 @@
+<!-- <mat-form-field class="fullLength">
+  <mat-select placeholder="Choose" (selectionChange)="methodCall($event)" [formControl]="selectedData" multiple>
+    <mat-select-trigger>
+      {{selectedData.value ? selectedData.value[0].viewValue : ''}}
+      <span *ngIf="selectedData.value?.length > 1" class="example-additional-selection">
+        (+{{selectedData.value.length - 1}} others)
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let fixedAllowanceData of fixedAllowanceList" [value]="fixedAllowanceData" >{{fixedAllowanceData.viewValue}}</mat-option>
+  </mat-select>
+</mat-form-field> -->
+<div class="selection-ng-select-dropdown">
+  <ng-select appendTo="body" [items]="fixedAllowanceList" bindLabel="viewValue" [multiple]="true" placeholder="Choose"
+    [formControl]="selectedData" (change)="methodCall($event)">
+  </ng-select>
+</div>

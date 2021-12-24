@@ -1,0 +1,81 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Advance Template Assignment</h4>
+  <form [formGroup]="addAdvanceAssignment">
+    <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Template" formControlName="advanceTemplateId" (selectionChange)="selectTemplate();">
+        <mat-option *ngFor="let template of advanceTemplate" [value]="template.advanceTemplateId">
+          {{ template.templateName }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(this.addAdvanceAssignment.controls.advanceTemplateId.valid 
+      || this.addAdvanceAssignment.controls.advanceTemplateId.untouched)">
+        Field is Required
+      </mat-error>
+    </mat-form-field>
+    <div *ngIf="addAdvanceAssignment.controls.advanceApprovalType.value == 'TemplateWise'">
+      <div *ngIf="openPrimaryDiv">
+        <mat-form-field class="fullLength">
+          <input matInput readonly placeholder="Select Primary Approver "
+            value="{{addAdvanceAssignment.controls.primaryApproverName.value }}">
+        </mat-form-field>
+      </div>
+      <div *ngIf="openSecondaryDiv">
+        <mat-form-field class="fullLength">
+          <input matInput readonly placeholder="Select Secondary Approver "
+            value="{{addAdvanceAssignment.controls.secondaryApproverName.value}} ">
+        </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="addAdvanceAssignment.controls.advanceApprovalType.value == 'EmployeeWise'">
+      <div *ngIf="openApproverList">
+        <div *ngIf="openPrimaryDiv">
+          <p class="category">Select Primary Approver</p>
+          <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="primaryApprover"
+            class="custom-ng-select-Style">
+            <ng-option *ngFor="let emp of optionsData" [value]="emp.value">
+              {{ emp.viewValue }}
+            </ng-option>
+          </ng-select>
+          <span class="dropDown-errorClass" [hidden]="(this.addAdvanceAssignment.controls.primaryApprover.valid 
+          || this.addAdvanceAssignment.controls.primaryApprover.untouched)">
+            Field is Required
+          </span>
+        </div>
+        <div *ngIf="openSecondaryDiv">
+          <p class="category">Select Secondary Approver</p>
+          <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="secondaryApprover"
+            class="custom-ng-select-Style">
+            <ng-option *ngFor="let emp of secondaryOptionsData" [value]="emp.value">
+              {{ emp.viewValue }}
+            </ng-option>
+          </ng-select>
+          <span class="dropDown-errorClass" [hidden]="(this.addAdvanceAssignment.controls.secondaryApprover.valid 
+          || this.addAdvanceAssignment.controls.secondaryApprover.untouched)">
+            Field is Required
+          </span>
+        </div>
+      </div>
+    </div>
+    <mat-form-field class="fullLength">
+      <input matInput type="date" placeholder="Select Effective From Date" formControlName="effectiveDate">
+      <mat-error [hidden]="(this.addAdvanceAssignment.controls.effectiveDate.valid 
+      || this.addAdvanceAssignment.controls.effectiveDate.untouched)">
+        Field is Required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="assignTemplate()"> Save
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,907 @@
+<app-ctc-template-content [activePane]="isLeftVisible ? 'right' : 'left'">
+  <div leftPane class="divtoggleDiv">
+    <div class="main-content">
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-header">
+            <h6 class="title">{{headerText}} CTC Template</h6>
+          </div>
+          <div class="card-content">
+            <form [formGroup]="newCTCTemplateForm">
+              <p class="category">What is label for CTC Template *
+                <mat-form-field class="full-width">
+                  <input matInput formControlName="templateLabel" placeholder="CTC Template Label">
+                  <mat-error [hidden]="(this.newCTCTemplateForm.controls.templateLabel.valid 
+                  || this.newCTCTemplateForm.controls.templateLabel.untouched)">
+                    <div
+                      *ngIf="(this.newCTCTemplateForm.controls.templateLabel.value === '' || this.newCTCTemplateForm.controls.templateLabel.value === null)">
+                      {{requiredTextFields}}
+                    </div>
+                    <div *ngIf="this.newCTCTemplateForm.controls.templateLabel.value !== ''">
+                      {{ this.newCTCTemplateForm.controls.templateLabel.errors != null ? this.newCTCTemplateForm.controls.templateLabel.errors.messages
+                      : ''}}
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="card" style="box-shadow: none !important;">
+                    <div class="card-header">
+                      <h5 class="title">Fields</h5>
+                    </div>
+                    <div class="card-content">
+                      <form [formGroup]="checkBox">
+                        <mat-accordion>
+                          <mat-expansion-panel>
+                            <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                              <mat-panel-title>
+                                Fixed Allowances
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div *ngFor="let element of fixedSalaryAllowance">
+                              <mat-checkbox [checked]="element.fieldValue" *ngIf="element.allowanceType != 'SPECIAL'"
+                                (change)="onClickCheckedFixedAllowance($event, element.allowanceName)">
+                                {{element.allowanceName}}</mat-checkbox>
+                              <mat-checkbox [checked]="true" *ngIf="element.allowanceType == 'SPECIAL'" [disabled]="true">
+                                {{element.allowanceName}}</mat-checkbox>
+                              <br>
+                            </div>
+                            <div>
+
+                            </div>
+                          </mat-expansion-panel>
+                          <br>
+                          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                            <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                              <mat-panel-title>
+                                Fixed Deductions
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div *ngFor="let element of fixedSalaryDeductions">
+                              <mat-checkbox [checked]="element.fieldValue"
+                                (change)="onClickChekedFixedSalaryDeduction($event, element.deductionName)">
+                                {{element.deductionName}}</mat-checkbox>
+                              <br>
+                            </div>
+                          </mat-expansion-panel>
+                          <!-- <mat-expansion-panel>
+                              <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                                <mat-panel-title>
+                                  Variable Allowances
+                                </mat-panel-title>
+                              </mat-expansion-panel-header>
+                              <div *ngFor="let element of variableSalaryAllowance">
+                                <mat-checkbox [checked]="element.fieldValue"
+                                  (change)="onClickCheckedVariableAllowance($event, element.allowanceName)">
+                                  {{element.allowanceName}}</mat-checkbox>
+                                <br>
+                              </div>
+                            </mat-expansion-panel> -->
+                          <br>
+                          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                            <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                              <mat-panel-title>
+                                Employer Contributions
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div *ngFor="let element of employerContribution">
+                              <mat-checkbox [checked]="element.fieldValue"
+                                (change)="onClickCheckedEmployerContribution($event,element)">
+                                {{element.employerContributionName}}</mat-checkbox>
+                              <br>
+                            </div>
+                          </mat-expansion-panel>
+
+                          <br>
+                          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                            <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                              <mat-panel-title>
+                                Other Benfit Allowances
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div *ngFor="let element of otherBenefits">
+                              <mat-checkbox [checked]="element.fieldValue"
+                                (change)="onClickCheckedOtherBenefits($event,element.allowanceName)">
+                                {{element.allowanceName}}</mat-checkbox>
+                              <br>
+                            </div>
+                          </mat-expansion-panel>
+                          <!--<br>
+                           <mat-expansion-panel>
+                              <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                                <mat-panel-title>
+                                  Variable Deductions
+                                </mat-panel-title>
+                              </mat-expansion-panel-header>
+                              <div *ngFor="let element of variableSalaryDeductions">
+                                <mat-checkbox [checked]="element.fieldValue"
+                                  (change)="onClickCheckedVariableDeducations($event, element.deductionName)">
+                                  {{element.deductionName}}</mat-checkbox>
+                                <br>
+                              </div>
+                            </mat-expansion-panel> -->
+                          <br>
+                          <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                            <mat-expansion-panel-header style="background: linear-gradient(#a1c2fc,#a1c2fc);">
+                              <mat-panel-title>
+                                Employee Deductions
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div *ngFor="let element of employeeDeductions">
+                              <mat-checkbox [checked]="element.fieldValue"
+                                (change)="onClickCheckedEmployeDeduction($event,element)">
+                                {{element.employeeDeductionName}}</mat-checkbox>
+                              <br>
+                            </div>
+                          </mat-expansion-panel>
+                          <br>
+                        </mat-accordion>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card" style="box-shadow: none !important;">
+                    <div class="card-header">
+                      <h5 class="title">Selected Fields</h5>
+                    </div>
+                    <div class="card-content">
+
+                      <div class="card-header">
+                        <div class="head">
+                          <h5 class="title">Fixed Allowances</h5>
+                        </div>
+                      </div>
+                      <div class="body">
+                        <div *ngFor="let element of fixedSalaryAllowanceDyn">
+                          <div *ngIf="element.fieldValue">
+                            <span class="category" style="word-spacing: 5px;"
+                              (click)="deleteFixedAllowance(element.allowanceName)"
+                              *ngIf="element.allowanceType != 'SPECIAL'">
+                              <i class="fa fa-trash-o" aria-hidden="true"
+                                style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                              {{element.allowanceName}}
+                            </span>
+                            <span class="category" style="word-spacing: 5px;"
+                              *ngIf="element.allowanceType == 'SPECIAL'">
+                              <i class="fa fa-trash-o" aria-hidden="true"
+                                style="font-size:16px;color:#817f7ff5;cursor:pointer;" ></i>
+                              {{element.allowanceName}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <br>
+                        <div class="card-header">
+                          <div class="head">
+                            <h5 class="title">Variable Allowances</h5>
+                          </div>
+                        </div>
+                        <div class="body">
+                          <div *ngFor="let element of variableSalaryAllowanceDyn">
+                            <div *ngIf="element.fieldValue">
+                              <span class="category" style="word-spacing: 5px;"
+                                (click)="deleteVariableAllowance(element.allowanceName)">
+                                <i class="fa fa-trash-o" aria-hidden="true"
+                                  style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                                {{element.allowanceName}}
+                              </span>
+                            </div>
+                          </div>
+                        </div> -->
+                      <br>
+                      <div class="card-header">
+                        <div class="head">
+                          <h5 class="title">Fixed Deductions</h5>
+                        </div>
+                      </div>
+                      <div class="body">
+                        <div *ngFor="let element of fixedSalaryDeductions">
+                          <div *ngIf="element.fieldValue">
+                            <span class="category" style="word-spacing: 5px;"
+                              (click)="deleteFixedSalaryDeduction(element.deductionName)">
+                              <i class="fa fa-trash-o" aria-hidden="true"
+                                style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                              {{element.deductionName}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="card-header">
+                        <div class="head">
+                          <h5 class="title">Employer Contributions</h5>
+                        </div>
+                      </div>
+                      <div class="body">
+                        <div *ngFor="let element of employerContribution">
+                          <div *ngIf="element.fieldValue">
+                            <span class="category" style="word-spacing: 5px;"
+                              (click)="deleteEmployerContribution(element)">
+                              <i class="fa fa-trash-o" aria-hidden="true"
+                                style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                              {{element.employerContributionName}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="card-header">
+                        <div class="head">
+                          <h5 class="title">Other Benfit Allowances</h5>
+                        </div>
+                      </div>
+                      <div class="body">
+                        <div *ngFor="let element of otherBenefits">
+                          <div *ngIf="element.fieldValue">
+                            <span class="category" style="word-spacing: 5px;"
+                              (click)="deleteOtherBenfits(element.allowanceName)">
+                              <i class="fa fa-trash-o" aria-hidden="true"
+                                style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                              {{element.allowanceName}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <br>
+                        <div class="card-header">
+                          <div class="head">
+                            <h5 class="title">Variable Deductions</h5>
+                          </div>
+                        </div>
+                        <div class="body">
+                          <div *ngFor="let element of variableDeductionsDyn">
+                            <div *ngIf="element.fieldValue">
+                              <span class="category" style="word-spacing: 5px;"
+                                (click)="deleteVariableDeduction(element.deductionName)">
+                                <i class="fa fa-trash-o" aria-hidden="true"
+                                  style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                                {{element.deductionName}}
+                              </span>
+                            </div>
+                          </div>
+                        </div> -->
+                      <br>
+                      <div class="card-header">
+                        <div class="head">
+                          <h5 class="title">Employee Deductions</h5>
+                        </div>
+                      </div>
+                      <div class="body">
+                        <div *ngFor="let element of employeeDeductions">
+                          <div *ngIf="element.fieldValue">
+                            <span class="category" style="word-spacing: 5px;"
+                              (click)="deleteEmployerDeduction(element)">
+                              <i class="fa fa-trash-o" aria-hidden="true"
+                                style="font-size:16px;color:#e03737;cursor:pointer;"></i>
+                              {{element.employeeDeductionName}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12" style="text-align:center;">
+                <div>
+                  <button class="btn header-button" routerLink="/payroll/ctc-templates">
+                    <span>
+                      <i class="fa fa-times" aria-hidden="true"></i>Cancel</span>
+                  </button>
+                  <button *ngIf="addCreateButton" class="btn header-button" (click)=" proccedNextStepAdd();">
+                    <span>
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Create</span>
+                  </button>
+                  <button *ngIf="updatebutton" class="btn header-button" (click)="proccedNextStepUpdate()">
+                    <span>
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Update</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div rightPane class="divtoggleDiv">
+    <div class="main-content">
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Fixed Allowances</h5>
+          </div> 
+          <!--- table-->
+          <div class="card-content">
+            <form [formGroup]="fixedAllowanceForm">
+              <div formArrayName="fieldMaster">
+                <div class="table-responsive templateCollapsebale-table-DIV">
+                  <table class="table table-hover table-bordered table-dark">
+                    <thead>
+                      <tr>
+                        <th class="category" style="width: 25%;">Category</th>
+                        <th class="category" style="width: 25%;">Criteria</th>
+                        <th class="category" style="width: 25%;">Value</th>
+                        <th class="category" style="width: 25%;">Minimum Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let fields of fixedAllowanceForm.get('fieldMaster')['controls']; let i=index"
+                      [formGroupName]="i">
+                      <tr>
+                        <td class="category">
+                          <div>
+                            {{this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.fixedAllowance.controls.allowanceName.value}}
+                          </div>
+                        </td>
+                        <td class="category">
+                          <div class="selection-ng-select-dropdown"
+                            *ngIf="(this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.fixedAllowance.controls.allowanceName.value) && (i+1) != this.fixedAllowanceForm.controls.fieldMaster.controls.length">
+                            <ng-select [items]="criteriaArr" [searchable]="false" bindLabel="viewValue"
+                              bindValue="value" placeholder="Select Criteria" formControlName="criteria" appendTo="body"
+                              (change)="activeInputField(i);">
+                            </ng-select>
+                            <div class="category" style="color: red;"
+                              *ngIf="(fields.value.criteria === null || fields.value.criteria === '')">
+                              {{requiredDropdownFields}}
+                            </div>
+                          </div>
+                          <div
+                            *ngIf="(this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.fixedAllowance.controls.allowanceName.value) && (i+1) == this.fixedAllowanceForm.controls.fieldMaster.controls.length">
+                            Balance
+                          </div>
+                        </td>
+                        <td class="category">
+                          <div
+                            *ngIf="this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value=='PERCENTAGE'">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Enter Percentage %"
+                                formControlName="value">
+                              <mat-error
+                                [hidden]="(fixedAllowanceForm.controls.fieldMaster.controls[i].controls.value.valid || fixedAllowanceForm.controls.fieldMaster.controls[i].controls.value.untouched)">
+                                Invalid Input
+                              </mat-error>
+                            </mat-form-field>
+                            <app-ctc-template-percentage (messageEvent)="receiveMessage($event)"
+                              [inputFixedAllowanceForm]="message" [inputFixedAllowanceFormIndex]="indexValue"
+                              [editInputDependentIds]="editFixedAllowanceDependentId"></app-ctc-template-percentage>
+                          </div>
+                          <div
+                            *ngIf="this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value=='AMOUNT'">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Enter Amount &#8377;"
+                                formControlName="value">
+                              <mat-error
+                                [hidden]="(fixedAllowanceForm.controls.fieldMaster.controls[i].controls.value.valid || fixedAllowanceForm.controls.fieldMaster.controls[i].controls.value.untouched)">
+                                Invalid Input
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div
+                            *ngIf="this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value=='MANUALLY' && (i+1) != this.fixedAllowanceForm.controls.fieldMaster.controls.length">
+                            N/A
+                          </div>
+                        </td>
+                        <td class="category">
+                          <div
+                            *ngIf="(this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value=='AMOUNT') || (this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value=='PERCENTAGE')">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Blank For No Limit"
+                                formControlName="minimumAmount">
+                              <mat-error
+                                [hidden]="(fixedAllowanceForm.controls.fieldMaster.controls[i].controls.minimumAmount.valid || fixedAllowanceForm.controls.fieldMaster.controls[i].controls.minimumAmount.untouched)">
+                                Invalid Input
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div
+                            *ngIf="this.fixedAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value=='MANUALLY' && (i+1) != this.fixedAllowanceForm.controls.fieldMaster.controls.length">
+                            N/A
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+            <!-- <pre>{{fixedAllowanceForm.value|json}}</pre> -->
+          </div>
+        </div>
+
+
+        <!--///////////////RIGHT PANEL card 2//////////fixedDeductionsForm///////////////////-->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Fixed Deductions</h5>
+          </div>
+          <div class="card-content">
+            <form [formGroup]="fixedDeductionsForm">
+              <div formArrayName="fieldMaster">
+                <div class="table-responsive templateCollapsebale-table-DIV">
+                  <table class="table table-hover table-bordered table-dark">
+                    <thead>
+                      <tr>
+                        <th class="category" style="width: 25%;">Category</th>
+                        <th class="category" style="width: 25%;">Criteria</th>
+                        <th class="category" style="width: 25%;">Value</th>
+                        <th class="category" style="width: 25%;">Minimum Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let fields of fixedDeductionsForm.get('fieldMaster')['controls']; let i=index"
+                      [formGroupName]="i">
+                      <tr>
+                        <td class="category">
+                          <div>
+                            {{this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.fixedDeduction.controls.deductionName.value}}
+                          </div>
+                        </td>
+                        <td class="category">
+                          <div
+                            *ngIf="(this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.fixedDeduction.controls.deductionName.value)">
+                            <ng-select [items]="criteriaArr" [searchable]="false" bindLabel="viewValue"
+                              bindValue="value" placeholder="Select Criteria" formControlName="criteria" appendTo="body"
+                              (change)="activeInputField1(i);">
+                            </ng-select>
+                            <div class="category" style="color: red;"
+                              *ngIf="(fields.value.criteria === null || fields.value.criteria === '')">
+                              {{requiredDropdownFields}}
+                            </div>
+                          </div>
+                        </td>
+                        <td class="category">
+                          <div
+                            *ngIf="this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='PERCENTAGE'">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Enter Percentage %"
+                                formControlName="value">
+                              <mat-error
+                                [hidden]="(fixedDeductionsForm.controls.fieldMaster.controls[i].controls.value.valid || fixedDeductionsForm.controls.fieldMaster.controls[i].controls.value.untouched)">
+                                Invalid Input
+                              </mat-error>
+                            </mat-form-field>
+                            <app-ctc-template-percentage (messageEvent)="receiveMessage1($event)"
+                              [inputFixedAllowanceForm]="message1" [inputFixedAllowanceFormIndex]="indexValue"
+                              [editInputDependentIds]="editFixedAllowanceDependentId"></app-ctc-template-percentage>
+                          </div>
+                          <div
+                            *ngIf="this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='AMOUNT'">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Enter Amount &#8377;"
+                                formControlName="value">
+                              <mat-error
+                                [hidden]="(fixedDeductionsForm.controls.fieldMaster.controls[i].controls.value.valid || fixedDeductionsForm.controls.fieldMaster.controls[i].controls.value.untouched)">
+                                Invalid Input
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div
+                            *ngIf="this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='MANUALLY'">
+                            N/A
+                          </div>
+                        </td>
+                        <td class="category">
+                          <div
+                            *ngIf="(this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='AMOUNT') || (this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='PERCENTAGE')">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Blank For No Limit"
+                                formControlName="minimumAmount">
+                              <mat-error
+                                [hidden]="(fixedDeductionsForm.controls.fieldMaster.controls[i].controls.minimumAmount.valid || fixedDeductionsForm.controls.fieldMaster.controls[i].controls.minimumAmount.untouched)">
+                                Invalid Input
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div
+                            *ngIf="this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='MANUALLY'">
+                            N/A
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- <td style="padding:5px 20px">
+                        <div style="min-width:80px;">
+                          {{this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.fixedDeduction.controls.deductionName.value}}
+                        </div>
+                      </td>
+                      <td style="padding:5px 20px">
+                        <div style="min-width:130px;max-width:150px;">
+                          <mat-form-field class="fullLength">
+                            <mat-select placeholder="Select" formControlName="criteria">
+                              <mat-option *ngFor="let food of criteriaArr" [value]="food.value"
+                                (click)="activeInputField(i);">
+                                {{ food.viewValue }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </td>
+                      <td style="padding:5px 20px">
+                        <div class="fullLength">
+                          <div
+                            *ngIf="this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='PERCENTAGE'">
+                            <mat-form-field cclass="fullLength">
+                              <input matInput placeholder="Enter Percentage" style="width:100px;"
+                                formControlName="Value">
+                            </mat-form-field>
+                            <p class="category" style="color:#404A56;">Select:</p>
+                            <mat-form-field class="fullLength">
+                              <mat-select placeholder="Choose" [formControl]="selectedEmployee" multiple>
+                                <mat-select-trigger>
+                                  {{selectedEmployee.value ? selectedEmployee.value[0] : ''}}
+                                  <span *ngIf="selectedEmployee.value?.length > 1" class="example-additional-selection">
+                                    (+{{selectedEmployee.value.length - 1}} others)
+                                  </span>
+                                </mat-select-trigger>
+                                <mat-form-field>
+                                  <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                                    [formControl]="myControl" (keyup)="searchEmployeeName($event)">
+                                </mat-form-field>
+                                <mat-option *ngFor="let topping of optionsData" [value]="topping.value">
+                                  {{topping.viewValue}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div
+                            *ngIf="this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='AMOUNT'">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Enter Amount" formControlName="value">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </td>
+                      <td style="padding:5px 20px">
+                        <div style="min-width:120px;max-width:150px;">
+                          <div
+                            *ngIf="(this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='AMOUNT') || (this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='PERCENTAGE')"
+                            style="min-width:120px;">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Blank For No Limit" formControlName="minimumAmount">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </td> -->
+                    </tbody>
+                  </table>
+                </div>
+                <!-- <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>
+                        <strong>Category</strong>
+                      </th>
+                      <th>
+                        <strong>Criteria</strong>
+                      </th>
+                      <th>
+                        <strong>Value</strong>
+                      </th>
+                      <th>
+                        <strong>Minimum Amount</strong>
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+                <table class="table table-hover ">
+                  <tr *ngFor="let fields of fixedDeductionsForm.controls.fieldMaster.controls; let i=index"
+                    [formGroupName]="i">
+                    <td>
+                      <div style="min-width:80px;">
+                        {{this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.fixedDeduction.controls.deductionName.value}}
+                      </div>
+                    </td>
+                    <td>
+                      <div style="min-width:130px;max-width:150px;">
+                        <mat-form-field style="width:100px;">
+                          <mat-select placeholder="Select" formControlName="criteria">
+                            <mat-option *ngFor="let food of criteriaArr" [value]="food.value"
+                              (click)="activeInputField(i);">
+                              {{ food.viewValue }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </td>
+                    <td>
+                      <div style="min-width:120px;max-width:150px;">
+                        <div
+                          *ngIf="this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='PERCENTAGE'">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Enter Percentage" style="width:100px;" formControlName="Value">
+                          </mat-form-field>
+                          <p class="category" style="color:#404A56;">Select:</p>
+                          <mat-form-field style="width:115px;">
+                            <mat-select placeholder="Choose" [formControl]="selectedEmployee" multiple>
+                              <mat-select-trigger>
+                                {{selectedEmployee.value ? selectedEmployee.value[0] : ''}}
+                                <span *ngIf="selectedEmployee.value?.length > 1" class="example-additional-selection">
+                                  (+{{selectedEmployee.value.length - 1}} others)
+                                </span>
+                              </mat-select-trigger>
+                              <mat-form-field>
+                                <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                                  [formControl]="myControl" (keyup)="searchEmployeeName($event)">
+                              </mat-form-field>
+                              <mat-option *ngFor="let topping of optionsData" [value]="topping.value">
+                                {{topping.viewValue}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div
+                          *ngIf="this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='AMOUNT'">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Enter Amount" formControlName="value">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div style="min-width:120px;max-width:150px;">
+                        <div
+                          *ngIf="(this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='AMOUNT') || (this.fixedDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value=='PERCENTAGE')"
+                          style="min-width:120px;">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Blank For No Limit" formControlName="minimumAmount">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table> -->
+              </div>
+            </form>
+            <!-- <pre>{{fixedDeductionsForm.value|json}}</pre> -->
+          </div>
+        </div>
+        <!--   -->
+        <!-- <div class="card">
+          <div class="card-header">
+            <h5 class="title">Variable Allowances</h5>
+          </div> -->
+        <!-- \\table -->
+        <!-- <div class="card-content">
+            <form [formGroup]="variableAllowanceForm">
+              <div formArrayName="fieldMaster">
+                <div class="table-responsive">
+                  <table class="table table-hover" style="border-collapse: initial;">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 25%;font-weight: 500;">Category</th>
+                        <th scope="col" style="width: 25%;font-weight: 500;">Criteria</th>
+                        <th scope="col" style="width: 25%;font-weight: 500;">Value</th>
+                        <th scope="col" style="width: 25%;font-weight: 500;">Minimum Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let fields of variableAllowanceForm.controls.fieldMaster.controls; let i=index"
+                      [formGroupName]="i">
+                      <tr>
+                        <td style="padding:5px 20px">
+                          <div>
+                            {{this.variableAllowanceForm.controls.fieldMaster.controls[i].controls.variableAllowance.controls.allowanceName.value}}
+                          </div>
+                        </td>
+                        <td style="padding:5px 20px">
+                          <div
+                            *ngIf="(this.variableAllowanceForm.controls.fieldMaster.controls[i].controls.variableAllowance.controls.allowanceName.value) ">
+                            <mat-form-field>
+                              <input matInput formControlName="criteria" 
+                                [value]="this.variableAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value | manual" />
+                            </mat-form-field>
+                          </div>
+                        </td>
+                        <td style="padding:5px 20px">
+                          <div
+                            *ngIf="this.variableAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value=='MANUALLY'">
+                            N/A
+                          </div>
+                        </td>
+                        <td style="padding:5px 20px">
+                          <div
+                            *ngIf="this.variableAllowanceForm.controls.fieldMaster.controls[i].controls.criteria.value=='MANUALLY'">
+                            N/A
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div> -->
+        <!--  -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Employer Contributions</h5>
+          </div>
+          <!--- table-->
+          <div class="card-content">
+            <form [formGroup]="employerContributionsForm">
+              <div formArrayName="fieldMaster">
+                <div class="table-responsive templateCollapsebale-table-DIV">
+                  <table class="table table-hover table-bordered table-dark">
+                    <thead>
+                      <tr>
+                        <th class="category">Category</th>
+                        <th class="category">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let fields of employerContributionsForm.get('fieldMaster')['controls']; let i=index"
+                      [formGroupName]="i">
+                      <tr>
+                        <td class="category">
+                          <div
+                            *ngIf="this.employerContributionsForm.controls.fieldMaster.controls[i].controls.employerContributionName.value !=='Gratuity'">
+                            {{this.employerContributionsForm.controls.fieldMaster.controls[i].controls.employerContributionName.value}}
+                          </div>
+                          <div
+                            *ngIf="this.employerContributionsForm.controls.fieldMaster.controls[i].controls.employerContributionName.value ==='Gratuity'">
+                            {{this.employerContributionsForm.controls.fieldMaster.controls[i].controls.employerContributionName.value}}
+                            Percentage
+                          </div>
+                        </td>
+                        <td class="category" width="25%">
+                          <div
+                            *ngIf="this.employerContributionsForm.controls.fieldMaster.controls[i].controls.employerContributionName.value ==='Gratuity'">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Enter Percentage %"
+                                formControlName="value">
+                              <mat-error
+                                [hidden]="(employerContributionsForm.controls.fieldMaster.controls[i].controls.value.valid || employerContributionsForm.controls.fieldMaster.controls[i].controls.value.untouched)">
+                                Invalid Input
+                              </mat-error>
+                            </mat-form-field>
+                            <app-ctc-template-percentage (messageEvent)="receiveMessage2($event)"
+                              [inputFixedAllowanceForm]="message1" [inputFixedAllowanceFormIndex]="indexValue"
+                              [editInputDependentIds]="editFixedAllowanceDependentId"></app-ctc-template-percentage>
+                          </div>
+                          <div
+                            *ngIf=" this.employerContributionsForm.controls.fieldMaster.controls[i].controls.employerContributionName.value !== 'Gratuity'">
+                            As Per Statutory Norms
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+            <!-- <pre>{{employerContributionsForm.value|json}}</pre> -->
+          </div>
+        </div>
+
+
+        <!--///////////////RIGHT PANEL card 2//////////VariableDeductionsForm///////////////////-->
+        <!-- <div class="card">
+          <div class="card-header">
+            <h5 class="title">Variable Deductions</h5>
+          </div>
+          <div class="card-content">
+            <form [formGroup]="variableDeducationForm">
+              <div formArrayName="fieldMaster">
+                <div class="table-responsive">
+                  <table class="table table-hover" style="border-collapse: initial;">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 25%;font-weight: 500;">Category</th>
+                        <th scope="col" style="width: 25%;font-weight: 500;">Criteria</th>
+                        <th scope="col" style="width: 25%;font-weight: 500;">Value</th>
+                        <th scope="col" style="width: 25%;font-weight: 500;">Minimum Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let fields of variableDeducationForm.controls.fieldMaster.controls; let i=index"
+                      [formGroupName]="i">
+                      <tr>
+                        <td style="padding:5px 20px">
+                          <div>
+                            {{this.variableDeducationForm.controls.fieldMaster.controls[i].controls.variableDeduction.controls.deductionName.value}}
+                          </div>
+                        </td>
+                        <td style="padding:5px 20px">
+                          <div
+                            *ngIf="(this.variableDeducationForm.controls.fieldMaster.controls[i].controls.variableDeduction.controls.deductionName.value) ">
+                            <mat-form-field>
+                              <input matInput formControlName="criteria" 
+                                [value]="this.variableDeducationForm.controls.fieldMaster.controls[i].controls.criteria.value|manual" />
+                            </mat-form-field>
+                          </div>
+                        </td>
+                        <td style="padding:5px 20px">
+                          <div
+                            *ngIf="this.variableDeducationForm.controls.fieldMaster.controls[i].controls.criteria.value=='MANUALLY'">
+                            N/A
+                          </div>
+                        </td>
+                        <td style="padding:5px 20px">
+                          <div
+                            *ngIf="this.variableDeducationForm.controls.fieldMaster.controls[i].controls.criteria.value=='MANUALLY'">
+                            N/A
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div> -->
+        <!--///////////////RIGHT PANEL card 3/////////////////////////////-->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Employee Deductions</h5>
+          </div>
+          <!--- table-->
+          <div class="card-content">
+            <form [formGroup]="employeeDeductionsForm">
+              <div formArrayName="fieldMaster">
+                <div class="table-responsive templateCollapsebale-table-DIV">
+                  <table class="table table-hover table-bordered table-dark">
+                    <thead>
+                      <tr>
+                        <th class="category">Category</th>
+                        <th class="category">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let fields of employeeDeductionsForm.get('fieldMaster')['controls']; let i=index"
+                      [formGroupName]="i">
+                      <tr>
+                        <td class="category">
+                          <div>
+                            {{this.employeeDeductionsForm.controls.fieldMaster.controls[i].controls.employeeDeductionName.value}}
+                          </div>
+                        </td>
+                        <td class="category" width="25%">
+                          <!-- <div
+                            *ngIf="this.employeeDeductionsForm.controls.fieldMaster.controls[i].controls.employeeDeductionName.value ==='PF Employee Deduction'">
+                            <mat-form-field>
+                              <mat-select placeholder="Select" formControlName="value">
+                                <mat-option *ngFor="let element of pfArr" [value]="element.value">
+                                  {{element.viewValue}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div> -->
+                          <div>
+                            <!-- *ngIf="this.employeeDeductionsForm.controls.fieldMaster.controls[i].controls.employeeDeductionName.value !== 'PF Employee Deduction'"> -->
+                            As Per Statutory Norms
+                          </div>
+                          <!-- <mat-form-field>
+                            <input matInput formControlName="value"
+                              [value]="this.employeeDeductionsForm.controls.fieldMaster.controls[i].controls.criteria.value|manual"
+                              >
+                          </mat-form-field> -->
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+            <!-- <pre>{{employeeDeductionsForm.value|json}}</pre> -->
+          </div>
+        </div>
+
+
+
+
+        <!--///////////////RIGHT PANEL card 4//////////////employeeDeductionsForm///////////////-->
+        <div class="row" style="text-align:center;margin: 20px;">
+          <button class="btn header-button" *ngIf="isLeftVisible" (click)="isLeftVisible=!isLeftVisible;">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+          </button>
+          <button *ngIf="saveNewCTC" class="btn header-button" (click)="saveCTCTemplate()">
+            <span>
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>Save</span>
+          </button>
+          <button *ngIf="updateExistCTC" class="btn header-button" (click)="saveUpdatedCTCTemplate()">
+            <span>
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Update</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-ctc-template-content>

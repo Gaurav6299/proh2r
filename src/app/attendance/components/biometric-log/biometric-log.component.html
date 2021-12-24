@@ -1,0 +1,75 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h6 class="title">Biometric Logs</h6>
+        </div>
+      </div>
+      <div class="card-content">
+        <form [formGroup]="biometricLogForm">
+          <div class="row">
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="date" placeholder="From Date" formControlName="startDate">
+                <mat-error [hidden]="(biometricLogForm.controls.startDate.valid || 
+          biometricLogForm.controls.startDate.untouched)">
+                  Invalid Input
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="date" placeholder="To Date" [min]="this.biometricLogForm.controls.startDate.value"
+                  formControlName="endDate">
+                <mat-error [hidden]="(biometricLogForm.controls.endDate.valid || 
+                 biometricLogForm.controls.endDate.untouched)">
+                  Invalid Input
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <div style="position: relative;top: 14px;">
+                <button class="btn header-button" matTooltip="View Log" (click)="getBiometricLogData();">
+                  <span><i class="fa fa-eye" aria-hidden="true"></i>View</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <p-table #dt1 [columns]="columns" [value]="biometricLogData" [rows]="20" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true"
+          [(selection)]="selectedRows">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='action' && col.field!='processed'">
+                  {{car[col.field]}}
+                </div>
+                <div *ngIf="col.field=='processed'">
+                  {{car[col.field]?'Processed':'Failed'}}
+                </div>
+                <div *ngIf="col.field=='action'">
+                  <ng-container *ngIf="!car.processed">
+                    <span (click)="rerun(car);">
+                      <i class="fa fa-repeat action-icon" aria-hidden="true" matTooltip="Rerun"
+                        style="color:#4b88dc;"></i>
+                    </span>
+                  </ng-container>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

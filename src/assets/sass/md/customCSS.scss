@@ -1,0 +1,119 @@
+::ng-deep .mat-form-field-label {
+  color: rgba(0, 0, 0, .7) !important;
+}
+
+.card .card-header {
+  background: 0;
+  box-shadow: none !important;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  padding: 0 0 5px 0;
+  margin-bottom: 10px;
+}
+
+.card .card-header:after {
+  position: absolute;
+  content: '';
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100px;
+  background: #4b88dc;
+}
+
+.card .card-header .title {
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #3f77c4;
+  font-size: 16px;
+  border-radius: 0px;
+}
+
+.card .CTC-Components-header .CTC-Components .text>.title {
+  text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  color: #404A56;
+  cursor: pointer;
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 1em;
+}
+
+::ng-deep .tabs .mat-tab-labels {
+  margin-top: -3px;
+  height: 44px;
+  min-width: 110px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+::ng-deep .mat-tab-label {
+  font-family: 'Lato', sans-serif;
+  height: 48px;
+  padding: 0 15px !important;
+  cursor: pointer;
+  box-sizing: border-box;
+  opacity: .6;
+  font-weight: 600;
+  font-size: 15px;
+  min-width: 160px;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  position: relative;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: #4b88dc;
+  font-family: 'Lato', sans-serif !important;
+}
+
+.header-button1 {
+  color: #fff;
+  border-radius: 4px;
+  background-color: #4b88dc;
+  text-transform: inherit;
+  border: none;
+  font-weight: 600;
+  padding: 3px 8px;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  font-size: 13px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+::ng-deep.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #205081;
+}
+
+::ng-deep.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: #205081;
+}
+
+.mat-table {
+  font-family: 'Lato', sans-serif;
+}
+
+
+::ng-deep .mat-paginator-container {
+  max-height: 35px;
+  min-height: 30px !important;
+  margin-top: 18px;
+  font-weight: 500;
+  font-family: 'Lato', sans-serif;
+}
+
+::ng-deep.mat-tab-label:focus:not(.mat-tab-disabled) {
+  color: #4b88dc;
+}
+
+::ng-deep.mat-tab-label-content {
+  color: #000;
+  font-weight: 600;
+}

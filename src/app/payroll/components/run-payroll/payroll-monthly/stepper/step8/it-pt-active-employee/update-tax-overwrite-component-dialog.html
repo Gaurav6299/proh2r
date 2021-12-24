@@ -1,0 +1,101 @@
+<!-- <div class="myModel">
+  <div class="card">
+    <div class="card-header" data-background-color="cyan"
+      style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+      <div data-background-color="blue">
+        <div class="row">
+          <div class="col-md-10">
+            <h6 style="text-transform: uppercase;font-weight: 600">
+              Tax Overwrite
+            </h6>
+          </div>
+          <div class="col-md-2"
+            style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+            <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <p class="category" style="margin-top: 15px; margin-bottom:15px;color:#404A56;font-weight:600;">For bulk action
+        please enter the amount greater than or equal zero.</p>
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>
+              <strong>Tax Overwrite</strong>
+            </th>
+            <th>
+              <strong>Amount</strong>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of iTaxOverwrtieFields">
+            <td>
+              <mat-checkbox></mat-checkbox>
+            </td>
+            <td>{{row.fieldLabel}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+        <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;"
+          data-background-color="cyan">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Cancel</span>
+        </button>
+        <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-floppy-o" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Save</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title> Update Tax Overwrite</h4>
+  <div class="card-content">
+    <form [formGroup]="newForm">
+      <mat-form-field class="fullLength">
+        <input matInput placeholder="Employee Name" formControlName="empName" readonly>
+      </mat-form-field>
+      <div style="margin-top: 5px;">
+        <!-- <p  style="font-size: 25px;">Tax Calculation Method</p> -->
+        <ng-select [items]="taxRegime" bindLabel="viewValue" bindValue="value" class="custom-ng-select-Style"
+          appendTo="body" placeholder="Select Tax Calculation Method" formControlName="regime">
+        </ng-select>
+      </div>
+      <mat-form-field class="fullLength">
+        <input matInput type="number" placeholder="Income Tax Overwrite Amount" formControlName="totalTdsAmount">
+      </mat-form-field>
+      <mat-form-field class="fullLength">
+        <input matInput type="number" placeholder="Professional Tax Overwrite Amount" formControlName="totalPtAmount">
+      </mat-form-field>
+    </form>
+    <!-- {{this.newForm.value |json}} -->
+  </div>
+  <mat-dialog-actions>
+    <div class="model-footer">
+      <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+      </button>
+      <button class="dialog-buttons" cdkFocusInitial (click)="confirm()"> Confirm
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

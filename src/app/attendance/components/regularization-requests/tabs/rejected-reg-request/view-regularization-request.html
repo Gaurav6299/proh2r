@@ -1,0 +1,62 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> View Regularization Request</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Status</th>
+                    <td>{{data.status}}</td>
+                </tr>
+                <tr>
+                    <th>Attendance Template</th>
+                    <td>{{data.attendanceTemplate}}</td>
+                </tr>
+                <tr>
+                    <th>Regularization Date</th>
+                    <td>{{data.date |  date:'MMM dd, yyyy' }}</td>
+                </tr>
+                <tr>
+                    <th>Applied On</th>
+                    <td>{{data.appliedOnDate |  date:'MMM dd, yyyy' }}</td>
+                </tr>
+                <tr>
+                    <th>Type of Request</th>
+                    <td *ngIf="data.requestType == 'CHECK_IN'">Check-in Request</td>
+                    <td *ngIf="data.requestType == 'CHECK_OUT'">Check-out Request</td>
+                    <td *ngIf="data.requestType == 'CHECKIN_AND_CHECKOUT'">Check-in and Check-out Request</td>
+                </tr>
+                <tr *ngIf="data.requestType == 'CHECK_IN' || data.requestType == 'CHECKIN_AND_CHECKOUT'">
+                    <th>Requested Check In</th>
+                    <td>{{data.requestedCheckIn}}</td>
+                </tr>
+                <tr *ngIf="data.requestType == 'CHECK_OUT' || data.requestType == 'CHECKIN_AND_CHECKOUT'">
+                    <th>Requested Check Out</th>
+                    <td>{{data.requestedCheckOut}}</td>
+                </tr>
+                <tr>
+                    <th>Reason</th>
+                    <div *ngFor="let item of data.reasonList">
+                        <td *ngIf="item.reasonId == data.regularizationReason">{{item.assignedReason}}</td>
+                    </div>
+                </tr>
+                <tr>
+                    <th>Comment</th>
+                    <td>{{data.regularizationComments}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="dialog-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+    </div>
+</mat-dialog-actions>

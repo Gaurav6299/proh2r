@@ -1,0 +1,489 @@
+<div class="card" style="box-shadow: none !important">
+  <div>
+    <div style="text-align: right;margin-bottom: 10px;">
+      <button *ngIf="!isLeftVisible" class="btn header-button"
+        (click)="addFixedAllowance();isLeftVisible = !isLeftVisible; ">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add</span>
+      </button>
+      <div *ngIf="isLeftVisible">
+        <button class=" btn header-button" (click)="isLeftVisible = !isLeftVisible;setPanel()">
+          <span>
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+            Back</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+  <!-- <ng-template #variableAllowancwViewOnly>
+    <div class="card-header">
+      <h6 class="title">Variable Allowances</h6>
+    </div>
+  </ng-template> -->
+
+  <div class="card-content">
+    <app-variable-allowance-content [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="variableAllowance" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='actions'  && col.field!='paymentFrequency' && col.field!='allowanceName'">
+                  <span *ngIf="car[col.field]==true" style="padding:3px;">
+                    <i class="fa fa-check-circle" aria-hidden="true"
+                      style="font-size:20px;color:green;vertical-align: middle;cursor:pointer;"></i>
+                  </span>
+                  <span *ngIf="car[col.field]==false" style="padding:3px;">
+                    <i class="fa fa-times-circle" aria-hidden="true"
+                      style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i>
+                  </span>
+                </div>
+                <div *ngIf="col.field==='paymentFrequency'">
+                  {{car[col.field] | customUnderscorePipe:'car[col.field]' }}</div>
+                <div *ngIf="col.field==='allowanceName'">
+                  {{car[col.field]}}</div>
+                <div *ngIf="col.field=='actions'" class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" matTooltip="Update">
+                      <i class="fa fa-pencil-square-o" (click)="editAllowance(car)"></i>
+                    </span>
+                    <span class="delete" matTooltip="Delete">
+                      <i class="fa fa-trash-o" (click)="deleteVariableAllowanceData(car)"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+
+      <div rightPane class="divtoggleDiv">
+        <div style="border: 1px solid rgb(221, 221, 221); padding: 15px;">
+          <div class="text-center">
+            <h5 class="left-rights-slider-title">
+              {{formHeader}}
+              <!-- Add New Allowance -->
+            </h5>
+            <h6 class="left-rights-slider-Subtitle">
+              Variable Component for your Employees
+            </h6>
+          </div>
+          <div class="card-content">
+            <form #myVariableAllanceForm="ngForm" [formGroup]="variableAllowanceForm">
+              <p class="category showFieldMandatory">What is the label of this variable allowance?</p>
+              <mat-form-field class="fullLength">
+                <input matInput placeholder="Allowance Name" formControlName="allowanceName">
+                <mat-error [hidden]="(this.variableAllowanceForm.controls.allowanceName.valid 
+            || this.variableAllowanceForm.controls.allowanceName.untouched)">
+                  <div
+                    *ngIf="(this.variableAllowanceForm.controls.allowanceName.value === '' || this.variableAllowanceForm.controls.allowanceName.value === null)">
+                    {{requiredTextField}}
+                  </div>
+                  <div *ngIf="this.variableAllowanceForm.controls.allowanceName.value !== ''">
+                    {{ this.variableAllowanceForm.controls.allowanceName.errors != null ? this.variableAllowanceForm.controls.allowanceName.errors.messages
+                    : ''}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+
+              <!-- <span class="category" style="color: red;margin-left:7px" [hidden]="(this.variableAllowanceForm.controls.allowanceName.valid 
+            || this.variableAllowanceForm.controls.allowanceName.untouched)">
+              {{requiredTextField}}
+            </span> -->
+
+              <p class="category">Does this allowance affect Provident Fund?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="affectPF">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.affectPF.valid || 
+            variableAllowanceForm.controls.affectPF.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">Does this allowance affect ESIC?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="affectESIC">
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.affectESIC.valid || 
+            variableAllowanceForm.controls.affectESIC.untouched)">
+                Field is required
+              </div>
+
+
+              <p class="category">Does this allowance affect LWF?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="affectLWF">
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.affectLWF.valid || 
+            variableAllowanceForm.controls.affectLWF.untouched)">
+                Field is required
+              </div>
+
+
+              <p class="category">Does this allowance affect Professional Tax?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="affectProfessionalTax">
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.affectProfessionalTax.valid || 
+            variableAllowanceForm.controls.affectProfessionalTax.untouched)">
+                Field is required
+              </div>
+
+
+              <p class="category">Does this allowance affect Income Tax?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="affectIncomeTax">
+                  <mat-radio-button value="true" (change)="changeAffectIncomeTax($event)">Yes</mat-radio-button>
+                  <mat-radio-button value="false" (change)="changeAffectIncomeTax($event)">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.affectIncomeTax.valid || 
+            variableAllowanceForm.controls.affectIncomeTax.untouched)">
+                Field is required
+              </div>
+
+
+              <div *ngIf="this.variableAllowanceForm.controls.affectIncomeTax.value==='true'">
+                <p class="category">If applicable how would you want to deduct Income Tax on this Variable Allowance?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="incomeTaxDeductionType">
+                    <mat-radio-button value="PRORATE">Deduct as per Annual Calculations(Pro-Rate)
+                    </mat-radio-button>
+                    <mat-radio-button value="UPFRONT">Deduct Upfront</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.incomeTaxDeductionType.valid || 
+              variableAllowanceForm.controls.incomeTaxDeductionType.untouched)">
+                  Field is required
+                </div>
+
+                <p class="category">For which Tax Regimes will the Income Tax be calculated?</p>
+                <ng-select #select [items]="regimes" appendTo="body" [multiple]="true" bindLabel="viewValue"
+                  bindValue="value" bind groupBy="type" [selectableGroup]="true" dropdownPosition="auto"
+                  [selectableGroupAsModel]="false" [closeOnSelect]="false" [selectableGroupAsModel]="false"
+                  formControlName="taxRegime">
+                  <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                  </ng-template>
+                </ng-select>
+                <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.taxRegime.valid || 
+                variableAllowanceForm.controls.taxRegime.untouched)">
+                  Field is required
+                </div>
+                <!-- <ng-select class="fullLength" [items]="regimes" bindLabel="viewValue" bindValue="value"
+                  placeholder="Select Regime" formControlName="taxRegime">
+                </ng-select>
+                <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.taxRegime.valid || 
+              variableAllowanceForm.controls.taxRegime.untouched)">
+                  Field is required
+                </div> -->
+
+              </div>
+
+              <p class="category">Does this variable allowance show up in CTC structure?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="showInCTC">
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.showInCTC.valid || 
+            variableAllowanceForm.controls.showInCTC.untouched)">
+                Field is required
+              </div>
+
+
+
+
+
+              <p class="category">How frequently does the Employee get paid this variable allowance?
+              </p>
+              <ng-select class="fullLength" [items]="frequencies" bindLabel="viewValue" bindValue="value"
+                placeholder="Select" formControlName="paymentFrequency">
+              </ng-select>
+              <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.paymentFrequency.valid || 
+            variableAllowanceForm.controls.paymentFrequency.untouched)">
+                Field is required
+              </div>
+              <!-- <mat-form-field class="fullLength">
+              <mat-select placeholder="Select Frequency" formControlName="paymentFrequency">
+                <mat-option *ngFor="let frequency of frequencies" [value]="frequency">
+                  {{ frequency | customUnderscorePipe:'frequency' }}
+                </mat-option>
+              </mat-select>
+              <mat-error [hidden]="(variableAllowanceForm.controls.paymentFrequency.valid || 
+                variableAllowanceForm.controls.paymentFrequency.untouched)">
+                Field is Required
+              </mat-error>
+            </mat-form-field> -->
+
+              <p class="category">From what period is this variable allowance effective?</p>
+              <div class="row">
+                <div class="col-md-6">
+                  <ng-select class="fullLength" [items]="months" bindLabel="viewValue" bindValue="value"
+                    placeholder="Select Month" formControlName="effMonth">
+                  </ng-select>
+                  <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.effMonth.valid || 
+                variableAllowanceForm.controls.effMonth.untouched)">
+                    Field is required
+                  </div>
+                  <!-- <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Month" formControlName="effMonth">
+                    <mat-option *ngFor="let month of months" [value]="month">
+                      {{ month }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error [hidden]="(variableAllowanceForm.controls.effMonth.valid || 
+                variableAllowanceForm.controls.effMonth.untouched)">
+                    Field is Required
+                  </mat-error>
+                </mat-form-field> -->
+                </div>
+                <div class="col-md-6">
+                  <ng-select class="fullLength" [items]="years" bindLabel="viewValue" bindValue="value"
+                    placeholder="Select Year" formControlName="effYear">
+                  </ng-select>
+                  <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.effYear.valid || 
+                variableAllowanceForm.controls.effYear.untouched)">
+                    Field is required
+                  </div>
+                  <!-- <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Year" formControlName="effYear">
+                    <mat-option *ngFor="let year of years" [value]="year">
+                      {{ year }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error [hidden]="(variableAllowanceForm.controls.effYear.valid || 
+                variableAllowanceForm.controls.effYear.untouched)">
+                    Field is Required
+                  </mat-error>
+                </mat-form-field> -->
+                </div>
+              </div>
+
+              <p class="category">Does this variable allowance have an ending period?</p>
+              <mat-radio-group formControlName="hasEndingPeriod">
+                <mat-radio-button value="false" (change)="changeEndingPeriod($event);"> No. It is Continual
+                </mat-radio-button>
+                <mat-radio-button value="true" (change)="changeEndingPeriod($event);">Yes. It has an End Period
+                </mat-radio-button>
+              </mat-radio-group>
+              <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.hasEndingPeriod.valid || 
+            variableAllowanceForm.controls.hasEndingPeriod.untouched)">
+                Field is required
+              </div>
+
+
+              <div class="form-group" *ngIf="this.variableAllowanceForm.controls.hasEndingPeriod.value==='true'">
+                <p class="category">From when do you wish to stop applying this variable allowance?
+                </p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <ng-select class="fullLength" [items]="months" bindLabel="viewValue" bindValue="value"
+                      placeholder="Select Month" formControlName="allowanceEndMonth">
+                    </ng-select>
+                    <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.allowanceEndMonth.valid || 
+                  variableAllowanceForm.controls.allowanceEndMonth.untouched)">
+                      Field is required
+                    </div>
+                    <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Month" formControlName="allowanceEndMonth">
+                      <mat-option *ngFor="let month of months" [value]="month">
+                        {{ month }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(variableAllowanceForm.controls.allowanceEndMonth.valid || 
+                  variableAllowanceForm.controls.allowanceEndMonth.untouched)">
+                      Field is Required
+                    </mat-error>
+                  </mat-form-field> -->
+                  </div>
+                  <div class="col-md-6">
+                    <ng-select class="fullLength" [items]="years" bindLabel="viewValue" bindValue="value"
+                      placeholder="Select Year" formControlName="allowanceEndYear">
+                    </ng-select>
+                    <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.allowanceEndYear.valid || 
+                  variableAllowanceForm.controls.allowanceEndYear.untouched)">
+                      Field is required
+                    </div>
+                    <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Year" formControlName="allowanceEndYear">
+                      <mat-option *ngFor="let year of years" [value]="year">
+                        {{ year }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(variableAllowanceForm.controls.allowanceEndYear.valid || 
+                  variableAllowanceForm.controls.allowanceEndYear.untouched)">
+                      Field is Required
+                    </mat-error>
+                  </mat-form-field> -->
+                  </div>
+                </div>
+              </div>
+
+
+              <div>
+                <p class="category">How would you like to enter the amount for this variable allowance?
+                </p>
+                <ng-select class="fullLength" [items]="enteringAmountWays" bindLabel="viewValue" bindValue="value"
+                  placeholder="Select Type" formControlName="variableAllowanceAmountType"
+                  (change)="selectVariableAllowanceAmountType()">
+                </ng-select>
+                <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.variableAllowanceAmountType.valid || 
+              variableAllowanceForm.controls.variableAllowanceAmountType.untouched)">
+                  Field is required
+                </div>
+                <!-- <mat-form-field class="full-width">
+                <mat-select placeholder="Select Frequency" formControlName="variableAllowanceAmountType" (selectionChange)="selectVariableAllowanceAmountType()">
+                  <mat-option *ngFor="let enteringAmountWay of enteringAmountWays" [value]="enteringAmountWay.value">
+                    {{ enteringAmountWay.viewValue }}
+                  </mat-option>
+                </mat-select>
+                <mat-error [hidden]="(variableAllowanceForm.controls.variableAllowanceAmountType.valid || 
+                  variableAllowanceForm.controls.variableAllowanceAmountType.untouched)">
+                  Field is Required
+                </mat-error>
+              </mat-form-field> -->
+              </div>
+
+
+              <div *ngIf="this.variableAllowanceForm.controls.variableAllowanceAmountType.value==='FIXED_AMOUNT'">
+                <p class="category">Provide the Amount</p>
+                <mat-form-field class="full-width">
+                  <mat-placeholder>
+                    <i class="fa fa-inr" aria-hidden="true"></i>
+                  </mat-placeholder>
+                  <input matInput formControlName="variableAllowance">
+                  <mat-error [hidden]="(variableAllowanceForm.controls.variableAllowance.valid || 
+                  variableAllowanceForm.controls.variableAllowance.untouched)">
+                    Field is Required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+
+              <div
+                *ngIf="this.variableAllowanceForm.controls.variableAllowanceAmountType.value==='PERCENTAGE_BASIC_DA_OR_BASIC'">
+                <p class="category">Provide the Percentage</p>
+                <mat-form-field class="full-width">
+                  <mat-placeholder>
+                    <i class="fa fa-percent" aria-hidden="true"></i>
+                  </mat-placeholder>
+                  <input matInput formControlName="variableAllowance">
+                  <mat-error [hidden]="(variableAllowanceForm.controls.variableAllowance.valid || 
+                  variableAllowanceForm.controls.variableAllowance.untouched)">
+                    Field is Required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div
+                *ngIf="this.variableAllowanceForm.controls.variableAllowanceAmountType.value==='PERCENTAGE_OF_GROSS_SALARY'">
+                <p class="category">Percentage of gross salary paid</p>
+                <mat-form-field class="full-width">
+                  <mat-placeholder>
+                    <i class="fa fa-percent" aria-hidden="true"></i>
+                  </mat-placeholder>
+                  <input matInput formControlName="variableAllowance">
+                  <mat-error [hidden]="(variableAllowanceForm.controls.variableAllowance.valid || 
+                  variableAllowanceForm.controls.variableAllowance.untouched)">
+                    Field is Required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+
+              <p class="category ">Which employees does this variable allowance apply to?</p>
+              <ng-select #select [items]="allSelections" class="custom-ng-select-Style" [multiple]="true"
+                bindLabel="viewValue" groupBy="type" [selectableGroup]="true" dropdownPosition="auto"
+                [selectableGroupAsModel]="false" [closeOnSelect]="false" [selectableGroupAsModel]="false"
+                formControlName="variableAllowanceApplyTo">
+                <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                    [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                    [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                </ng-template>
+              </ng-select>
+              <!-- <div class="input-errorClass" [hidden]="(variableAllowanceForm.controls.variableAllowanceApplyTo.valid || 
+            variableAllowanceForm.controls.variableAllowanceApplyTo.untouched)">
+              Field is required
+            </div> -->
+              <p class="category">Do you want attendance to effect the eligibility? *</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="isEffectByAttendance">
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.variableAllowanceForm.controls.isEffectByAttendance.valid || 
+          this.variableAllowanceForm.controls.isEffectByAttendance.untouched)">
+                Field is required
+              </div>
+
+              <div class="row" style="text-align: center;margin-top:20px;">
+                <button class="btn header-button"
+                  (click)="isLeftVisible = !isLeftVisible; addButtonVisible=true;setPanel()">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    cancel</span>
+                </button>
+                <button class="btn header-button" *ngIf=" addButtonVisible"
+                  (click)="addButtonVisible=true;  saveVariableAllowances(variableAllowanceForm);">
+                  <span>
+                    <i class="fa fa-floppy-o " aria-hidden="true "></i>
+                    Save</span>
+                </button>
+                <button class="btn header-button" *ngIf=" updateButtonVisible"
+                  (click)="saveUpdatedVariableAllowances(variableAllowanceForm);">
+                  <span>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Update</span>
+                </button>
+              </div>
+            </form>
+            <!-- <pre>{{variableAllowanceForm.value |json}}</pre> -->
+          </div>
+        </div>
+      </div>
+    </app-variable-allowance-content>
+  </div>
+</div>

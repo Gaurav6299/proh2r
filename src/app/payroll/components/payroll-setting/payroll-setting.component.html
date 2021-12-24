@@ -1,0 +1,45 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="title">Payroll Settings</h6>
+      </div>
+      <div class="card-content">
+        <!-- <div id="tabs"> -->
+        <!-- (animationDone)="onTabChange($event) -->
+        <mat-tab-group class="tabs" (animationDone)="onTabChange($event)" (selectedTabChange)="onLinkClick($event);">
+          <mat-tab label="GENERAL SETTINGS">
+            <app-general-settings *ngIf="currentTab == 0"></app-general-settings>
+          </mat-tab>
+          <mat-tab label="FIXED ALLOWANCES">
+            <app-fixed-allowances *ngIf="currentTab == 1"></app-fixed-allowances>
+          </mat-tab>
+          <mat-tab label="FIXED CONTRIBUTION">
+            <app-fixed-contribution *ngIf="currentTab == 2"></app-fixed-contribution>
+          </mat-tab>
+          <mat-tab label="VARIABLE ALLOWANCES">
+            <app-variable-allowances *ngIf="currentTab == 3"></app-variable-allowances>
+          </mat-tab>
+          <!-- <mat-tab label="EMPLOYER CONTRIBUTIONS">
+            <app-employer-contributions *ngIf="currentTab == 3"></app-employer-contributions>
+          </mat-tab> -->
+          <mat-tab label="FIXED DEDUCTIONS">
+            <app-fixed-deductions *ngIf="currentTab == 4"></app-fixed-deductions>
+          </mat-tab>
+          <mat-tab label="VARIABLE DEDUCTIONS">
+            <app-variable-deductions *ngIf="currentTab == 5"></app-variable-deductions>
+          </mat-tab>
+          <mat-tab label="Other Benefits">
+            <app-other-benefits *ngIf="currentTab == 6"></app-other-benefits>
+          </mat-tab>
+          <mat-tab label="LOANS/ADVANCES">
+            <app-loans-and-advances *ngIf="currentTab == 7"></app-loans-and-advances>
+          </mat-tab>
+          <mat-tab label="Flexi-Benefits">
+            <app-flexi-benefits *ngIf="currentTab == 8"></app-flexi-benefits>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

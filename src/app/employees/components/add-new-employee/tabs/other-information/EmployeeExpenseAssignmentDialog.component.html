@@ -1,0 +1,91 @@
+<!-- Card Header Begins -->
+
+<div class="card">
+    <div class="card-header"
+        style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">Employee Expense Assignment</h6>
+                </div>
+                <div class="col-md-2"
+                    style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;"
+                        (click)="onNoClick()">close</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card Header Ends -->
+    <div class="card-content">
+        <form [formGroup]="expenseTemplateAssignment">
+            <p class="category" style="color:#404A56;">Select Template:</p>
+            <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Template" formControlName="expenseTemplate"
+                    (selectionChange)="selectExpense(this.expenseTemplateAssignment.controls.expenseTemplate.value)">
+                    <mat-option *ngFor="let et of expenseTemplate" [value]="et.value">
+                        {{et.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Selected value conveyance  -->
+
+            <div *ngIf="conveyance">
+                <div class="card-header"
+                    style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+                    <div data-background-color="blue">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h6 style="text-transform: uppercase;font-weight: 600">Expense Settings</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <mat-form-field class="fullLength">
+                        <mat-select placeholder="Select Primary Approver"
+                            formControlName="expenseconveyancePrimaryApprover">
+                            <mat-option *ngFor="let ea of expenseApprover" [value]="ea.value">
+                                {{ea.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="fullLength">
+                        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
+                            placeholder="Select Effective From Date" formControlName="expenseEffectiveDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div *ngIf="bill">
+                <div class="card-header"
+                    style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+                    <div data-background-color="blue">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h6 style="text-transform: uppercase;font-weight: 600">Expense Settings</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <mat-form-field class="fullLength">
+                        <mat-select placeholder="Select Primary Approver" formControlName="expensebillPrimaryApprover">
+                            <mat-option *ngFor="let ea of expenseApprover" [value]="ea.value">
+                                {{ea.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="fullLength">
+                        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
+                            placeholder="Select Effective From Date" formControlName="expenseBillEffectiveDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

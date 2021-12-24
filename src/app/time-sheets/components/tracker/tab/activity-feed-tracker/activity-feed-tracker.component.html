@@ -1,0 +1,170 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card" style="box-shadow: none !important;padding: 0;">
+      <!-- <div class="card-content">
+        <div class="tracker-section-card">
+          <div class="row">
+            <div class="col-md-1">
+              <div class="tracker-section-card-icon">
+                <img src="assets/images/001-timer.png">
+              </div>
+            </div>
+            <div class="col-md-11">
+              <div class="tracker-section-card-timeLine">
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead class="activity-tracker-table-head">
+                      <tr>
+                        <th>EMPLOYEE CODE</th>
+                        <th>SUN</th>
+                        <th>MON</th>
+                        <th>TUE</th>
+                        <th>WED</th>
+                        <th>THU</th>
+                        <th>FRI</th>
+                        <th>SAT</th>
+                        <th>TOTAL</th>
+                      </tr>
+                    </thead>
+                    <tbody class="activity-tracker-table-body text-center" *ngFor="let element of activityTrackerList">
+                      <tr *ngIf="element.feedType=='timesheet'">
+                        <td>{{element.empCode}}</td>
+                        <td>{{element.totalDay0}}</td>
+                        <td>{{element.totalDay1}}</td>
+                        <td>{{element.totalDay2}}</td>
+                        <td>{{element.totalDay3}}</td>
+                        <td>{{element.totalDay4}}</td>
+                        <td>{{element.totalDay5}}</td>
+                        <td>{{element.totalDay6}}</td>
+                        <td>{{element.totalHours}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div style="text-align: left;">
+                  <a class="tracker-timeLineBtnApr">
+                    <i class="fa fa-check-circle"></i>
+                    Approve
+                  </a>
+                  <a class="tracker-timeLineBtnRej">
+                    <i class="fa fa-times-circle"></i>
+                    Reject
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="card-content">
+        <div *ngFor="let element of activityTrackerList">
+          <div class="tracker-section-card" *ngIf="element.feedType=='timesheet'">
+            <div class="row">
+              <div class="col-md-1">
+                <div class="tracker-section-card-icon">
+                  <img src="assets/images/001-timer.png">
+                </div>
+              </div>
+              <div class="col-md-11">
+                <div class="tracker-section-card-timeLine">
+                  <h2 class="heading-title">{{element.message}}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1 offset-col-md-1"></div>
+              <div class="col-md-11">
+                <div class="tracker-section-card-timeLine">
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead class="activity-tracker-table-head">
+                        <tr>
+                          <th>EMPLOYEE CODE</th>
+                          <th>SUN</th>
+                          <th>MON</th>
+                          <th>TUE</th>
+                          <th>WED</th>
+                          <th>THU</th>
+                          <th>FRI</th>
+                          <th>SAT</th>
+                          <th>TOTAL</th>
+                        </tr>
+                      </thead>
+                      <tbody class="activity-tracker-table-body text-center">
+                        <tr *ngIf="element.feedType=='timesheet'">
+                          <td>{{element.empCode}}</td>
+                          <td>{{element.totalDay0}}</td>
+                          <td>{{element.totalDay1}}</td>
+                          <td>{{element.totalDay2}}</td>
+                          <td>{{element.totalDay3}}</td>
+                          <td>{{element.totalDay4}}</td>
+                          <td>{{element.totalDay5}}</td>
+                          <td>{{element.totalDay6}}</td>
+                          <td>{{element.totalHours}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div style="text-align: left;"
+                    *ngIf="element.timeSheetApprovalStatus=='LEVEL_1_PENDING' || element.timeSheetApprovalStatus=='LEVEL_2_PENDING'">
+                    <a class="tracker-timeLineBtnApr" (click)="openApproveRejectTimesheetDialog('approve',element);">
+                      <i class="fa fa-check-circle"></i>
+                      Approve
+                    </a>
+                    <a class="tracker-timeLineBtnRej" (click)="openApproveRejectTimesheetDialog('reject',element);">
+                      <i class="fa fa-times-circle"></i>
+                      Reject
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tracker-section-card" *ngIf="element.feedType=='project'">
+            <div class="row">
+              <div class="col-md-1">
+                <div class="tracker-section-card-icon">
+                  <img src="assets/images/003-project.png">
+                </div>
+              </div>
+              <div class="col-md-11">
+                <div class="tracker-section-card-timeLine">
+                  <h2 class="heading-title">{{element.message}}
+                    <a class="status-tracker"
+                      [ngStyle]="{'background-color':element.status=== 'ACTIVE' ? '#4CAF50' :element.status=== 'COMPLETED' ? '#4b89dc' :element.status=== 'IN_PLANNING' ? '#0084ff' :element.status=== 'ARCHIVED' ? '#ceb068' : '' }">
+                      {{element.status | titlecase}}</a>
+                    <span *ngIf="element.date && element.time"> on {{element.date}} at {{element.time}}</span>
+                  </h2>
+                  <!-- <div class="tracker-section-card-timeLine-status">
+                    <p><i class="fa fa-check-circle"></i> You approved May 10, 2020</p>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tracker-section-card" *ngIf="element.feedType=='task'">
+            <div class="row">
+              <div class="col-md-1">
+                <div class="tracker-section-card-icon">
+                  <img src="assets/images/task.png">
+                </div>
+              </div>
+              <div class="col-md-11">
+                <div class="tracker-section-card-timeLine">
+                  <h2 class="heading-title">{{element.message}}
+                    <a class="status-tracker"
+                      [ngStyle]="{'background-color':element.status=== 'ACTIVE' ? '#4CAF50' :element.status=== 'INACTIVE' ? '#6a7f7a' :element.status=== 'COMPLETED' ? '#4b89dc' :element.priority=== 'CRITICAL' ? '#ff9f1a' :element.priority=== 'NORMAL' ? '#5e5e70' :element.priority=== 'HIGH' ? '#0000ff' :element.priority=== 'LOW' ? '#ffc0cb': '' }">
+                      {{element.status | titlecase}} {{element.priority | titlecase}}</a>
+                    <span *ngIf="element.date && element.time"> on {{element.date}} at {{element.time}}</span>
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

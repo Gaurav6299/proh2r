@@ -1,0 +1,62 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> View Leave Application Details</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Status</th>
+                    <td>{{data.leaveStatus}}</td>
+                </tr>
+                <tr>
+                    <th>Start Date</th>
+                    <td>{{data.startDate | date:'dd/MM/yyyy'}}</td>
+                </tr>
+                <tr>
+                    <th>End Date</th>
+                    <td>{{data.endDate | date:'dd/MM/yyyy'}}</td>
+                </tr>
+                <tr *ngIf="data.isHalfDay">
+                    <th>Half Days</th>
+                    <td>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="margin: 0;">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Half</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let halfday of data.leaveHalfDays">
+                                        <td>{{halfday.halfDayDate}}</td>
+                                        <td>{{halfday.dayHalfs| customUnderscorePipe:'halfday.dayHalfs'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Total Leave Days</th>
+                    <td>{{data.numberOfLeave}}</td>
+                </tr>
+                <tr>
+                    <th>Reason</th>
+                    <td>{{data.reason}}</td>
+                </tr>
+                <tr *ngIf="data.uploadDoc!== null">
+                    <th>Attachment</th>
+                    <td> <i aria-hidden="true" class="fa fa-cloud-download action-icon" style="color:#1ca2ba"
+                            (click)="downloadAttachment(data.uploadDocPath);" matTooltip="Download Attachment"><b>
+                                {{data.uploadDoc}}</b></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</mat-dialog-content>

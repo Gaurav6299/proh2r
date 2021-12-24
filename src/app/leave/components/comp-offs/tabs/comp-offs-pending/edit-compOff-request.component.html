@@ -1,0 +1,26 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Edit Leave Grant</h4>
+  <form [formGroup]="editCompOffRequest">
+    <mat-form-field class="fullLength">
+      <input matInput type="date" placeholder="Select Date" formControlName="compOffDate">
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <textarea matInput placeholder="Enter Comments" formControlName="reason"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial [mat-dialog-close]="true">Cancel
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="updateAppliation();">
+      Update
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="card-header"
+    style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+    <div data-background-color="blue">
+      <div class="row">
+        <div class="col-md-10">
+          <h6 style="text-transform: uppercase;font-weight: 600">History Of Employee Expense Assignments</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="showLeaveCategoryList mat-elevation-z8">
+
+      <mat-table #table [dataSource]="dataSource" matSort>
+        <!-- Date Column -->
+        <ng-container matColumnDef="ExpencePolicyName" style="color:red;">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><span class="dataTableHeaderColor">Expense Policy
+              Name</span></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.ExpencePolicyName}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="EffectiveFrom">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><span class="dataTableHeaderColor">Effective From</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.EffectiveFrom}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="EffectiveTo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><span class="dataTableHeaderColor">Effective To</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.EffectiveTo}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="isLeftVisible = !isLeftVisible; "></mat-row>
+      </mat-table>
+    </div>
+  </div>
+  <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+    <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;"
+      data-background-color="cyan"> <span class="category" style="color:#fff; display: inline">
+        <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+        Close</span>
+    </button>
+  </div>
+</div>

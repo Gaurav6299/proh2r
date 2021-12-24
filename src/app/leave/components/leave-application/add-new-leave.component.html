@@ -1,0 +1,247 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Add New Leave</h4>
+    <form [formGroup]="addNewLeave">
+        <ng-select appendTo="body" [searchable]="true" placeholder="Please Select Employee"
+            formControlName="selectEmployee" class="custom-ng-select-Style"
+            (change)="selectedValue(this.addNewLeave.controls.selectEmployee.value)" (click)="clearapprover();">
+            <ng-option *ngFor="let item of employeeList" [value]="item.value">
+                {{item.fullName}}
+            </ng-option>
+        </ng-select>
+        <span class="dropDown-errorClass" [hidden]="(addNewLeave.controls.selectEmployee.valid || 
+  addNewLeave.controls.selectEmployee.untouched)">
+            Invalid Input
+        </span>
+        <!-- <mat-form-field class="fullLength">
+            <mat-select placeholder="Please Select Employee" formControlName="selectEmployee"
+                (selectionChange)="selectedValue(this.addNewLeave.controls.selectEmployee.value)"
+                (click)="clearapprover();">
+                <mat-form-field class="fullLength">
+                    <input type="text" placeholder="Search Employee" matInput [formControl]="approverControl"
+                        (keyup)="searchEmployeeNameForsupervisor($event)">
+                </mat-form-field>
+                <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                    {{item.fullName}}
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(addNewLeave.controls.selectEmployee.valid || 
+                       addNewLeave.controls.selectEmployee.untouched)">
+                Invalid Input
+            </mat-error>
+        </mat-form-field> -->
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Please Select Leave Category" formControlName="leaveCategory"
+                (selectionChange)="onChangeCategory(this.addNewLeave.controls.leaveCategory.value);">
+                <mat-option *ngFor="let cl of categoryList" [value]="cl">
+                    {{cl.name}}
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(addNewLeave.controls.leaveCategory.valid || 
+                       addNewLeave.controls.leaveCategory.untouched)">
+                Invalid Input
+            </mat-error>
+        </mat-form-field>
+
+        <!-- <p *ngIf="showData" class="category">Pending Applications: {{this.pendingApplCount}}</p>
+        <p *ngIf="showData" class="category">Leave Balance: {{this.leaveBal}}</p> -->
+        <div class="table-responsive" *ngIf="showData">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Pending Applications</th>
+                        <td>{{this.pendingApplCount}}</td>
+                    </tr>
+                    <tr>
+                        <th>Leave Balance</th>
+                        <td>{{this.leaveBal}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div
+            *ngIf="this.addNewLeave.controls.leaveCategory.value.name == 'Bereavement Leave'||this.addNewLeave.controls.leaveCategory.value.name == 'Family Medical Leave'">
+            <mat-form-field class="fullLength">
+                <mat-select placeholder="Please Select Employee Relation" formControlName="empRelation">
+                    <mat-option value="Employee_Spouse">Employee's Spouse</mat-option>
+                    <mat-option value="Employee_Children">Employee's Children</mat-option>
+                    <mat-option value="Employee_Parents">Employee's Parents</mat-option>
+                    <mat-option value="Employee_Grand_Parents">Employee's Grand Parents</mat-option>
+                    <mat-option value="Employee_Parents_In_Law">Employee's Parents In Law</mat-option>
+                    <mat-option value="Employee_Siblings">Employee's Sibling</mat-option>
+                    <mat-option value="Employee_Spouse_Siblings">Employee's Spouse's Siblings</mat-option>
+                </mat-select>
+                <mat-error [hidden]="(addNewLeave.controls.empRelation.valid || 
+                           addNewLeave.controls.empRelation.untouched)">
+                    Invalid Input
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="this.addNewLeave.controls.leaveCategory.value.name == 'Bereavement Leave'">
+            <mat-form-field class="fullLength">
+                <input matInput type="date" placeholder="Date of Death" formControlName="expirationDate">
+                <mat-error [hidden]="(addNewLeave.controls.expirationDate.valid || 
+                addNewLeave.controls.expirationDate.untouched)">
+                    Invalid Input
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div
+            *ngIf="this.addNewLeave.controls.leaveCategory.value.name == 'Maternity Leave'|| this.addNewLeave.controls.leaveCategory.value.name == 'Paternity Leave'">
+            <mat-form-field class="fullLength">
+                <input matInput type="date" placeholder="Select Expected Delivery Date "
+                    formControlName="childDeliveryDate">
+                <mat-error [hidden]="(addNewLeave.controls.childDeliveryDate.valid || 
+                addNewLeave.controls.childDeliveryDate.untouched)">
+                    Invalid Input
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="uploadDoc">
+            <p class="category" style="color:#404A56;">Upload the Document</p>
+            <p class="category" style="color:#404A56;">Accepted Formats are .txt, .pdf, .jpg, .png, .xls,.xlsx,
+                .doc,.docx, </p>
+            <input name="myFile" type="file" (change)="onFileSelect($event)" formControlName="uploadDoc">
+            <span class="category" style="color: red;" [hidden]="(addNewLeave.controls.uploadDoc.valid || 
+            addNewLeave.controls.uploadDoc.untouched)">Field is required</span>
+        </div>
+
+
+        <!-- <mat-form-field class="fullLength">
+             <input matInput type="date" placeholder="Select Start Date" formControlName="startDate"
+                (change)="selectrange();"> 
+            <mat-error [hidden]="(addNewLeave.controls.startDate.valid || 
+                addNewLeave.controls.startDate.untouched)">
+                Invalid Input
+            </mat-error> 
+        </mat-form-field> -->
+        <div style="margin-bottom: 10px;">
+            <label class="input-label">Select Start Dates</label>
+            <p-calendar placeholder="Select" appendTo="body" [style]="{'width':'100%'}" [inputStyle]="{'width':'95%'}"
+                dateFormat="dd-mm-yy" [showIcon]="true" showButtonBar="true" formControlName="startDate"
+                (onSelect)="selectrange();" [readonlyInput]="true">
+            </p-calendar>
+            <span class="input-errorClass" [hidden]="(addNewLeave.controls.startDate.valid || 
+            addNewLeave.controls.startDate.untouched)">
+                Invalid Input
+            </span>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label class="input-label">Select End Dates</label>
+            <p-calendar placeholder="Select" appendTo="body" [style]="{'width':'100%'}" [inputStyle]="{'width':'95%'}"
+                [showIcon]="true" showButtonBar="true" [minDate]="this.addNewLeave.controls.startDate.value"
+                dateFormat="dd-mm-yy" formControlName="endDate" (onSelect)="selectrange();" [readonlyInput]="true">
+            </p-calendar>
+            <span class="input-errorClass" [hidden]="(addNewLeave.controls.endDate.valid || 
+            addNewLeave.controls.endDate.untouched)">
+                Invalid Input
+            </span>
+        </div>
+        <!-- <mat-form-field class="fullLength">
+            <input matInput type="date" placeholder="End Date" [min]="this.addNewLeave.controls.startDate.value"
+                formControlName="endDate" (change)="selectrange();">
+            <mat-error [hidden]="(addNewLeave.controls.endDate.valid || 
+                       addNewLeave.controls.endDate.untouched)">
+                Invalid Input
+            </mat-error>
+        </mat-form-field> -->
+        <!-- <div *ngIf ="this.needLeaveExtension" >
+            <p class="category" style="color:#404A56;">Are there any Days extension needed?</p>
+            <div class="radio-wrapper">
+                <mat-radio-group formControlName="empNeedExtension">
+                    <mat-radio-button  value='true'>Yes</mat-radio-button>
+                    <mat-radio-button  value='false'>No</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div> -->
+        <div *ngIf="this.halfDayOption">
+            <p class="category" style="color:#404A56;">Are there any Half Day?</p>
+            <div class="radio-wrapper">
+                <mat-radio-group formControlName="halfDay" (change)="applyValidation();">
+                    <mat-radio-button *ngFor="let item of halfDayvalue" [value]="item.value">{{item.name}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div *ngIf="this.addNewLeave.controls.halfDay.value">
+            <!-- <mat-form-field class="fullLength">  <input matInput type="date" placeholder="Select Half Days"
+                    [min]="this.addNewLeave.controls.startDate.value" [max]="this.addNewLeave.controls.endDate.value" [multiple]="true"
+                    placeholder="Half Day Date" formControlName="halfDayDate">
+             <mat-error [hidden]="(addNewLeave.controls.halfDayDate.valid || 
+            addNewLeave.controls.halfDayDate.untouched)">
+                    Invalid Input
+                </mat-error> 
+             </mat-form-field> -->
+            <div style="margin-bottom: 10px;">
+                <label class="input-label">Select Dates</label>
+                <p-calendar placeholder="Select" appendTo="body" [style]="{'width':'100%'}"
+                    [inputStyle]="{'width':'95%'}" [showIcon]="true" showButtonBar="true" [minDate]="minDate"
+                    [maxDate]="maxDate" selectionMode="multiple" dateFormat="dd-mm-yy" formControlName="halfDayDate"
+                    (onSelect)="selectDates()" (onClose)="selectDates()" [readonlyInput]="true">
+                </p-calendar>
+                <span class="input-errorClass" [hidden]="(addNewLeave.controls.halfDayDate.valid || 
+                addNewLeave.controls.halfDayDate.untouched)">
+                    Invalid Input
+                </span>
+            </div>
+            <div class="card-content" formArrayName="halfDayDates" style="margin-bottom: 10px;">
+                <p-table #dt1 [columns]="columns" [value]="this.addNewLeave.controls['halfDayDates'].controls"
+                    [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+                    [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-car let-columns="columns" let-rowIndex="rowIndex">
+                        <tr [formGroupName]="rowIndex">
+                            <td *ngFor="let col of columns">
+                                <div *ngIf="col.field == 'date' ">
+                                    {{car.controls[col.field].value}}</div>
+
+                                <div class="no-Margin" *ngIf="col.field=='half'">
+                                    <ng-select appendTo="body" formControlName="half" [items]="dayHalfs"
+                                        bindLabel="viewValue" bindValue="value" placeholder="Select Half"
+                                        class="custom-ng-select-Style noMargin">
+                                    </ng-select>
+                                    <span class="input-errorClass"
+                                        *ngIf="(!addNewLeave.controls['halfDayDates']?.controls[rowIndex].valid)">
+                                        Field is Required
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+        <mat-form-field class="fullLength">
+            <textarea matInput placeholder="Enter Reason for Leave" formControlName="reason"></textarea>
+            <mat-error [hidden]="(addNewLeave.controls.reason.valid || 
+            addNewLeave.controls.reason.untouched)">
+                Reason Required
+            </mat-error>
+        </mat-form-field>
+        <!-- <pre>{{addNewLeave.value|json}}</pre> -->
+        <!--  <pre>{{this.needLeaveExtension}}</pre>
+        <pre>{{this.halfDayOption}}</pre> -->
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="submitAppliation();"> Apply
+        </button>
+    </div>
+</mat-dialog-actions>

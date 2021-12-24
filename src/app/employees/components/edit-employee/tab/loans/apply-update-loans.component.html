@@ -1,0 +1,89 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>{{title}}</h4>
+    <form [formGroup]="loanApplication">
+        <div *ngIf="this.action != 'view'">
+            <ng-select class="custom-ng-select-Style" [items]="loanCategories" bindLabel="categoryLabel"
+                bindValue="loanCategoryId" appendTo="body" placeholder="Select Category"
+                formControlName="loanCategoryId">
+            </ng-select>
+            <div class="dropDown-errorClass" [hidden]="(loanApplication.controls.loanCategoryId.valid || 
+                                loanApplication.controls.loanCategoryId.untouched)">
+                Field is Required
+            </div>
+
+            <mat-form-field class="fullLength">
+                <input matInput type="number" placeholder="Enter Amount" formControlName="totalDisbursementAmount" (keyup)="onChangeDisbursementAmount()">
+                <mat-error [hidden]="(loanApplication.controls.totalDisbursementAmount.valid || 
+                loanApplication.controls.totalDisbursementAmount.untouched)">
+                    Field is Required
+                </mat-error>
+            </mat-form-field>
+
+            <div style="margin-top: 5px;">
+                <ng-select class="custom-ng-select-Style" appendTo="body" [items]="emiOptions"
+                    placeholder="Repayment Frequency" formControlName="totalEMI" bindLabel="viewValue" bindValue="value">
+                </ng-select>
+                <div class="dropDown-errorClass" [hidden]="(loanApplication.controls.totalEMI.valid || 
+                            loanApplication.controls.totalEMI.untouched)">
+                    Field is Required
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf="this.action == 'view'">
+            <mat-form-field class="fullLength">
+                <input matInput type="text" placeholder="Category" formControlName="loanCategoryLabel" readonly>
+            </mat-form-field>
+
+            <mat-form-field class="fullLength">
+                <input matInput type="text" placeholder="Total Disbursement Amount"
+                    formControlName="totalDisbursementAmount" readonly>
+            </mat-form-field>
+
+            <mat-form-field class="fullLength">
+                <input matInput type="text" placeholder="Total Disbursed Amount" formControlName="totalDisbursedAmount"
+                    readonly>
+            </mat-form-field>
+
+            <mat-form-field class="fullLength">
+                <input matInput type="text" placeholder="Remaining Amount" formControlName="remainingAmount" readonly>
+            </mat-form-field>
+
+            <mat-form-field class="fullLength">
+                <input matInput type="text" placeholder="Total EMI" formControlName="totalEMI" readonly>
+            </mat-form-field>
+
+            <mat-form-field class="fullLength">
+                <input matInput type="text" placeholder="Remaining EMI" formControlName="remainingEMI" readonly>
+            </mat-form-field>
+
+            <mat-form-field class="fullLength">
+                <input matInput type="text" placeholder="Status" formControlName="loanStatus" readonly>
+            </mat-form-field>
+        </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="dialog-buttons" *ngIf="this.action == 'view'" cdkFocusInitial (click)="onNoClick();">Close
+        </button>
+        <button class="cancel-buttons" *ngIf="this.action != 'view'" cdkFocusInitial (click)="onNoClick();">Cancel
+        </button>
+        <button class="dialog-buttons" *ngIf="action == 'add' && this.action != 'view'" cdkFocusInitial
+            (click)="applyLoan();">
+            Apply
+        </button>
+        <button class="dialog-buttons" *ngIf="action == 'update' && this.action != 'view'" cdkFocusInitial
+            (click)="updateLoan();">
+            Update
+        </button>
+    </div>
+</mat-dialog-actions>

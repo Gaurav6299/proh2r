@@ -1,0 +1,326 @@
+<div class="card" style="margin-bottom: 20px;">
+
+  <div class="card-header">
+    <h6 class="title">Manually Adjust Arrears</h6>
+  </div>
+
+  <div class="card-content">
+    <div class="card" style="box-shadow: none !important;margin-top:0px;">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Manual Arrears</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" (click)="clickOnAddManualArrears()">
+            <span>
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              Manual Arrears</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="col-md-12 table-responsive mat-elevation-z8" style="padding-bottom: 15px; padding-top: 10px;">
+          <mat-table #table [dataSource]="dataSourceManualArrears">
+
+            <ng-container matColumnDef="monthYear">
+              <mat-header-cell *matHeaderCellDef>Month-Year</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.monthYear}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="grossAllowance">
+              <mat-header-cell *matHeaderCellDef>Gross Allowance</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.grossAllowance}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="grossDeduction">
+              <mat-header-cell *matHeaderCellDef>Gross Deduction</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.grossDeduction}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="pfWage">
+              <mat-header-cell *matHeaderCellDef>PF Wage</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.pfWage}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="pfPensionPaid">
+              <mat-header-cell *matHeaderCellDef>PF Pension Paid</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.pfPensionPaid}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="pfCeiling">
+              <mat-header-cell *matHeaderCellDef>PF Ceiling</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span *ngIf="element.pfCeiling=='true'" style="padding:3px;">
+                  <i class="fa fa-check-circle" aria-hidden="true" style="font-size:20px;color:green;vertical-align: middle;cursor:pointer;"></i>
+                </span>
+                <span *ngIf="element.pfCeiling=='false'" style="padding:3px;">
+                  <i class="fa fa-times-circle" aria-hidden="true" style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i>
+                </span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="recordId">
+              <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span style="padding:3px;" (click)="clickOnEditManualArrears()">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:20px;color:green;vertical-align: middle;cursor:pointer;"></i>
+                </span>
+                <span style="padding:3px;" (click)="clickOnDeleteManualArrears(element)">
+                  <i class="fa fa-trash-o" aria-hidden="true" style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i>
+                </span>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumnsManualArrears"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumnsManualArrears;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-content">
+    <div class="card" style="box-shadow: none !important">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Arrears Days</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible;">
+            <span>
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              Arrear Days</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-content"> 
+      
+          <app-manage-left-right-add-arrears [activePane]="isLeftVisible ? 'left' : 'right'">
+            <div leftPane class="divtoggleDiv">
+                <div class="col-md-12 table-responsive example-container mat-elevation-z8" style="padding-bottom: 15px; padding-top: 10px;">
+              <mat-table #table [dataSource]="dataSourceArrearDays">
+
+                <ng-container matColumnDef="monthYear">
+                  <mat-header-cell *matHeaderCellDef>Month-Year</mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{element.monthYear}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="noOfLopDays">
+                  <mat-header-cell *matHeaderCellDef>No. of LOP Days</mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{element.noOfLopDays}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="noOfLopReversalDays">
+                  <mat-header-cell *matHeaderCellDef>No. of LOP Reversal Days</mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    {{element.noOfLopReversalDays}}
+                  </mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="recordId">
+                  <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    <span style="padding:3px;" (click)="onClickEditArrearDays(element); isLeftVisible = !isLeftVisible;">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:20px;color:green;vertical-align: middle;cursor:pointer;"></i>
+                    </span>
+                    <span style="padding:3px;" (click)="clickOnDeleteMonthArrearDaysRecord(element)">
+                      <i class="fa fa-trash-o" aria-hidden="true" style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i>
+                    </span>
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumnsArrearDays"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsArrearDays;"></mat-row>
+              </mat-table>
+                </div>
+            </div>
+
+
+            <div rightPane class="divtoggleDiv">
+              <div class="card-content">
+                <div class="card" style="box-shadow: none !important;margin-top:0px;">
+                  <div class="card-header">
+                  
+                      <h6 class="title">Arrear Details</h6>
+                   
+                  </div>
+                  <div class="card-content">
+                    <div class="col-md-12">
+                      <div class="col-md-8">
+                        <p class="category" style="color:#404A56;padding-top: 15px;">What Month-Year is this Arrear for?</p>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field>
+                          <mat-select placeholder="Select Month-Year" [(ngModel)]="selectformControl" (selectionChange)="onClickDropdownAction()">
+                            <mat-option *ngFor="let selectData of selectObject" [value]="selectData.value">
+                              {{ selectData.viewValue }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-content" *ngIf="showHideAddTable">
+                <div class="card" style="box-shadow: none !important; padding-bottom: 20px;">
+                  <div class="card-header">
+                    <div style="float:left">
+                      <h6 class="title">Arrear Days</h6>
+                    </div>
+                    <div style="text-align: right;">
+                      <button class=" btn header-button" (click)="clickOnAddArrearDaysDialogbox()">
+                        <span >
+                          <i class="fa fa-plus-square" aria-hidden="true"></i>
+                          Arrear Daysssssss</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="card-content">
+                  
+                      <div class="col-md-12 table-responsive example-container mat-elevation-z8">
+                        <mat-table #table [dataSource]="dataSource" matSort>
+
+                          <!-- Position Column -->
+                          <ng-container matColumnDef="date">
+                            <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.date}} </mat-cell>
+                          </ng-container>
+
+                          <!-- Name Column -->
+                          <ng-container matColumnDef="typeOfArrear">
+                            <mat-header-cell *matHeaderCellDef > Type Of Arrear </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.typeOfArrear}} </mat-cell>
+                          </ng-container>
+
+
+                          <!-- Symbol Column -->
+                          <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef > Action </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                              <span style="padding:3px;" (click)="clickOnDeleteArrearDaysRecord(element)">
+                                <i class="fa fa-trash-o" aria-hidden="true" style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i>
+                              </span>
+                            </mat-cell> 
+                          </ng-container>
+
+                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                        </mat-table>
+                      </div>
+                   
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </app-manage-left-right-add-arrears>
+       
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card-content">
+    <div class="card" style="box-shadow: none !important">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Salary Revision Arrears</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" (click)="clickOnAddSalaryRevisionArrears()">
+            <span>
+              <i class="fa fa-plus-square" aria-hidden="true"></i>
+              Add Salary Revision Arrears</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="col-md-12 table-responsive example-container mat-elevation-z8" style="padding-bottom: 15px; padding-top: 10px;">
+          <mat-table #table [dataSource]="dataSourceSalaryRevisionArrears">
+
+            <ng-container matColumnDef="salaryRevisiontoStartFrom">
+              <mat-header-cell *matHeaderCellDef>Month-Year</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.salaryRevisiontoStartFrom}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="salaryRevisionToBeMadeTill">
+              <mat-header-cell *matHeaderCellDef>Gross Allowance</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.salaryRevisionToBeMadeTill}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="oldCTCGross">
+              <mat-header-cell *matHeaderCellDef>Gross Deduction</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.oldCTCGross}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="newCTCGross">
+              <mat-header-cell *matHeaderCellDef>PF Wage</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.newCTCGross}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Comment">
+              <mat-header-cell *matHeaderCellDef>PF Pension Paid</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.Comment}}
+              </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="salaryRevisiontArrearId">
+              <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span style="padding:3px;">
+                  <i class="fa fa-pencil-square" aria-hidden="true" style="font-size:20px;color:green;vertical-align: middle;cursor:pointer;"></i>
+                </span>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumnsSalaryRevisionArrears"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumnsSalaryRevisionArrears;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding-top: 20px;padding-bottom: 10px">
+ 
+    <button class="btn header-button">
+      <span>
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+        Back</span>
+    </button>
+       <button class="btn header-button">
+      <span>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Done Adjusting Arrears</span>
+    </button>
+  </div>
+
+</div>

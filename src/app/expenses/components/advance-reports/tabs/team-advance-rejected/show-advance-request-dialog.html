@@ -1,0 +1,42 @@
+<mat-dialog-content>
+    <div class="logo">
+      <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+      <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Show Advance Details for {{data.empCode}}</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>Employee Name</th>
+            <td>{{data.empCode}}</td>
+          </tr>
+          <tr>
+            <th>Category Name</th>
+            <td>{{data.advanceCategoryName}}</td>
+          </tr>
+          <tr>
+            <th>Amount</th>
+            <td>{{data.advanceAmount}}</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td>{{data.applicationStatus}}</td>
+          </tr>
+          <tr>
+            <th>Comment</th>
+            <td>{{data.comments}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="model-footer">
+      <button class="dialog-buttons" cdkFocusInitial (click)="onNoClick()">Close
+      </button>
+    </div>
+  </mat-dialog-actions>
+  

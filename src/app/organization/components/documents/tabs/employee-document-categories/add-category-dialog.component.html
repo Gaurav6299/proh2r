@@ -1,0 +1,39 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>{{headerName}} Category Details</h4>
+  <form [formGroup]="categoryInformationForm">
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="Employee Document Category" formControlName="categoryName" />
+      <mat-error [hidden]="(this.categoryInformationForm.controls.categoryName.valid
+        || this.categoryInformationForm.controls.categoryName.untouched)">
+        <div
+          *ngIf="(this.categoryInformationForm.controls.categoryName.value === '' || this.categoryInformationForm.controls.categoryName.value === null)">
+          {{requiredTextField}}
+        </div>
+
+        <div *ngIf="this.categoryInformationForm.controls.categoryName.value !== ''">
+          {{ this.categoryInformationForm.controls.categoryName.errors != null ? this.categoryInformationForm.controls.categoryName.errors.messages
+      : ''}}
+        </div>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+    </button>
+    <button class="dialog-buttons" *ngIf="saveButton" cdkFocusInitial
+      (click)="saveCategoryInformation(categoryInformationForm)">
+      Save
+    </button>
+    <button class="dialog-buttons" *ngIf="updateBtton" cdkFocusInitial
+      (click)="updateCategoryInformation(categoryInformationForm)">Update
+    </button>
+  </div>
+</mat-dialog-actions>

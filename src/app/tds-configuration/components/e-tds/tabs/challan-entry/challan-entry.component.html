@@ -1,0 +1,245 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-content form-card-validationComp">
+    <form>
+      <div class="row">
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Ytitle">
+                <p class="category">Select Year:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <ng-select [items]="cars" appendTo="body" [searchable]="true" bindLabel="label" placeholder="Select"
+                class="custom-ng-select-Style">
+              </ng-select>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Ytitle">
+                <p class="category">Select Month:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <ng-select [items]="cars1" appendTo="body" [searchable]="true" bindLabel="label" placeholder="Select"
+                class="custom-ng-select-Style">
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Ytitle">
+                <p class="category">Challan Batch Name:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <ng-select [items]="cars2" appendTo="body" [searchable]="true" bindLabel="label" placeholder="Select"
+                class="custom-ng-select-Style">
+              </ng-select>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Pay Date:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="date">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">TDS/Challan Amount:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" value="0.00" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Cheque/ DD No:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Surcharge Amount:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" value="0.00" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">BSR Code:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Education Cess Amount:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" value="0.00" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Date of Deposit:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Interest Amount:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" value="0.00">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">TDS Deposit by Bank Entry:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="radio-wrapper">
+                <mat-radio-group>
+                  <mat-radio-button value=false>Yes</mat-radio-button><br>
+                  <mat-radio-button value=true>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Other Amount:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" value="0">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Challan/Voucher No.:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Total Tax Amount:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" value="0.00" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Total Employee Count:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" value="0" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-form-field class="fullLength">
+            <textarea matInput placeholder="Remarks"></textarea>
+          </mat-form-field>
+
+          <div class="text-right">
+            <button class="btn header-button">
+              <span>Save</span>
+            </button>
+            <button class="btn header-button">
+              <span>Reset</span>
+            </button>
+            <button class="btn header-button">
+              <span>Delete</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-2 offset-md-2"></div>
+      </div>
+    </form>
+  </div>
+
+  <div class="card-content" style="margin: 20px 0 0 0;">
+    <p-table #dt1 [columns]="columns" [value]="challanEntryList" [rows]="5" [paginator]="true" [pageLinks]="5"
+      [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field">
+              {{car[col.field]}}
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+</div>

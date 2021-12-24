@@ -1,0 +1,64 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card" style="padding-bottom: 15px !important;margin-bottom:20px;">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Rollover</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" (click)="generateRollover();"> <span>
+              <i class="fa fa-check" aria-hidden="true"></i>
+              Generate Rollover</span>
+          </button>
+
+        </div>
+      </div>
+
+
+      <div class="card-content">
+
+        <!-- <mat-form-field style="font-size:10px;">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Location">
+          </mat-form-field> -->
+
+        <div class="col-md-12 table-responsive example-container mat-elevation-z8"
+          style="margin-top:15px;padding-bottom: 15px;">
+          <mat-table #table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="rolloverDate">
+              <mat-header-cell *matHeaderCellDef>Rollover Date</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.rolloverDate}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="runDate">
+              <mat-header-cell *matHeaderCellDef>Run Date</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.runDate}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.status}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="noOfEmployeesProcessed">
+              <mat-header-cell *matHeaderCellDef>No Of Employees Processed</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.noOfEmployeesProcessed}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span><i class="fa fa-cloud-download action-icon" aria-hidden="true" style="color:green;"></i></span>
+                <span><i class="fa fa-trash-o action-icon" aria-hidden="true" style="color:#e03737;"
+                    (click)="deleteRollover();"></i></span>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

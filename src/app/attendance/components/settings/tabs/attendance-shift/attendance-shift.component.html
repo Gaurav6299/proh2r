@@ -1,0 +1,330 @@
+<div class="card" style="box-shadow: none !important">
+    <div>
+        <div class="matTab-sectionButtons">
+            <button class="btn header-button" *ngIf="!isLeftVisible" (click)="addNewAttendanceShift();">
+                <span>
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    Shift</span>
+            </button>
+            <button class="btn header-button" *ngIf="isLeftVisible" (click)="cancelShiftForm();this.check1 = false ">
+                <span>
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                    Back</span>
+            </button>
+        </div>
+    </div>
+    <!-- <ng-template #siftViewOnly>
+        <div class="card-header">
+            <h6 class="title">Shift Timings</h6>
+        </div>
+    </ng-template> -->
+    <div class="card-content">
+        <app-add-edit-attendance [activePane]="isLeftVisible ? 'right' : 'left'">
+            <div leftPane class="divtoggleDiv">
+                <div class="searchBox" style="text-align: right">
+                    <i class="fa fa-search"></i>
+                    <input type="text" pInputText size="50" placeholder="Search"
+                        (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                </div>
+                <p-table #dt1 [columns]="displayedColumns"
+                    [value]="shiftRecordDataTable" [rows]="5" [paginator]="true" [pageLinks]="5"
+                    [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+                    [autoLayout]="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-car let-columns="columns">
+                        <tr>
+                            <td *ngFor="let col of columns">
+                                <div *ngIf="col.field!='action'">
+                                    {{car[col.field]}}</div>
+                                <div class="mat-cell" *ngIf="col.field=='action'">
+                                    <div class="mat-element-icon">
+                                        <span class="edit">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                                                (click)="editAttendanceShiftRecord(car);"></i>
+                                        </span>
+                                        <span class="delete">
+                                            <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                                                (click)="deleteShiftRecord(car)"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <div rightPane class="divtoggleDiv">
+                <div class="card" style="border: 1px solid rgb(221, 221, 221); box-shadow: none !important;">
+                    <div class="row" style="text-align: center;">
+                        <h5 class="left-rights-slider-title" *ngIf="saveButton">
+                            {{addShiftTitle}}
+                        </h5>
+                        <h5 class="left-rights-slider-title" *ngIf="updateButton">
+                            {{updateShiftTitle}}
+                        </h5>
+                        <h6 class="left-rights-slider-Subtitle">
+                            Select the shift timings
+                        </h6>
+                    </div>
+                    <div>
+                        <form [formGroup]="attendanceShiftForm" #attendanceShiftFormTemplateform="ngForm">
+                            <p class="category showFieldMandatory">Please assign a shift name</p>
+                            <mat-form-field class="fullLength">
+                                <input matInput placeholder="Custom Label" formControlName="shiftName">
+                                <mat-error [hidden]="(!this.attendanceShiftForm.controls.shiftName.value && check1)">
+                                    Field is required
+                                </mat-error>
+                            </mat-form-field>
+                            <div class="form-group">
+                                <p class="category showFieldMandatory">Dashboard Color Code</p>
+                                <div style="padding-bottom: 10px;">
+                                    <p-colorPicker formControlName="colorCode" format="hex"></p-colorPicker>
+                                </div>
+                                <!-- <span>{{this.attendanceShiftForm.controls.colorCode.value}}</span> -->
+
+                            </div>
+
+                            <div class="form-group">
+                                <p class="category">Is this shift an Off-Shift?</p>
+                                <div class="radio-wrapper">
+                                    <mat-radio-group formControlName="offShift" (change)="onChangeOfShift()">
+                                        <mat-radio-button value="true">Yes</mat-radio-button>
+                                        <mat-radio-button value="false">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <mat-error class="errorMat-Class"
+                                    *ngIf="(!this.attendanceShiftForm.controls.offShift.value && check1 )">
+                                    Field is required
+                                </mat-error>
+                            </div>
+
+                            <div
+                                *ngIf="this.attendanceShiftForm.controls.offShift.value=='false' || this.attendanceShiftForm.controls.offShift.value==null">
+                                <div class="form-group">
+                                    <p class="category">Select Shift Type</p>
+                                    <div class="radio-wrapper">
+                                        <mat-radio-group formControlName="attendanceShiftType"
+                                            (change)="applyValidation()">
+                                            <mat-radio-button value="FIXED_TIME">Fixed Time</mat-radio-button>
+                                            <mat-radio-button value="FIXED_DURATION">Fixed Duration</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <mat-error class="errorMat-Class"
+                                        *ngIf="(!this.attendanceShiftForm.controls.attendanceShiftType.value && check1 )">
+                                        Field is required
+                                    </mat-error>
+                                </div>
+
+
+                                <p class="category showFieldMandatory">What are the shift timings?</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <mat-form-field class="fullLength">
+                                            <input matInput readonly placeholder="Shift Start From" type="time"
+                                                formControlName="shiftStartTime" (click)="openTimePicker('startTime');">
+                                            <!-- <mat-error [hidden]="(this.attendanceShiftForm.controls.shiftStartTime.valid 
+                                            || this.attendanceShiftForm.controls.shiftStartTime.untouched)">
+                                            Field is required
+                                        </mat-error> -->
+                                        </mat-form-field>
+                                        <mat-error class="errorMat-Class"
+                                            *ngIf="(!this.attendanceShiftForm.controls.shiftStartTime.value && check1 )">
+                                            Field is required
+                                        </mat-error>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <mat-form-field class="fullLength">
+                                            <input matInput readonly placeholder="Shift Ends At" type="time"
+                                                formControlName="shiftEndTime" (click)="openTimePicker('endTime');">
+                                            <!-- <mat-error [hidden]="(this.attendanceShiftForm.controls.shiftEndTime.valid 
+                                            || this.attendanceShiftForm.controls.shiftEndTime.untouched)">
+                                            Field is required
+                                        </mat-error> -->
+                                        </mat-form-field>
+                                        <mat-error class="errorMat-Class"
+                                            *ngIf="(!this.attendanceShiftForm.controls.shiftEndTime.value && check1 )">
+                                            Field is required
+                                        </mat-error>
+                                    </div>
+                                </div>
+
+                                <div
+                                    *ngIf="this.attendanceShiftForm.controls.attendanceShiftType.value==='FIXED_DURATION'">
+                                    <p class="category showFieldMandatory">What are the minimum hours per day that an
+                                        employee should work to get credit for a Full Day?</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field class="fullLength">
+                                                <input matInput placeholder="Minimum Hours" type="number" min="1"
+                                                    max="31" formControlName="minHoursForFullDay">
+                                                <mat-error
+                                                    [hidden]="(attendanceShiftForm.controls.minHoursForFullDay.valid || attendanceShiftForm.controls.minHoursForFullDay.untouched && check1 )">
+                                                    Field is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <mat-form-field class="fullLength">
+                                                <input matInput placeholder="Minimum Minutes" min="00" max="59"
+                                                    type="number" formControlName="minMinutForFullDay">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <p class="category">Is half day Applicable?</p>
+                                        <div class="radio-wrapper">
+                                            <mat-radio-group formControlName="isHalfDayApplicable"
+                                                (change)="halfDayApplicable()">
+                                                <mat-radio-button value="true">Yes</mat-radio-button>
+                                                <mat-radio-button value="false">No</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <mat-error class="errorMat-Class"
+                                            *ngIf="(!this.attendanceShiftForm.controls.isHalfDayApplicable.value && check1 )">
+                                            Field is required
+                                        </mat-error>
+                                    </div>
+
+                                    <div *ngIf="this.attendanceShiftForm.controls.isHalfDayApplicable.value === 'true'">
+                                        <p class="category showFieldMandatory">What are the minimum hours per day that
+                                            an
+                                            employee should work to get credit for a Half
+                                            Day?
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <mat-form-field class="fullLength">
+                                                    <input matInput placeholder="Minimum Hours" type="number" min="1"
+                                                        max="31" formControlName="minHoursForHalfDay">
+                                                    <mat-error
+                                                        [hidden]="(attendanceShiftForm.controls.minHoursForHalfDay.valid || 
+                                                    attendanceShiftForm.controls.minHoursForHalfDay.untouched && check1)">
+                                                        Field is required
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <mat-form-field class="fullLength">
+                                                    <input matInput placeholder="Minimum Minutes" type="number" min="00"
+                                                        max="59" formControlName="minMinutForHalfDay">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="category">Is checkout time next Day?</p>
+                                    <div class="radio-wrapper">
+                                        <mat-radio-group formControlName="nextDayShiftOutTime">
+                                            <mat-radio-button value="true">Yes</mat-radio-button>
+                                            <mat-radio-button value="false">No</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <mat-error class="errorMat-Class"
+                                        *ngIf="(!this.attendanceShiftForm.controls.nextDayShiftOutTime.value && check1 )">
+                                        Field is required
+                                    </mat-error>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- <p class="category showFieldMandatory">Earliest Arrival</p> -->
+                                        <mat-form-field class="fullLength">
+                                            <input matInput placeholder="Earliest Arrival"
+                                                formControlName="earliestArrival">
+                                            <mat-error [hidden]="(attendanceShiftForm.controls.earliestArrival.valid || 
+                                            attendanceShiftForm.controls.earliestArrival.untouched)">
+                                                Invalid Format
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- <p class="category showFieldMandatory">Latest Departure</p> -->
+                                        <mat-form-field class="fullLength">
+                                            <input matInput placeholder="Latest Departure"
+                                                formControlName="latestDeparture">
+                                            <mat-error [hidden]="(attendanceShiftForm.controls.latestDeparture.valid || 
+                                            attendanceShiftForm.controls.latestDeparture.untouched)">
+                                                Invalid Format
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- <p class="category showFieldMandatory">Earliest Arrival</p> -->
+                                        <mat-form-field class="fullLength">
+                                            <input matInput placeholder="First Half Duration"
+                                                formControlName="firstHalfDuration">
+                                            <mat-error [hidden]="(attendanceShiftForm.controls.firstHalfDuration.valid || 
+                                            attendanceShiftForm.controls.firstHalfDuration.untouched)">
+                                                Invalid Format
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- <p class="category showFieldMandatory">Latest Departure</p> -->
+                                        <mat-form-field class="fullLength">
+                                            <input matInput placeholder="Second Half Duration"
+                                                formControlName="secondHalfDuration">
+                                            <mat-error [hidden]="(attendanceShiftForm.controls.secondHalfDuration.valid || 
+                                            attendanceShiftForm.controls.secondHalfDuration.untouched)">
+                                                Invalid Format
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="category">Select Locations Departments Bands or Designations for template </p>
+                            <div style="margin-bottom: 20px;">
+                                <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue"
+                                    groupBy="type" [selectableGroup]="true" dropdownPosition="auto"
+                                    [selectableGroupAsModel]="false" [closeOnSelect]="false"
+                                    [selectableGroupAsModel]="false" formControlName="allSelections">
+                                    <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                                        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                            [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                                        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                                            [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                            <div class="row text-center">
+                                <button class="btn header-button"
+                                    (click)="cancelAddAllowanceForm(); isLeftVisible = !isLeftVisible;this.check1=false">
+                                    <span>
+                                        <i class="fa fa-times" aria-hidden="true "></i>
+                                        Cancel</span>
+                                </button>
+                                <button class="btn header-button" cdkFocusInitial *ngIf="saveButton"
+                                    (click)="saveNewShiftRecord(attendanceShiftForm)">
+                                    <span><i class="fa fa-floppy-o" aria-hidden="true "></i>Save</span>
+                                </button>
+                                <button class="btn header-button" cdkFocusInitial *ngIf="updateButton"
+                                    (click)="updateShiftRecord(attendanceShiftForm)">
+                                    <span><i class="fa fa-pencil-square-o" aria-hidden="true "></i>Update</span>
+                                </button>
+                            </div>
+                            <!-- <pre>form value: <br>{{attendanceShiftForm.value | json}}</pre> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </app-add-edit-attendance>
+    </div>
+</div>

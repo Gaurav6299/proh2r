@@ -1,0 +1,159 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title *ngIf="this.onDutyRequestObj == null">Initiate On Duty Request</h4>
+  <h4 mat-dialog-title *ngIf="this.onDutyRequestObj != null">Approve Onduty Request</h4>
+  <form [formGroup]="onDutyRequestForm">
+    <div *ngIf="isReasonSelectable">
+      <mat-form-field class="fullLength" *ngIf="!readonly">
+        <mat-select [compareWith]="compareFn" placeholder="Select Reason" formControlName="reason">
+          <mat-option *ngFor="let item of onDutyRequestReasons" [value]="item">
+            {{item.reason }}
+          </mat-option>
+        </mat-select>
+        <mat-error [hidden]="(onDutyRequestForm.controls.reason.valid || 
+              onDutyRequestForm.controls.reason.untouched)">
+          This field is required.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="fullLength" *ngIf="readonly">
+        <input matInput placeholder="Select Reason" formControlName="reason" readonly>
+      </mat-form-field>
+    </div>
+    <!-- ------------------------------------------------------------------------------------ -->
+    <div style="margin-bottom: 10px;" *ngIf="!readonly">
+      <label class="input-label">Select Start Dates</label>
+      <p-calendar placeholder="Select" appendTo="body" [style]="{'width':'100%'}" [inputStyle]="{'width':'95%'}"
+        (onSelect)="onSelectDate();" dateFormat="dd-mm-yy" formControlName="startDate" [showIcon]="true"
+        showButtonBar="true" [readonlyInput]="true">
+      </p-calendar>
+      <span class="input-errorClass" [hidden]="(onDutyRequestForm.controls.startDate.valid || 
+          onDutyRequestForm.controls.startDate.untouched)">
+        This field is required.
+      </span>
+    </div>
+    <mat-form-field class="fullLength" *ngIf="readonly">
+      <input matInput placeholder="start Date" formControlName="startDate" readonly>
+    </mat-form-field>
+
+    <div style="margin-bottom: 10px;" *ngIf="!readonly">
+      <label class="input-label">Select End Dates</label>
+      <p-calendar placeholder="Select" appendTo="body" [style]="{'width':'100%'}" [inputStyle]="{'width':'95%'}"
+        [minDate]="this.onDutyRequestForm.controls.startDate.value" dateFormat="dd-mm-yy" formControlName="endDate"
+        (onSelect)="onSelectDate();" [showIcon]="true" showButtonBar="true" [readonlyInput]="true">
+      </p-calendar>
+      <span class="input-errorClass" [hidden]="(onDutyRequestForm.controls.endDate.valid || 
+          onDutyRequestForm.controls.endDate.untouched)">
+        This field is required.
+      </span>
+    </div>
+    <mat-form-field class="fullLength" *ngIf="readonly">
+      <input matInput placeholder="End Date" formControlName="endDate" readonly>
+    </mat-form-field>
+
+    <div class="card-content" style="margin-bottom: 10px;">
+      <p-table #dt1 [columns]="columnsOD" [value]="datesArray.controls" [rows]="5" [paginator]="true" [pageLinks]="5"
+        [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <ng-container formArrayName="datesArray">
+            <tr [formGroupName]="rowIndex">
+              <td>
+                {{rowData.get('date').value}}
+              </td>
+              <td>
+                {{rowData.get('shiftName').value}}
+              </td>
+              <td>
+                <div>
+                  <div class="radio-wrapper" *ngIf="rowData.get('odApplicable').value;else showOther1">
+                    <mat-radio-group formControlName="onDutyDuration"
+                      (change)="onChangeDurations($event,rowData,rowIndex)">
+                      <mat-radio-button value="fullDay">Full Day</mat-radio-button>
+                      <mat-radio-button value="firstHalf">First Half</mat-radio-button>
+                      <mat-radio-button value="secondHalf">Second Half</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <ng-template #showOther1>
+                    NA
+                  </ng-template>
+                </div>
+              </td>
+
+              <td>
+                <div style="min-width: 150px; overflow: hidden;"
+                  *ngIf="rowData.get('odApplicable').value;else showOther2">
+                  <p-calendar placeholder="Start Time" appendTo="body" [style]="{'width':'100%'}"
+                    [inputStyle]="{'width':'82%'}" [showTime]="true" [readonlyInput]="true" [showIcon]="true"
+                    showButtonBar="true" dateFormat="dd-mm-yy" formControlName="onDutyStartTiming">
+                  </p-calendar>
+                  <div class="text-danger"
+                    *ngIf="rowData.get('onDutyStartTiming').invalid || rowData.get('onDutyStartTiming').touched">
+                    <div *ngIf="rowData.get('onDutyStartTiming').errors?.required">Start Time is Required</div>
+                  </div>
+                </div>
+                <ng-template #showOther2>
+                  NA
+                </ng-template>
+              </td>
+              <td>
+                <div style="min-width: 150px; overflow: hidden;"
+                  *ngIf="rowData.get('odApplicable').value;else showOther3">
+                  <p-calendar placeholder="End Time" appendTo="body" [style]="{'width':'100%'}"
+                    [inputStyle]="{'width':'82%'}" [showTime]="true" [readonlyInput]="true" [showIcon]="true"
+                    showButtonBar="true" dateFormat="dd-mm-yy" formControlName="onDutyEndTiming">
+                  </p-calendar>
+                  <div class="text-danger"
+                    *ngIf="rowData.get('onDutyEndTiming').invalid || rowData.get('onDutyEndTiming').touched">
+                    <div *ngIf="rowData.get('onDutyEndTiming').errors?.required">End Time is Required</div>
+                  </div>
+                </div>
+                <ng-template #showOther3>
+                  NA
+                </ng-template>
+              </td>
+              <td>
+                {{rowData.get('remarks').value}}
+              </td>
+            </tr>
+          </ng-container>
+        </ng-template>
+      </p-table>
+    </div>
+    <!-- ------------------------------------------------------------------------------------ -->
+    <mat-form-field class="fullLength" *ngIf="!readonly">
+      <textarea matInput formControlName="comments" placeholder="Comments"></textarea>
+      <mat-error
+        [hidden]="(onDutyRequestForm.controls.comments.valid ||  onDutyRequestForm.controls.comments.untouched)">
+        This field is required.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullLength" *ngIf="readonly">
+      <textarea matInput formControlName="comments" placeholder="Comments" readonly></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+    </button>
+    <button class="dialog-buttons" *ngIf="this.onDutyRequestObj == null" (click)="submitOndutyRequest()"
+      cdkFocusInitial>
+      Submit
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="approveRequest();" *ngIf="this.onDutyRequestObj != null">
+      Approve
+    </button>
+  </div>
+</mat-dialog-actions>

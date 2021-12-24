@@ -1,0 +1,28 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Bulk Assign Attendance Templates To Employees</h4>
+    <form [formGroup]="attendenceTemplateAssignment">
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Please Select Template" formControlName="attendenceTemplate">
+                <mat-option *ngFor="let aTL of attendenceTemplateList" [value]="aTL.value">
+                    {{aTL.viewValue }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial
+            (click)="saveAssignAttendenceTemplate()">
+            Save
+        </button>
+    </div>
+</mat-dialog-actions>

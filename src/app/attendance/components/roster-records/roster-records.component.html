@@ -1,0 +1,154 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Roster Records</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" *ngIf="multiSelect" (click)="selectBulkRosterDialog();" style="cursor:pointer;">
+            <span>
+              Assign Multiple Rosters</span>
+          </button>
+          <button class="btn header-button" (click)="bulkUploadRosterRecords();">
+            <span>
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+              Upload Roster Records</span>
+          </button>
+          <mat-slide-toggle [(ngModel)]="multiSelect" (change)="onMultiSelectChange();">
+            Multi Select</mat-slide-toggle>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div>
+          <ul class="calender-listing">
+            <li class="monthTitle">
+              <h2>{{values[0].toDateString()}} - {{values[1].toDateString()}}</h2>
+            </li>
+            <li (click)="previousWeek();">
+              <span>
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+              </span>
+            </li>
+            <li class="times-calendar-class">
+              <div class="ui-g ui-fluid">
+                <p-calendar #myCalendar [(ngModel)]="values" selectionMode="range" [minDate]="calendarStartDate" [maxDate]="calendarEndDate"
+                  (onSelect)="getDateRange($event)" [style]=" { width: '100%' }" [showIcon]="true" styleClass="only-icon" dateFormat="yyyy-dd-mm">
+                </p-calendar>
+              </div>
+            </li>
+            <li (click)="nextWeek();">
+              <span>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <!-- <mat-form-field class="fullLength">
+              <mat-select placeholder="Select Month" [(ngModel)]="selectedMonthYear" (selectionChange)="selectMonth();">
+                <mat-option *ngFor="let item of monthList" [value]="item">
+                  {{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+            <ng-select [items]="monthList" [clearable]="false" appendTo="body" [(ngModel)]="selectedMonthYear" [searchable]="true" bindLabel="item"
+              bindValue="item" (change)="selectMonth();" placeholder="Select Month" class="custom-ng-select-Style">
+            </ng-select>
+          </div>
+          <div class="col-md-4 offset-md-4"></div>
+          <div class="col-md-4">
+            <div class="searchBox" style="text-align: right;margin: 8px 0;">
+              <i class="fa fa-search"></i>
+              <input type="text" pInputText size="50" placeholder="Search" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                style="width:auto">
+            </div>
+          </div>
+        </div>
+        <div class="rosterRecordsList">
+          <ul class="list-group list-group-horizontal-sm">
+            <li class="list-group-item">
+              <span class="noshift-assigned">No Shift Assigned</span>
+            </li>
+            <li class="list-group-item">
+              <span class="working-days">Full Working Day</span>
+            </li>
+            <li class="list-group-item">
+              <span class="weekly-off">Half Day Weekly Off</span>
+            </li>
+            <li class="list-group-item">
+              <span class="holiday">Weekly Off/Holiday</span>
+            </li>
+            <li class="list-group-item">
+              <span class="notApplicable">Not Applicable</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-content">
+        <p-table #dt1 [columns]="columns" [value]="visibleRosters" [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+          [resizableColumns]="true" [autoLayout]="true">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <!-- <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th> -->
+
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                <span *ngIf="col.field==='day0'" class="text-center">
+                  {{day0.format('ddd').toString() + " " + day0.format('D')}}</span>
+                <span *ngIf="col.field==='day1'" class="text-center">
+                  {{day1.format('ddd').toString() + " " + day1.format('D')}}</span>
+                <span *ngIf="col.field==='day2'" class="text-center">
+                  {{day2.format('ddd').toString() + " " + day2.format('D')}}</span>
+                <span *ngIf="col.field==='day3'"> {{day3.format('ddd').toString() + " " + day3.format('D')}}</span>
+                <span *ngIf="col.field==='day4'"> {{day4.format('ddd').toString() + " " + day4.format('D')}}</span>
+                <span *ngIf="col.field==='day5'"> {{day5.format('ddd').toString() + " " + day5.format('D')}}</span>
+                <span *ngIf="col.field==='day6'"> {{day6.format('ddd').toString() + " " + day6.format('D')}}</span>
+
+                <span *ngIf="col.field==='employeeName'"> {{col.header}}</span>
+                <span *ngIf="col.field==='empCode'"> {{col.header}}</span>
+
+                <p-sortIcon *ngIf="col.field" [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                <p-multiSelect *ngSwitchCase="'employeeName'" appendTo="body" defaultLabel="All" [options]="filterByEmp" [style]="{'width':'100%'}"
+                  (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field=='employeeName' || col.field=='empCode' ">
+                  {{car[col.field]}}
+                </div>
+                <div (click)="selectRoster(car[col.field],car[col.field].date+'a'+car[col.field].empCode);" class="{{car[col.field].date}}a{{car[col.field].empCode}}"
+                  style="font-size: 12px;
+                text-align: center;
+                font-weight: 600;
+                color: #fff;
+                padding: 5px 10px;
+                border-radius: 2px;
+                letter-spacing: 0.5px;
+                display: block;" [ngStyle]="{'background-color': changeColor(car[col.field])}" *ngIf="(car[col.field]!=undefined) &&  (col.field=='day0' || col.field=='day1' || col.field=='day2' || col.field=='day3' || col.field=='day4' || col.field=='day5' || col.field=='day6')">
+                  {{car[col.field].shift}}
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

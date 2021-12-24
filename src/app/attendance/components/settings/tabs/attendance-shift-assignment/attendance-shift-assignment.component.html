@@ -1,0 +1,127 @@
+<div class="card" style="box-shadow: none !important">
+  <div class="card-content">
+    <form [formGroup]="empAttdShiftAssignment">
+      <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+          <div class="matTab-sectionButtons">
+            <div class="btn-group dropleft btn-group-actionsList" style="margin: 0;">
+              <button class="btn btn-default-actionsList dropdown-toggle" type="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Actions <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropleft">
+                <li class="dropdown-menu-list"><a class="dropdown-menu-item"
+                    (click)="selectedActionValue('shiftAssignment');">Shift Assignment</a></li>
+
+                <li class="dropdown-menu-list"><a class="dropdown-menu-item"
+                    (click)="openDialogToBulkUploadTemplateAssigment()">Bulk Shift
+                    Assignment</a></li>
+                <li class="dropdown-menu-list"><a class="dropdown-menu-item"
+                    (click)="selectedActionValue('deleteShift')">Delete Shift</a></li>
+              </ul>
+            </div>
+            <!-- <button class="btn header-button" (click)="selectedActionValue('shiftAssignment');">
+              <span>
+                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                Shift Assignment</span>
+            </button>
+            <button class="btn header-button" (click)="selectedActionValue('deleteShift')" style="margin-left: 10px">
+              <span>
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                Delete Shift</span>
+            </button> -->
+          </div>
+        </div>
+        <!-- <ng-template #bulkActiondisable>
+          <div class="col-md-4">
+            <div style="text-align: right;margin-top: 15px">
+              <button class="btn header-button" (click)="selectedActionValue('shiftAssignment')">
+                <span>
+                  <i class="fa fa-plus-square" aria-hidden="true"></i>
+                  Shift Assignment</span>
+              </button>
+              <button class="btn header-button" (click)="selectedActionValue('deleteShift')" style="margin-left: 10px">
+                <span>
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  Delete Shift</span>
+              </button>
+            </div>
+          </div>
+        </ng-template> -->
+      </div>
+      <div class="searchBox" style="text-align: right">
+        <i class="fa fa-search"></i>
+        <input type="text" pInputText size="50" placeholder="search"
+          (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </div>
+      <p-table #dt1 [columns]="displayedColumns" [value]="addShiftAssignmentData" [rows]="5" [paginator]="true"
+        [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+        [autoLayout]="true" [responsive]="true" [(selection)]="selectedRows">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 2.25em">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th>
+            </th>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+              <p-multiSelect *ngSwitchCase="'location'" appendTo="body" defaultLabel="All" [options]="allLocation"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+              <p-multiSelect *ngSwitchCase="'band'" appendTo="body" defaultLabel="All" [options]="allBand"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')">
+              </p-multiSelect>
+              <p-multiSelect *ngSwitchCase="'department'" appendTo="body" defaultLabel="All" [options]="allDepartment"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+              <p-multiSelect *ngSwitchCase="'designation'" appendTo="body" defaultLabel="All" [options]="allDesignation"
+                [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car let-columns="columns">
+          <tr [pSelectableRow]="car">
+            <td>
+              <p-tableCheckbox [value]="car"></p-tableCheckbox>
+            </td>
+            <td *ngFor="let col of columns">
+              <div *ngIf="!(car.currentShift===null)">
+                <div *ngIf="col.field!='action' && col.field !='effectiveFrom'">{{car[col.field]}}</div>
+                <div *ngIf="col.field!='action' && col.field=='effectiveFrom'">
+                  {{car[col.field] | date:'dd/MM/yyyy' }}
+                </div>
+                <div class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" *ngIf="col.field=='action'">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                        (click)="editShiftAssignment(car)"></i></span>
+                    <span class="delete" *ngIf="col.field=='action'">
+                      <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                        (click)="deleteAssignedShift(car)"></i></span>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="car.currentShift===null">
+                <div class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span *ngIf="col.field!='action'">{{car[col.field]}}</span>
+                    <span class="add" *ngIf="col.field=='action'">
+                      <i class="fa fa-plus-square" aria-hidden="true" matTooltip="Add"
+                        (click)="addShiftAssignment(car)"></i></span>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </form>
+  </div>
+</div>

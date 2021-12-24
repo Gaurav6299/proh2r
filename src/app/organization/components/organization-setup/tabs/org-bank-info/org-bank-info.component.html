@@ -1,0 +1,93 @@
+<div class="card" style="box-shadow: none !important;overflow: hidden;">
+  <div class="card-header">
+    <div style="float: left;">
+      <h6 class="title">Bank Information</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" (click)="openAddBankInformationDialog()">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add Bank</span>
+      </button>
+    </div>
+  </div>
+  <!-- <ng-template #bankInfoViewOnly>
+    <div class="card-header">
+      <h6 class="title">Bank Information</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field class="fullLength">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" [formControl]="searchValue">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row table-responsive showLeaveCategoryList mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource" matSort>
+        <!-- Date Column -->
+        <ng-container matColumnDef="bankName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Bank Name</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.bankName}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="accountNumber">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Account Number</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.accountNumber}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="bankCorporateId">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Corporate ID</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.bankCorporateId}} </mat-cell>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <!-- <ng-container matColumnDef="companyId">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><span class="dataTableHeaderColor">Company ID</span></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.companyId}} </mat-cell>
+        </ng-container> -->
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="ifscCode">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">IFCS Code</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.ifscCode}} </mat-cell>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="accountID">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Actions</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <div class="mat-element-icon">
+              <span class="edit">
+                <i class="fa fa-pencil-square-o action-icon" aria-hidden="true" (click)="openEditableDialog(element)"
+                  matTooltip="Edit"></i></span>
+              <span class="delete">
+                <i class="fa fa-trash-o action-icon" aria-hidden="true" (click)="openDeleteDialog(element)"
+                  matTooltip="Delete"></i></span>
+            </div>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="isLeftVisible = !isLeftVisible; "></mat-row>
+      </mat-table>
+      <div class="col-md-12">
+        <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1092 @@
+<div class="card" style="box-shadow: none !important; ">
+  <div class="pull-right" style="margin-bottom: 15px;">
+    <button class="btn header-button" (click)="closeForm()">
+      <span>
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+        Back</span>
+    </button>
+    <!-- <button class=" btn header-button" (click)="save()">
+      <span>
+        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+        Save</span>
+    </button> -->
+  </div>
+
+  <div class="card-content">
+    <div class="salary_details-Accordians">
+      <form [formGroup]="salaryForm" autocomplete="off">
+        <table class="table table-hover table-striped table-bordered table-dark">
+          <tbody>
+            <tr>
+              <td class="category">Select Payroll Effective Date
+                <span style="color:red;"> *</span>
+              </td>
+              <td width="30%" colspan="2">
+                <mat-form-field class="fullLength">
+                  <input matInput type="date" placeholder="Payroll Effective Form Date"
+                    formControlName="payrollEffectiveDate" readonly>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td class="category">Select Actual Effective Date
+                <span style="color:red;"> *</span>
+              </td>
+              <td width="30%" colspan="2">
+                <mat-form-field class="fullLength">
+                  <input matInput type="date" placeholder="Actual Effective Form Date"
+                    formControlName="salaryEffectiveDate" readonly>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td class="category">For what frequency would you like to enter the CTC amount?
+                <span style="color:red;">*</span>
+              </td>
+              <td width="30%" colspan="2">
+                <!-- <ng-select [items]="ctcFrequency" bindLabel="viewValue" bindValue="value" placeholder="Select Frequency"
+                  formControlName="ctcFrequency" (change)="onCTCFrequencyChnage();" readonly> 
+                </ng-select> -->
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Select Frequency" [value]="salaryFrequency" readonly>
+                </mat-form-field>
+                <!-- <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select">
+                    <mat-option>Annually</mat-option>
+                    <mat-option>Monthly</mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </td>
+            </tr>
+            <tr>
+              <td class="category">Select CTC Template
+                <span style="color:red;"> *</span>
+              </td>
+              <td width="50%" colspan="2">
+                <!-- <ng-select [items]="templates" bindLabel="ctcTemplateName" bindValue="ctcTemplateId"
+                  placeholder="Select Template" formControlName="ctcTemplateId" readonly>
+                </ng-select> -->
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Select Template" formControlName="ctcTemplateId" readonly>
+                </mat-form-field>
+                <!-- <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Template">
+                    <mat-option>Template Name-1</mat-option>
+                    <mat-option>Template Name-2</mat-option>
+                  </mat-select>
+                </mat-form-field>templates -->
+              </td>
+            </tr>
+
+            <tr *ngIf="salaryForm.controls.ctcTemplateId.value">
+              <td class="category">How are you entering the amount?
+                <span style="color:red;"> *</span>
+              </td>
+              <td width="50%" colspan="2">
+                <!-- <ng-select [items]="amountTypes" bindLabel="viewValue" bindValue="value" placeholder="Choose"
+                  formControlName="amountType">
+                </ng-select> -->
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Choose" [value]="salaryAmountType" readonly>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr *ngIf="salaryForm.controls.ctcTemplateId.value">
+              <td class="category" *ngIf="salaryForm.controls.amountType.value == 'AS_CTC'">Enter
+                {{salaryForm.controls.ctcFrequency.value}} CTC Amount</td>
+              <td class="category" *ngIf="salaryForm.controls.amountType.value == 'GROSS_SALARY'">Enter
+                {{salaryForm.controls.ctcFrequency.value}} Gross Amount</td>
+              <td width="50%" colspan="2">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Amount" formControlName="amount" readonly>
+                </mat-form-field>
+              </td>
+            </tr>
+
+
+
+
+
+            <!-- Tax and Statutory Settings -->
+            <tr class="split-row-hide-show split-row-expandable expand-hover" (click)="showHideTaxStatutorySettings()">
+              <th colspan="12">
+                <span class="pull-left category">
+                  <i *ngIf="showTaxStatutorySettings == false" class="fa fa-plus" aria-hidden="true"></i>
+                  <i *ngIf="showTaxStatutorySettings == true" class="fa fa-minus" aria-hidden="true"></i>
+                  Tax and Statutory Settings</span>
+              </th>
+            </tr>
+            <ng-container *ngIf="showTaxStatutorySettings == true">
+              <tr class="split-row-hide-show">
+                <td class="category">PF Deduction
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isPFDeductible" readonly>
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isPFDeductible" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">Provident Pension Deduction
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isProvidentPensionDeductible">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isProvidentPensionDeductible" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">Employee's Provident Fund contribution capped at the PF Ceiling?
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isEmployeePFCaped" read>
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isEmployeePFCaped" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">Employer's Provident Fund contribution capped at the PF Ceiling?
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isEmployersPFCaped" (change)="onStatutoryChange();">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isEmployersPFCaped" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select"  
+                    formControlName="">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">Would you like to set a fixed amount for your Provident Fund Wage? (leave blank for
+                  no amount)
+                  <span style="color:red;">
+                    *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Amount" formControlName="providentFundWageAmount" readonly>
+                  </mat-form-field>
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">PF Template (leave blank for default settings)</td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="pfTemplates" bindLabel="templateName" placeholder="Select PF Template"
+                    formControlName="pfTemplateId" (change)="onStatutoryChange();">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="pfTemplateId" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength"> 
+                    <mat-select placeholder="Select PF Template">
+                      <mat-option value="template1">Template-1</mat-option>
+                      <mat-option value="template2">Template-2</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">ESIC Deduction
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isESICDeductible">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isESICDeductible" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select"  
+                    formControlName="">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">PT Deduction
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isProfessionalTaxDeductible">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isProfessionalTaxDeductible" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select"  
+                    formControlName="">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+              <tr class="split-row-hide-show" *ngIf="this.salaryForm.controls.isProfessionalTaxDeductible.value">
+                <td class="category">Select Professional Tax state
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ptStatesList" bindLabel="viewValue" bindValue="value" placeholder="Choose"
+                    formControlName="ptStateId" (change)="onStatutoryChange();">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="ptStateId" readonly>
+                  </mat-form-field>
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">LWF Deduction
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isLWFDeductible">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isLWFDeductible" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select"  
+                    formControlName="">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+              <tr class="split-row-hide-show" *ngIf="this.salaryForm.controls.isLWFDeductible.value">
+                <td class="category">Select Labour Welfare Fund state
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="lwfStatesList" bindLabel="viewValue" bindValue="value" placeholder="Choose"
+                    formControlName="lwfStateId" (change)="onStatutoryChange();">
+                  </ng-select> -->
+
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="lwfStateId" readonly>
+                  </mat-form-field>
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">Gratuity Applicable
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isGratuityApplicable">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isGratuityApplicable" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select"  
+                    formControlName="">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+
+              <tr class="split-row-hide-show">
+                <td class="category">Income Tax Deduction
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isIncomeTaxDeductible">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isIncomeTaxDeductible" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select"  
+                    formControlName="">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+              <tr class="split-row-hide-show">
+                <td class="category">Is the round off applicable for this employee?
+                  <span style="color:red;"> *</span>
+                </td>
+                <td width="30%" colspan="2">
+                  <!-- <ng-select [items]="ngBooleanData" bindLabel="viewValue" bindValue="value" placeholder="Select"
+                    formControlName="isIncomeTaxDeductible">
+                  </ng-select> -->
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Select" formControlName="isRoundOffApplicable" readonly>
+                  </mat-form-field>
+                  <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select"  
+                    formControlName="">
+                      <mat-option value="yes">Yes</mat-option>
+                      <mat-option value="no">No</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </td>
+              </tr>
+            </ng-container>
+
+            <!-- CTC Components -->
+            <tr class="split-row-hide-show split-row-expandable">
+              <th colspan="0">
+                <span class="pull-left lead-text" style="font-size: 16px !important;">
+                  <b>CTC Components</b>
+                </span>
+              </th>
+              <th colspan="0" class="text-center">
+                <span class="category">MONTHLY</span>
+              </th>
+              <th colspan="0" class="text-center">
+                <span class="category">YEARLY</span>
+              </th>
+            </tr>
+            <!-- Fixed Allowances -->
+            <tr class="split-row-hide-show split-row-expandable expand-hover" (click)="showHideFixedAllowance()">
+              <th colspan="0">
+                <span class="pull-left category">
+                  <i *ngIf="showFiexedAllowance == false" class="fa fa-plus" aria-hidden="true"></i>
+                  <i *ngIf="showFiexedAllowance == true" class="fa fa-minus" aria-hidden="true"></i>
+                  Fixed Allowances</span>
+              </th>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalMonthlyAllowances | number : '1.2-2'}}</span>
+              </td>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalYearlyAllowances | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <ng-container *ngIf="showFiexedAllowance == true" formArrayName="ctcAllowances">
+              <tr class="split-row-hide-show" *ngFor="let ctcAllowances of  ctcAllowances.controls; let i=index"
+                [formGroupName]="i">
+                <td class="category">Enter the Amount for
+                  {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceName.value}}
+                </td>
+                <td width="20%">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.salaryForm.controls.isRoundOffApplicable.value != 'Yes'">
+                      {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value/12
+                      | number :
+                      '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.salaryForm.controls.isRoundOffApplicable.value == 'Yes'">
+                      {{(this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value/12
+                      | customRoundOffPipe
+                      :'this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value/12')
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+                <td width="20%">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.salaryForm.controls.isRoundOffApplicable.value != 'Yes'">
+                      {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                      * 12 | number : '1.2-2'}}</p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.salaryForm.controls.isRoundOffApplicable.value == 'Yes'">
+                      {{(this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                      * 12 |
+                      customRoundOffPipe:'this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value*12'
+                      )| number : '1.2-2'}}</p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.ctcAllowances.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+
+            </ng-container>
+
+            <!-- Other Benefit -->
+            <tr class="split-row-hide-show split-row-expandable expand-hover" (click)="showHideOtherBenifits()">
+              <th colspan="0">
+                <span class="pull-left category">
+                  <i *ngIf="showOtherBenifits == false" class="fa fa-plus" aria-hidden="true"></i>
+                  <i *ngIf="showOtherBenifits == true" class="fa fa-minus" aria-hidden="true"></i>
+                  Other Benefit</span>
+              </th>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalMonthlyBenefits | number : '1.2-2'}}</span>
+              </td>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalYearlyBenefits | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <ng-container *ngIf="showOtherBenifits == true" formArrayName="empCtcOtherBenefits">
+              <tr class="split-row-hide-show"
+                *ngFor="let empCtcOtherBenefits of  empCtcOtherBenefits.controls; let i=index" [formGroupName]="i">
+                <td class="category">Enter the Amount for
+                  {{this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceName.value}}
+                </td>
+                <td width="20%">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                      | number
+                      : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.salaryForm.controls.isRoundOffApplicable.value != 'Yes'">
+                      {{this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceValue.value/12
+                      | number
+                      : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.salaryForm.controls.isRoundOffApplicable.value == 'Yes'">
+                      {{(this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceValue.value/12
+                      | customRoundOffPipe:
+                      'this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceValue.value/12')
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+                <td width="20%">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.salaryForm.controls.isRoundOffApplicable.value != 'Yes'">
+                      {{this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                      * 12 | number : '1.2-2'}}</p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.salaryForm.controls.isRoundOffApplicable.value == 'Yes'">
+                      {{(this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                      * 12 |
+                      customRoundOffPipe:'this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceValue.value')
+                      | number : '1.2-2'}}</p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.empCtcOtherBenefits.controls[i].controls.fixedAllowance.controls.allowanceValue.value
+                      | number
+                      : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+
+            </ng-container>
+
+            <!-- Total Employee Statutory Contributions -->
+            <tr class="split-row-hide-show split-row-expandable expand-hover"
+              (click)="showHideStatutoryContributions()">
+              <th colspan="0">
+                <span class="pull-left category">
+                  <i *ngIf="showStatutoryContributions == false" class="fa fa-plus" aria-hidden="true"></i>
+                  <i *ngIf="showStatutoryContributions == true" class="fa fa-minus" aria-hidden="true"></i>
+                  Total Employer Statutory Contributions</span>
+              </th>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalEmployerStatutoryContributionM | number : '1.2-2'}}</span>
+              </td>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalEmployerStatutoryContributionY | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <ng-container *ngIf="showStatutoryContributions == true">
+              <tr class="split-row-hide-show"
+                *ngFor="let employerContribution of  employerContribution.controls; let i=index">
+                <td class="category">Enter the Amount for
+                  {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionName.value}}
+                </td>
+
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionName.value != 'Employer LWF Contribution' ">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value/12
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionName.value != 'Employer LWF Contribution' ">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value*12
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionName.value == 'Employer LWF Contribution' ">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'HALF_YEARLY'">0.00</p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.lwfStatus == 'YEARLY'">
+                      0.00
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'HALF_YEARLY'">0.00
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.lwfStatus == 'YEARLY'">
+                      0.00
+                    </p>
+                  </div>
+                </td>
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionName.value == 'Employer LWF Contribution' ">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value*12
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'HALF_YEARLY'">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value*2
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.lwfStatus == 'YEARLY'">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value*12
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'HALF_YEARLY'">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value*2
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.lwfStatus == 'YEARLY'">
+                      {{this.salaryForm.controls.employerContribution.controls[i].controls.employerContributionValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+
+            <!-- Total Employee Statutory Deductions -->
+            <tr class="split-row-hide-show split-row-expandable expand-hover" (click)="showHideStatutoryDeductions()">
+              <th colspan="0">
+                <span class="pull-left category">
+                  <i *ngIf="showStatutoryDeductions == false" class="fa fa-plus" aria-hidden="true"></i>
+                  <i *ngIf="showStatutoryDeductions == true" class="fa fa-minus" aria-hidden="true"></i>
+                  Total Employee Statutory Deductions</span>
+              </th>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalEmployeeStatutoryDeductionM | number : '1.2-2'}}</span>
+              </td>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalEmployeeStatutoryDeductionY | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <ng-container *ngIf="showStatutoryDeductions == true">
+              <tr class="split-row-hide-show"
+                *ngFor="let employeeDeduction of  employeeDeduction.controls; let i=index">
+                <td class="category">Enter the Amount for
+                  {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value}}
+                </td>
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value!='Employee LWF Deduction' && this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value!='Employee PT Deduction'">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value/12
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value!='Employee LWF Deduction' && this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value!='Employee PT Deduction'">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*12
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+
+
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value =='Employee LWF Deduction'">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'HALF_YEARLY'">0.00
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.lwfStatus == 'YEARLY'">
+                      0.00
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'HALF_YEARLY'">0.00
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.lwfStatus == 'YEARLY'">
+                      0.00
+                    </p>
+                  </div>
+                </td>
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value =='Employee LWF Deduction'">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*12
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'HALF_YEARLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*2 |
+                      number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.lwfStatus == 'YEARLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*12
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.lwfStatus == 'HALF_YEARLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*2 |
+                      number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.lwfStatus == 'YEARLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value =='Employee PT Deduction'">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.ptStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.ptStatus == 'HALF_YEARLY'">0.00</p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.ptStatus == 'YEARLY'">
+                      0.00
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.ptStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.ptStatus == 'HALF_YEARLY'">0.00</p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.ptStatus == 'YEARLY'">
+                      0.00
+                    </p>
+                  </div>
+                </td>
+                <td class="category" width="20%" class="text-center"
+                  *ngIf="this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionName.value =='Employee PT Deduction'">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.ptStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*12
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.ptStatus == 'HALF_YEARLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*2 |
+                      number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.ptStatus == 'YEARLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.ptStatus == 'MONTHLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*12
+                      | number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;"
+                      *ngIf="this.ptStatus == 'HALF_YEARLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value*2 |
+                      number : '1.2-2'}}
+                    </p>
+                    <p class="category" style="text-align: center;padding:0px 15px;" *ngIf="this.ptStatus == 'YEARLY'">
+                      {{this.salaryForm.controls.employeeDeduction.controls[i].controls.employeeDeductionValue.value |
+                      number : '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- <tr class="split-row-hide-show">
+                <td class="category">Employee NPS Deduction</td>
+                <td class="category" width="20%" class="text-center">
+                  0
+                </td>
+                <td class="category" width="20%" class="text-center">
+                  0
+                </td>
+              </tr> -->
+            </ng-container>
+
+            <!-- Fixed Deductions -->
+            <tr class="split-row-hide-show split-row-expandable expand-hover" (click)="showHideFixedDeductions()">
+              <th colspan="0">
+                <span class="pull-left category">
+                  <i *ngIf="showFixedDeductions == false" class="fa fa-plus" aria-hidden="true"></i>
+                  <i *ngIf="showFixedDeductions == true" class="fa fa-minus" aria-hidden="true"></i>
+                  Fixed Deductions</span>
+              </th>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalMonthlyDeductions | number : '1.2-2'}}</span>
+              </td>
+              <td class="lead text-center" width="20%">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalYearlyDeductions | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <ng-container *ngIf="showFixedDeductions == true" formArrayName="ctcDeductions">
+              <tr class="split-row-hide-show" *ngFor="let ctcDeductions of  ctcDeductions.controls; let i=index"
+                [formGroupName]="i">
+                <td class="category">Enter the Amount for
+                  {{this.salaryForm.controls.ctcDeductions.controls[i].controls.fixedDeduction.controls.deductionName.value}}
+                </td>
+
+                <td class="category" width="20%" class="text-center">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.ctcDeductions.controls[i].controls.fixedDeduction.controls.deductionValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.ctcDeductions.controls[i].controls.fixedDeduction.controls.deductionValue.value/12
+                      | number :
+                      '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+                <td class="category" width="20%" class="text-center">
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Annualy'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.ctcDeductions.controls[i].controls.fixedDeduction.controls.deductionValue.value
+                      | number : '1.2-2'}}
+                    </p>
+                  </div>
+                  <div *ngIf="this.salaryForm.controls.ctcFrequency.value  === 'Monthly'">
+                    <p class="category" style="text-align: center;padding:0px 15px;">
+                      {{this.salaryForm.controls.ctcDeductions.controls[i].controls.fixedDeduction.controls.deductionValue.value*
+                      12 | number :
+                      '1.2-2'}}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+
+            <!-- Variable Allowances -->
+            <tr class="split-row-hide-show split-row-expandable expand-hover" (click)="showHideVariableAllowance()">
+              <th colspan="0">
+                <span class="pull-left category">
+                  <i *ngIf="showVariableAllowance == false" class="fa fa-plus" aria-hidden="true"></i>
+                  <i *ngIf="showVariableAllowance == true" class="fa fa-minus" aria-hidden="true"></i>
+                  Variable Allowances</span>
+              </th>
+              <th colspan="0"></th>
+              <td class="lead text-center">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalVariableAllowanceY | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <ng-container *ngIf="showVariableAllowance == true">
+              <tr class="split-row-hide-show" formArrayName="variableAllowance"
+                *ngFor="let line of salaryForm.get('variableAllowance').controls; let i=index">
+                <td colspan="12" [formGroupName]="i">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="col-md-5">
+                        <mat-form-field class="fullLength">
+                          <!-- <mat-select placeholder="Variable Allowances" formControlName="variableAllowance"
+                        (selectionChange)="onVariableAllowanceChange(i)">
+                        <mat-option *ngFor="let allowance of variableAllowances" [value]="allowance.id">
+                          {{ allowance.variableAllowanceName }}
+                        </mat-option>
+                      </mat-select> -->
+                          <input matInput placeholder="Variable Allowance Name" formControlName="variableAllowanceName">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-1 offset-md-1"></div>
+                      <div class="col-md-5">
+                        <mat-form-field class="fullLength">
+                          <input matInput placeholder="Variable Amount &#8377;" formControlName="amount">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-1 offset-md-1"></div>
+                      <!-- <div class="col-md-1">
+                    <div class="split-row-element-icon text-center">
+                      <span class="delete" (click)="deleteVariableAllowance(i);">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div> -->
+                    </div>
+                    <div class="col-md-4 offset-md-4"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- <div>
+            <button class="btn header-button" (click)="insertNewvariableAllowance();">
+              <span>
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add Variable Allowances</span>
+            </button>
+          </div> -->
+            </ng-container>
+
+            <!-- Variable Deductions -->
+            <tr class="split-row-hide-show split-row-expandable expand-hover" (click)="showHideVariableDeduction()">
+              <th colspan="0">
+                <span class="pull-left category">
+                  <i *ngIf="showVariableDeduction == false" class="fa fa-plus" aria-hidden="true"></i>
+                  <i *ngIf="showVariableDeduction == true" class="fa fa-minus" aria-hidden="true"></i>
+                  Variable Deductions</span>
+              </th>
+              <th colspan="0"></th>
+              <td class="lead text-center">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalVariableDeductionY | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <ng-container *ngIf="showVariableDeduction == true">
+              <tr class="split-row-hide-show" formArrayName="variableDeduction"
+                *ngFor="let line of salaryForm.get('variableDeduction').controls; let i=index">
+                <td colspan="12" [formGroupName]="i">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="col-md-5">
+                        <mat-form-field class="fullLength">
+                          <!-- <mat-select placeholder="Variable Deductions" formControlName="variableDeduction"
+                          (selectionChange)="onVariableDeductionsChange(i)">
+                          <mat-option *ngFor="let deduction of variableDeductions" [value]="deduction.id">
+                            {{ deduction.name }}
+                          </mat-option>
+                        </mat-select> -->
+                          <input matInput placeholder="Variable Deduction Name" formControlName="variableDeductionName">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-1 offset-md-1"></div>
+                      <div class="col-md-5">
+                        <mat-form-field class="fullLength">
+                          <input matInput placeholder="Variable Amount &#8377;" formControlName="amount">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-1 offset-md-1"></div>
+                      <!-- <div class="col-md-1">
+                      <div class="split-row-element-icon text-center">
+                        <span class="delete" (click)="deleteVariableDeduction(i);">
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </div> -->
+                    </div>
+                    <div class="col-md-4 offset-md-4"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- <div>
+              <button class="btn header-button" (click)="insertNewvariableDeduction();">
+                <span>
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  Add Variable Deduction</span>
+              </button>
+            </div> -->
+            </ng-container>
+        </table>
+
+
+        <table class="table table-hover table-striped table-bordered table-dark">
+          <tbody>
+            <!-- Consolidated Output -->
+            <tr class="split-row-hide-show split-row-expandable">
+              <th colspan="0">
+                <span class="pull-left lead-text" style="font-size: 16px !important;">
+                  <b>Consolidated Output</b>
+                </span>
+              </th>
+              <th colspan="0" class="text-center">
+                <span class="category">MONTHLY</span>
+              </th>
+              <th colspan="0" class="text-center">
+                <span class="category">YEARLY</span>
+              </th>
+            </tr>
+            <!-- Total Take Home -->
+            <tr class="split-row-hide-show">
+              <th colspan="0">
+                <span class="pull-left category">Total Take Home (excluding Variable)</span>
+              </th>
+              <td class="category text-center">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalNetSalaryM | number : '1.2-2'}}</span>
+              </td>
+              <td class="category text-center">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalNetSalaryY | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <!-- Total CTC -->
+            <tr class="split-row-hide-show">
+              <th colspan="0">
+                <span class="pull-left category">Total CTC (excluding Variable & Other Benefits)</span>
+              </th>
+              <td class="category text-center">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalNetSalaryIM | number : '1.2-2'}}</span>
+              </td>
+              <td class="category text-center">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalNetSalaryIY | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+            <!-- Total CTC -->
+            <tr class="split-row-hide-show">
+              <th colspan="0">
+                <span class="pull-left category">Total CTC (including Variable)</span>
+              </th>
+              <td class="category text-center"></td>
+              <td class="category text-center">
+                <i class="fa fa-rupee"></i>
+                <span>&nbsp;{{totalGrossSalaryY | number : '1.2-2'}}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <pre>{{this.salaryForm.value|json}}</pre> -->
+      </form>
+    </div>
+  </div>
+</div>

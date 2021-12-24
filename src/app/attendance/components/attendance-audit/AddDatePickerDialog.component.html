@@ -1,0 +1,35 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Choose Date Range</h4>
+    <form [formGroup]="dateRange">
+        <mat-form-field class="fullLength">
+            <input type="date" matInput formControlName="fromDate" placeholder="From Date" />
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input type="date" matInput formControlName="toDate" placeholder="To Date" />
+        </mat-form-field>
+        <!-- <mat-form-field class="fullLength">
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="fromDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="year"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput [matDatepicker]="picker1" placeholder="Choose a date" formControlName="toDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 startView="year"></mat-datepicker>
+        </mat-form-field> -->
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial> Save
+        </button>
+    </div>
+</mat-dialog-actions>

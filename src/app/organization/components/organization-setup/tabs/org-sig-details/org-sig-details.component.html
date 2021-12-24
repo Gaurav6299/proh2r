@@ -1,0 +1,195 @@
+<!-- <div class="card" style="box-shadow: none !important;overflow: hidden;">
+  <div *ngIf="editOrgDetailsAdmin;else signatoryInfoViewOnly" class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Signatory Information</h6>
+    </div>
+    <div style="text-align: right;">
+      <div *ngIf="readonly">
+        <button class="btn header-button" (click)="edit()">
+          <span>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            Edit</span>
+        </button>
+      </div>
+      <div *ngIf="readwrite">
+        <button class="btn header-button" (click)="cancel()">
+          <span>
+            <i class="fa fa-times" aria-hidden="true"></i>
+            Cancel</span>
+        </button>
+        <button class="btn header-button" (click)="save()">
+          <span>
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            Save</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <ng-template #signatoryInfoViewOnly>
+    <div class="card-header">
+      <h6 class="title">Signatory Information</h6>
+    </div>
+  </ng-template>
+  <div class="card-content" style="padding: 0px 0px;">
+    <form [formGroup]="signatoryInfoForm" (keydown)="keyPressSaveOrgSignatoryInfo($event)">
+      <div class="col-md-8" style="padding-left:6px;">
+        <p class="category" style="color:#404A56;">What is the full name of your Company's Authorized Signatory? *</p>
+      </div>
+
+
+      <div class="col-md-4">
+        <div *ngIf="readwrite">
+          <mat-form-field class="fullLength">
+            <input matInput placeholder="Full Name" formControlName="signatoryName">
+          </mat-form-field>
+
+          <span class="category" style="color: red;" [hidden]="(this.signatoryInfoForm.controls.signatoryName.valid
+          || this.signatoryInfoForm.controls.signatoryName.untouched)">
+            <div *ngIf="(this.signatoryInfoForm.controls.signatoryName.value === '' || this.signatoryInfoForm.controls.signatoryName.value === null)">
+              {{requiredTextField}}
+            </div>
+  
+            <div *ngIf="this.signatoryInfoForm.controls.signatoryName.value !== ''">
+              {{ this.signatoryInfoForm.controls.signatoryName.errors != null ? this.signatoryInfoForm.controls.signatoryName
+                .errors.messages
+              : ''}}
+            </div>
+          </span>
+
+        </div>
+        <div *ngIf="readonly">
+          <p class="category" style="color:#404A56;font-weight:600;">{{this.name}}</p>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <p class="category" style="color:#404A56">What is the designation of your Company's Authorized Signatory? *</p>
+      </div>
+      <div class="col-md-4">
+        <div *ngIf="readwrite">
+          <mat-form-field class="fullLength">
+            <input matInput placeholder="Designation" formControlName="signatoryDesignation">
+          </mat-form-field>
+
+          <span class="category" style="color: red;" [hidden]="(this.signatoryInfoForm.controls.signatoryDesignation.valid
+          || this.signatoryInfoForm.controls.signatoryDesignation.untouched)">
+            <div *ngIf="(this.signatoryInfoForm.controls.signatoryDesignation.value === '' || this.signatoryInfoForm.controls.signatoryDesignation.value === null)">
+              {{requiredTextField}}
+            </div>
+  
+            <div *ngIf="this.signatoryInfoForm.controls.signatoryDesignation.value !== ''">
+              {{ this.signatoryInfoForm.controls.signatoryDesignation.errors != null ? this.signatoryInfoForm.controls.signatoryDesignation
+                .errors.messages
+              : ''}}
+            </div>
+          </span>
+
+        </div>
+        <div *ngIf="readonly">
+          <p class="category" style="color:#404A56;font-weight:600;">{{this.deg}}</p>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <p class="category" style="color:#404A56">What is the Father's Full Name of your Company's Authorized Signatory?</p>
+      </div>
+      <div class="col-md-4">
+        <div *ngIf="readwrite">
+          <mat-form-field class="fullLength">
+            <input matInput placeholder="Father's Name" formControlName="signatoryFatherName">
+          </mat-form-field>
+
+        </div>
+        <div *ngIf="readonly">
+          <p class="category" style="color:#404A56;font-weight:600;">{{this.fName}}</p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div> -->
+
+
+<div class="card" style="box-shadow: none !important;overflow: hidden;">
+  <div class="card-header">
+    <div style="text-align: right;">
+      <button class="btn header-button" matTooltip="Add signatory" (click)="openAddSignatoryInformationDialog()">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add Signatory</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <!-- <div class="table-responsive showLeaveCategoryList mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="signatoryName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Name</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.signatoryName}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="signatoryDesignation">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Designation</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.signatoryDesignation}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="signatoryId">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="dataTableHeaderColor">Actions</span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <div class="mat-element-icon">
+              <span class="edit">
+                <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="openEditableDialog(element)"
+                  matTooltip="Edit"></i>
+              </span>
+              <span class="delete">
+                <i class="fa fa-trash-o" aria-hidden="true" (click)="openDeleteDialog(element)" matTooltip="Delete"></i>
+              </span>
+            </div>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="isLeftVisible = !isLeftVisible; ">
+        </mat-row>
+      </mat-table>
+      <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+      </mat-paginator>
+    </div> -->
+
+    <div class="searchBox" style="text-align: right">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search"
+        (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="sigListData" [rows]="5" [paginator]="true" [pageLinks]="5"
+      [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field!='signatoryId'">{{car[col.field]}}</div>
+            <div class="mat-cell">
+              <div class="mat-element-icon">
+                <span class="edit" *ngIf="col.field=='signatoryId'">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="openEditableDialog(car)"
+                    matTooltip="Edit"></i>
+                </span>
+                <span class="delete" *ngIf="col.field=='signatoryId'">
+                  <i class="fa fa-trash-o" aria-hidden="true" (click)="openDeleteDialog(car)" matTooltip="Delete"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

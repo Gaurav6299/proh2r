@@ -1,0 +1,58 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Bulk Upload Perquisites</h4>
+    <div class="card-content">
+        <form [formGroup]="uploadPerquisitesForm" #formDirective="ngForm">
+            <div class="instruction-Perquisites-label">
+                <label>Step - 1: Select Tax Year for download or upload</label>
+                <div>
+                    <ng-select [clearable]="false" appendTo="body" [searchable]="true" placeholder="Select Year"
+                        formControlName="taxYearData" class="custom-ng-select-Style">
+                        <ng-option *ngFor="let year of taxYearList" [value]="year.taxYearId">{{year.taxYear}}
+                        </ng-option>
+                    </ng-select>
+                    <span class="dropDown-errorClass" [hidden]="(uploadPerquisitesForm.controls.taxYearData.valid || 
+                    uploadPerquisitesForm.controls.taxYearData.untouched)">
+                        This field is required.
+                    </span>
+                </div>
+            </div>
+
+            <div class="instruction-Perquisites-label">
+                <label>Step - 2: Download Perquisites global format</label><br>
+                <button class="btn header-button" (click)="downloadPerquisites()">
+                    <span><i class="fa fa-cloud-download" aria-hidden="true"></i>Download</span>
+                </button>
+            </div>
+
+            <div class="instruction-Perquisites-label">
+                <label>Step 3: Make necessary changes in the imported file and Upload</label>
+                <div class="file-upload_inputBar">
+                    <button class="btn header-button uploadFile_inputBTN" (click)="uploadFormat()">
+                        <span><i class="fa fa-cloud-upload" aria-hidden="true"></i>Choose File</span>
+                        <div class="file-upload">
+                            <input type="file" id="uploadFile" (change)="selectFile($event)" required>
+                        </div>
+                    </button>
+                    <label *ngIf="this.selectedFilesName">{{this.selectedFilesName}}</label>
+                </div>
+                <mat-error class="input-errorClass"
+                    *ngIf="uploadPerquisitesForm.controls.file.hasError('required') || (formDirective.submitted && uploadPerquisitesForm.controls.file.invalid)">
+                    Please select a file
+                </mat-error>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+        <button class="dialog-buttons" (click)="upload(this.uploadPerquisitesForm.controls.taxYearData.value)"
+            cdkFocusInitial> Upload</button>
+    </div>
+</mat-dialog-actions>

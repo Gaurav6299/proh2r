@@ -1,0 +1,97 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>{{header}}</h4>
+  <form [formGroup]="add_EditSection">
+    <div *ngIf="this.delete =='true'">
+      <mat-form-field class="fullLength">
+        <input matInput placeholder="Section Name" formControlName="sectionName">
+        <mat-error class="category" [hidden]="(this.add_EditSection.controls.sectionName.valid
+        || this.add_EditSection.controls.sectionName.untouched)">
+          <div
+            *ngIf="(this.add_EditSection.controls.sectionName.value === '' || this.add_EditSection.controls.sectionName.value === null)">
+            {{requiredTextField}}
+          </div>
+
+          <div *ngIf="this.add_EditSection.controls.sectionName.value !== ''">
+            {{ this.add_EditSection.controls.sectionName.errors != null ? this.add_EditSection.controls.sectionName.errors.messages :
+            ''}}
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="Location" formControlName="employeeProfileLocation">
+          <mat-option value="PersonalDetails">Personal Details</mat-option>
+          <mat-option value="EmploymentDetails">Employment Details</mat-option>
+          <mat-option value="OtherDetails">Other Details </mat-option>
+        </mat-select>
+        <mat-error [hidden]="(add_EditSection.controls.employeeProfileLocation.valid ||
+        add_EditSection.controls.employeeProfileLocation.untouched)">
+          {{requiredDropdownField}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="What Level of Access Your Employees Have on This Section?"
+          formControlName="accessLevel">
+          <mat-option value="Manage">Manage </mat-option>
+          <mat-option value="View">View Only </mat-option>
+          <mat-option value="Invisible">Invisible </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div *ngIf="this.delete =='false'">
+      <mat-form-field class="fullLength">
+        <input matInput placeholder="Section Name" formControlName="sectionName">
+        <mat-error [hidden]="(this.add_EditSection.controls.sectionName.valid
+        || this.add_EditSection.controls.sectionName.untouched)">
+          <div
+            *ngIf="(this.add_EditSection.controls.sectionName.value === '' || this.add_EditSection.controls.sectionName.value === null)">
+            {{requiredTextField}}
+          </div>
+          <div *ngIf="this.add_EditSection.controls.sectionName.value !== ''">
+            {{ this.add_EditSection.controls.sectionName.errors != null ? this.add_EditSection.controls.sectionName.errors.messages :
+            ''}}
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="Location" formControlName="employeeProfileLocation">
+          <mat-option value="PersonalDetails">Personal Details</mat-option>
+          <mat-option value="EmploymentDetails">Employment Details</mat-option>
+          <mat-option value="OtherDetails">Other Details </mat-option>
+        </mat-select>
+        <mat-error [hidden]="(add_EditSection.controls.employeeProfileLocation.valid ||
+        add_EditSection.controls.employeeProfileLocation.untouched)">
+          {{requiredDropdownField}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="What Level of Access Your Employees Have on This Section?"
+          formControlName="accessLevel">
+          <mat-option value="Manage">Manage </mat-option>
+          <mat-option value="View">View Only </mat-option>
+          <mat-option value="Invisible">Invisible </mat-option>
+        </mat-select>
+        <mat-error [hidden]="(add_EditSection.controls.accessLevel.valid ||
+        add_EditSection.controls.accessLevel.untouched)">
+          {{requiredDropdownField}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+    </button>
+    <button *ngIf="this.delete =='false'" class="dialog-buttons" (click)="saveSectionDetails()"> Save
+    </button>
+    <button *ngIf="this.delete =='true'" (click)="editSectionDetails();" class="dialog-buttons" cdkFocusInitial>Update
+    </button>
+  </div>
+</mat-dialog-actions>

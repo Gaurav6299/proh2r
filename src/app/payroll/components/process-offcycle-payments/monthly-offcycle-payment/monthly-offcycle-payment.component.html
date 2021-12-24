@@ -1,0 +1,74 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Running Payroll {{date | date: 'MM-yyyy'}}</h6>
+        </div>
+        <div style="text-align: right;">
+
+          <button class="btn header-button" routerLink="">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              Back</span>
+          </button>
+        </div>
+      </div>
+
+
+      <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
+        <mat-step [stepControl]="employeeSelectionForm">
+          <form [formGroup]="employeeSelectionForm">
+            <ng-template matStepLabel>Step 1 - Employee Selection</ng-template>
+            <div *ngIf="step=='1'">
+              <mat-tab-group class="tabs">
+                <mat-tab label="Active Employees">
+                  <app-active-employee-offcycle-payment (stepEvent)="receiveStep($event)"></app-active-employee-offcycle-payment>
+                </mat-tab>
+                <mat-tab label="Processed Employees">
+                  <app-process-employee-offcycle-payment></app-process-employee-offcycle-payment>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+            <div>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="uploadVariablePaysForm">
+          <form [formGroup]="uploadVariablePaysForm">
+            <ng-template matStepLabel>Step 2 - Upload Variable Pays</ng-template>
+            <div *ngIf="step=='2'">
+              <mat-tab-group class="tabs">
+                <mat-tab label="Active Employees">
+                  <app-offcycle-pay-upload-variable-pays [uploadVariablePaysEmployeeList]="employeeSelectionForm.controls.employeeList"></app-offcycle-pay-upload-variable-pays>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="employeeFlexiBenifitForm">
+          <form [formGroup]="employeeFlexiBenifitForm">
+            <ng-template matStepLabel>Step 3 - Employee Flexi Benefits</ng-template>
+            <div class="card-content">
+              <mat-tab-group class="tabs">
+                <mat-tab label="Active Employees">
+                  <app-offcycle-payment-flexi-benifits></app-offcycle-payment-flexi-benifits>
+                </mat-tab>
+              </mat-tab-group>
+
+            </div>
+
+          </form>
+        </mat-step>
+
+      </mat-horizontal-stepper>
+
+    </div>
+  </div>
+
+
+</div>

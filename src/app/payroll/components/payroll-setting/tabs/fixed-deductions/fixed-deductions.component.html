@@ -1,0 +1,130 @@
+<div class="card " style="box-shadow: none !important;">
+  <div>
+    <div style="text-align: right;margin-bottom: 10px;">
+      <div *ngIf="!isLeftVisible">
+        <button class="btn header-button" (click)="addDeduction(); isLeftVisible = !isLeftVisible;button=true">
+          <span>
+            <i class="fa fa-plus-square" aria-hidden="true"></i>Add</span>
+        </button>
+      </div>
+      <div *ngIf="isLeftVisible">
+        <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible;button=false;setPanel()">
+          <span>
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- <ng-template #fixedDeductionViewOnly>
+    <div class="card-header">
+      <h6 class="title">Fixed Deductions </h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <app-fixed-deduction-content [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="deductionList" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" style="text-align:left">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field ==='labelName'">
+                  {{car[col.field]}}</div>
+
+                <div *ngIf="col.field=='actions'" class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" matTooltip="Update">
+                      <i class="fa fa-pencil-square-o" (click)="editDeduction(car)"></i>
+                    </span>
+                    <span class="delete" matTooltip="Delete">
+                      <i class="fa fa-trash-o" (click)="deleteDeduction(car)"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div style="border: 1px solid rgb(221, 221, 221); padding: 15px;">
+          <div class="text-center">
+            <h5 style="color:#4b88dc;font-weight: 500">
+              {{dialogHeader}}
+            </h5>
+            <h6 style="color:#4b88dc;font-weight: 500;text-transform: none;">
+              Fixed Payroll Deductions Head for your Employees
+            </h6>
+          </div>
+          <div>
+            <form #myFixedDeductionDialog="ngForm" [formGroup]="fixedDeductionDialog">
+              <p class="category ">What would you want to call this deduction? *</p>
+              <div>
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Custom Label" formControlName="labelName">
+                  <mat-error [hidden]="(this.fixedDeductionDialog.controls.labelName.valid
+                    || this.fixedDeductionDialog.controls.labelName.untouched)">
+                    <div
+                      *ngIf="(this.fixedDeductionDialog.controls.labelName.value === '' || this.fixedDeductionDialog.controls.labelName.value === null)">
+                      {{requiredTextField}}
+                    </div>
+                    <div *ngIf="this.fixedDeductionDialog.controls.labelName.value !== ''">
+                      {{ this.fixedDeductionDialog.controls.labelName.errors != null ? this.fixedDeductionDialog.controls.labelName.errors.messages
+                    : ''}}
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <p class="category ">Do you want attendance effect the eligibility? *</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="isAttendanceEffected">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.fixedDeductionDialog.controls.isAttendanceEffected.valid || 
+            this.fixedDeductionDialog.controls.isAttendanceEffected.untouched)">
+                Field is required
+              </div>
+
+
+              <div class="row" style="text-align: center; margin-bottom:15px; margin-top:15x; ">
+                <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible;setPanel()">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true "></i>
+                    Cancel</span>
+                </button>
+                <button class="btn header-button" *ngIf="dialogHeader=='Add New Fixed Deduction'"
+                  (click)="saveFixedDeductionData();">
+                  <span>
+                    <i class="fa fa-floppy-o " aria-hidden="true "></i>
+                    Save</span>
+                </button>
+                <button class="btn header-button" *ngIf="dialogHeader=='Edit Fixed Deduction'"
+                  (click)="updateFixedDeductionData();">
+                  <span>
+                    <i class="fa fa-pencil-square-o " aria-hidden="true "></i>
+                    Update</span>
+                </button>
+              </div>
+            </form>
+            <!-- <pre>{{fixedDeductionDialog.value | json}}</pre> -->
+          </div>
+        </div>
+      </div>
+    </app-fixed-deduction-content>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Separation Request</h4>
+  <form [formGroup]="addRequestForm">
+    <!-- <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Employee" formControlName="employeeName">
+        <mat-option *ngFor="let item of employeeList" [value]="item.value">{{item.viewValue}}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(addRequestForm.controls.employeeName.valid || 
+        addRequestForm.controls.employeeName.untouched)">
+        This field is required.
+      </mat-error>
+    </mat-form-field> -->
+    <div>
+      <p class="category">Select Employee</p>
+      <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="employeeName"
+        class="custom-ng-select-Style">
+        <ng-option *ngFor="let item of employeeList" [value]="item.value">
+          {{item.viewValue}}
+        </ng-option>
+      </ng-select>
+      <span class="dropDown-errorClass" [hidden]="(addRequestForm.controls.employeeName.valid || 
+      addRequestForm.controls.employeeName.untouched)">
+        This field is required.
+      </span>
+    </div>
+    <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Separation Type" formControlName="separationType">
+        <mat-option *ngFor="let item of separationTypeList" [value]="item.value">{{item.viewValue}}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(addRequestForm.controls.separationType.valid || 
+      addRequestForm.controls.separationType.untouched)">
+        This field is required.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <textarea matInput formControlName="comment" placeholder="Comment"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="initiateRequest()">
+      Initiate
+    </button>
+  </div>
+</mat-dialog-actions>

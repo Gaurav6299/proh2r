@@ -1,0 +1,31 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> View Comp Offs Details for {{data.empName}}</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Status</th>
+                    <td>{{data.leaveStatus}}</td>
+                </tr>
+                <tr>
+                    <th>Applied On</th>
+                    <td>{{data.appliedOn | date:'dd/MM/yyyy'}}</td>
+                </tr>
+                <tr>
+                    <th>Applied For</th>
+                    <td>{{data.appliedFor | date:'dd/MM/yyyy'}}</td>
+                </tr>
+                <tr>
+                    <th>Comment</th>
+                    <td>{{data.comment}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</mat-dialog-content>

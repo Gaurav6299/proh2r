@@ -1,0 +1,25 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Are you sure you would like to Reject leave?</h4>
+    <form [formGroup]="rejectMultipleLeavesRequest">
+        <mat-form-field class="fullLength">
+            <textarea rows="4" cols="50" name="comment" formControlName="usrComment" style="margin-left:-10px;">
+             </textarea>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">
+            Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial>
+            Save
+        </button>
+    </div>
+</mat-dialog-actions>

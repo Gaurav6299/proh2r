@@ -1,0 +1,98 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Un-Publish Payslips for {{month}} - {{year}}</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" (click)="unPublishedPayslipFunction();">
+            <span>
+              <i class="fa fa-eye-slash" aria-hidden="true"></i>
+              Un-Publish Payslips</span>
+          </button>
+          <button class="btn header-button" routerLink="/payroll/payslips">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              Back</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="employeePayslipRecordList" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true"  [(selection)]="selectedRows">
+          <ng-template pTemplate="header" let-columns>
+            <tr [pSelectableRow]="car">
+              <th>
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr [pSelectableRow]="car">
+              <td>
+                <p-tableCheckbox [value]="car"></p-tableCheckbox>
+              </td>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field">
+                  {{car[col.field]}}
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <!-- <div class="row">
+          <div class="col-md-4  col-md-offset-8">
+            <mat-form-field class="fullLength">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+              <span matSuffix>
+                <i class="fa fa-search" aria-hidden="true" style="color:#404A56;"></i>
+              </span>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="table-responsive example-container mat-elevation-z8">
+          <mat-table #table [dataSource]="dataSource">
+            <!-- Checkbox Column -->
+            <!-- <ng-container matColumnDef="select">
+              <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()">Select
+                </mat-checkbox>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="empCode">
+              <mat-header-cell *matHeaderCellDef>Employee Code</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.empCode}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="empName">
+              <mat-header-cell *matHeaderCellDef>Employee Name</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.empName}}
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

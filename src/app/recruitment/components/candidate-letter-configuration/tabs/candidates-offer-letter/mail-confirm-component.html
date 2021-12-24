@@ -1,0 +1,36 @@
+<div class="card">
+    <div class="card-header" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">ARE YOU SURE ?</h6>
+                </div>
+                <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+        <div class="row">
+            <p style="    float: left;margin-top: 14px;margin-left: 1px;font-size: 18px">Send Offter Letter</p>
+        </div>
+        <div class="row">
+            <div class="btn0">
+                <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width:76px; margin-left:147px;margin-bottom:22px;    margin-top: 15px;"
+                    data-background-color="cyan">
+                    <span class="category" style="color:#fff; display: inline;">
+                        <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+                        Cancel</span>
+                </button>
+                <button class="dialog-button" cdkFocusInitial (click)="sendMailOffterLetter()" style="width: 76px; margin-bottom:22px;    margin-top: 15px;"
+                    data-background-color="cyan">
+                    <span class="category" style="color:#fff; display: inline;">
+                        <i class="fa fa-send-o" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+                        Send</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

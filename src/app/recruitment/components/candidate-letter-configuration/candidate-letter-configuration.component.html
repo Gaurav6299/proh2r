@@ -1,0 +1,21 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-header" style="margin-bottom:0px;">
+        <h6 class="title">Candidate Letter Settings</h6>
+
+      </div>
+      <div class="card-content" style="padding-top: 0px;">
+        <mat-tab-group class="tabs" (animationDone)="onTabChange($event)" (selectedTabChange)="onLinkClick($event);">
+          <mat-tab label="Offer Letter">
+            <app-candidates-offer-letter></app-candidates-offer-letter>
+          </mat-tab>
+          <mat-tab label="Appointment Letter">
+            <app-candidates-appointment-letter></app-candidates-appointment-letter>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

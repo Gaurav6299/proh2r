@@ -1,0 +1,365 @@
+<div class="card" style="box-shadow: none !important;">
+  <div>
+    <div style="text-align: right;margin-bottom: 10px;">
+      <div *ngIf="!isLeftVisible">
+        <button class="btn header-button" (click)="addDeductions();isLeftVisible = !isLeftVisible;button=true">
+          <span>
+            <i class="fa fa-plus-square" aria-hidden="true"></i>Add</span>
+        </button>
+      </div>
+      <div *ngIf="isLeftVisible">
+        <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible;button=false;setPanel()">
+          <span>
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- <ng-template #variableDeductionViewOnly>
+    <div class="card-header">
+      <h6 class="title">Variable Deductions</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <app-variable-deductions-content [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+
+        <p-table #dt1 [columns]="columns" [value]="variableDeductionTableList" [rows]="5" [paginator]="true"
+          [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true"
+          [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='paymentFrequency'">
+                  {{car[col.field]}}</div>
+                <div *ngIf="col.field==='paymentFrequency'">
+                  {{car[col.field] | customUnderscorePipe:'car[col.field]' }}</div>
+                <div *ngIf="col.field=='actions'" class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" matTooltip="Update" (click)="editVariableDeduction(car);">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </span>
+                    <span class="delete" matTooltip="Delete" (click)="openDeleteDialog(car)">
+                      <i class="fa fa-trash-o"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+
+      <div rightPane class="divtoggleDiv">
+        <div style="border: 1px solid rgb(221, 221, 221); padding: 15px;">
+          <div class="text-center">
+            <h5 class="left-rights-slider-title">
+              {{formHeader}}
+            </h5>
+            <h6 class="left-rights-slider-Subtitle">
+              Variable Payroll Deductions Head for your Employees
+            </h6>
+          </div>
+          <div class="card-content" style="margin-top:15px;">
+            <form #myVariableDeductionsForm="ngForm" [formGroup]="variableDeductionForm">
+              <p class="category showFieldMandatory"> What is the label of this variable deduction?</p>
+              <mat-form-field class="fullLength">
+                <input matInput formControlName="deductionName" placeholder="Variable Deduction Name">
+                <mat-error [hidden]="(this.variableDeductionForm.controls.deductionName.valid 
+                || this.variableDeductionForm.controls.deductionName.untouched)">
+                  <div
+                    *ngIf="(this.variableDeductionForm.controls.deductionName.value === '' || this.variableDeductionForm.controls.deductionName.value === null)">
+                    {{requiredTextField}}
+                  </div>
+                  <div *ngIf="this.variableDeductionForm.controls.deductionName.value !== ''">
+                    {{ this.variableDeductionForm.controls.deductionName.errors != null ? this.variableDeductionForm.controls.deductionName.errors.messages
+                  : ''}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+
+              <p class="category">Does this Variable deduction show up in CTC structure?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="showInCTC">
+                  <mat-radio-button value=true>Yes</mat-radio-button>
+                  <mat-radio-button value=false>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(variableDeductionForm.controls.showInCTC.valid || 
+            variableDeductionForm.controls.showInCTC.untouched)">
+                Field is required
+              </div>
+
+              <p class="category">How frequently does employee pay this variable deduction?</p>
+              <ng-select class="fullLength" [items]="frequencies" bindLabel="viewValue" bindValue="value"
+                placeholder="Select" formControlName="paymentFrequency">
+              </ng-select>
+              <div class="input-errorClass" [hidden]="(variableDeductionForm.controls.paymentFrequency.valid || 
+            variableDeductionForm.controls.paymentFrequency.untouched)">
+                Field is required
+              </div>
+              <!-- <mat-form-field class="fullLength">
+              <mat-select placeholder="Select" formControlName="paymentFrequency">
+                <mat-option *ngFor="let frequency of frequencies" [value]="frequency">
+                  {{ frequency | customUnderscorePipe:'frequency' }}
+                </mat-option>
+              </mat-select>
+              <mat-error [hidden]="(variableDeductionForm.controls.paymentFrequency.valid || 
+              variableDeductionForm.controls.paymentFrequency.untouched)">
+                Field is Required
+              </mat-error>
+            </mat-form-field> -->
+
+              <p class="category">From what period is the variable deduction effective?</p>
+              <div class="row">
+                <div class="col-md-6">
+                  <ng-select class="fullLength" [items]="months" bindLabel="viewValue" bindValue="value"
+                    placeholder="Select Month" formControlName="effMonth">
+                  </ng-select>
+                  <div class="input-errorClass" [hidden]="(variableDeductionForm.controls.effMonth.valid || 
+                    variableDeductionForm.controls.effMonth.untouched)">
+                    Field is required
+                  </div>
+                  <!-- <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Month" formControlName="effMonth">
+                    <mat-option *ngFor="let month of months" [value]="month">
+                      {{ month }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error [hidden]="(variableDeductionForm.controls.effMonth.valid || 
+                  variableDeductionForm.controls.effMonth.untouched)">
+                    Field is Required
+                  </mat-error>
+                </mat-form-field> -->
+                </div>
+                <div class="col-md-6">
+                  <ng-select class="fullLength" [items]="years" bindLabel="viewValue" bindValue="value"
+                    placeholder="Select Year" formControlName="effYear">
+                  </ng-select>
+                  <div class="input-errorClass" [hidden]="(variableDeductionForm.controls.effYear.valid || 
+                        variableDeductionForm.controls.effYear.untouched)">
+                    Field is required
+                  </div>
+                  <!-- <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Year" formControlName="effYear">
+                    <mat-option *ngFor="let year of years" [value]="year">
+                      {{ year }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error [hidden]="(variableDeductionForm.controls.effYear.valid || 
+                  variableDeductionForm.controls.effYear.untouched)">
+                    Field is Required
+                  </mat-error>
+                </mat-form-field> -->
+                </div>
+              </div>
+
+              <p class="category">Does this variable deduction have a ending period?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="hasEndingPeriod" (change)="changeHasEndingPeriod($event)">
+                  <mat-radio-button value=false>No. It is Cotinual </mat-radio-button>
+                  <mat-radio-button value=true>Yes. It has an End Period</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(variableDeductionForm.controls.hasEndingPeriod.valid || 
+            variableDeductionForm.controls.hasEndingPeriod.untouched)">
+                Field is required
+              </div>
+
+              <div class="form-group" *ngIf="this.variableDeductionForm.controls.hasEndingPeriod.value==='true'">
+                <p class="category">From when do you wish to stop applying this variable allowance?
+                </p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <ng-select class="fullLength" [items]="months" bindLabel="viewValue" bindValue="value"
+                      placeholder="Select Month" formControlName="deductionEndMonth">
+                    </ng-select>
+                    <div class="input-errorClass" [hidden]="(variableDeductionForm.controls.deductionEndMonth.valid || 
+                          variableDeductionForm.controls.deductionEndMonth.untouched)">
+                      Field is required
+                    </div>
+                    <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Month" formControlName="deductionEndMonth">
+                      <mat-option *ngFor="let month of months" [value]="month">
+                        {{ month }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(variableDeductionForm.controls.deductionEndMonth.valid || 
+                    variableDeductionForm.controls.deductionEndMonth.untouched)">
+                      Field is Required
+                    </mat-error>
+                  </mat-form-field> -->
+                  </div>
+                  <div class="col-md-6">
+                    <ng-select class="fullLength" [items]="years" bindLabel="viewValue" bindValue="value"
+                      placeholder="Select Year" formControlName="deductionEndYear">
+                    </ng-select>
+                    <div class="input-errorClass" [hidden]="(variableDeductionForm.controls.deductionEndYear.valid || 
+                              variableDeductionForm.controls.deductionEndYear.untouched)">
+                      Field is required
+                    </div>
+                    <!-- <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Year" formControlName="deductionEndYear">
+                      <mat-option *ngFor="let year of years" [value]="year">
+                        {{ year }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(variableDeductionForm.controls.deductionEndYear.valid || 
+                    variableDeductionForm.controls.deductionEndYear.untouched)">
+                      Field is Required
+                    </mat-error>
+                  </mat-form-field> -->
+                  </div>
+                </div>
+              </div>
+
+              <p class="category">How would you like to enter the ammount for this variable deduction?</p>
+              <ng-select class="fullLength" [items]="enteringAmountWays" bindLabel="viewValue" bindValue="value"
+                placeholder="Select Type" formControlName="variableDeductionAmountType"
+                (change)="selectVariableDeductionAmountType()">
+              </ng-select>
+              <div class="input-errorClass" [hidden]="(variableDeductionForm.controls.variableDeductionAmountType.valid || 
+                          variableDeductionForm.controls.variableDeductionAmountType.untouched)">
+                Field is required
+              </div>
+              <!-- <mat-form-field class="full-width">
+              <mat-select placeholder="Select Frequency" formControlName="variableDeductionAmountType" (selectionChange)="selectVariableDeductionAmountType()">
+                <mat-option *ngFor="let enteringAmountWay of enteringAmountWays" [value]="enteringAmountWay.value">
+                  {{ enteringAmountWay.viewValue }}
+                </mat-option>
+              </mat-select>
+              <mat-error [hidden]="(variableDeductionForm.controls.variableDeductionAmountType.valid || 
+              variableDeductionForm.controls.variableDeductionAmountType.untouched)">
+                Field is Required
+              </mat-error>
+            </mat-form-field> -->
+
+
+              <p class="category showFieldMandatory"
+                *ngIf="variableDeductionForm.controls.variableDeductionAmountType.value=='FIXED_AMOUNT'">
+                Provide the Amount</p>
+              <mat-form-field class="fullLength"
+                *ngIf="variableDeductionForm.controls.variableDeductionAmountType.value=='FIXED_AMOUNT'">
+                <input matInput pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$" formControlName="variableDeduction"
+                  placeholder="Enter Amount">
+                <mat-error [hidden]="(this.variableDeductionForm.controls.variableDeduction.valid 
+                || this.variableDeductionForm.controls.variableDeduction.untouched)">
+                  <div
+                    *ngIf="(this.variableDeductionForm.controls.variableDeduction.value === '' || this.variableDeductionForm.controls.variableDeduction.value === null)">
+                    {{requiredTextField}}
+                  </div>
+                  <div *ngIf="this.variableDeductionForm.controls.variableDeduction.value !== ''">
+                    {{ this.variableDeductionForm.controls.variableDeduction.errors != null ? this.variableDeductionForm.controls.variableDeduction.errors.messages
+                  : ''}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+
+              <p class="category showFieldMandatory"
+                *ngIf="variableDeductionForm.controls.variableDeductionAmountType.value=='PERCENTAGE_BASIC_DA_OR_BASIC' ||  variableDeductionForm.controls.variableDeductionAmountType.value=='PERCENTAGE_OF_GROSS_SALARY'">
+                Provide the Percentage</p>
+              <mat-form-field class="fullLength"
+                *ngIf="variableDeductionForm.controls.variableDeductionAmountType.value=='PERCENTAGE_BASIC_DA_OR_BASIC' ||  variableDeductionForm.controls.variableDeductionAmountType.value=='PERCENTAGE_OF_GROSS_SALARY'">
+                <input matInput pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$" formControlName="variableDeduction"
+                  placeholder="Enter Percentage">
+                <mat-error [hidden]="(this.variableDeductionForm.controls.variableDeduction.valid 
+                || this.variableDeductionForm.controls.variableDeduction.untouched)">
+                  <div
+                    *ngIf="(this.variableDeductionForm.controls.variableDeduction.value === '' || this.variableDeductionForm.controls.variableDeduction.value === null)">
+                    {{requiredTextField}}
+                  </div>
+                  <div *ngIf="this.variableDeductionForm.controls.variableDeduction.value !== ''">
+                    {{ this.variableDeductionForm.controls.variableDeduction.errors != null ? this.variableDeductionForm.controls.variableDeduction.errors.messages
+                  : ''}}
+                  </div>
+                </mat-error>
+              </mat-form-field>
+
+
+              <p class="category ">Which employees does this variable deduction apply to?</p>
+              <ng-select #select [items]="allSelections" class="custom-ng-select-Style" [multiple]="true"
+                bindLabel="viewValue" groupBy="type" [selectableGroup]="true" dropdownPosition="auto"
+                [selectableGroupAsModel]="false" [closeOnSelect]="false" [selectableGroupAsModel]="false"
+                placeholder="Choose" formControlName="variableDeductionApplyTo">
+                <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                    [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                    [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                </ng-template>
+              </ng-select>
+
+              <!-- <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+              [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+              [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+              <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+              </ng-template>
+            </ng-select> -->
+
+              <p class="category">Do you want attendance to effect the eligibility? *</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="isEffectByAttendance">
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="input-errorClass" [hidden]="(this.variableDeductionForm.controls.isEffectByAttendance.valid || 
+          this.variableDeductionForm.controls.isEffectByAttendance.untouched)">
+                Field is required
+              </div>
+
+
+
+              <div class="text-center">
+                <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible;button=false;setPanel()">
+                  <span>
+                    <i class="fa fa-times " aria-hidden="true "></i>Cancel</span>
+                </button>
+                <span *ngIf="updateButton">
+                  <button class="btn header-button"
+                    (click)="saveUpdateVariableDeduction(variableDeductionForm); button=false;">
+                    <span>
+                      <i class="fa fa-pencil-square-o" aria-hidden="true "></i>Update
+                    </span>
+                  </button>
+                </span>
+                <span *ngIf="!updateButton">
+                  <button class="btn header-button"
+                    (click)="saveVariableDeduction(variableDeductionForm);button=false;">
+                    <span>
+                      <i class="fa fa-plus-square " aria-hidden="true "></i>Save
+                    </span>
+                  </button>
+                </span>
+              </div>
+            </form>
+            <!-- <pre>{{variableDeductionForm.value | json}}</pre>
+            <pre>{{allSelections | json}}</pre> -->
+          </div>
+        </div>
+      </div>
+    </app-variable-deductions-content>
+  </div>
+</div>

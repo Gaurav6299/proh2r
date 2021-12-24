@@ -1,0 +1,74 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div class="pull-left">
+          <h6 class="title">Advance Reports</h6>
+        </div>
+        <div class="text-right">
+          <button class="btn header-button" (click)="teamAdvancesDialog();">
+            <span>
+              <i class="fa fa-plus-square " aria-hidden="true "></i>
+              Apply</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+          <div class="card-content-type">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="category">Select an employee to see advance balances</p>
+              </div>
+              <div class="col-md-6">
+                <ng-select [items]="employeeList" appendTo="body" [searchable]="true" [clearable]="true"
+                  bindLabel="fullName" bindValue="value" placeholder="Select Employee" [(ngModel)]="empCode"
+                  class="custom-ng-select-Style" (change)="getEmpAdvanceBalances()">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row" *ngIf="this.empCode!=null">
+              <div class="col-md-6 col-sm-6">
+                <p class="category">Total Pending Advance</p>
+              </div>
+              <div class="col-md-6">
+                <p>{{advanceBalance.totalPendingAdvance}}</p>
+              </div>              
+            </div>
+            <div class="row" *ngIf="this.empCode!=null">
+              <div class="col-md-6 col-sm-6">
+                <p class="category">Total Approved Advance</p>
+              </div>
+              <div class="col-md-6">
+                <p>{{advanceBalance.totalApprovedAdvance}}</p>
+              </div>              
+            </div> 
+            <div class="row" *ngIf="this.empCode!=null">
+              <div class="col-md-6 col-sm-6">
+                <p class="category">Total Remaining Advance</p>
+              </div>
+              <div class="col-md-6">
+                <p>{{advanceBalance.totalRemainingAdvance}}</p>
+              </div>              
+            </div>           
+          </div>
+        <div class="card-content-tab">
+          <mat-tab-group class="tabs" [selectedIndex]="selectedTab" (animationDone)="onTabChange($event)">
+            <mat-tab label="Pending">
+              <app-team-advance-pending (messageEvent)="receiveMessage($event)">
+              </app-team-advance-pending>
+            </mat-tab>
+            <mat-tab label="Approved">
+              <app-team-advance-approved (messageEvent)="receiveMessage($event)"></app-team-advance-approved>
+            </mat-tab>
+            <mat-tab label="Rejected">
+              <app-team-advance-rejected></app-team-advance-rejected>
+            </mat-tab>
+            <mat-tab label="Cancelled">
+              <app-team-advance-cancelled></app-team-advance-cancelled>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

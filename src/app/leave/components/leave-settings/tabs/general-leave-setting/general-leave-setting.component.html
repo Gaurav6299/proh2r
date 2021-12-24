@@ -1,0 +1,241 @@
+<div class="card" style="box-shadow: none !important">
+  <form [formGroup]="generalLeaveSetting">
+    <div class="card-header">
+      <div style="float:left;">
+        <h6 class="title">Leave Settings</h6>
+      </div>
+      <div style="text-align: right;">
+        <div *ngIf="readonly">
+          <!-- *ngIf="hideShowEditButton"
+        *ngIf="hideShowCancelButton" 
+        *ngIf="hideShowSaveButton" -->
+          <button (click)="edit()" class="btn header-button">
+            <span>
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              Edit</span>
+          </button>
+        </div>
+        <div *ngIf="readwrite">
+          <button (click)="cancel()" class=" btn header-button" style="margin-right: 10px;">
+            <span>
+              <i class="fa fa-times" aria-hidden="true"></i>
+              Cancel</span>
+          </button>
+          <button class=" btn header-button" (click)="save()">
+            <span>
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>
+              Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- <ng-template #leaveSettViewOnly>
+      <div class="card-header">
+        <h6 class="title">Leave Settings</h6>
+      </div>
+    </ng-template> -->
+    <div class="card-content">
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">What month of the year does your leave cycle start from?</p>
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="readwrite">
+            <mat-form-field class="fullLength">
+              <mat-select [(value)]="selected" placeholder="Select Month" formControlName="leaveCycleMonth">
+                <mat-option value="JANUARY">January</mat-option>
+                <mat-option value="FEBRUARY">February</mat-option>
+                <mat-option value="MARCH">March</mat-option>
+                <mat-option value="APRIL">April</mat-option>
+                <mat-option value="MAY">May</mat-option>
+                <mat-option value="JUNE">June</mat-option>
+                <mat-option value="JULY">July</mat-option>
+                <mat-option value="AUGUST">August</mat-option>
+                <mat-option value="SEPTEMBER">September</mat-option>
+                <mat-option value="OCTOBER">October</mat-option>
+                <mat-option value="NOVEMBER">November</mat-option>
+                <mat-option value="DECEMBER">December</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="readonly">
+            <p class="category">{{this.generalLeaveSetting.controls.leaveCycleMonth.value}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">Are Admins Having Manage Access to Leave Module Allowed To Approve/Reject Leave
+            Applications?</p>
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="readwrite">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Select" formControlName="isAdminManage">
+                <mat-option value="true">Yes</mat-option>
+                <mat-option value="false">No</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="readonly">
+            <p class="category">{{isAdminManage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">Can Supervisors add Leave Adjustments for subordinates?</p>
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="readwrite">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Select" formControlName="isSupervisorManage">
+                <mat-option value="true">Yes</mat-option>
+                <mat-option value="false">No</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="readonly">
+            <p class="category">{{isSupervisorManage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">Would you like to run daily leave accruals?</p>
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="readwrite">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Select" formControlName="isLeaveAccrualRunDaily"
+                (selectionChange)="radioButtonStatus($event)">
+                <mat-option value="true">Yes</mat-option>
+                <mat-option value="false">No</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="dailyleaveaccrualsDanger">
+            <p class="category">{{dailyleaveaccrualsDanger}}</p>
+          </div>
+          <div *ngIf="dailyleaveaccrualsSuccess">
+            <p class="category">{{dailyleaveaccrualsSuccess}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="generalLeaveSetting.controls.isLeaveAccrualRunDaily.value==='true'">
+        <div class="col-md-8">
+          <p class="category">What date were initial balances set ?</p>
+        </div>
+        <div class="col-md-4" *ngIf="isEditable">
+          <mat-form-field class="fullLength">
+            <input matInput type="date" placeholder="Choose a date" formControlName="balancesLockedAt">
+            <mat-error [hidden]="(this.generalLeaveSetting.controls.balancesLockedAt.valid 
+            || this.generalLeaveSetting.controls.balancesLockedAt.untouched)">
+              {{requiredDateField}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4"
+          *ngIf="(generalLeaveSetting.controls.isLeaveAccrualRunDaily.value==='true')&&(!isEditable)">
+          <p class="category">{{generalLeaveSetting.controls.balancesLockedAt.value}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">Would you like to freeze Initial balances once first accrual is run?</p>
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="readwrite">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Select" formControlName="isFreezeInitialBalance">
+                <mat-option value="true">Yes</mat-option>
+                <mat-option value="false">No</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="readonly">
+            <p class="category">{{isFreezeInitialBalance}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">What should be the short leave application limit?</p>
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="readwrite">
+            <mat-form-field class="fullLength">
+              <input matInput type="number" placeholder="Select"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57" formControlName="slApplicationLimit">
+            </mat-form-field>
+          </div>
+          <div *ngIf="readonly">
+            <p class="category">{{this.generalLeaveSetting.controls.slApplicationLimit.value}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">What should be the max duration for short leave application (in minutes)?</p>
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="readwrite">
+            <mat-form-field class="fullLength">
+              <input matInput type="number" placeholder="Select"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57" formControlName="maxDurationInMins">
+            </mat-form-field>
+          </div>
+          <div *ngIf="readonly">
+            <p class="category">{{this.generalLeaveSetting.controls.maxDurationInMins.value}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="category">Select Locations Departments Bands Designations or Employees for Short Leave</p>
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="readwrite">
+            <ng-select #select [items]="filterSelection" [multiple]="true" bindLabel="viewValue" groupBy="type"
+              [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false" [closeOnSelect]="false"
+              [selectableGroupAsModel]="false" formControlName="allSelections">
+              <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+              </ng-template>
+              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                <div class="ng-value" *ngFor="let item of items | slice:0:5">
+                  <span class="ng-value-label"> {{item.viewValue}}</span>
+                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </div>
+                <div class="ng-value" *ngIf="items.length > 5">
+                  <span class="ng-value-label">{{items.length - 5}} more...</span>
+                </div>
+              </ng-template>
+            </ng-select>
+            <!-- <div class="input-errorClass" [hidden]="allSelections.length>0">
+              Please select atleast one
+            </div> -->
+          </div>
+          <div *ngIf="readonly">
+            <p class="category">
+              <span *ngFor="let item of allSelections | slice:0:1">
+                {{ item.viewValue }}
+              </span>
+              <span *ngFor="let item of allSelections | slice:1:5">
+                ,{{ item.viewValue }}
+              </span>
+              <span *ngIf="allSelections.length > 5">
+                and {{allSelections.length - 5}} more...
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

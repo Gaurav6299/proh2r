@@ -1,0 +1,728 @@
+<div class="card-content">
+  <app-fixed-contribution-left-right-panes [activePane]="isLeftVisible ? 'right' : 'left'">
+    <div leftPane class="divtoggleDiv">
+      <div class="card" style="box-shadow: none !important">
+        <p-table #dt1 [columns]="columns" [value]="fixedCont" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [responsive]="true" [autoLayout]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='action'">{{car[col.field]}}</div>
+                <div *ngIf="col.field=='action'" class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" *ngIf="!isLeftVisible" (click)="editLeftPanel(car);">
+                      <i class="fa fa-pencil-square-o" matTooltip="Edit"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <div rightPane class="divtoggleDiv">
+      <div class="card" style="box-shadow: none !important;">
+        <div *ngIf="lwfState">
+          <form [formGroup]="lwfForm">
+            <h5 class="left-rights-slider-title text-center">
+              Labour Welfare Fund
+            </h5>
+            <div style="text-align: right;">
+              <button class="btn header-button" *ngIf="isLeftVisible" (click)="cancelPanel();"
+                style="margin-bottom: 15px;">
+                <span>
+                  <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                  Back</span>
+              </button>
+            </div>
+            <div class="LWF">
+              <div>
+                <label for="">Select State</label><br>
+                <p-dropdown [autoWidth]="false" [style]="{'width':'40%'}" [options]="stateList" filterBy="label"
+                  [filter]="true" placeholder="Select State" formControlName="stateId"
+                  (onChange)="onLWFStateChange($event)"></p-dropdown>
+              </div>
+              <div style="margin-top: 30px;">
+                <div class="card-header">
+                  <div style="float:left;">
+                    <h6 class="title">LWF Slab Table</h6>
+                  </div>
+                  <div class="text-right">
+                    <button class="btn header-button" (click)="addLWFSlab();">
+                      <span>
+                        <i class="fa fa-plus-square" aria-hidden="true"></i> Add</span>
+                    </button>
+                  </div>
+                </div>
+                <p-table #dt1 [columns]="lwfColumns" editMode="row" [value]="lwfSlabRecord" [rows]="5"
+                  [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true"
+                  [responsive]="true">
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-car let-columns="columns">
+                    <tr>
+                      <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+                        <div class="mat-cell" *ngIf="col.field=='actions'">
+                          <div class="mat-element-icon">
+                            <span class="edit" (click)="editLWFSlab(car);">
+                              <i class="fa fa-pencil-square-o" matTooltip="Edit"></i>
+                            </span>
+                            <span class="delete" (click)="deleteLWFSlab(car);">
+                              <i class="fa fa-trash-o" matTooltip="Delete"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+
+              <div style="margin-top: 30px;">
+                <div class="card-header">
+                  <div style="float:left;">
+                    <h6 class="title">Deduction Month</h6>
+                  </div>
+                  <div class="text-right">
+                    <button class="btn header-button" (click)="updateLWF();">
+                      <span>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Update</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>
+                          Payment Month
+                        </th>
+                        <th>
+                          Process Month
+                        </th>
+                        <th>
+                          Payment Month
+                        </th>
+                        <th>
+                          Process Month
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div>January</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="january">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.january.valid || 
+                      this.lwfForm.controls.january.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                        <td>
+                          <div>July</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="july">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.july.valid || 
+                        this.lwfForm.controls.july.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>February</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="february">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.february.valid || 
+                        this.lwfForm.controls.february.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                        <td>
+                          <div>August</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="august">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.august.valid || 
+                        this.lwfForm.controls.august.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>March</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="march">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.march.valid || 
+                      this.lwfForm.controls.march.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                        <td>
+                          <div>September</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="september">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.september.valid || 
+                        this.lwfForm.controls.september.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                      </tr>
+
+
+                      <tr>
+                        <td>
+                          <div>April</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="april">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.april.valid || 
+                      this.lwfForm.controls.april.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                        <td>
+                          <div>October</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="october">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.october.valid || 
+                        this.lwfForm.controls.october.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>May</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="may">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.may.valid || 
+                      this.lwfForm.controls.may.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                        <td>
+                          <div>November</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="november">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.november.valid || 
+                          this.lwfForm.controls.november.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>June</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="june">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.june.valid || 
+                          this.lwfForm.controls.june.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                        <td>
+                          <div>December</div>
+                        </td>
+                        <td>
+                          <div class="radio-wrapper">
+                            <mat-radio-group formControlName="december">
+                              <mat-radio-button value="true">Yes</mat-radio-button>
+                              <mat-radio-button value="false">No</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                          <div class="input-errorClass" [hidden]="(this.lwfForm.controls.december.valid || 
+                      this.lwfForm.controls.december.untouched)">
+                            Field is required
+                          </div>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div *ngIf="ptState">
+          <h5 class="left-rights-slider-title text-center">
+            Professional Tax Contribution
+          </h5>
+          <div class="left-rights-slider-title text-right">
+            <button class="btn header-button" *ngIf="isLeftVisible" (click)="cancelPanel();">
+              <span>
+                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                Back</span>
+            </button>
+          </div>
+          <div style="margin-top: 30px;">
+            <div class="card-header">
+              <div style="float:left;">
+                <h6 class="title">PT Eligible States</h6>
+              </div>
+
+
+              <div class="text-right">
+                <button class="btn header-button" *ngIf="isLeftVisible" (click)="configurePTState();">
+                  <span>
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    Configure State</span>
+                </button>
+                <button class="btn header-button" *ngIf="isLeftVisible" (click)="updatePTEligibility();">
+                  <span>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Update</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="PT">
+            <div class="row">
+              <div>
+                <div *ngFor="let state of stateList; let i=index">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <div class="radio-wrapper">
+                        <mat-checkbox [(ngModel)]="state.isEligible" (change)="onChange($event,state)">{{state.label}}
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <form [formGroup]="ptForm">
+              <div>
+                <label for="">Select State</label><br>
+                <p-dropdown [autoWidth]="false" [style]="{'width':'40%'}" [options]="ptEligibleStateList"
+                  filterBy="label" [filter]="true" placeholder="Select State" formControlName="stateId"
+                  (onChange)="onPTStateChange($event)">
+                </p-dropdown>
+              </div>
+              <div style="margin-top: 30px;">
+                <div class="card-header">
+                  <div style="float:left;">
+                    <h6 class="title">PT Slab Table</h6>
+                  </div>
+                  <div class="text-right">
+                    <button class="btn header-button" (click)="addPTSlab();">
+                      <span>
+                        <i class="fa fa-plus-square" aria-hidden="true"></i> Add</span>
+                    </button>
+                  </div>
+                </div>
+                <p-table #dt1 [columns]="ptColumns" [value]="ptSlabRecord" [rows]="5" [paginator]="true" [pageLinks]="5"
+                  [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [responsive]="true">
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-car let-columns="columns">
+                    <tr>
+                      <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+                        <div class="mat-cell" *ngIf="col.field=='actions'">
+                          <div class="mat-element-icon">
+                            <span class="edit" (click)="updatePTSlab(car);">
+                              <i class="fa fa-pencil-square-o" matTooltip="Edit"></i>
+                            </span>
+                            <span class="delete" (click)="deletePTSlab(car);">
+                              <i class="fa fa-trash-o" matTooltip="Delete"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+                <div style="margin-top: 30px;">
+                  <div class="table-responsive">
+                    <div class="card-header">
+                      <div style="float:left;">
+                        <h6 class="title">Deduction Month</h6>
+                      </div>
+                      <div class="text-right">
+                        <button class="btn header-button" (click)="updatePT();">
+                          <span>
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Update</span>
+                        </button>
+                      </div>
+                    </div>
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                            Payment Month
+                          </th>
+                          <th>
+                            Process Month
+                          </th>
+                          <th>
+                            Payment Month
+                          </th>
+                          <th>
+                            Process Month
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div>January</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="january"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.january.valid || 
+                    this.ptForm.controls.january.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+                          <td>
+                            <div>July</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="july"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.july.valid || 
+                    this.ptForm.controls.july.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+
+                        </tr>
+
+
+                        <tr>
+                          <td>
+                            <div>February</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="february"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.february.valid || 
+                        this.ptForm.controls.february.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+                          <td>
+                            <div>August</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="august"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.august.valid || 
+                      this.ptForm.controls.august.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            <div>March</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="march"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.march.valid || 
+                    this.ptForm.controls.march.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+                          <td>
+                            <div>September</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="september"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.september.valid || 
+                    this.ptForm.controls.september.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+
+                        </tr>
+
+                        <tr>
+                          <td>
+                            <div>April</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="april"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.april.valid || 
+                        this.ptForm.controls.april.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+                          <td>
+                            <div>October</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="october"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.october.valid || 
+                      this.ptForm.controls.october.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+
+                        </tr>
+
+                        <tr>
+                          <td>
+                            <div>May</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="may"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.may.valid || 
+                    this.ptForm.controls.may.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+                          <td>
+                            <div>November</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="november"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.november.valid || 
+                    this.ptForm.controls.november.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+
+                        </tr>
+
+                        <tr>
+                          <td>
+                            <div>June</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="june"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.june.valid || 
+                        this.ptForm.controls.june.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+
+                          <td>
+                            <div>December</div>
+                          </td>
+                          <td>
+                            <p-dropdown [options]="paymentMonthRecord" filterBy="label" [filter]="true"
+                              placeholder="Select Month" formControlName="december"></p-dropdown>
+                            <div class="input-errorClass" style="margin-top: 2px;" [hidden]="(this.ptForm.controls.december.valid || 
+                    this.ptForm.controls.december.untouched)">
+                              Field is required
+                            </div>
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div *ngIf="esicState">
+          <h5 class="left-rights-slider-title text-center">
+            Employees State Insurance Corporation
+          </h5>
+          <div class="text-right">
+            <button class="btn header-button" *ngIf="isLeftVisible" (click)="cancelPanel();"
+              style="margin-bottom: 15px;">
+              <span>
+                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                Back</span>
+            </button>
+          </div>
+          <div class="ESIC">
+            <div style="margin-top: 30px;">
+              <div class="card-header">
+                <div style="float:left;">
+                  <h6 class="title">Celling Amount</h6>
+                </div>
+                <div class="text-right">
+                  <button class="btn header-button" (click)="addESICCellingAmount();">
+                    <span>
+                      <i class="fa fa-plus-square" aria-hidden="true"></i> Add</span>
+                  </button>
+                </div>
+              </div>
+
+              <p-table #dt1 [columns]="esicCellingColumn" [value]="esicCelling" [rows]="5" [paginator]="true"
+                [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [responsive]="true">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                      {{col.header}}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-car let-columns="columns">
+                  <tr>
+                    <td *ngFor="let col of columns">
+                      <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+                      <div class="mat-cell" *ngIf="col.field=='actions' && car.isCurrent">
+                        <div class="mat-element-icon">
+                          <span class="edit" (click)="updateESICCelling(car);">
+                            <i class="fa fa-pencil-square-o" matTooltip="Edit"></i>
+                          </span>
+                          <span class="delete" (click)="deleteESICCelling(car);">
+                            <i class="fa fa-trash-o" matTooltip="Delete"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+
+            <div style="margin-top: 30px;">
+              <div class="card-header">
+                <div style="float:left;">
+                  <h6 class="title">Contribution</h6>
+                </div>
+                <div class="text-right">
+                  <button class="btn header-button" (click)="addESICContribution();">
+                    <span>
+                      <i class="fa fa-plus-square" aria-hidden="true"></i> Add</span>
+                  </button>
+                </div>
+              </div>
+              <p-table #dt1 [columns]="columnsESICContribution" [value]="esiccontributionRecord" [rows]="5"
+                [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true"
+                [responsive]="true">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                      {{col.header}}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-car let-columns="columns">
+                  <tr>
+                    <td *ngFor="let col of columns">
+                      <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+                      <div class="mat-cell" *ngIf="col.field=='actions' && car.isCurrent">
+                        <div class="mat-element-icon">
+                          <span class="edit" (click)="updateESICContribution(car);">
+                            <i class="fa fa-pencil-square-o" matTooltip="Edit"></i>
+                          </span>
+                          <span class="delete" (click)="deleteESICContribution(car);">
+                            <i class="fa fa-trash-o" matTooltip="Delete"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-fixed-contribution-left-right-panes>
+</div>

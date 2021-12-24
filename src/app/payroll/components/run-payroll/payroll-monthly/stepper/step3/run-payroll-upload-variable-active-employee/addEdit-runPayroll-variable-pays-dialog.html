@@ -1,0 +1,61 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title> Variable Pay</h4>
+  <div class="card card-content">
+    <div class="card-header">
+      <h6 class="title">Variable Allowances</h6>
+    </div>
+    <form [formGroup]="variablePaysForm">
+      <div class="table-responsive" formArrayName="variableAllowances">
+        <table class="table table-bordered">
+          <tbody>
+            <tr *ngFor="let line of variablePaysForm.get('variableAllowances')['controls']; let i = index;" [formGroupName]="i">
+              <th>
+                {{this.variablePaysForm.controls.variableAllowances.controls[i].controls.labelName.value}}
+              </th>
+              <td style="width: 40%;">
+                <mat-form-field class="fullLength">
+                  <input matInput type="number" formControlName="value" />
+                </mat-form-field>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-header">
+        <h6 class="title">Variable Deductions</h6>
+      </div>
+      <div class="table-responsive" formArrayName="variableDeductions">
+        <table class="table table-bordered">
+          <tbody>
+            <tr *ngFor="let line of variablePaysForm.get('variableDeductions')['controls']; let i = index;" [formGroupName]="i">
+              <th>
+                {{this.variablePaysForm.controls.variableDeductions.controls[i].controls.labelName.value}}
+              </th>
+              <td style="width: 40%;">
+                <mat-form-field class="fullLength">
+                  <input matInput type="number" formControlName="value" />
+                </mat-form-field>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+
+  </div>
+  <mat-dialog-actions>
+    <div class="model-footer ">
+      <button class="cancel-buttons " cdkFocusInitial (click)="onNoClick() ">Cancel
+      </button>
+      <button class="dialog-buttons " cdkFocusInitial (click)="onUpdate(); ">Update
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

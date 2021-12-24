@@ -1,0 +1,139 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="title">Payslips</h6>
+      </div>
+      <div class="card-content">
+        <div style="text-align: right">
+          <button class="btn header-button" (click)="getAllMonthPayslipHistory()">
+            <span>
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+              Refresh</span>
+          </button>
+        </div>
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="monthlyPayslipHistoryList" [rows]="5" [paginator]="true"
+          [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true"
+          [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='actions'">
+                  {{car[col.field]}}
+                </div>
+
+                <!-- <div *ngIf="col.field=='payrollDetails'">
+                  <span>
+                    <b>No of Processed Employees: {{car.payrollDetails.processedCount}}</b>
+                  </span>
+                  <br>
+                  <span>
+                    <b>No of Pending Employees: {{car.payrollDetails.pendingCount}}</b>
+                  </span>
+                  <br>
+                  <span>
+                    <b>No of On-Hold Employees: {{car.payrollDetails.onHoldCount}}</b>
+                  </span>
+                </div> -->
+
+                <div *ngIf="col.field=='actions' &&  car.payslipGenerationStatus=='COMPLETE'" class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="file-icon" matTooltip="View" (click)="viewPayslipsDetail(car)">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    </span>
+                    <span class="view" matTooltip="Publish" (click)="publishPayslipsDetail(car)">
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </span>
+                    <span class="view-slash" matTooltip="Un-Publish" (click)="unPublishPayslipsDetail(car)">
+                      <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+                <!-- <div *ngIf="col.field=='actions'" class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="view-payslip" matTooltip="Refresh" (click)="viewPayslipsDetail(car)">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div> -->
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <!-- <div class="table-responsive example-container mat-elevation-z8">
+          <mat-table #table [dataSource]="dataSource">
+            <ng-container matColumnDef="payrollRunPeriod">
+              <mat-header-cell *matHeaderCellDef>Month-Year</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.payrollRunPeriod}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="totalPublishEmpCount">
+              <mat-header-cell *matHeaderCellDef>Total Payslips Published</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.totalPublishEmpCount}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="totalUnPublishEmpCount">
+              <mat-header-cell *matHeaderCellDef>Total Payslips Un-Published</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element.totalUnPublishEmpCount}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{element | json}}
+                <div *ngIf="element.approvalStatus=='COMPLETE_APPROVED'">
+                  <div class="payslip-element-icon">
+                    <span class="view-payslip" matTooltip="View" (click)="viewPayslipsDetail(element)">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    </span>
+                    <span class="publish-payslip" matTooltip="Publish" (click)="publishPayslipsDetail(element)">
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </span>
+                    <span class="un-publish-payslip" matTooltip="Un-Publish" (click)="unPublishPayslipsDetail(element)">
+                      <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+                <div *ngIf="element.approvalStatus=='COMPLETE_REJECTED'">
+                  <button class="btn header-button" (click)="viewPayslipsDetail(element)">
+                    <span>
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      View</span>
+                  </button>
+                </div>
+              </mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="bulkAction">
+              <mat-header-cell *matHeaderCellDef>Bulk Actions</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div>
+                  <button class="btn header-button" (click)="generatePayroll(element)">
+                    <span>
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      Generate</span>
+                  </button>
+                </div>
+              </mat-cell>
+            </ng-container> -->
+        <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div> -->
+      </div>
+    </div>
+  </div>

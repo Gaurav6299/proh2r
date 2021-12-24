@@ -1,0 +1,95 @@
+@import "~assets/sass/md/customCSS";
+
+.card-content .table-responsive .activity-tracker-table-head {
+  background: #fafafa;
+}
+
+.card-content .table-responsive .activity-tracker-table-head tr>th {
+  font-size: 13px;
+  padding: 5px;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-align: center;
+  color: #666;
+}
+
+.card-content .table-responsive .activity-tracker-table-body tr>td {
+  font-weight: 400;
+  color: #4CAF50;
+}
+
+.tracker-section-card {
+  margin: 10px 0;
+  padding: 20px 10px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.tracker-timeLineBtnApr {
+  font-size: 14px;
+  font-weight: 400;
+  color: #4b89dc;
+  margin: 0 6px;
+  cursor: pointer;
+}
+
+.tracker-timeLineBtnRej {
+  font-size: 14px;
+  font-weight: 400;
+  color: #e03737;
+  margin: 0 6px;
+  cursor: pointer;
+}
+
+.tracker-timeLineBtnApr .fa-check-circle,
+.tracker-timeLineBtnRej .fa-times-circle {
+  font-size: 18px;
+  vertical-align: text-top;
+}
+
+.tracker-section-card-icon {
+  text-align: center;
+}
+
+.tracker-section-card-icon img {
+  width: 32px;
+}
+
+.tracker-section-card-timeLine .heading-title {
+  font-size: 14px;
+  margin: 5px 0;
+  font-weight: 400;
+  color: #555;
+}
+
+.tracker-section-card-timeLine-status {
+  background: #fafafa;
+  padding: 20px;
+  border: 1px solid #eee;
+}
+
+.tracker-section-card-timeLine-status p {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.tracker-section-card-timeLine-status p>i {
+  font-size: 22px;
+  color: #008000;
+  vertical-align: sub;
+  padding-right: 20px;
+}
+
+.status-tracker {
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 2px;
+}
+
+@media screen and (max-width: 992px) {
+  .tracker-section-card-icon {
+    text-align: left;
+  }
+}

@@ -1,0 +1,69 @@
+<mat-dialog-content style="display: contents;">
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Assign Users</h4>
+    <form [formGroup]="assignUserForm">
+
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Group" formControlName="group" disabled>
+                <mat-option *ngFor="let item of group" [value]="item.groupId">{{item.groupName}}
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(assignUserForm.controls.group.valid || 
+            assignUserForm.controls.group.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+    </form>
+
+    <div>
+        <ng-select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+            [selectableGroup]="true" [selectableGroupAsModel]="false" [closeOnSelect]="false"
+            [selectableGroupAsModel]="false" [(ngModel)]="mySelectedUserList" [formControl]="selectedUserList">
+            <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.type}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.viewValue}}
+            </ng-template>
+        </ng-select>
+    </div>
+    <!-- <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Report" (selectionChange)="onClickEvent()" [formControl]="selectedReportsList
+                            " [(ngModel)]="mySelectedReportList " multiple>
+                <mat-select-trigger>
+                    {{selectedReportsList.value ? selectedReportsList.value[0] : ''}}
+                    <span *ngIf=" selectedReportsList.value?.length> 1" class="example-additional-selection">
+                        (+{{selectedReportsList.value.length - 1}} others)
+                    </span>
+                </mat-select-trigger>
+                <mat-form-field class="fullLength">
+                    <input type="text" placeholder="Search Report" aria-label="Number" matInput
+                        [formControl]="myControl" (keyup)="searchReportName($event)">
+                </mat-form-field>
+                <mat-option *ngFor="let report of reports" [value]="report.value"
+                    (click)="selectReportCode(report.value)">{{report.viewValue}}</mat-option>
+            </mat-select>
+            <mat-error [hidden]="(assignGroupForm.controls.reports.valid || 
+            assignGroupForm.controls.reports.untouched)">
+                Invalid Input
+            </mat-error>
+        </mat-form-field> -->
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="assigUser()">
+            Assign
+        </button>
+        <!-- <button class="dialog-buttons" cdkFocusInitial *ngIf="this.action == 'update'" (click)="updateAssignment()">
+            Update
+        </button> -->
+    </div>
+</mat-dialog-actions>

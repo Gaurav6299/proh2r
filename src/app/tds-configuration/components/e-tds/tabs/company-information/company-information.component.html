@@ -1,0 +1,490 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div>
+      <h6 class="title">Company Data</h6>
+    </div>
+  </div>
+  <div class="card-content form-card-validationComp">
+    <form>
+      <div class="row">
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Deductor's Name:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Flat No./Block No.:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Building Name:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Road/Street:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Area/Locality:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Town/City/District:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Pin Code:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Ytitle">
+                <p class="category">State:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <ng-select [items]="cars" appendTo="body" [searchable]="true" bindLabel="label" placeholder="Select"
+                class="custom-ng-select-Style">
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">STD Code:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Telephone No.:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Fax No.:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Mobile:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">E-mail Address:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Website:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">PAN:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">TAN:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">TDS Circle:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Branch/Division:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Ytitle">
+                <p class="category">Deductor's Type:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <ng-select [items]="cars1" appendTo="body" [searchable]="true" bindLabel="label" placeholder="Select"
+                class="custom-ng-select-Style">
+              </ng-select>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Ytitle">
+                <p class="category">Nature of Payment:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <ng-select [items]="cars2" appendTo="body" [searchable]="true" bindLabel="label" placeholder="Select"
+                class="custom-ng-select-Style">
+              </ng-select>
+            </div>
+          </div>
+          <div class="text-right">
+            <button class="btn header-button">
+              <span>Submit</span>
+            </button>
+            <button class="btn header-button">
+              <span>Load previous Data</span>
+            </button>
+            <button class="btn header-button">
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-2 offset-md-2"></div>
+      </div>
+    </form>
+  </div>
+  <!-- 2 -->
+  <div class="card-header">
+    <div>
+      <h6 class="title">Authorized Employee Data</h6>
+    </div>
+  </div>
+  <div class="card-content form-card-validationComp">
+    <form>
+      <div class="row">
+        <div class="col-md-10">
+          <div class="form-card-Dtitle">
+            <mat-checkbox checked="true">Copy Deductor's Address</mat-checkbox><br>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Title:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Employee Name:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Designation:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Father's Name:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Flat No./Block No:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Building Name:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Road/Street:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Ytitle">
+                <p class="category">Area/Locality:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <ng-select [items]="cars" appendTo="body" [searchable]="true" bindLabel="label" placeholder="Select"
+                class="custom-ng-select-Style">
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Town/City/District:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">PIN Code:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Ytitle">
+                <p class="category">State:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <ng-select [items]="cars" appendTo="body" [searchable]="true" bindLabel="label" placeholder="Select"
+                class="custom-ng-select-Style">
+              </ng-select>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">STD Code:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Telephone No.:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Mobile:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Fax No.:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input">
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 offset-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-card-Dtitle">
+                <p class="category">Email Address:</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="fullLength">
+                <input matInput type="input" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-form-field class="fullLength">
+            <textarea matInput placeholder="Remarks"></textarea>
+          </mat-form-field>
+          <div class="text-right">
+            <button class="btn header-button">
+              <span>Submit</span>
+            </button>
+            <button class="btn header-button">
+              <span>Load previous Data</span>
+            </button>
+            <button class="btn header-button">
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-2 offset-md-2"></div>
+      </div>
+    </form>
+  </div>
+</div>

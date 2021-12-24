@@ -1,0 +1,77 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>{{headerName}} Bank Information</h4>
+  <form [formGroup]="bankInformationForm">
+    <mat-form-field class="fullLength">
+      <mat-select #singleSelect1 placeholder="Select Bank*" formControlName="bankName"
+        (selectionChange)="getBranchList($event.value.viewValue)">
+        <ngx-mat-select-search [placeholderLabel]="'Search Bank'" [noEntriesFoundLabel]="'No matching records found'"
+          [formControl]="bankFilterCtrl"></ngx-mat-select-search>
+        <mat-option *ngFor="let bank of filteredBanks|async" [value]="bank">
+          {{ bank.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(this.bankInformationForm.controls.bankName.valid 
+      || this.bankInformationForm.controls.bankName.untouched)">
+        {{requiredDropdownButton}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="fullLength">
+      <mat-select #singleSelect2 placeholder="Select IFSC Code*" formControlName="ifscCode">
+        <ngx-mat-select-search [placeholderLabel]="'Search IFSC Code'"
+          [noEntriesFoundLabel]="'No matching records found'" [formControl]="ifscFilterCtrl"></ngx-mat-select-search>
+        <mat-option *ngFor="let ifscCode of filteredIfscCodes|async" [value]="ifscCode">
+          {{ ifscCode.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(this.bankInformationForm.controls.ifscCode.valid 
+              || this.bankInformationForm.controls.ifscCode.untouched)">
+        {{requiredDropdownButton}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="Bank Account Number *" formControlName="accountNumber" />
+      <mat-error [hidden]="(this.bankInformationForm.controls.accountNumber.valid
+              || this.bankInformationForm.controls.accountNumber.untouched)">
+        <div
+          *ngIf="(this.bankInformationForm.controls.accountNumber.value === '' || this.bankInformationForm.controls.accountNumber.value === null)">
+          {{requiredTextField}}
+        </div>
+
+        <div *ngIf="this.bankInformationForm.controls.accountNumber.value !== ''">
+          {{ this.bankInformationForm.controls.accountNumber.errors != null ? this.bankInformationForm.controls.accountNumber.errors.messages
+            : ''}}
+        </div>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <input matInput class="uppercase" placeholder="Bank Corporate ID " formControlName="bankCorporateId" />
+      <mat-error [hidden]="(this.bankInformationForm.controls.bankCorporateId.valid
+      || this.bankInformationForm.controls.bankCorporateId.untouched)">
+        <div *ngIf="this.bankInformationForm.controls.bankCorporateId.value !== ''">
+          {{ this.bankInformationForm.controls.bankCorporateId.errors != null ? this.bankInformationForm.controls.bankCorporateId.errors.messages
+          : ''}}
+        </div>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+    </button>
+    <button class="dialog-buttons" *ngIf="saveButton" cdkFocusInitial
+      (click)="saveBankInformation(bankInformationForm)">Save
+    </button>
+    <button class="dialog-buttons" *ngIf="updateBtton" cdkFocusInitial
+      (click)="updateBankInformation(bankInformationForm)">Update
+    </button>
+  </div>
+</mat-dialog-actions>

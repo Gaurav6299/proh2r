@@ -1,0 +1,387 @@
+<!-- <div class="card" style="box-shadow: none !important;">
+  <div class="card-header" *ngIf="modifyExpenseTempAdmin; else expCategoryViewOnly">
+    <div style="float:left;">
+      <h6 class="title">Expense Category</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" *ngIf="!isLeftVisible"
+        (click)="addCategory(); isLeftVisible = !isLeftVisible; ">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add Category</span>
+      </button>
+      <button class="btn header-button" *ngIf="isLeftVisible"
+        (click)="cancelAddAllowanceForm(); isLeftVisible = !isLeftVisible; this.checkVal = true;">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          Back</span>
+      </button>
+    </div>
+  </div>
+  <ng-template #expCategoryViewOnly>
+    <div class="card-header">
+      <h6 class="title">Expense Category</h6>
+    </div>
+  </ng-template>
+  <div class="card-content">
+    <app-left-right-panel [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="searchBox" style="text-align: right">
+          <i class="fa fa-search"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt1.filterGlobal($event.target.value, 'contains')">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="expenseCategory" [rows]="5" [paginator]="true" [pageLinks]="5"
+          [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon *ngIf="col.field!='image'" [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field">{{car[col.field]}}</div>
+                <div class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" *ngIf="col.field === 'actions'">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"
+                        (click)=" isLeftVisible = !isLeftVisible; updateCategory();updateCategories(car)"></i>
+                    </span>
+                    <span class="delete" *ngIf="col.field === 'actions'">
+                      <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteFixedAllowanceData(car)"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div class="row" style="text-align: center;">
+          <h5 *ngIf="!updateButton" class="left-rights-slider-title">
+            Add Expense Category
+          </h5>
+          <h5 *ngIf="updateButton" class="left-rights-slider-title">
+            Update Expense Category
+          </h5>
+          <h6 class="left-rights-slider-Subtitle">
+            Expense Category for Company
+          </h6>
+        </div>
+        <form #expenseCategoriesForm="ngForm" [formGroup]="addExpenseCategory">
+          <div class="form-group">
+            <p class="category showFieldMandatory">Please provide a label for this expense</p>
+            <mat-form-field class="fullLength">
+              <input matInput placeholder="Custom Label" formControlName="labelExpense">
+            </mat-form-field>
+            <span style="color: red;" [hidden]="(addExpenseCategory.controls.labelExpense.value || 
+              checkVal )">
+              <p>Expense label is required</p>
+            </span>
+            <span style="color: red;" [hidden]="(addExpenseCategory.controls.labelExpense.valid || 
+              addExpenseCategory.controls.labelExpense.untouched)">
+              <p>Expense label is required</p>
+            </span>
+          </div>
+
+          <div class="form-group">
+            <p class="category showFieldMandatory">Please add/edit fields that employees need to fill during expense
+              application</p>
+            <div *ngFor="let itemrow of addExpenseCategory.controls.expenseCustomField.controls; let i=index"
+              [formGroupName]="i">
+              <div class=col-md-12>
+                <div class="col-md-6">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="Field Name" formControlName="expenseDynamicFieldName">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="full-width">
+                    <mat-select placeholder="Text Field" formControlName="expenseDynamicFieldType">
+                      <mat-option *ngFor="let allowance of fieldTypes" [value]="allowance.value" (click)="onClickSelectMerchantValue(allowance.value)">
+                        {{ allowance.viewValue }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                  <span style="margin-left: 40px;font-size: 18px;color: #da0606;">
+                    <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+ <button class="header-button " (click)="addNewRow()">
+                <span>
+                  Add Custom Fields</span>
+              </button>
+          </div>
+          <div class="row" style="text-align: center;">
+            <button class="btn header-button " (click)="cancelAddAllowanceForm(); isLeftVisible = !isLeftVisible;">
+              <span>
+                <i class="fa fa-times " aria-hidden="true "></i>
+                Cancel</span>
+            </button>
+            <button class="btn header-button" *ngIf="saveButton">
+              <span *ngIf="!updateButton" (click)="saveFixedAllowanceData(addExpenseCategory)">
+                <i class="fa fa-arrow-circle-o-right " aria-hidden="true "></i>
+                Save</span>
+              <span *ngIf="updateButton" (click)="updateExpenseCategories(addExpenseCategory)">
+                <i class="fa fa-arrow-circle-o-right " aria-hidden="true "></i>
+                Update</span>
+            </button>
+          </div>
+        </form>
+        <pre>{{addExpenseCategory.value| json}}</pre>
+      </div>
+    </app-left-right-panel>
+  </div>
+</div> -->
+
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Expense Category</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" *ngIf="!isLeftVisible"
+        (click)="addCategory(); isLeftVisible = !isLeftVisible; ">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add Category</span>
+      </button>
+      <button class="btn header-button" *ngIf="isLeftVisible"
+        (click)="cancelAddAllowanceForm(); isLeftVisible = !isLeftVisible; this.checkVal = true;">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          Back</span>
+      </button>
+    </div>
+  </div>
+  <!-- <ng-template #expCategoryViewOnly>
+    <div class="card-header">
+      <h6 class="title">Expense Category</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <app-left-right-panel [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="left-right-pane-card">
+          <div class="searchBox" style="text-align: right">
+            <i class="fa fa-search"></i>
+            <input type="text" pInputText size="50" placeholder="Search"
+              (input)="dt1.filterGlobal($event.target.value, 'contains')">
+          </div>
+          <p-table #dt1 [columns]="columns" [value]="expenseCategory" [rows]="5" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="colgroup" let-columns>
+              <colgroup>
+                <col *ngFor="let col of columns">
+              </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon *ngIf="col.field!='image'" [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns">
+                  <div *ngIf="col.field">{{car[col.field]}}</div>
+                  <div class="mat-cell">
+                    <div class="mat-element-icon">
+                      <span class="edit" *ngIf="col.field === 'actions'">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"
+                          (click)=" isLeftVisible = !isLeftVisible; updateCategory();updateCategories(car)"></i>
+                      </span>
+                      <span class="delete" *ngIf="col.field === 'actions' && car['isDefault']=== false">
+                        <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteFixedAllowanceData(car)"></i>
+                      </span>
+
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div class="left-right-pane-card">
+          <div class="text-center">
+            <h5 *ngIf="!updateButton" class="left-rights-slider-title">
+              Add Expense Category
+            </h5>
+            <h5 *ngIf="updateButton" class="left-rights-slider-title">
+              Update Expense Category
+            </h5>
+            <h6 class="left-rights-slider-Subtitle">
+              Expense Category for Company
+            </h6>
+          </div>
+          <form #expenseCategoriesForm="ngForm" [formGroup]="addExpenseCategory">
+            <div class="form-group">
+              <p class="category showFieldMandatory">Please choose the type of expense</p>
+              <mat-form-field class="fullLength">
+                <input *ngIf="updateButton" matInput formControlName="expenseType" [readonly]="true">
+                <mat-select *ngIf="!updateButton" placeholder="Select Mode" formControlName="expenseType">
+                  <mat-option value="Per_Day">Per Day</mat-option>
+                  <mat-option value="Time">Time</mat-option>
+                  <mat-option value="Distance">Distance</mat-option>
+                  <mat-option value="Other">Others</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span class="category" style="color: red;"
+                [hidden]="addExpenseCategory.controls.expenseType.valid || addExpenseCategory.controls.expenseType.untouched">
+                Field is required
+              </span>
+            </div>
+            <div class="form-group">
+              <p class="category">Please provide a label for this expense</p>
+              <mat-form-field class="fullLength">
+                <input matInput placeholder="Custom Label" formControlName="labelExpense" [readonly]="updateButton">
+              </mat-form-field>
+              <span class="category" style="color: red;"
+                [hidden]="addExpenseCategory.controls.labelExpense.valid || addExpenseCategory.controls.labelExpense.untouched">
+                Field is required
+              </span>
+            </div>
+            <div></div>
+            <div class="form-group ">
+              <p class="category">Please add/edit fields that employees need to fill during
+                expense application</p>
+              <div formArrayName="expenseCustomField">
+                <div *ngFor="let itemrow of addExpenseCategory.get('expenseCustomField')['controls']; let i=index"
+                  [formGroupName]="i">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field class="fullLength">
+                        <input matInput placeholder="Field Name" formControlName="expenseDynamicFieldName">
+                        <mat-error
+                          [hidden]="addExpenseCategory.controls.expenseCustomField.controls[i].controls.expenseDynamicFieldName.valid || addExpenseCategory.controls.expenseCustomField.controls[i].controls.expenseDynamicFieldName.untouched">
+                          Field is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-1 offset-md-1"></div>
+                    <div class="col-md-5">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Field Type" formControlName="expenseDynamicFieldType">
+                          <mat-option *ngFor="let allowance of fieldTypes" [value]="allowance.value"
+                            (click)="onClickSelectMerchantValue(allowance.value,i)">
+                            {{ allowance.viewValue }}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error
+                          [hidden]="addExpenseCategory.controls.expenseCustomField.controls[i].controls.expenseDynamicFieldType.valid || addExpenseCategory.controls.expenseCustomField.controls[i].controls.expenseDynamicFieldType.untouched">
+                          Field is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-1" *ngIf="i!=0">
+                      <div class="options-new-ArrayItems pull-right">
+                        <div class="mat-element-icon DivHorizental">
+                          <span class="delete">
+                            <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="openTextField[i]">
+                    <div formArrayName="expenseCustomDropdown">
+                      <div
+                        *ngFor="let itemrow of addExpenseCategory.controls.expenseCustomField.controls[i].controls.expenseCustomDropdown.controls; let j=index"
+                        [formGroupName]="j">
+                        <div class="row item-content">
+                          <div class="col-md-3">
+                            <p class="category" style="margin: 0;">Add Option</p>
+                          </div>
+                          <div class="col-md-2">
+                            <div class="options-new-ArrayItems text-right">
+                              <div class="mat-element-icon">
+                                <span *ngIf="j!=0" class="delete">
+                                  <i class="fa fa-trash" aria-hidden="true" (click)="deleteDropdownRow(i,j)"></i>
+                                </span>
+                                <span class="add">
+                                  <i class="fa fa-plus-square" aria-hidden="true" (click)="addNewDropdownRow(i)"></i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-7 offset-md-7"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-5">
+                            <mat-form-field class="fullLength">
+                              <input matInput placeholder="Options" formControlName="expenseDynamicDropdownHidden">
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-7 offset-md-7"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <button class="header-button " (click)="addNewRow()">
+                <span>
+                  Add Custom Fields</span>
+              </button>
+            </div>
+            <div class="form-group">
+              <p class="category">Is field mandatory while submitting expense request?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="fieldMandatory">
+                  <mat-radio-button value='true'>Yes</mat-radio-button>
+                  <mat-radio-button value='false'>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <span class="category" style="color: red;" [hidden]="(addExpenseCategory.controls.fieldMandatory.valid || 
+                           addExpenseCategory.controls.fieldMandatory.untouched)">
+                {{requiredRadioButton}}
+              </span>
+            </div>
+
+
+            <div class="text-center" style="margin-top:20px;">
+              <button class="header-button " (click)="cancelAddAllowanceForm(); isLeftVisible = !isLeftVisible;">
+                <span>
+                  <i class="fa fa-times " aria-hidden="true "></i>
+                  Cancel</span>
+              </button>
+
+              <button class="header-button" *ngIf="saveButton" (click)="saveExpenseCategories(expenseCategoriesForm)">
+                <span>
+                  <i class="fa fa-arrow-circle-o-right " aria-hidden="true "></i>
+                  Save</span>
+              </button>
+              <button class="header-button" *ngIf="updateButton"
+                (click)="updateExpenseCategories(expenseCategoriesForm)">
+                <span>
+                  <i class="fa fa-floppy-o " aria-hidden="true "></i>
+                  Update</span>
+              </button>
+            </div>
+          </form>
+          <!-- <pre>{{addExpenseCategory.value|json}}</pre> -->
+        </div>
+      </div>
+    </app-left-right-panel>
+  </div>
+</div>

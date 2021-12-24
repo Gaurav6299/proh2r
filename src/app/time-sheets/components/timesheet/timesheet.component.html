@@ -1,0 +1,440 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h6 class="title">Timesheets</h6>
+        </div>
+      </div>
+      <div class="card-content">
+        <div>
+          <ul class="calender-listing">
+            <li class="monthTitle">
+              <h2>{{values[0].toDateString()}} - {{values[1].toDateString()}}</h2>
+            </li>
+            <li (click)="previousStartDateAndEndDate();">
+              <span>
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+              </span>
+            </li>
+            <li class="times-calendar-class">
+              <div class="ui-g ui-fluid">
+                <p-calendar #myCalendar [(ngModel)]="values" selectionMode="range" (onSelect)="getDateRange($event)"
+                  [style]=" { width: '100%' }" [showIcon]="true" styleClass="only-icon" dateFormat="yyyy-dd-mm">
+                </p-calendar>
+              </div>
+            </li>
+            <li (click)="nextStartDateAndEndDate();">
+              <span>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </span>
+            </li>
+            <li>
+              <button class="calender-button" (click)="setCurrentDate('click');">Today</button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="selecteble-options">
+          <span class="user-title">
+            <i class="fa fa-user"></i>
+          </span>
+          <select (change)="selectEmployee();" [(ngModel)]="selectedEmployee">
+            <option *ngFor="let employee of employeesList" [value]="employee.value">
+              {{employee.viewValue}}
+            </option>
+          </select>
+        </div>
+        <br>
+
+        <div class="form-group">
+          <form [formGroup]="timeSheetLineItem">
+            <div class="table-responsive">
+              <!-- Table data -->
+              <table class="table table-bordered">
+                <thead class="view-time-sheets text-center">
+                  <tr>
+                    <th>Total Hours</th>
+                    <th>Workweek</th>
+                    <td class="text-success">--</td>
+                    <td class="text-success">--</td>
+                    <td class="text-success">--</td>
+                    <td class="text-success">--</td>
+                    <td class="text-success">--</td>
+                    <td class="text-success">--</td>
+                    <td class="text-success">--</td>
+                    <td class="text-success">--</td>
+                    <th class="text-center">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  <tr>
+                    <td class="text-left">{{timeSheetLineItem.controls['totalHours']?.value}}</td>
+                    <td class="text-left">{{timeSheetLineItem.controls['workWeekHours']?.value}}</td>
+                    <td class="text-center">{{timeSheetLineItem.controls['totalDay0Hours']?.value}}</td>
+                    <td class="text-center">{{timeSheetLineItem.controls['totalDay1Hours']?.value}}</td>
+                    <td class="text-center">{{timeSheetLineItem.controls['totalDay2Hours']?.value}}</td>
+                    <td class="text-center">{{timeSheetLineItem.controls['totalDay3Hours']?.value}}</td>
+                    <td class="text-center">{{timeSheetLineItem.controls['totalDay4Hours']?.value}}</td>
+                    <td class="text-center">{{timeSheetLineItem.controls['totalDay5Hours']?.value}}</td>
+                    <td class="text-center">{{timeSheetLineItem.controls['totalDay6Hours']?.value}}</td>
+                    <td class="text-center">{{timeSheetLineItem.controls['totalHours']?.value}}</td>
+                    <td
+                      [ngStyle]="{'color':timeSheetLineItem.controls.timeSheetApprovalStatus.value=== 'APPROVED' ? 'green' :(timeSheetLineItem.controls.timeSheetApprovalStatus.value=== 'LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=== 'LEVEL_2_REJECTED')? 'red' :timeSheetLineItem.controls.timeSheetApprovalStatus.value=== 'DRAFT' ? 'blue' :timeSheetLineItem.controls.timeSheetApprovalStatus.value=== 'LEVEL_1_PENDING' ? 'orange' :timeSheetLineItem.controls.timeSheetApprovalStatus.value=== 'LEVEL_2_PENDING' ? 'orange' : '' }">
+                      {{timeSheetLineItem.controls.timeSheetApprovalStatus.value | customUnderscorePipe:'timeSheetLineItem.controls.timeSheetApprovalStatus.value'}}
+                    </td>
+                  </tr>
+                </tbody>
+                <!-- Table Form data -->
+                <thead class="time-sheets-table-head">
+                  <tr>
+                    <th>Project</th>
+                    <th>Task</th>
+                    <th class="text-center">{{day0.format('ddd').toString() + " " + day0.format('D')}}</th>
+                    <th class="text-center">{{day1.format('ddd').toString() + " " + day1.format('D')}}</th>
+                    <th class="text-center">{{day2.format('ddd').toString() + " " + day2.format('D')}}</th>
+                    <th class="text-center">{{day3.format('ddd').toString() + " " + day3.format('D')}}</th>
+                    <th class="text-center">{{day4.format('ddd').toString() + " " + day4.format('D')}}</th>
+                    <th class="text-center">{{day5.format('ddd').toString() + " " + day5.format('D')}}</th>
+                    <th class="text-center">{{day6.format('ddd').toString() + " " + day6.format('D')}}</th>
+                    <th class="text-center">Total</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="table-bottom-body" formArrayName="timeSheetLineResVOS"
+                  *ngFor="let line of timeSheetLineItem.get('timeSheetLineResVOS')['controls']; let i = index;">
+                  <tr [formGroupName]="i">
+                    <td>
+                      <div class="selecteble-options inputTypeBoxSelectAtr">
+                        <input
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value==='APPROVED'|| timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_PENDING' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_PENDING'; else showProjectDropdown"
+                          formControlName="projectName" disabled>
+                        <ng-template #showProjectDropdown>
+                          <select (change)="selectProject(i);" formControlName="projectId"
+                            [attr.disabled]="(timeSheetLineItem.controls.timeSheetApprovalStatus.value!=''&& timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' ) ? '' : null"
+                            required>
+                            <option *ngFor="let project of projectTaskArr" [value]="project.projectId">
+                              {{project.projectName}}
+                            </option>
+                          </select>
+                        </ng-template>
+
+                        <span class="error-message"
+                          *ngIf="!timeSheetLineItem.controls['timeSheetLineResVOS']?.controls[i].valid && isSubmitted">
+                          Please select Project and Task
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="selecteble-options inputTypeBoxSelectAtr">
+                        <input
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value==='APPROVED'|| timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_PENDING' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_PENDING'; else showTaskDropdown"
+                          formControlName="taskName" disabled>
+                        <ng-template #showTaskDropdown>
+                          <select (change)="selectTask(i);" formControlName="taskId"
+                            [attr.disabled]="(timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' ) ? '' : null">
+                            <option
+                              *ngFor="let task of getTask(timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.projectId,i)"
+                              [value]="task.taskId">
+                              {{task.taskName}}
+                            </option>
+                          </select>
+                        </ng-template>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="inputTypeBoxSections" [mdePopoverTriggerFor]="appPopover" mdePopoverTriggerOn="none"
+                        #popoverTrigger="mdePopoverTrigger" (click)="addDescription(line,i,'day0');">
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day0==null" readOnly
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' ">
+
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day0?.totalDayHours!=undefined"
+                          [value]="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day0?.totalDayHours"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' ">
+                        <div class="edit-input-icon"
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value=='' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='DRAFT' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_REJECTED'">
+                          <a>
+                            <i class="fa fa-pencil fa-md"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="inputTypeBoxSections" [mdePopoverTriggerFor]="appPopover" mdePopoverTriggerOn="none"
+                        #popoverTrigger="mdePopoverTrigger" (click)="addDescription(line,i,'day1');">
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day1==null"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          readOnly>
+
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day1?.totalDayHours!=undefined"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          [value]="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day1?.totalDayHours"
+                          readOnly>
+                        <div class="edit-input-icon"
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value=='' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='DRAFT' ||timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_REJECTED' ">
+                          <a>
+                            <i class="fa fa-pencil fa-md"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="inputTypeBoxSections" [mdePopoverTriggerFor]="appPopover" mdePopoverTriggerOn="none"
+                        #popoverTrigger="mdePopoverTrigger" (click)="addDescription(line,i,'day2');">
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day2==null"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED'"
+                          readOnly>
+
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day2?.totalDayHours!=undefined"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          [value]="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day2?.totalDayHours"
+                          readOnly>
+                        <div class="edit-input-icon"
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value=='' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='DRAFT' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_REJECTED'">
+                          <a>
+                            <i class="fa fa-pencil fa-md"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="inputTypeBoxSections" [mdePopoverTriggerFor]="appPopover" mdePopoverTriggerOn="none"
+                        #popoverTrigger="mdePopoverTrigger" (click)="addDescription(line,i,'day3');">
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day3==null"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          readOnly>
+
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day3?.totalDayHours!=undefined"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          [value]="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day3?.totalDayHours"
+                          readOnly>
+                        <div class="edit-input-icon"
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value=='' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='DRAFT' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_REJECTED'">
+                          <a>
+                            <i class="fa fa-pencil fa-md"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="inputTypeBoxSections" [mdePopoverTriggerFor]="appPopover" mdePopoverTriggerOn="none"
+                        #popoverTrigger="mdePopoverTrigger" (click)="addDescription(line,i,'day4');">
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day4==null"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED'"
+                          readOnly>
+
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day4?.totalDayHours!=undefined"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          [value]="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day4?.totalDayHours"
+                          readOnly>
+                        <div class="edit-input-icon"
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value=='' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='DRAFT' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_REJECTED'">
+                          <a>
+                            <i class="fa fa-pencil fa-md"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="inputTypeBoxSections" [mdePopoverTriggerFor]="appPopover" mdePopoverTriggerOn="none"
+                        #popoverTrigger="mdePopoverTrigger" (click)="addDescription(line,i,'day5');">
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day5==null"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          readOnly>
+
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day5?.totalDayHours!=undefined"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          [value]="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day5?.totalDayHours"
+                          readOnly>
+                        <div class="edit-input-icon"
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value=='' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='DRAFT' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_REJECTED'">
+                          <a>
+                            <i class="fa fa-pencil fa-md"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="inputTypeBoxSections" [mdePopoverTriggerFor]="appPopover" mdePopoverTriggerOn="none"
+                        #popoverTrigger="mdePopoverTrigger" (click)="addDescription(line,i,'day6');">
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day6==null"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          readOnly>
+
+                        <input type="text"
+                          *ngIf="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day6?.totalDayHours!=undefined"
+                          [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                          [value]="timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.day6?.totalDayHours"
+                          readOnly>
+                        <div class="edit-input-icon"
+                          *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value=='' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='DRAFT' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_REJECTED'">
+                          <a>
+                            <i class="fa fa-pencil fa-md"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-center" style="display: flex;margin-top: 5px;">
+                      {{timeSheetLineItem.controls['timeSheetLineResVOS']?.value[i]?.totalHours}}
+                    </td>
+                    <td class="text-center">
+                      <div class="mat-cell" (click)="deleteLine(i)">
+                        <div class="mat-element-icon">
+                          <span
+                            *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value=='' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='DRAFT' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_1_REJECTED' || timeSheetLineItem.controls.timeSheetApprovalStatus.value=='LEVEL_2_REJECTED' "
+                            style="vertical-align: baseline;line-height: 0;padding-left: 5px;" class="delete"
+                            matTooltip="Delete">
+                            <i class="fa fa-trash-o"></i>
+                          </span>
+                          <span class="check"
+                            *ngIf="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' "
+                            style="vertical-align: baseline;line-height: 0;padding-left: 5px;cursor: default;">
+                            <i class="fa fa-check"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+
+
+
+            </div>
+          </form>
+        </div>
+        <div style="float:right;margin: 10px 0;">
+          <button class="btn header-button" (click)="saveTimeSheet('LEVEL_1_PENDING');"
+            [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT'   && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' ">
+            <span>
+              <i class="fa fa-check" aria-hidden="true"></i>
+              Submit</span>
+          </button>
+        </div>
+        <div style="float:right;margin-right: 20px;margin-top: 10px;">
+          <button class="btn header-button" (click)="saveTimeSheet('DRAFT')"
+            [disabled]="timeSheetLineItem.controls.timeSheetApprovalStatus.value!='' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='DRAFT'   && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_1_REJECTED' && timeSheetLineItem.controls.timeSheetApprovalStatus.value!='LEVEL_2_REJECTED' ">
+            <span>
+              <i class="fa fa-check" aria-hidden="true"></i>
+              Save</span>
+          </button>
+        </div>
+        <div class="add-task-entries">
+          <a (click)="addNewLine('click')">
+            <span>
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </span>
+            Add New Entry</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- mde-popover-content -->
+
+<!-- mde-popover-content -->
+
+<mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
+  [mdePopoverCloseOnClick]="false" mdePopoverPositionY="below">
+  <div class="main-mat-card-header-title">
+    <div class="row main-card-header-row">
+      <div class="col-md-4">
+        <!-- <h2 class="applyDateSection text-left">Tue, April 17</h2> -->
+        <h2 class="applyDateSection text-left">{{displayDateInCell}}</h2>
+      </div>
+      <div class="col-md-4">
+        <h2 class="applyTaskSection text-center">Timeline</h2>
+      </div>
+      <div class="col-md-4">
+        <h2 class="closePooverSection close-icon text-right">
+          <i class="material-icons" (click)="closePopover();">close</i>
+        </h2>
+      </div>
+    </div>
+  </div>
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="descriptionLineItem">
+        <div class="main-mat-card-content-form" formArrayName="timeSheetDayItemDescriptions"
+          *ngFor="let line of descriptionLineItem.get('timeSheetDayItemDescriptions')['controls']; let i = index;">
+
+          <div class="row" [formGroupName]="i">
+            <div class="col-md-2" *ngIf="timesheetTemplate.timeCaptureType!='HOURWISE'">
+              <div class="form-group">
+                <label>From Time</label>
+                <input matInput type="time" class="form-control" formControlName="fromTime"
+                  (click)="openTimePicker($event,'fromTime',i)">
+              </div>
+            </div>
+            <div class="col-md-2" *ngIf="timesheetTemplate.timeCaptureType!='HOURWISE'">
+              <div class="form-group">
+                <label>To Time</label>
+                <input matInput type="time" class="form-control" formControlName="toTime"
+                  (click)="openTimePicker($event,'toTime',i)">
+              </div>
+            </div>
+            <div class="col-md-2" *ngIf="timesheetTemplate.timeCaptureType!=='HOURWISE'">
+              <div class="form-group">
+                <label>Total Time</label>
+                <input type="text" class="form-control" formControlName="hours" readOnly>
+              </div>
+            </div>
+            <div class="col-md-2" *ngIf="timesheetTemplate.timeCaptureType==='HOURWISE'">
+              <div class="form-group">
+                <label>Total Time</label>
+                <input type="text" class="form-control" formControlName="hours">
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <label>Notes (optional)</label>
+                <input type="text" class="form-control" formControlName="notes">
+              </div>
+            </div>
+            <div class="col-md-1">
+              <a (click)="deleteDescription(i)">
+                <span class="delete">
+                  <i class="fa fa-trash" matTooltip="Delete"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </mat-card-content>
+    <mat-card-actions align="right">
+      <div class="model-footer">
+        <div class="add-times-entries" (click)="insertNewDescription();">
+          <a>
+            <span>
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </span>
+            Add Another Time Entry</a>
+        </div>
+        <div class="error-messageMdePopover" *ngIf="!descriptionLineItem.valid">
+          Description cannot be blank
+        </div>
+        <button class="cancel-buttons" cdkFocusInitial (click)="closePopover();">Cancel</button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveDescription();">Save</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</mde-popover>
+
+<!-- <pre>{{timeSheetLineItem.value | json}}</pre> -->

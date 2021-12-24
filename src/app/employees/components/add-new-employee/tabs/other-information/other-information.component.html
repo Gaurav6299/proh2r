@@ -1,0 +1,239 @@
+<div style="margin: 10px 0 0;">
+  <button class="btn header-button" routerLink="/employees/">
+    <span>Finish Onboarding</span>
+  </button>
+</div>
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header" data-background-color="blue">
+    <div style="float:left;">
+      <h6 class="title">Employee Leave Assignment</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" (click)="openAddLeaveTemplateDialog()">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="showLeaveCategoryList mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource" matSort>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="templateName" style="color:red;">
+          <mat-header-cell *matHeaderCellDef>Leave Policy</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.templateName}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="primaryApprover">
+          <mat-header-cell *matHeaderCellDef>Primary Supervisors</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.primaryApprover}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="secondaryApprover">
+          <mat-header-cell *matHeaderCellDef>Secondary Supervisors</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.secondaryApprover}} </mat-cell>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span style="padding:3px;"><i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                (click)="deleteTemplateAssignmentDialog(element,'leave')"
+                style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i></span>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>
+
+<!-- Shift Assignmne Table  Starts-->
+
+<!-- <div class="card" style="box-shadow: none !important">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Employee Shift Assignment</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" (click)="employeeShiftDialog( )">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="showLeaveCategoryList mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource1" matSort>
+        <!-- Name Column -->
+<!-- <ng-container matColumnDef="shiftAssign" style="color:red;">
+          <mat-header-cell *matHeaderCellDef>Shift Name</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.shiftAssign}} </mat-cell>
+        </ng-container> -->
+
+<!-- Name Column -->
+<!-- <ng-container matColumnDef="shiftEffectiveDate">
+          <mat-header-cell *matHeaderCellDef>Effective From</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.shiftEffectiveDate}} </mat-cell>
+        </ng-container> -->
+
+
+<!-- Symbol Column -->
+<!-- <ng-container matColumnDef="shiftAssignmentId">
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span style="padding:3px;">
+              <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteRow(element)" style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"></i>
+            </span>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns1;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div> -->
+<!-- Shift Assignmne Table Ends-->
+
+<!-- Attendence Assignment Table -->
+
+<div class="card" style="box-shadow: none !important">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Employee Attendance Assignment</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" (click)="openAttendenceAssignment( )">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="showLeaveCategoryList mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource2" matSort>
+        <!-- Name Column -->
+        <ng-container matColumnDef="attendenceTemplate">
+          <mat-header-cell *matHeaderCellDef>Attendance Template</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.attendenceTemplate}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="supervisorsAttendenceTemplate">
+          <mat-header-cell *matHeaderCellDef> Supervisor</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.supervisorsAttendenceTemplate}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="attendenceEffectiveFrom">
+          <mat-header-cell *matHeaderCellDef>Effective From</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.attendenceEffectiveFrom}} </mat-cell>
+        </ng-container>
+
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="attendenceAssignmentId">
+          <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span style="padding:3px;">
+              <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                style="font-size:20px;color:#e03737;vertical-align: top;cursor:pointer;"
+                (click)="deleteTemplateAssignmentDialog(element,'attendance')"></i>
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>
+<!-- Employeee Expense Assignmnet -->
+
+<!-- <div class="card" style="box-shadow: none !important">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Employee Expense Assignment</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" (click)="employeeExpenseDialog( )">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="showLeaveCategoryList mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource3" matSort> -->
+<!-- Name Column -->
+<!-- <ng-container matColumnDef="expensePolicy" style="color:red;">
+          <mat-header-cell *matHeaderCellDef>Expense Policy</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.expensePolicy}} </mat-cell>
+        </ng-container> -->
+
+<!-- Name Column -->
+<!-- <ng-container matColumnDef="supervisorsExpensesAssignment">
+          <mat-header-cell *matHeaderCellDef>Supervisors</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.supervisors2}} </mat-cell>
+        </ng-container> -->
+
+<!-- Symbol Column -->
+<!-- <ng-container matColumnDef="expenseAssignmentId">
+          <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+          </mat-cell>
+        </ng-container> -->
+<!-- Header Row -->
+<!-- <mat-header-row *matHeaderRowDef="displayedColumns3"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns3;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div> -->
+<!-- Employee Flexi Benefit Table -->
+
+<!-- <div class="card" style="box-shadow: none !important">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Employee Flexi Benefit Supervisor Assignment</h6>
+    </div>
+    <div style="text-align: right;">
+      <button class="btn header-button" (click)="openAddDialog( )">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Add</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="showLeaveCategoryList mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource4" matSort> -->
+<!-- Name Column -->
+<!-- <ng-container matColumnDef="supervisorsFlexiBenefit" style="color:red;">
+          <mat-header-cell *matHeaderCellDef>Expense Policy</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.supervisors3}} </mat-cell>
+        </ng-container> -->
+
+<!-- Name Column -->
+<!-- <ng-container matColumnDef="flexiBenefitAssignmentId">
+          <mat-header-cell *matHeaderCellDef>Supervisors</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.flexiBenefitAssignmentId}} </mat-cell>
+        </ng-container> -->
+
+<!-- Header Row -->
+<!-- <mat-header-row *matHeaderRowDef="displayedColumns4"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns4;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div> -->

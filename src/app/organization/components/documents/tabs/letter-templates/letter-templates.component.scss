@@ -1,0 +1,13 @@
+@import "~assets/sass/md/customCSS";
+
+.buttonShape {
+  border-radius: 25px;
+  padding: 2px;
+  padding-left: 23px;
+  padding-right: 23px;
+}
+
+::ng-deep .mat-sort-header-container {
+display:flex;
+justify-content:center;
+}

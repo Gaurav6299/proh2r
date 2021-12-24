@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Upload Attendance Audit Changes</h4>
+    <div class="card-content">
+        <p class="category">Make necessary changes in the imported file and upload *</p>
+        <div> <input _ngcontent-c23="" type="file"> </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial> Save
+        </button>
+    </div>
+</mat-dialog-actions>

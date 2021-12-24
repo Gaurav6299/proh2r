@@ -1,0 +1,26 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Upload File</h4>
+    <div class="card-content">
+        <p class="category">Make necessary changes in the imported file and upload *</p>
+        <button (click)="uploadFormat()" class="btn header-button">
+            <span>
+                <i class="fa fa-cloud-upload" aria-hidden="true"></i>Upload</span>
+            <div class="file-upload">
+                <input type="file" id="uploadFile" (change)="selectFile($event)" required>
+            </div>
+        </button>
+        <span *ngIf="this.selectedFilesName">{{this.selectedFilesName}}</span>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel</button>
+        <button class="btn header-button" cdkFocusInitial (click)="upload()">Upload</button>
+    </div>
+</mat-dialog-actions>

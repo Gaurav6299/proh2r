@@ -1,0 +1,157 @@
+{
+  "regularizationReason": [{
+      "reasonId": 10,
+      "assignedReason": "Forgot to do Punch-Out"
+    },
+    {
+      "reasonId": 11,
+      "assignedReason": "Forgot to do both Punch In & Punch-Out "
+    },
+    {
+      "reasonId": 12,
+      "assignedReason": "System Issue "
+    },
+    {
+      "reasonId": 22,
+      "assignedReason": "Forgot to do Punch-In"
+    }
+  ],
+  "leaveCategory": [{
+      "id": 5,
+      "category": "Casual Leave"
+    },
+    {
+      "id": 4,
+      "category": "Privilege Leave"
+    },
+    {
+      "id": 6,
+      "category": "CompOff"
+    }
+  ],
+  "attendanceRecordList": [{
+      "date": "2020-07-01",
+      "status": "Present"
+    },
+    {
+      "date": "2020-07-02",
+      "status": "Present"
+    },
+    {
+      "date": "2020-07-03",
+      "status": "Present"
+    },
+    {
+      "date": "2020-07-04",
+      "status": "Weekly Off"
+    },
+    {
+      "date": "2020-07-05",
+      "status": "Weekly Off"
+    },
+    {
+      "date": "2020-07-06",
+      "status": "Present"
+    },
+    {
+      "date": "2020-07-07",
+      "status": "Present"
+    },
+    {
+      "date": "2020-07-08",
+      "status": "Present"
+    },
+    {
+      "date": "2020-07-09",
+      "status": "In"
+    },
+    {
+      "date": "2020-07-10",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-11",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-12",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-13",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-14",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-15",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-16",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-17",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-18",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-19",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-20",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-21",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-22",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-23",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-24",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-25",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-26",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-27",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-28",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-29",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-30",
+      "status": "N/A"
+    },
+    {
+      "date": "2020-07-31",
+      "status": "N/A"
+    }
+  ]
+}

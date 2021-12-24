@@ -1,0 +1,373 @@
+<!-- {{currentStep}} -->
+<form [formGroup]="HideShowQuestion">
+    <div>
+        <div class="card-content" style="margin-top:0px;">
+            <div class="form-group">
+                <div *ngIf="this.checkedListArray.expenseType == 'Distance'">
+                    <div formArrayName="expenseTemplateCategoryFields">
+                        <div *ngFor="let itemrow of HideShowQuestion.controls['expenseTemplateCategoryFields'].controls; let i=index"
+                            [formGroupName]="i">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="Label" formControlName="templateFieldName">
+                                    </mat-form-field>
+                                    <span class="category" style="color: red;"
+                                        [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldName.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldName.untouched">
+                                        Field is required
+                                    </span>
+                                </div>
+                                <div class="col-md-1 offset-md-1"></div>
+                                <div class="col-md-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-select placeholder="Field Type" formControlName="templateFieldType">
+                                            <mat-option *ngFor="let type of fieldTypes" [value]="type.value"
+                                                (click)="onClickSelectMerchantValue(type.value,i)">
+                                                {{ type.viewValue }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <span class="category" style="color: red;"
+                                        [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldType.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldType.untouched">
+                                        Field is required
+                                    </span>
+                                </div>
+                                <div class="col-md-1 offset-md-1"></div>
+                                <div class="col-md-3"
+                                    *ngIf="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldType.value == 'Km'">
+                                    <mat-form-field class="full-width">
+                                        <input matInput pattern="(?<=\s|^)\d+(?=\s|$)" placeholder="Rate Per KM"
+                                            formControlName="templateFieldValue">
+                                    </mat-form-field>
+                                    <span class="category" style="color: red;"
+                                        [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldValue.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldValue.untouched">
+                                        Field is invalid.
+                                    </span>
+                                </div>
+                                <div class="col-md-3"
+                                    *ngIf="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldType.value == 'Miles'">
+                                    <mat-form-field class="full-width">
+                                        <input matInput pattern="(?<=\s|^)\d+(?=\s|$)" placeholder="Rate Per Miles"
+                                            formControlName="templateFieldValue">
+                                    </mat-form-field>
+                                    <span class="category" style="color: red;"
+                                        [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldValue.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldValue.untouched">
+                                        Field is invalid.
+                                    </span>
+                                </div>
+                                <div class="col-md-1" *ngIf="i!=0">
+                                    <div class="options-new-ArrayItems pull-right">
+                                        <div class="mat-element-icon DivHorizental">
+                                            <span class="delete">
+                                                <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="header-button " (click)="addNewRow()">
+                            <span>
+                                Add Rates</span>
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="this.checkedListArray.expenseType == 'Per_Day'">
+                    <div formArrayName="expenseTemplateCategoryFields">
+                        <div *ngFor="let itemrow of HideShowQuestion.controls['expenseTemplateCategoryFields'].controls; let i=index"
+                            [formGroupName]="i">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="Label" formControlName="templateFieldName">
+                                    </mat-form-field>
+                                    <span class="category" style="color: red;"
+                                        [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldName.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldName.untouched">
+                                        Field is required
+                                    </span>
+                                </div>
+                                <div class="col-md-1 offset-md-1"></div>
+                                <!-- <div class="col-md-3">
+                                        <mat-form-field class="full-width">
+                                            <mat-select placeholder="Field Type" formControlName="templateFieldType">
+                                                <mat-option *ngFor="let type of fieldTypes" [value]="type.value">
+                                                    {{ type.viewValue }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <span class="category" style="color: red;"
+                                            [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldType.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldType.untouched">
+                                            Field is required
+                                        </span>
+                                    </div> -->
+                                <div class="col-md-5">
+                                    <mat-form-field class="full-width">
+                                        <input matInput pattern="(?<=\s|^)\d+(?=\s|$)" placeholder="Rate Per Day"
+                                            formControlName="templateFieldValue">
+                                    </mat-form-field>
+                                    <span class="category" style="color: red;"
+                                        [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldValue.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldValue.untouched">
+                                        Field is invalid.
+                                    </span>
+                                </div>
+                                <div class="col-md-1" *ngIf="i!=0">
+                                    <div class="options-new-ArrayItems pull-right">
+                                        <div class="mat-element-icon DivHorizental">
+                                            <span class="delete">
+                                                <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="header-button " (click)="addNewRow()">
+                            <span>
+                                Add Rates</span>
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="this.checkedListArray.expenseType == 'Time'">
+                    <div formArrayName="expenseTemplateCategoryFields">
+                        <div *ngFor="let itemrow of HideShowQuestion.controls['expenseTemplateCategoryFields'].controls; let i=index"
+                            [formGroupName]="i">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="Label" formControlName="templateFieldName">
+                                    </mat-form-field>
+                                    <span class="category" style="color: red;"
+                                        [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldName.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldName.untouched">
+                                        Field is required
+                                    </span>
+                                </div>
+                                <div class="col-md-1 offset-md-1"></div>
+                                <!-- <div class="col-md-3">
+                                        <mat-form-field class="full-width">
+                                            <mat-select placeholder="Field Type" formControlName="templateFieldType">
+                                                <mat-option *ngFor="let type of fieldTypes" [value]="type.value">
+                                                    {{ type.viewValue }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <span class="category" style="color: red;"
+                                            [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldType.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldType.untouched">
+                                            Field is required
+                                        </span>
+                                    </div> -->
+                                <div class="col-md-5">
+                                    <mat-form-field class="full-width">
+                                        <input matInput pattern="(?<=\s|^)\d+(?=\s|$)" placeholder="Rate Per Hour"
+                                            formControlName="templateFieldValue">
+                                    </mat-form-field>
+                                    <span class="category" style="color: red;"
+                                        [hidden]="HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldValue.valid || HideShowQuestion.controls.expenseTemplateCategoryFields.controls[i].controls.templateFieldValue.untouched">
+                                        Field is invalid.
+                                    </span>
+                                </div>
+                                <div class="col-md-1" *ngIf="i!=0">
+                                    <div class="options-new-ArrayItems pull-right">
+                                        <div class="mat-element-icon DivHorizental">
+                                            <span class="delete">
+                                                <i class="fa fa-trash" aria-hidden="true" (click)="deleteRow(i)"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="header-button " (click)="addNewRow()">
+                            <span>
+                                Add Rates</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="expense-steper">
+                            <p class="category">Maximum amount limit per individual expense</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div *ngIf="!this.HideShowQuestion.controls.limitIndividualExpense.value">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Maximum Limit" type="number" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="this.HideShowQuestion.controls.limitIndividualExpense.value">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Maximum Limit" type="number"
+                                    formControlName="maxLimitIndividualExpense">
+                                <mat-error
+                                    [hidden]="this.HideShowQuestion.controls.maxLimitIndividualExpense.valid || this.HideShowQuestion.controls.maxLimitIndividualExpense.untouched">
+                                    Field is required</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-right">
+                            <mat-slide-toggle formControlName="limitIndividualExpense" (change)="selectedMaxLimit()">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="expense-steper">
+                            <p class="category">Maximum amount permitted per expense without receipt</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div *ngIf="!this.HideShowQuestion.controls.expenseWithoutReceipt.value">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Maximum Amount" type="number" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="this.HideShowQuestion.controls.expenseWithoutReceipt.value">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Maximum Amount" type="number"
+                                    formControlName="maxAmountWithoutReceipt">
+                                <mat-error
+                                    [hidden]="this.HideShowQuestion.controls.maxAmountWithoutReceipt.valid || this.HideShowQuestion.controls.maxAmountWithoutReceipt.untouched">
+                                    Field is required</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-right">
+                            <mat-slide-toggle formControlName="expenseWithoutReceipt"
+                                (change)="selectedMaxAmountPermit()">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="expense-steper">
+                            <p class="category">An employee can apply maximum</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" *ngIf="!this.HideShowQuestion.controls.allowMaximumTimes.value">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Allow Maximum values" type="number" readonly>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3" *ngIf="this.HideShowQuestion.controls.allowMaximumTimes.value">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Allow Maximum values" type="number"
+                                formControlName="maxTimeApply">
+                            <mat-error
+                                [hidden]="this.HideShowQuestion.controls.maxTimeApply.valid || this.HideShowQuestion.controls.maxTimeApply.untouched">
+                                Field is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="expense-steper">
+                            <p class="category text-center">Times in a</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" *ngIf="!this.HideShowQuestion.controls.allowMaximumTimes.value">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="select time period"  readonly>
+                        </mat-form-field>
+                    
+                        <!-- <mat-form-field class="full-width">
+                            <mat-select placeholder="select" formControlName="timePeriod" readonly>
+                                <mat-option>None</mat-option>
+                                <mat-option value="DAY">Day</mat-option>
+                                <mat-option value="WEEK">Week</mat-option>
+                                <mat-option value="MONTH">Month</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    </div>
+                    <div class="col-md-3" *ngIf="this.HideShowQuestion.controls.allowMaximumTimes.value">
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="select time period" formControlName="timePeriod">
+                                <mat-option>None</mat-option>
+                                <mat-option value="DAY">Day</mat-option>
+                                <mat-option value="WEEK">Week</mat-option>
+                                <mat-option value="MONTH">Month</mat-option>
+                            </mat-select>
+                            <mat-error
+                                [hidden]="this.HideShowQuestion.controls.timePeriod.valid || this.HideShowQuestion.controls.timePeriod.untouched">
+                                Field is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="text-right">
+                            <mat-slide-toggle formControlName="allowMaximumTimes" (change)="selectedMaxTime()">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="expense-steper">
+                            <p class="category">Expense will expire Days after incurred date</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" *ngIf="!this.HideShowQuestion.controls.allowExpireDays.value">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Expiry days" type="number"  readonly>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3" *ngIf="this.HideShowQuestion.controls.allowExpireDays.value">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Expiry days" type="number"
+                                formControlName="applyBeforeexpireDays">
+                            <mat-error
+                                [hidden]="this.HideShowQuestion.controls.applyBeforeexpireDays.valid || this.HideShowQuestion.controls.applyBeforeexpireDays.untouched">
+                                Field is required</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-right">
+                            <mat-slide-toggle formControlName="allowExpireDays" (change)="selectedExpireDays()">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row" style="text-align: center;margin-bottom:15px; margin-top:15x; ">
+                    <button class="btn header-button" (click)="onCancelClick()">
+                        <span>
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            Cancel</span>
+                    </button>
+                    <button class="btn header-button" *ngIf="currentStep !=0" (click)="setBackStep()"
+                        matStepperPrevious>
+                        <span>
+                            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                            Back </span>
+                    </button>
+                    <button class="btn header-button" (click)="saveDynamicTabRecord()">
+                        <span>
+                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                            Proceed </span>
+                    </button>
+                    <!-- <button class="btn header-button" (click)="saveDynamicTabRecord()"
+                        [hidden]="this.HideShowQuestion.valid">
+                        <span>
+                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                            Proceed </span>
+                    </button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <pre>{{this.HideShowQuestion.value | json}} </pre> -->
+    <!-- <pre>{{this.checkedListArray|json}}</pre> -->
+</form>

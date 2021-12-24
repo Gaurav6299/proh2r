@@ -1,0 +1,60 @@
+<div class="card" style="box-shadow: none !important">
+  <div class="card-content">
+    <div style="text-align: right;">
+      <button class="btn header-button" (click)="uploadBenifits()">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Upload Flexi Benifits</span>
+      </button>
+    </div>
+    <div class="searchBox" style="text-align: right">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+        style="width:auto">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="flexiBenifitList" [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+      [resizableColumns]="true" [autoLayout]="true" [responsive]="true" [(selection)]="selectedRows">
+      <ng-template pTemplate="header" let-columns>
+        <tr [pSelectableRow]="car">
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr [pSelectableRow]="car">
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field!='actions'">
+              {{car[col.field]}}
+            </div>
+            <div class="mat-cell" *ngIf="col.field=='actions'">
+              <div class="mat-element-icon">
+                <span class="edit" (click)="updateBenifits(car);">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div style="position: relative;top: 20px;text-align: center;">
+    <button class="btn header-button" cdkFocusInitial (click)="cancel()">
+      <span>
+        <i class="fa fa-times" aria-hidden="true"></i>
+        Cancel</span>
+    </button>
+    <button class="btn header-button" cdkFocusInitial (click)="onBack()">
+      <span>
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+        Back</span>
+    </button>
+    <button class="btn header-button" cdkFocusInitial (click)="onProceed()">
+      <span>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Proceed</span>
+    </button>
+  </div>
+</div>

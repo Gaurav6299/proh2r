@@ -1,0 +1,24 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card">
+      <div class="card-header">
+        <h6 class="title">ASSETS MANAGEMENT<span class="header-tooltip"><img src="assets/images/info.png"
+              title="Create ,Identify and allocate asset categories and asset"></span></h6>
+      </div>
+      <div class="card-content">
+        <mat-tab-group class="tabs scroll1" (selectedTabChange)="onTabChange($event);">
+          <mat-tab label="ASSET CATEGORIES">
+            <app-asset-categories></app-asset-categories>
+          </mat-tab>
+          <mat-tab label="IDENTIFICATION LABELS">
+            <app-identification-labels></app-identification-labels>
+          </mat-tab>
+          <mat-tab label="ORGANIZATION ASSETS">
+            <app-organization-assets></app-organization-assets>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

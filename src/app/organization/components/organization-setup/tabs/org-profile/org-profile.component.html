@@ -1,0 +1,609 @@
+<div class="text-right" style="padding: 10px;">
+  <button *ngIf="!isLeftVisible" class="btn header-button" (click)="openAddSubCompanyDialog();">
+    <span>
+      <i class="fa fa-plus-square" aria-hidden="true"></i>
+      Add Company</span>
+  </button>
+</div>
+<div class="card-content">
+  <app-left-right-panes [activePane]="isLeftVisible ? 'right' : 'left'">
+    <div leftPane class="divtoggleDiv">
+      <p-table #dt1 [columns]="displayedColumns" [value]="subCompaniesList" [rows]="5" [paginator]="true"
+        [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+        [autoLayout]="true" [responsive]="true">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              <div class="profile-media">
+                <img *ngIf="col.field==='companyImage'&& car.companyImage!= null" class="img-fluid"
+                  src="{{car.companyImage}}" onerror="this.src='assets/images/no-image.jpeg'" />
+              </div>
+              <div *ngIf="(col.field!='action')&&(col.field!='companyImage')">{{car[col.field]}}</div>
+
+              <div class="mat-cell">
+                <div class="mat-element-icon">
+                  <span class="edit" *ngIf="col.field=='action'">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                      (click)="openRightPan(car)"></i>
+                  </span>
+                  <span class="delete" *ngIf="col.field=='action' && car.parentCompany==='No'">
+                    <i class="fa fa-trash-o" aria-hidden="true" matTooltip="delete" (click)="openDeleteDialog(car)"></i>
+                  </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </div>
+    <div rightPane class="divtoggleDiv">
+
+      <!---------------------------------------------------------------------------------------------------------->
+
+      <div class="row">
+        <div class="col-md-3">
+          <form enctype="multipart/form-data">
+            <ng-container *ngIf="parentCompanySelected==='No'">
+              <div style="display: none;">
+                <input #FileInput type="file" id="uploadFileSubCompany" multiple="true" (click)="FileInput.value = null"
+                  value="" (change)="selectFile($event)" accept="image/*">
+              </div>
+              <div class="image-card">
+                <div class="proh-profile-media img1" (click)="uploadFile(); ">
+                  <img class="image" src="{{companyImage}}" onerror="this.src='assets/images/fallback.jpg'" />
+                  <div class="middle">
+                    <div class="text">
+                      <i class="material-icons">edit</i><br>
+                      <span>Upload</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </form>
+        </div>
+        <div class="col-md-9">
+          <div class="text-right">
+            <button *ngIf="isLeftVisible" class="btn header-button" (click)="openleftPan();">
+              <span>
+                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                Back</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-------------------------------------------------------------------------------------------------------------->
+
+      <form [formGroup]="BasicInformationOfOrganization" (keydown)="keyPressSaveOrgInformation($event)">
+        <div class="card" style="margin: 0; box-shadow: none !important;">
+          <div class="card-header" data-background-color="blue">
+            <div style="float:left">
+              <h6 class="title">Basic Information</h6>
+            </div>
+            <div style="text-align: right;">
+              <div id="editbuttondivBasicInfo" *ngIf=editbuttondivBasicInfo>
+                <button type="button" class="btn header-button" id="Edit" (click)="editBasicInfo(false)">
+                  <span>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Edit</span>
+                </button>
+              </div>
+              <div id="saveandcanclebuttondivBasicInfo" *ngIf=saveandcanclebuttondivBasicInfo>
+                <button class=" btn header-button" id=Cancel (click)="cancelCompanyInformationSave();">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel</span>
+                </button>
+                <button class=" btn header-button" (click)="saveBasicInformation('basic');">
+                  <span>
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    Save</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- <ng-template #basicInfoViewOnly>
+            <div class="card-header" data-background-color="blue">
+              <h6 class="title">Basic Information</h6>
+            </div>
+          </ng-template> -->
+
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">What is the registered name of your Company? </p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="readwrite">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Company Name" formControlName="CompanyName">
+                  <mat-error [hidden]="(this.BasicInformationOfOrganization.controls.CompanyName.valid 
+                    || this.BasicInformationOfOrganization.controls.CompanyName.untouched)">
+                    {{requiredTextField}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="readonly">
+                <p class="category" style="color:#404A56;font-weight:600;">
+                  {{this.BasicInformationOfOrganization.controls.CompanyName.value}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">Head Office Address</p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="readwrite">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Place" formControlName="HeadOfficeAddress">
+                  <mat-error class="category" style="color: red;" [hidden]="(this.BasicInformationOfOrganization.controls.HeadOfficeAddress.valid 
+                    || this.BasicInformationOfOrganization.controls.HeadOfficeAddress.untouched)">
+                    {{requiredTextField}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="readonly">
+                <p class="category" style="color:#404A56;font-weight:600;">{{this.headoffAdd}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">Contact Number</p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="readwrite">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Contact Number" formControlName="ContactNumber">
+                  <mat-error class="category" style="color: red;" [hidden]="(this.BasicInformationOfOrganization.controls.ContactNumber.valid 
+                    || this.BasicInformationOfOrganization.controls.ContactNumber.untouched)">
+                    <div *ngIf="(this.BasicInformationOfOrganization.controls.ContactNumber.value === '' || 
+                    this.BasicInformationOfOrganization.controls.ContactNumber.value === null)" cv>
+                      {{requiredTextField}}
+                    </div>
+                    <div *ngIf="this.BasicInformationOfOrganization.controls.ContactNumber.value !== ''">
+                      {{ this.BasicInformationOfOrganization.controls.ContactNumber.errors != null ?
+                      this.BasicInformationOfOrganization.controls.ContactNumber.errors.messages
+                      : ''}}
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="readonly">
+                <p class="category" style="color:#404A56;font-weight:600;">{{this.ContactNumber}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">Contact Person</p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="readwrite">
+                <ng-select class="custom-ng-select-Style" [items]="employeeList" bindLabel="viewValue" bindValue="value"
+                  placeholder="Select" formControlName="contactPerson">
+                </ng-select>
+                <mat-error
+                  *ngIf="(!BasicInformationOfOrganization.controls.contactPerson.value && BasicInformationOfOrganization.controls.contactPerson.touched)">
+                  This field is required.
+                </mat-error>
+              </div>
+              <div *ngIf="readonly">
+                <p class="category" style="color:#404A56;font-weight:600;">{{this.contactPerson}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+
+
+      <form [formGroup]="BasicInformationOfOrganization" (keydown)="keyPressSaveOrgInformation($event)">
+        <div class="card" style="box-shadow: none !important; ">
+          <div class="card-header" data-background-color="blue">
+            <div style="float:left">
+              <h6 class="title">Statutory Details</h6>
+            </div>
+            <div style="text-align: right;">
+              <div id="editbuttondivBasicInfo" *ngIf=editbuttondivStatutoryInfo>
+                <button type="button" class="btn header-button" id="Edit" (click)="editStatutoryInfo(false)">
+                  <span>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Edit</span>
+                </button>
+              </div>
+              <div id="saveandcanclebuttondivBasicInfo" *ngIf=saveandcanclebuttondivStatutoryInfo>
+                <button class=" btn header-button" id=Cancel (click)="cancelCompanyStatutoryInformation();">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel</span>
+                </button>
+                <button class=" btn header-button" (click)="saveBasicInformation('statutory');">
+                  <span>
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    Save</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">PAN Number or Tax ID</p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="Statutoryreadwrite">
+                <mat-form-field class="fullLength">
+                  <input matInput class="uppercase" placeholder="PAN Number" formControlName="PanNumber">
+
+                  <mat-error [hidden]="(this.BasicInformationOfOrganization.controls.PanNumber.valid 
+                || this.BasicInformationOfOrganization.controls.PanNumber.untouched)">
+                    <div
+                      *ngIf="this.BasicInformationOfOrganization.controls.PanNumber.value === ''||this.BasicInformationOfOrganization.controls.PanNumber.value === null">
+                      {{requiredTextField}}
+                    </div>
+
+                    <div *ngIf="this.BasicInformationOfOrganization.controls.PanNumber.value !== ''">
+                      {{ this.BasicInformationOfOrganization.controls.PanNumber.errors != null ?
+                      this.BasicInformationOfOrganization.controls.PanNumber.errors.messages
+                      : ''}}
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="statutoryreadonly">
+                <p class="category" style="color:#404A56;font-weight:600;">{{this.panNumber | uppercase}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">GSTIN Number</p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="Statutoryreadwrite">
+                <mat-form-field class="fullLength">
+                  <input matInput class="uppercase" placeholder="Enter" formControlName="gstIn">
+                  <mat-error [hidden]="(this.BasicInformationOfOrganization.controls.gstIn.valid 
+                || this.BasicInformationOfOrganization.controls.gstIn.untouched)">
+                    <div
+                      *ngIf="this.BasicInformationOfOrganization.controls.gstIn.value === ''||this.BasicInformationOfOrganization.controls.gstIn.value === null">
+                      {{requiredTextField}}
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="statutoryreadonly">
+                <p class="category" style="color:#404A56;font-weight:600;">{{this.gstIn}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">Employee Investment Declarations for Income Tax </p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="Statutoryreadwrite">
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="investment Month" formControlName="InvestmentMonth" id="InvestmentMonth"
+                    [disabled]="InvestmentdisableSelect">
+                    <mat-option *ngFor="let IvestestmentMonth of IvestestmentMonths" [value]="IvestestmentMonth.value">
+                      {{ IvestestmentMonth.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div *ngIf="statutoryreadonly">
+                <p class="category" style="color:#404A56;font-weight:600;">{{this.investmentMonth}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">PF Registration Code if Applicable</p>
+            </div>
+            <div class="col-md-4" *ngIf="statutoryreadonly">
+              <div *ngIf=pffalse>
+                <i class="fa fa-times text-danger"></i>
+              </div>
+              <div *ngIf=pftrue>
+                <i class="fa fa-check text-success"></i>
+              </div>
+            </div>
+            <div class="col-md-4" *ngIf="Statutoryreadwrite">
+              <div id="pfraidioid">
+                <mat-radio-group formControlName="PFStatus">
+                  <mat-radio-button value="false">No</mat-radio-button>
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">ESIC Registration Code if Applicable</p>
+            </div>
+            <div class="col-md-4" *ngIf="statutoryreadonly">
+              <div *ngIf=esicDanger>
+                <i class="fa fa-times text-danger"></i>
+              </div>
+              <div *ngIf=esicSuccess>
+                <i class="fa fa-check text-success"></i>
+              </div>
+            </div>
+
+
+            <div class="col-md-4" *ngIf="Statutoryreadwrite">
+              <div id="esicradiobutton">
+                <mat-radio-group formControlName="ESICStatus">
+                  <mat-radio-button value="false">No</mat-radio-button>
+                  <mat-radio-button value="true">Yes</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">TIN No./TAN Number</p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="Statutoryreadwrite">
+                <mat-form-field class="fullLength">
+                  <input matInput class="uppercase" placeholder="Tan Number" formControlName="TanNumber">
+
+                  <mat-error [hidden]="(this.BasicInformationOfOrganization.controls.TanNumber.valid 
+                || this.BasicInformationOfOrganization.controls.TanNumber.untouched)">
+                    <div
+                      *ngIf="this.BasicInformationOfOrganization.controls.TanNumber.value === ''||this.BasicInformationOfOrganization.controls.TanNumber.value === null">
+                      {{requiredTextField}}
+                    </div>
+                    <div *ngIf="this.BasicInformationOfOrganization.controls.TanNumber.value !== ''">
+                      {{ this.BasicInformationOfOrganization.controls.TanNumber.errors != null ?
+                      this.BasicInformationOfOrganization.controls.TanNumber.errors.messages
+                      : ''}}
+                    </div>
+                  </mat-error>
+                </mat-form-field>
+
+
+              </div>
+              <div *ngIf="statutoryreadonly">
+                <p class="category" style="color:#404A56;font-weight:600;">{{this.tanNumber| uppercase}}</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-8">
+              <p class="category" style="color:#404A56;">Month of Form 16 Issuance</p>
+            </div>
+            <div class="col-md-4">
+              <div *ngIf="Statutoryreadwrite">
+                <mat-form-field class="fullLength">
+                  <input matInput type="date" placeholder="Start Date" formControlName="Form16Date">
+                  <mat-error [hidden]="(this.BasicInformationOfOrganization.controls.Form16Date.valid 
+                  || this.BasicInformationOfOrganization.controls.Form16Date.untouched)">
+                    {{requiredeDatePicker}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="statutoryreadonly">
+                <p class="category" style="color:#404A56;font-weight:600;">{{this.form16Date}}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <form [formGroup]="organizationAddressInfoForm" (keydown)="keyPressSaveAddress($event)">
+        <div class="card"
+          style="margin-top:20px;margin-bottom:0px;padding-bottom:0px;box-shadow: none !important;overflow: hidden;">
+          <div class="card-header" data-background-color="blue">
+            <div style="float:left;">
+              <h6 class="title">Address Information</h6>
+            </div>
+            <div style="text-align: right;">
+              <div id="editbuttondivAddressInfo" *ngIf=editbuttondivAddressInfo>
+                <button type="button" class="btn header-button" id="Edit" (click)="editAddressInfo(false)">
+                  <span>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Edit</span>
+                </button>
+              </div>
+              <div id="saveandcanclebuttondivAddressInfo" *ngIf=saveandcanclebuttondivAddressInfo>
+                <button class=" btn header-button" (click)="cancelAddressInformationSave();">
+                  <span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel</span>
+                </button>
+                <button class=" btn header-button" (click)="saveAddressInformation();">
+                  <span>
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    Save</span>
+                </button>
+
+              </div>
+            </div>
+          </div>
+          <!-- <ng-template #addressViewOnly>
+            <div class="card-header" data-background-color="blue">
+              <h6 class="title">Address Information</h6>
+            </div>
+          </ng-template> -->
+
+          <div class="card-content" style=" padding: 0px 0px;">
+
+            <div class="row">
+              <div class="col-md-8">
+                <p class="category" style="color:#404A56;">Address Line 1</p>
+              </div>
+              <div class="col-md-4">
+                <div *ngIf="addreadwrite">
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Address Line 1" formControlName="addressLine1" id="AddressLine1">
+                    <mat-error [hidden]="(this.organizationAddressInfoForm.controls.addressLine1.valid 
+                    || this.organizationAddressInfoForm.controls.addressLine1.untouched)">
+                      {{requiredTextField}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div *ngIf="addreadonly">
+                  <p class="category" style="color:#404A56;font-weight:600;">
+                    {{this.organizationAddressInfoForm.controls.addressLine1.value}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8">
+                <p class="category" style="color:#404A56;">Address Line 2</p>
+              </div>
+              <div class="col-md-4">
+                <div *ngIf="addreadwrite">
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Address Line 2" formControlName="addressLine2" id="AddressLine2">
+                  </mat-form-field>
+                </div>
+                <div *ngIf="addreadonly">
+                  <p class="category" style="color:#404A56;font-weight:600;">
+                    {{this.organizationAddressInfoForm.controls.addressLine2.value}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8">
+                <p class="category" style="color:#404A56;">Country</p>
+              </div>
+              <div class="col-md-4">
+                <div *ngIf="addreadwrite">
+                  <mat-form-field class="fullLength">
+                    <mat-select #singleSelect1 placeholder="Select Country" formControlName="country"
+                      [compareWith]="compareObjects" (selectionChange)="getStateInformation($event.value.value)">
+                      <ngx-mat-select-search [placeholderLabel]="'Search Country'"
+                        [noEntriesFoundLabel]="'No matching records found'" [formControl]="countryFilterCtrl">
+                      </ngx-mat-select-search>
+                      <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
+                        {{ country.viewValue }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(this.organizationAddressInfoForm.controls.country.valid 
+                    || this.organizationAddressInfoForm.controls.country.untouched)">
+                      {{requiredTextField}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div *ngIf="addreadonly">
+                  <p class="category" style="color:#404A56;font-weight:600;">
+                    {{this.organizationAddressInfoForm.controls.country.value.viewValue}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <p class="category" style="color:#404A56;">State</p>
+              </div>
+              <div class="col-md-4">
+                <div *ngIf="addreadwrite">
+                  <mat-form-field class="fullLength">
+                    <mat-select #singleSelect2 placeholder="Select State" formControlName="state"
+                      [compareWith]="compareObjects" (selectionChange)="getCityInformation($event.value.value)">
+                      <ngx-mat-select-search [placeholderLabel]="'Search State'"
+                        [noEntriesFoundLabel]="'No matching records found'" [formControl]="stateFilterCtrl">
+                      </ngx-mat-select-search>
+                      <mat-option *ngFor="let state of filteredStates|async" [value]="state">
+                        {{ state.viewValue }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(this.organizationAddressInfoForm.controls.state.valid 
+                    || this.organizationAddressInfoForm.controls.state.untouched)">
+                      {{requiredTextField}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div *ngIf="addreadonly">
+                  <p class="category" style="color:#404A56;font-weight:600;">
+                    {{this.organizationAddressInfoForm.controls.state.value.viewValue}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8">
+                <p class="category" style="color:#404A56;">City</p>
+              </div>
+              <div class="col-md-4">
+                <div *ngIf="addreadwrite">
+                  <mat-form-field class="fullLength">
+                    <mat-select #singleSelect3 placeholder="Select City" [compareWith]="compareObjects"
+                      formControlName="city">
+                      <ngx-mat-select-search [placeholderLabel]="'Search City'"
+                        [noEntriesFoundLabel]="'No matching records found'" [formControl]="cityFilterCtrl">
+                      </ngx-mat-select-search>
+                      <mat-option *ngFor="let city of filteredCities |async" [value]="city">
+                        {{ city.viewValue }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error [hidden]="(this.organizationAddressInfoForm.controls.city.valid
+                    || this.organizationAddressInfoForm.controls.city.untouched)">
+                      <div
+                        *ngIf="(this.organizationAddressInfoForm.controls.city.value === '' || this.organizationAddressInfoForm.controls.city.value === null)">
+                        {{requiredTextField}}
+                      </div>
+                      <div *ngIf="this.organizationAddressInfoForm.controls.city.value !== ''">
+                        {{ this.organizationAddressInfoForm.controls.city.errors != null ?
+                        this.organizationAddressInfoForm.controls.city.errors.messages
+                        : ''}}
+                      </div>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div *ngIf="addreadonly">
+                  <p class="category" style="color:#404A56;font-weight:600;">
+                    {{this.organizationAddressInfoForm.controls.city.value.viewValue}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8">
+                <p class="addcategory category" style="color:#404A56;">Pin Code</p>
+              </div>
+              <div class="col-md-4">
+                <div *ngIf="addreadwrite">
+                  <mat-form-field class="fullLength">
+                    <input matInput placeholder="Pin Code" type="number" formControlName="pinCode" id="PinCode">
+                    <mat-error [hidden]="(this.organizationAddressInfoForm.controls.pinCode.valid 
+                    || this.organizationAddressInfoForm.controls.pinCode.untouched)">
+                      {{requiredTextField}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div *ngIf="addreadonly">
+                  <p class="category" style="color:#404A56;font-weight:600;">
+                    {{this.organizationAddressInfoForm.controls.pinCode.value}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </app-left-right-panes>
+</div>

@@ -1,0 +1,291 @@
+<div id="details-payslip" class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="container">
+        <div class="payslip-card">
+          <div class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+              <h2>SALARY SLIP -
+                <span> {{month}} -</span>
+                <span> {{year}}</span>
+              </h2>
+            </div>
+            <div class="col-md-4">
+              <div class="payslipLogo">
+                <img class="img-responsive" src="{{payslipData.orgLogoUrl}}" />
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <th>Employee Code</th>
+                  <td colspan="4">{{payslipData.empCode}}</td>
+                  <th>Joining Date</th>
+                  <td colspan="4">{{payslipData.empJoiningDate}}</td>
+                </tr>
+                <tr>
+                  <th>Employee Name</th>
+                  <td colspan="4">{{payslipData.empName}}</td>
+                  <th>City</th>
+                  <td colspan="3">{{payslipData.city}}</td>
+                </tr>
+                <tr>
+                  <th>PF Number</th>
+                  <td colspan="4">{{payslipData.pfNumber}}</td>
+                  <th>ESIC Number</th>
+                  <td colspan="4">{{payslipData.esicNumber}}</td>
+                </tr>
+                <tr>
+                  <th>Department</th>
+                  <td colspan="4">{{payslipData.department}}</td>
+                  <th>PAN Number</th>
+                  <td colspan="4">{{payslipData.panNo}}</td>
+                </tr>
+                <tr>
+                  <th>Bank Name</th>
+                  <td colspan="4">{{payslipData.bankName}}</td>
+                  <th>Designation</th>
+                  <td colspan="4">{{payslipData.designation}}</td>
+                </tr>
+                <tr>
+                  <th>A/C Number</th>
+                  <td colspan="4">{{payslipData.accountNumber}}</td>
+                  <th>Bank IFSC Code</th>
+                  <td colspan="4">{{payslipData.ifscCode}}</td>
+                </tr>
+              </tbody>
+              <tfoot class="tfoot-light">
+                <tr>
+                  <th>Total Days</th>
+                  <td> {{payslipData.totalWorkDaysInMonth}}</td>
+                  <th>Days Paid</th>
+                  <td>{{payslipData.totalPayableDays}}</td>
+                  <th>Absent Days</th>
+                  <td>{{payslipData.totalLopDays}}</td>
+                  <th>Arrear Days</th>
+                  <td>{{payslipData.arrearDays}}</td>
+                  <th>LOP Reversal Days</th>
+                  <td>{{payslipData.lopReversalDays}}</td>
+                </tr>
+              </tfoot>
+            </table>
+            <!-- Leaves -->
+            <table class="table table-bordered">
+              <tr>
+                <ng-container *ngFor="let payslipLeavesVO of payslipData.payslipLeavesVOS">
+                  <th>{{payslipLeavesVO.leaveName}}</th>
+                  <td>{{payslipLeavesVO.usedLeaveCount}}</td>
+                </ng-container>
+              </tr>
+            </table>
+            <!-- Earnings -->
+            <table class="table table-bordered">
+              <thead>
+                <tr class="split-row-expandable">
+                  <th>Earning Head</th>
+                  <!-- <th>Rate</th> -->
+                  <th>Earned Amount</th>
+                  <th>Arrear Amount</th>
+                  <th>LOP Reversal</th>
+                  <th>Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="active">
+                  <th colspan="12">Fixed Allowances</th>
+                </tr>
+                <tr *ngFor="let fixedAllowances of payslipData.runPayrollFixedAllowances">
+                  <th>{{fixedAllowances.fieldName}}</th>
+                  <!-- <td class="category">&#8377; &nbsp;{{fixedAllowances.fieldFixedValue| number : '1.2-2'}}</td> -->
+                  <td class="category">&#8377; &nbsp;{{fixedAllowances.fieldValue| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{fixedAllowances.arrearAmount| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{fixedAllowances.lopReversalAmount| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{fixedAllowances.totalAmount| number : '1.2-2'}}</td>
+                </tr>
+                <tr class="active">
+                  <th colspan="12">Other Benefits</th>
+                </tr>
+                <tr *ngFor="let otherBenefits of payslipData.runPayrollOtherBenefits">
+                  <th>{{otherBenefits.fieldName}}</th>
+                  <!-- <td class="category">&#8377; &nbsp;{{otherBenefits.fieldFixedValue| number : '1.2-2'}}</td> -->
+                  <td class="category">&#8377; &nbsp;{{otherBenefits.fieldValue| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;{{otherBenefits.fieldValue| number : '1.2-2'}}</td>
+                </tr>
+                <tr class="active">
+                  <th colspan="12">Variable Allowances</th>
+                </tr>
+                <tr *ngFor="let variableAllowance of payslipData.runPayrollVariableAllowances">
+                  <th>{{variableAllowance.fieldName}}</th>
+                  <!-- <td class="category">&#8377; &nbsp;{{variableAllowance.fieldFixedValue| number : '1.2-2'}}</td> -->
+                  <td class="category">&#8377; &nbsp;{{variableAllowance.fieldValue| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;{{variableAllowance.fieldValue| number : '1.2-2'}}</td>
+                </tr>
+                <tr class="active">
+                  <th colspan="12">Flexi Benefits</th>
+                </tr>
+                <tr *ngFor="let flexiBenefit of payslipData.runPayrollFlexiBenefits">
+                  <th>{{flexiBenefit.fieldName}}</th>
+                  <!-- <td class="category">&#8377; &nbsp;{{flexiBenefit.fieldFixedValue| number : '1.2-2'}}</td> -->
+                  <td class="category">&#8377; &nbsp;{{flexiBenefit.fieldValue| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;{{flexiBenefit.fieldValue| number : '1.2-2'}}</td>
+                </tr>
+                <tr>
+                  <th>Manual Arrear</th>
+                  <td colspan="12" class="category text-right">&#8377; &nbsp;{{payslipData.manualArrearAmount| number : '1.2-2'}}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Gross Earnings</th>
+                  <td colspan="12" class="category text-right">&#8377; &nbsp;{{grossEarnings| number : '1.2-2'}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Deductions -->
+            <table class="table table-bordered">
+              <thead>
+                <tr class="split-row-expandable">
+                  <th>Deduction Head</th>
+                  <th>Amount</th>
+                  <th>Arrear Amount</th>
+                  <th>LOP Reversal</th>
+                  <th>Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="active">
+                  <th colspan="12">Fixed Deductions</th>
+                </tr>
+                <tr *ngFor="let fixedDeduction of payslipData.runPayrollFixedDeductions">
+                  <th>{{fixedDeduction.fieldName}}</th>
+                  <td class="category">&#8377; &nbsp;{{fixedDeduction.fieldValue| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;{{fixedDeduction.fieldValue| number : '1.2-2'}}</td>
+                </tr>
+                <tr class="active">
+                  <th colspan="12">Statutory Deductions</th>
+                </tr>
+                <tr *ngFor="let employeeDeduction of payslipData.runPayrollEmployeeDeductions">
+                  <th>{{employeeDeduction.fieldName}}</th>
+                  <td class="category">&#8377; &nbsp;{{employeeDeduction.fieldValue| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{employeeDeduction.arrearAmount| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{employeeDeduction.lopReversal| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{employeeDeduction.totalAmount| number : '1.2-2'}}</td>
+                </tr>
+                <tr>
+                  <th>TDS</th>
+                  <td class="category">&#8377; &nbsp;{{payslipData.totalTDS| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;{{payslipData.totalTDS| number : '1.2-2'}}</td>
+                </tr>
+                <tr class="active">
+                  <th colspan="12">Variable Deduction</th>
+                </tr>
+                <tr *ngFor="let variableDeduction of payslipData.runPayrollVariableDeductions">
+                  <th>{{variableDeduction.fieldName}}</th>
+                  <td class="category">&#8377; &nbsp;{{variableDeduction.fieldValue| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;0.00</td>
+                  <td class="category">&#8377; &nbsp;{{variableDeduction.fieldValue| number : '1.2-2'}}</td>
+                </tr>
+                <tr>
+                  <th>Gross Deductions</th>
+                  <td colspan="12" class="category text-right">&#8377; &nbsp;{{grossDeductions| number : '1.2-2'}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Employer Contribution -->
+            <table class="table table-bordered">
+              <thead>
+                <tr class="split-row-expandable">
+                  <th>Contribution Heads</th>
+                  <th>Amount</th>
+                  <th>Arrear Amount</th>
+                  <th>LOP Reversal</th>
+                  <th>Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let employerContribution of payslipData.runPayrollEmployerContribution">
+                  <th>{{employerContribution.fieldName}}</th>
+                  <td class="category">&#8377; &nbsp;{{employerContribution.fieldValue| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{employerContribution.arrearAmount| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{employerContribution.lopReversal| number : '1.2-2'}}</td>
+                  <td class="category">&#8377; &nbsp;{{employerContribution.totalAmount| number : '1.2-2'}}</td>
+                </tr>
+              </tbody>
+              <tfoot valign="bottom" class="tfoot-light">
+                <tr class="tfoot-light-data-footer">
+                  <td colspan="12" class="text-right">CTC Amount : &#8377; &nbsp;{{payslipData.ctcAmount | number : '1.2-2'}}&nbsp;&nbsp;
+                  </td>
+                </tr>
+                <tr class="tfoot-light-data-footer">
+                  <td colspan="12" class="text-right">Net Salary : &#8377; &nbsp;{{payslipData.totalNetPaymentAmount | number : '1.2-2'}}&nbsp;&nbsp;
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!--Footer -->
+          <div class="row">
+            <div class="payslip-card-btn">
+              <h2>This being a computer generated statement, no signature is required</h2>
+              <button matButton class="btn header-button" routerLink="/payroll/view-Payslip/{{this.month}}/{{this.year}}">
+                <span>
+                  <i class="fa fa-times" aria-hidden="true"></i>
+                  Cancel</span>
+              </button>
+              <button class="btn header-button" (click)="downloadPayslip(payslipData.payslipDoc)">
+                <span>
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                  Download
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="row">
+  <div class="col-md-4">
+    <div class="organisation_add">
+      <h3>{{companyName}}</h3>
+      <span>{{headOfficeAddress}}</span>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <h2>SALARY SLIP -<span> {{month}} -</span> <span> {{year}}</span></h2>
+  </div>
+  <div class="col-md-4">
+    <div class="payslipLogo">
+      <img class="img-responsive" src="{{companyImage}}" />
+    </div>
+  </div>
+</div>
+
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th scope="col">Gross Salary</th>
+        <td><i class="fa fa-inr"></i> {{totalGrossSalary | number : '1.2-2'}}</td>
+        <th scope="col">Net Salary</th>
+        <td><i class="fa fa-inr"></i> {{totalNetPaymentAmount | number : '1.2-2'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->

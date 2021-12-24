@@ -1,0 +1,54 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Advance Template Assignment</h4>
+    <form [formGroup]="addAdvanceAssignment">
+        <mat-form-field class="fullLength">
+            <input matInput value={{templateName}} readonly placeholder="Select Template">
+        </mat-form-field>
+        <div *ngIf="addAdvanceAssignment.controls.advanceApprovalType.value=='TemplateWise'">
+            <mat-form-field class="fullLength">
+                <input matInput readonly placeholder="Select Primary Approver " value="{{addAdvanceAssignment.controls.primaryApproverName.value}}">
+            </mat-form-field>
+            <div *ngIf="addAdvanceAssignment.controls.secondaryApprover.value !=null">
+                <mat-form-field class="fullLength">
+                    <input matInput readonly placeholder="Select Secondary Approver"
+                        value="{{addAdvanceAssignment.controls.secondaryApproverName.value}} ">
+                </mat-form-field>
+            </div>
+        </div>
+        <div *ngIf="addAdvanceAssignment.controls.advanceApprovalType.value=='EmployeeWise' ">
+            <p class="category">Select Primary Approver</p>
+            <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="primaryApprover"
+                class="custom-ng-select-Style">
+                <ng-option *ngFor="let emp of employee" [value]="emp.value">
+                    {{ emp.viewValue }}
+                </ng-option>
+            </ng-select>
+            <div *ngIf="addAdvanceAssignment.controls.secondaryApprover.value !=null">
+                <p class="category">Select Secondary Approver</p>
+                <ng-select appendTo="body" [searchable]="true" placeholder="Select" formControlName="secondaryApprover"
+                    class="custom-ng-select-Style">
+                    <ng-option *ngFor="let emp of employee" [value]="emp.value">
+                        {{ emp.viewValue }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <mat-form-field class="fullLength">
+            <input matInput type="date" placeholder="Select Effective From Date" formControlName="effectiveDate">
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="updateAssignment()"> Submit
+        </button>
+    </div>
+</mat-dialog-actions>

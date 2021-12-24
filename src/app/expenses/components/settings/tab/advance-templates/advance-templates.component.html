@@ -1,0 +1,204 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div class="pull-left">
+      <h6 class="title">Advance Template</h6>
+    </div>
+    <div class="text-right">
+      <button *ngIf="!isLeftVisible" class="btn header-button" (click)="addNewTemplate();">
+        <span><i class="fa fa-plus-square" aria-hidden="true"></i>New Template</span></button>
+      <button *ngIf="isLeftVisible" class="btn header-button" (click)="cancelPanel();">
+        <span><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <app-left-right-pane-advance-temp [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <div class="left-right-pane-card">
+          <div class="searchBox" style="text-align: right">
+            <i class="fa fa-search"></i>
+            <input type="text" pInputText size="50" placeholder="Search"
+              (input)="dt1.filterGlobal($event.target.value, 'contains')">
+          </div>
+          <p-table #dt1 [columns]="columns" [value]="getAdvanceTemplateArray" [rows]="5" [paginator]="true"
+            [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true"
+            [responsive]="true">
+
+            <ng-template pTemplate="colgroup" let-columns>
+              <colgroup>
+                <col *ngFor="let col of columns">
+              </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon *ngIf="col.field!='image'" [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns">
+                  <div *ngIf="col.field">{{car[col.field]}}</div>
+                  <div class="mat-cell">
+                    <div class="mat-element-icon">
+                      <span class="edit" *ngIf="col.field === 'actions'">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editAdvanceTemplate(car);"></i>
+                      </span>
+                      <span class="delete" *ngIf="col.field === 'actions'">
+                        <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteAdvanceTemplate(car)"></i>
+                      </span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div class="left-right-pane-card">
+          <div class="row" style="text-align: center;">
+            <h5 class="left-rights-slider-title">
+              Step 1: General Template Settings
+            </h5>
+            <h6 class="left-rights-slider-Subtitle">
+              Select the categories and approvers for this template
+            </h6>
+          </div>
+          <div class="card-content">
+            <form #advanceTemplateform="ngForm" [formGroup]="addAdvanceTemplate">
+              <p class="category showFieldMandatory">Please provide a label for this Policy</p>
+              <mat-form-field class="fullLength">
+                <input matInput placeholder="Label" formControlName="advanceTemplateName">
+                <mat-error [hidden]="(addAdvanceTemplate.controls.advanceTemplateName.valid || 
+                  addAdvanceTemplate.controls.advanceTemplateName.untouched)">
+                  {{requiredTextField}}
+                </mat-error>
+              </mat-form-field>
+              <p class="category">What advance categories are applicable in this advance template?</p>
+              <div *ngFor="let element of advanceCategorySettings">
+                <mat-checkbox [checked]="element.checked" (change)="advanceCategoryChange(element)">
+                  {{element.advanceCategoryName}}</mat-checkbox>
+              </div>
+              <div>
+                <span style="color: red;" *ngIf="(!addAdvanceTemplate.controls.activeAdvanceCategories.value && check)">
+                  Field is required
+                </span>
+              </div>
+              <p class="category showFieldMandatory">How many levels of approvals you want to add? </p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="advanceApprovalLevel" (change)="selectedLevelApproval()">
+                  <mat-radio-button value='First_Level'> 1 Level </mat-radio-button>
+                  <mat-radio-button value='Second_level'> 2 Level </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <span style="color: red;" [hidden]="(addAdvanceTemplate.controls.advanceApprovalLevel.valid || 
+                           addAdvanceTemplate.controls.advanceApprovalLevel.untouched)">
+                {{requiredTextField}} </span>
+              <div>
+                <p class="category">Select Locations Departments Bands or Designations for template </p>
+                <ng-select #select [items]="allSelections" [multiple]="true" bindLabel="viewValue" groupBy="type"
+                  [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+                  [closeOnSelect]="false" [selectableGroupAsModel]="false" formControlName="allSelections">
+                  <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                  </ng-template>
+                </ng-select>
+              </div>
+              <p class="category showFieldMandatory">How would you like to add approvers?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="advanceApprovalType" (change)="selectedLevelApproval()">
+                  <mat-radio-button value='TemplateWise'>Template Wise
+                  </mat-radio-button>
+                  <mat-radio-button value='EmployeeWise'> Employee Wise
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <span style="color: red;" [hidden]="(addAdvanceTemplate.controls.advanceApprovalType.valid || 
+                           addAdvanceTemplate.controls.advanceApprovalType.untouched)">
+                {{requiredTextField}}
+              </span>
+              <div
+                *ngIf="(addAdvanceTemplate.controls.advanceApprovalLevel.value === 'First_Level') && (addAdvanceTemplate.controls.advanceApprovalType.value ==='TemplateWise')">
+                <p class="category showFieldMandatory">Please Select An Employee For First Approver</p>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="choose primary approver" formControlName="primaryApprover"
+                    (click)=" resetSearch()">
+                    <mat-form-field class="fullLength">
+                      <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                        [formControl]="myControl" (keyup)="searchEmployeeName($event)">
+                    </mat-form-field>
+                    <mat-option *ngFor="let supervisor of optionsData" [value]="supervisor.value">
+                      {{supervisor.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error [hidden]="(addAdvanceTemplate.controls.primaryApprover.valid || 
+                  addAdvanceTemplate.controls.primaryApprover.untouched)">
+                    {{requiredTextField}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div
+                *ngIf="(addAdvanceTemplate.controls.advanceApprovalLevel.value === 'Second_level') && (addAdvanceTemplate.controls.advanceApprovalType.value ==='TemplateWise')">
+                <p class="category showFieldMandatory">Please Select An Employee For First Approver</p>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="choose primary approver" formControlName="primaryApprover"
+                    (click)=" resetSearch()">
+                    <mat-form-field class="fullLength">
+                      <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                        [formControl]="myControl" (keyup)="searchEmployeeName($event)">
+                    </mat-form-field>
+                    <mat-option *ngFor="let supervisor of optionsData" [value]="supervisor.value">
+                      {{ supervisor.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error [hidden]="(addAdvanceTemplate.controls.primaryApprover.valid || 
+                  addAdvanceTemplate.controls.primaryApprover.untouched)">
+                    {{requiredTextField}}
+                  </mat-error>
+                </mat-form-field>
+                <p class="category showFieldMandatory">Please Select An Employee For Second Approver</p>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="choose secondary approver" formControlName="secondaryApprover"
+                    (click)="secondaryResetSearch()">
+                    <mat-form-field class="fullLength">
+                      <input type="text" placeholder="Search Employee" aria-label="Number" matInput
+                        [formControl]="myControl1" (keyup)="secondarySearchEmpName($event)">
+                    </mat-form-field>
+                    <mat-option *ngFor="let supervisor of secondaryOptionsData" [value]="supervisor.value">
+                      {{ supervisor.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error [hidden]="(addAdvanceTemplate.controls.secondaryApprover.valid || 
+                  addAdvanceTemplate.controls.secondaryApprover.untouched)">
+                    {{requiredTextField}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="row" style="text-align: center;">
+                <button class="btn header-button" (click)="cancelPanel();">
+                  <span><i class="fa fa-times" aria-hidden="true"></i>Cancel</span>
+                </button>
+                <button *ngIf="isAddMode" class="btn header-button" (click)="addNewAdvanceTemplate()">
+                  <span><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>Submit</span>
+                </button>
+                <button *ngIf="isEditMode" class="btn header-button" (click)="updateAdvanceTemplate()">
+                  <span><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>Submit</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </app-left-right-pane-advance-temp>
+  </div>
+</div>

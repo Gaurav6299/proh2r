@@ -1,0 +1,20 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="title">Tax Exemptions</h6>
+      </div>
+      <div class="card-content">
+        <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)"
+          (animationDone)="onTabChange($event)">
+          <mat-tab label="Direct Exemption">
+            <app-direct-exemption></app-direct-exemption>
+          </mat-tab>
+          <mat-tab label="Indirect Exemption">
+            <app-indirect-exemption></app-indirect-exemption>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

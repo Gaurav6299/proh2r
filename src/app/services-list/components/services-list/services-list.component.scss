@@ -1,0 +1,58 @@
+@import "~assets/sass/md/customCSS";
+.services-list .row{display: table-footer-group;justify-content: center;align-items: center;}
+.services-list .service-card {
+    display: inline-block;
+    width: 170px;
+    vertical-align: top;
+    background-color: transparent !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgb(235, 241, 250);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 4px;
+    margin: 10px 8px;
+}
+.services-list .service-card:hover {
+    box-shadow: 1px 3px 6px -2px #4b88dc;
+}
+.services-list .service-card .service-body{
+    display: block;
+    padding: 20px 10px 10px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    background-color: #ffffff;
+    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.04);
+    // transition: all 0.2s ease-in-out;
+    min-height: 170px;
+}
+.services-list .service-card .service-body span{
+    display: inline-block;
+    height: 70px;
+    width: 70px;
+    vertical-align: top;
+    background: #ffffff;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 1px 3px 6px -2px #4b88dc;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+}
+.services-list .service-card .service-body span img{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 18px 0px;
+}
+.services-list .service-card .service-body h2{
+    font-size: 14px;
+    line-height: 10px;
+    margin-bottom: 0;
+    min-height: 35px;
+    max-height: 35px;
+    font-weight: 600;
+}
+.services-list .service-card .service-body:hover>span{
+    transform: scale(1.2);
+    box-shadow: 1px 3px 6px -2px #4b88dc;
+}
+.services-list{margin-top: 10px;}

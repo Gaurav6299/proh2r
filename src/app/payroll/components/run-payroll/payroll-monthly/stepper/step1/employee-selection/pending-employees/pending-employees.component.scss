@@ -1,0 +1,10 @@
+@import "~assets/sass/md/customCSS";
+
+.right-allign {
+  text-align: right;
+}
+
+::ng-deep.ui-table .ui-table-frozen-view .ui-table-tbody>tr>td,
+::ng-deep.ui-table .ui-table-unfrozen-view .ui-table-tbody>tr>td {
+  height: 24px !important;
+}

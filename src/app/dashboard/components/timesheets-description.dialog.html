@@ -1,0 +1,41 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Timeline</h4>
+    <div class="card-content">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="time-sheets-table-head" style="background: #fafafa;">
+                    <tr>
+                        <th>Project</th>
+                        <th>Task</th>
+                        <th>From Time</th>
+                        <th>To Time</th>
+                        <th>Total Hours</th>
+                        <th>Notes(Optional)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let obj of data.descriptionArray">
+                        <td>{{obj.projectName}}</td>
+                        <td>{{obj.taskName}}</td>
+                        <td>{{obj.fromTime}}</td>
+                        <td>{{obj.toTime}}</td>
+                        <td>{{obj.hours}}</td>
+                        <td>{{obj.notes}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="dialog-buttons" (click)="onNoClick()" cdkFocusInitial>Close</button>
+    </div>
+</mat-dialog-actions>

@@ -1,0 +1,68 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>{{title}}</h4>
+  <form [formGroup]="assetAllocation">
+    <mat-form-field [class.readonly-wrapper]="isReadOnly" class="fullLength ">
+      <mat-select [class.readonly-block]="isReadOnly" formControlName="assetCategory"
+        placeholder="Select Asset Category *" [compareWith]="compareFnCategory"
+        (selectionChange)="getAssets($event,'c')">
+        <mat-option *ngFor="let item of categoriesList" [value]="item">{{item.categoryName}}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(assetAllocation.controls.assetCategory.valid || 
+      assetAllocation.controls.assetCategory.untouched)">
+        This field is required.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [class.readonly-wrapper]="isReadOnly" class="fullLength readonly-wrapper">
+      <mat-select [class.readonly-block]="isReadOnly" placeholder="Select Asset *" formControlName="selectedAsset"
+        [compareWith]="compareFnAsset" (selectionChange)="onAssetSelection($event)">
+        <mat-option *ngFor="let item of selectedCategoryAssetsList" [value]="item">{{item.assetName}}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(assetAllocation.controls.selectedAsset.valid || 
+      assetAllocation.controls.selectedAsset.untouched)">
+        This field is required.
+      </mat-error>
+    </mat-form-field>
+    <div formArrayName="identificationLabel"
+      *ngFor="let item of assetAllocation.get('identificationLabel')['controls']; let i = index;">
+      <div [formGroupName]="i">
+        <mat-form-field class="fullLength">
+          <input matInput formControlName="labelValue" placeholder="{{item.controls.labelName.value}}">
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field class="fullLength">
+      <input matInput type="date" placeholder="Allocation Date" formControlName="allocationDate">
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <input matInput type="date" placeholder="Allocation Till" formControlName="allocatedTill">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick();">Cancel
+    </button>
+    <button class="dialog-buttons" *ngIf="action == 'add'" cdkFocusInitial (click)="allocateAsset();">
+      Allocate
+    </button>
+    <button class="dialog-buttons" *ngIf="action == 'update'" cdkFocusInitial (click)="onUpdateLabel();">
+      Update
+    </button>
+  </div>
+</mat-dialog-actions>
+
+<!-- <div class="col-md-12" style="padding-top:50px">
+    <div class="clearfix">
+      <div class="margin-top:50px">
+        <pre>form value: <br>{{assetAllocation.value | json}}</pre>
+      </div>
+    </div>
+  </div> -->

@@ -1,0 +1,150 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <form [formGroup]="employeeLeaveApplication">
+        <div class="card-header">
+          <div class="pull-left">
+            <h6 class="title">Leave Applications</h6>
+          </div>
+          <div class="text-right">
+            <!-- <div *ngIf="leaveCancellationCrudAdmin;else bulkActionDisabled"> -->
+              <button class="btn header-button" (click)="selectedValue('addSingleApplication')">
+                <span><i class="fa fa-plus-square" aria-hidden="true"></i>Add leave Application</span>
+              </button>
+            <!-- </div> -->
+            <!-- <ng-template #bulkActionDisabled>
+              <div style="text-align:left;color: #fff;">
+                <button class="btn header-button"
+                  (click)="selectedValue(this.employeeLeaveApplication.controls.assignLeaveApplication.value)">
+                  <span>
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    Add Single Application</span>
+                </button>
+              </div>
+            </ng-template> -->
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-content-tab">
+            <mat-tab-group class="tabs" (animationDone)="onTabChange($event)">
+              <mat-tab label="Pending">
+                <app-application-pending (messageEvent)="receiveMessage($event)">
+                </app-application-pending>
+              </mat-tab>
+              <mat-tab label="Approved">
+                <app-application-approved (messageEvent)="receiveMessage($event)"></app-application-approved>
+              </mat-tab>
+              <mat-tab label="Cancelled">
+                <app-application-cancelled></app-application-cancelled>
+              </mat-tab>
+              <mat-tab label="Rejected">
+                <app-application-rejected></app-application-rejected>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <!-- <div class="searchBox" style="text-align: right">
+            <i class="fa fa-search"></i>
+            <input type="text" pInputText size="50" placeholder="Search"
+              (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+          </div>
+          <p-table #dt1 [columns]="displayedColumns" [value]="leaveApplicationsInfo" [rows]="5" [paginator]="true"
+            [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+            [autoLayout]="true" [responsive]="true" exportFilename="Leave_Applications_Report"
+            [(selection)]="checkedRowData">
+            <ng-template pTemplate="caption">
+              <div class="ui-helper-clearfix">
+                <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Download"
+                  (click)="dt1.exportCSV()" class="pull-right"></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th>
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+              <tr>
+                <th>
+                </th>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                  <p-multiSelect *ngSwitchCase="'location'" appendTo="body" defaultLabel="All" [options]="allLocation"
+                    [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'band'" appendTo="body" defaultLabel="All" [options]="allBand"
+                    [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')">
+                  </p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'department'" appendTo="body" defaultLabel="All"
+                    [options]="allDepartment" [style]="{'width':'100%'}"
+                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'designation'" appendTo="body" defaultLabel="All"
+                    [options]="allDesignation" [style]="{'width':'100%'}"
+                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'empName'" appendTo="body" defaultLabel="All" [options]="filterByEmp"
+                    [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'leaveName'" appendTo="body" defaultLabel="All"
+                    [options]="filterByCategory" [style]="{'width':'100%'}"
+                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                  <p-multiSelect *ngSwitchCase="'leaveStatus'" appendTo="body" defaultLabel="All"
+                    [options]="filterByStatus" [style]="{'width':'100%'}"
+                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+
+              <tr [pSelectableRow]="car">
+                <td>
+                  <p-tableCheckbox [value]="car"></p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of columns">
+                  <div *ngIf="col.field!='action' && col.field!='startDate' && col.field!='endDate'">
+                    {{car[col.field]}}</div>
+                  <div *ngIf="col.field!='action' && col.field=='startDate'">
+                    {{car[col.field] | date:'dd/MM/yyyy' }}
+                  </div>
+                  <div *ngIf="col.field!='action' && col.field=='endDate'">
+                    {{car[col.field] | date:'dd/MM/yyyy' }}
+                  </div>
+                  <div *ngIf="car.leaveStatus == 'Level 1 Approval Pending' && col.field=='action'">
+                    <i class="fa fa-check-square-o action-icon" aria-hidden="true" matTooltip="Approve"
+                      (click)="approveIndividualLeave(car.leaveId)" style="color:green;"></i>
+                    <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                      (click)="viewLeaveInfo(car);"></i>
+                    <i class="fa fa-times-circle action-icon" aria-hidden="true" style="color:#e03737;"
+                      matTooltip="Reject" (click)="rejectLeaveRequest(car.leaveId);"></i>
+                  </div>
+                  <div *ngIf="car.leaveStatus == 'Level 2 Approval Pending'  && col.field=='action'">
+                    <i class="fa fa-check-square-o action-icon" aria-hidden="true" matTooltip="Approve"
+                      (click)="approveIndividualLeave(car.leaveId)" style="color:green;"></i>
+                    <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                      (click)="viewLeaveInfo(car);"></i>
+                    <i class="fa fa-times-circle action-icon" aria-hidden="true" style="color:#e03737;"
+                      matTooltip="Reject" (click)="rejectLeaveRequest(car.leaveId);"></i>
+                  </div>
+                  <div *ngIf="car.leaveStatus == 'Cancelled'  && col.field=='action'">
+                    <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                      (click)="viewLeaveInfo(car);"></i>
+                  </div>
+                  <div *ngIf="car.leaveStatus == 'Approved'  && col.field=='action'">
+                    <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                      (click)="viewLeaveInfo(car);"></i>
+                    <i class="fa fa-ban action-icon" aria-hidden="true" (click)="cancelLeaveRequest(car)"
+                      matTooltip="Cancel" style="color:#e03737;"></i>
+                  </div>
+                  <div *ngIf="car.leaveStatus == 'Rejected'  && col.field=='action'">
+                    <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View"
+                      (click)="viewLeaveInfo(car);"></i>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

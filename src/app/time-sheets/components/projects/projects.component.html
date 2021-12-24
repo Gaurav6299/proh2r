@@ -1,0 +1,222 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div style="float: left;">
+          <h6 class="title" *ngIf="isLeftVisible">Create New Project</h6>
+          <h6 class="title" *ngIf="!isLeftVisible">Project List</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" *ngIf="!isLeftVisible" (click)="addNewProject();">
+            <span>
+              <i class="fa fa-plus-square " aria-hidden="true "></i>
+              Add Project</span>
+          </button>
+          <button class="btn header-button" *ngIf="isLeftVisible" (click)="backToProjects(); ">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              Back</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <app-projects-left-right [activePane]="isLeftVisible ? 'right' : 'left'">
+
+          <div leftPane class="divtoggleDiv">
+            <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)"
+              (animationDone)="onTabChange()">
+              <mat-tab label="Activity Feed Tracker">
+                <app-activity-feed-tracker></app-activity-feed-tracker>
+              </mat-tab>
+              <mat-tab label="projects">
+                <div style="margin: 30px 15px;">
+                  <div class="searchBox text-right">
+                    <i class="fa fa-search"></i>
+                    <input type="text" pInputText size="50" placeholder="Search"
+                      (input)="dt1.filterGlobal($event.target.value, 'contains')">
+                  </div>
+                  <p-table #dt1 [columns]="columns" [value]="projectList" [rows]="5" [paginator]="true" [pageLinks]="5"
+                    [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" exportFilename="Projects_Report"
+                    [autoLayout]="true" [responsive]="true">
+                    <ng-template pTemplate="caption">
+                      <div class="ui-helper-clearfix">
+                        <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Download"
+                          (click)="dt1.exportCSV()" class="pull-right"></button>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                          {{col.header}}
+                          <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                          <p-multiSelect *ngSwitchCase="'projectName'" appendTo="body" defaultLabel="All"
+                            [options]="filterByTitle" [style]="{'width':'100%'}"
+                            (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                          <p-multiSelect *ngSwitchCase="'projectStatus'" appendTo="body" defaultLabel="All"
+                            [options]="filterByStatus" [style]="{'width':'100%'}"
+                            (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                          <p-multiSelect *ngSwitchCase="'selectedOrganizations'" appendTo="body" defaultLabel="All"
+                            [options]="filterByOrg" [style]="{'width':'100%'}"
+                            (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                          <p-multiSelect *ngSwitchCase="'projectLeadName'" appendTo="body" defaultLabel="All"
+                            [options]="filterByProjectLead" [style]="{'width':'100%'}"
+                            (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-car let-columns="columns">
+                      <tr>
+                        <td *ngFor="let col of columns">
+                          <div
+                            *ngIf="col.field!='actions'  && col.field!='projectStatus' && (col.field!='lastProjectModifiedDate' && col.field!='startDate' && col.field!='endDate')">
+                            {{car[col.field]}}</div>
+                          <div
+                            *ngIf="col.field!='actions' && col.field=='projectStatus' && (col.field!='lastProjectModifiedDate' && col.field!='startDate' && col.field!='endDate')">
+                            {{car[col.field] | customUnderscorePipe:'car[col.field]'}}</div>
+                          <div
+                            *ngIf="col.field!='actions' && col.field!='projectStatus'  && (col.field=='lastProjectModifiedDate' ||col.field=='startDate' ||col.field=='endDate')">
+                            {{car[col.field] | date: 'dd-MM-yyyy'}}</div>
+                          <div *ngIf="col.field=='actions'" class="mat-cell">
+                            <div class="mat-element-icon">
+                              <span class="edit" matTooltip="Update" *ngIf="col.field=='actions'">
+                                <i class="fa fa-pencil-square-o" (click)="editProject(car)"></i>
+                              </span>
+                              <span class="view" *ngIf="!isLeftVisible" routerLink='../tracker/{{car.projectId}}'>
+                                <i class="fa fa-eye " aria-hidden="true "></i>
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+
+          <div rightPane class="divtoggleDiv">
+            <div class="card templateAssignmentForm">
+              <form #myProjectForm="ngForm" [formGroup]="projectForm">
+                <mat-form-field class="fullLength">
+                  <input matInput placeholder="Project Name" formControlName="projectName">
+                  <mat-error *ngIf="(!this.projectForm.controls.projectName.value && check1 )">
+                    Field is required
+                  </mat-error>
+                </mat-form-field>
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-form-field class="fullLength">
+                      <input matInput placeholder="Project Code" formControlName="projectCode">
+                      <mat-error *ngIf="(!this.projectForm.controls.projectCode.value && check1 )">
+                        Field is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-6">
+                    <mat-form-field class="fullLength">
+                      <mat-label>Project Status</mat-label>
+                      <mat-select formControlName="projectStatus">
+                        <mat-option value="ACTIVE">ACTIVE</mat-option>
+                        <mat-option value="IN_PLANNING">IN PLANNING</mat-option>
+                        <mat-option value="COMPLETED">COMPLETED</mat-option>
+                        <mat-option value="ARCHIVED">ARCHIVED</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-form-field class="fullLength">
+                      <input matInput type="date" placeholder="Select Start Date" formControlName="startDate">
+                      <mat-error *ngIf="(!this.projectForm.controls.startDate.value && check1 )">
+                        Field is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-6">
+                    <mat-form-field class="fullLength">
+                      <input matInput type="date" placeholder="Select End Date" formControlName="endDate">
+                      <mat-error *ngIf="(!this.projectForm.controls.endDate.value && check1 )">
+                        Field is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <p class="category">Please select project lead</p>
+                <ng-select [items]="supervisorList" [virtualScroll]="true" bindLabel="viewValue" bindValue="value"
+                  class="custom-ng-select-Style" placeholder="Select Project Lead" formControlName="projectLead">
+                </ng-select>
+                <mat-error *ngIf="(!this.projectForm.controls.projectLead.value && check1 )">
+                  Field is required
+                </mat-error>
+
+                <p class="category">Who can access this projects</p>
+                <ng-select #select [items]="allSelections" class="custom-ng-select-Style" [multiple]="true"
+                  bindLabel="viewValue" groupBy="type" [selectableGroup]="true" dropdownPosition="auto"
+                  [selectableGroupAsModel]="false" [closeOnSelect]="false" [selectableGroupAsModel]="false"
+                  formControlName="allSelections">
+                  <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                  </ng-template>
+                </ng-select>
+
+                <mat-form-field class="fullLength">
+                  <mat-select formControlName="orgProfile" placeholder="Select Organization" multiple>
+                    <mat-option *ngFor="let profile of orgProfile" [value]="profile.value">{{profile.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="(!this.projectForm.controls.orgProfile.value && check1 )">
+                    Field is required
+                  </mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="fullLength">
+                  <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                  <mat-error *ngIf="(!this.projectForm.controls.description.value && check1 )">
+                    Field is required
+                  </mat-error>
+                </mat-form-field>
+
+
+                <div class="row text-center" style="margin-top: 2em;">
+                  <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible;setPanel();">
+                    <span>
+                      <i class="fa fa-times" aria-hidden="true"></i>Cancel</span>
+                  </button>
+                  <button *ngIf="!this.projectForm.controls.projectId.value" class="btn header-button"
+                    (click)="saveProject();">
+                    <span>
+                      <i class="fa fa-arrow-circle-o-right" aria-hidden="true "></i>
+                      Save</span>
+                  </button>
+                  <button *ngIf="this.projectForm.controls.projectId.value" class="btn header-button"
+                    (click)="updateProject();">
+                    <span>
+                      <i class="fa fa-arrow-circle-o-right" aria-hidden="true "></i>
+                      Update</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </app-projects-left-right>
+      </div>
+    </div>
+  </div>
+</div>

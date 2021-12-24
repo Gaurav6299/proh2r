@@ -1,0 +1,204 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div class="pull-left">
+          <h6 class="title">Attendance Records</h6>
+        </div>
+        <div class="text-right">
+          <!-- <button class="btn header-button" *ngIf="multiSelect" (click)="bulkActionFunctionality();"
+            style="cursor:pointer;">
+            <span>
+              Regularize Records</span>
+          </button> -->
+          <button class="btn header-button" (click)="uploadAttendance();" style="cursor:pointer;">
+            <span>
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+              Upload Attendance Records</span>
+          </button>
+          <!-- <mat-slide-toggle [(ngModel)]="multiSelect" (change)="onMultiSelectChange();">
+            Multi Select</mat-slide-toggle> -->
+        </div>
+      </div>
+      <div class="card-content">
+        <app-attendance-records-panes [activePane]="isLeftVisible ? 'right' : 'left'">
+          <div leftPane class="divtoggleDiv">
+            <div style="padding-bottom: 10px;font-weight: 400;">
+              <span>
+                <i class="fa fa-arrow-circle-left" aria-hidden="true"
+                  style="font-size:18px;cursor: pointer;color:#4b88dc;margin-right:5px;" (click)="previousWeek();"></i>
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"
+                  style="font-size:18px;cursor: pointer;color:#4b88dc;margin-left:5px;" (click)="nextWeek();"></i>
+                {{previousRange}} {{date[0 + nextRecords]}} {{nextRange}} {{date[6 + nextRecords]}}
+              </span>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <ng-select [items]="attendanceMonthList" [clearable]="false" appendTo="body" [(ngModel)]="month"
+                  [searchable]="true" bindLabel="monthYear" bindValue="monthYear"
+                  (change)="getAttendanceByMonth(month);" placeholder="Select Month" class="custom-ng-select-Style">
+                </ng-select>
+
+                <!-- <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select" [(value)]="month" (selectionChange)="getAttendanceByMonth(month);">
+                    <mat-option *ngFor="let monthYear of attendanceMonthList" [value]="monthYear">{{monthYear}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div class="col-md-4">
+                <!-- <mat-form-field *ngIf="multiSelect" class="fullLength">
+                  <mat-select placeholder="Bulk Actions" [(value)]="bulkActionSelect" (selectionChange)="bulkActionFunctionality(bulkActionSelect);">
+                    <mat-option value="regRec">Regularize Records</mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div class="col-md-4">
+                <div class="searchBox" style="text-align: right; margin: 8px 0;">
+                  <i class="fa fa-search"></i>
+                  <input type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                </div>
+              </div>
+            </div>
+
+            <div class="attendanceRecordsList">
+              <ul class="list-group list-group-horizontal-sm">
+                <li class="list-group-item">
+                  <span class="present">Present</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="absent">Absent</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="in-out">In/Out</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="incomRecord">Incomplete Record</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="halfday">Halfday</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="weekly-Off">Weekly Off</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="holiday">Holiday</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="leave">Leave</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="notApplicable">Not Applicable</span>
+                </li>
+              </ul>
+            </div>
+
+            <p-table #dt1 [columns]="displayedColumns" [value]="dynamicRows" [resizableColumns]="true"
+              [autoLayout]="true" [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+              [responsive]="true">
+              <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                  <col *ngFor="let col of displayedColumns" style="width:250px;">
+                </colgroup>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns">
+                    {{col.header}}
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-car let-columns="columns">
+                <tr>
+                  <td *ngFor="let col of columns">
+                    <!-- <span class="weeklyRecord a{{car[col.field].date}}{{car.empName.split('-')[1]}}"
+                      *ngIf="col.field!='action'" (click)="regularizationReq(col.field,car,car[col.field]);"
+                      [ngStyle]="{'background-color': changeColor(!car[col.field].syncWithAttendanceProcess? car[col.field].status:car[col.field].afterProcessingStatus)}">{{car[col.field].syncWithAttendanceProcess==true?car[col.field].afterProcessingStatus:
+                      car[col.field].status}}</span> -->
+                    <span class="weeklyRecord a{{car[col.field].date}}{{car.empName.split('-')[1]}}"
+                      *ngIf="col.field!='action'" (click)="regularizationReq(col.field,car,car[col.field]);"
+                      [ngStyle]="{'background-color': car[col.field].color}">
+                      {{car[col.field].syncWithAttendanceProcess==true?car[col.field].afterProcessingStatus:
+                      car[col.field].status}}
+                    </span>
+                    <span *ngIf="col.field=='empName'">
+                      {{car[col.field]}}
+                    </span>
+                    <span *ngIf="col.field=='action'" class="action-icons">
+                      <i class="fa fa-history" aria-hidden="true" style="color:#4aa3df;"
+                        (click)="isLeftVisible = !isLeftVisible;viewAttendanceHistory(car);"></i>
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div rightPane class="divtoggleDiv">
+            <div class="card" style="box-shadow: none !important;">
+              <div class="card-header">
+                <div style="float:left;">
+                  <h6 class="title">Attendance Records for {{employeeName}}</h6>
+                </div>
+                <div style="text-align: right;">
+                  <button class="btn header-button" (click)="isLeftVisible = !isLeftVisible; setPanel();">
+                    <span>
+                      <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                      Back</span>
+                  </button>
+                </div>
+              </div>
+              <div class="card-content">
+                <p-table #dt2 [columns]="displayedColumns1" [value]="empAttendanceHistory" [rows]="5" [paginator]="true"
+                  [pageLinks]="5" [rowsPerPageOptions]="[5,10,31]" exportFilename="Attendance_Report"
+                  [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+                  <ng-template pTemplate="caption">
+                    <div class="ui-helper-clearfix">
+                      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Download"
+                        (click)="dt2.exportCSV()" class="pull-right"></button>
+                    </div>
+                  </ng-template>
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-car let-columns="columns">
+                    <tr>
+                      <td *ngFor="let col of columns">
+                        <span>{{car[col.field]}}</span>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+                <div style="margin-top: 2em;">
+                  <p-table #dt3 [columns]="summaryDisplayedColumns" [value]="recordSumary" [rows]="5" [paginator]="true"
+                    [pageLinks]="5" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th *ngFor="let col of columns">
+                          {{col.header}}
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-car let-columns="columns">
+                      <tr>
+                        <td *ngFor="let col of columns">
+                          <div>{{car[col.field]}}</div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </app-attendance-records-panes>
+      </div>
+    </div>
+  </div>
+</div>

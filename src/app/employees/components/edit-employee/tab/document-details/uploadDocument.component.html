@@ -1,0 +1,23 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Upload Document</h4>
+    <form enctype="multipart/form-data">
+        <p class="category">Upload the Document</p>
+        <p class="category">Accepted Formats are .txt, .pdf, .jpg, .png, .xls,.xlsx,
+            .doc,.docx, </p>
+        <input type="file" id="uploadDoc" multiple="true" (change)="selectDoc($event)" style="margin:10px 0px;">
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="uploadDoc()"> Upload
+        </button>
+    </div>
+</mat-dialog-actions>

@@ -1,0 +1,269 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title> Edit Expense</h4>
+  <form [formGroup]="editExpenseRequest">
+    <!-- <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Expense Category" formControlName="category"
+        (selectionChange)="getCategoryData(this.editExpenseRequest.controls.category.value);">
+        <mat-option *ngFor="let item of categoryList" [value]=item.expenseCategoryName>{{item.expenseCategoryName}}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(this.editExpenseRequest.controls.category.valid 
+          || this.editExpenseRequest.controls.category.untouched)">
+        Field is Required
+      </mat-error>
+    </mat-form-field> -->
+    <div>
+      <ng-select [items]="categoryList" [searchable]="true" bindLabel="expenseCategoryName"
+        placeholder="Select Expense Category" formControlName="category" class="custom-ng-select-Style"
+        (change)="getCategoryData(this.editExpenseRequest.controls.category.value);">
+      </ng-select>
+      <span style="color: red;" [hidden]="(this.editExpenseRequest.controls.category.valid 
+        || this.editExpenseRequest.controls.category.untouched)">
+        Field is Required
+      </span>
+    </div>
+    <mat-form-field class="fullLength">
+      <input matInput type="date" placeholder="Select Date On Which Expense Was Incurred"
+        formControlName="expenseIncurredDate">
+      <mat-error [hidden]="(this.editExpenseRequest.controls.expenseIncurredDate.valid 
+            || this.editExpenseRequest.controls.expenseIncurredDate.untouched)">
+        Field is Required
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="this.editExpenseRequest.controls.category?.value?.expenseCategoryType == 'Per_Day'">
+      <div class="fullLength">
+        <ng-select [items]="tempCategoryFieldList" bindLabel="fieldName" placeholder="Select Type"
+          formControlName="expenseTempFields" class="custom-ng-select-Style"
+          (change)="findRate(this.editExpenseRequest.controls.expenseTempFields.value);">
+        </ng-select>
+        <span style="color: red;" [hidden]="(this.editExpenseRequest.controls.expenseTempFields.valid 
+        || this.editExpenseRequest.controls.expenseTempFields.untouched)">
+          Field is Required
+        </span>
+      </div>
+
+      <!-- <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Type" formControlName="expenseTempFields"
+          (selectionChange)="findRate(this.editExpenseRequest.controls.expenseTempFields.value);">
+          <mat-option *ngFor="let item of tempCategoryFieldList" [value]=item>{{item.fieldName}}
+          </mat-option>
+        </mat-select>
+        <mat-error [hidden]="(this.editExpenseRequest.controls.expenseTempFields.valid 
+          || this.editExpenseRequest.controls.expenseTempFields.untouched)">
+          Field is Required
+        </mat-error>
+      </mat-form-field> -->
+
+      <mat-form-field class="fullLength" *ngIf="showhideRate && showhideRateInput">
+        <input matInput type="number" placeholder="Rate" formControlName="rate"
+          (keyup)="calculate1($event.target.value)">
+        <mat-error [hidden]="(this.editExpenseRequest.controls.rate.valid 
+        || this.editExpenseRequest.controls.rate.untouched)">
+          Field is Required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="fullLength">
+        <input matInput type="number" placeholder="Quantity" formControlName="quantity"
+          (keyup)="calculate($event.target.value);">
+        <mat-error [hidden]="(this.editExpenseRequest.controls.quantity.valid 
+          || this.editExpenseRequest.controls.quantity.untouched)">
+          Field is Required
+        </mat-error>
+      </mat-form-field>
+      <p *ngIf="showhideRate && !showhideRateInput" class="category">Rate per day: Rs. {{this.rate}}</p>
+    </div>
+
+    <div *ngIf="this.editExpenseRequest.controls.category?.value?.expenseCategoryType == 'Time'">
+      <div class="fullLength">
+        <ng-select [items]="tempCategoryFieldList" bindLabel="fieldName" placeholder="Select Type"
+          formControlName="expenseTempFields" class="custom-ng-select-Style"
+          (change)="findRate(this.editExpenseRequest.controls.expenseTempFields.value);">
+        </ng-select>
+        <span style="color: red;" [hidden]="(this.editExpenseRequest.controls.expenseTempFields.valid 
+        || this.editExpenseRequest.controls.expenseTempFields.untouched)">
+          Field is Required
+        </span>
+      </div>
+
+      <mat-form-field class="fullLength" *ngIf="showhideRate && showhideRateInput">
+        <input matInput type="number" placeholder="Rate" formControlName="rate"
+          (keyup)="calculate1($event.target.value)">
+        <mat-error [hidden]="(this.editExpenseRequest.controls.rate.valid 
+        || this.editExpenseRequest.controls.rate.untouched)">
+          Field is Required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="fullLength">
+        <input matInput type="number" placeholder="Hour" formControlName="hour"
+          (keyup)="calculate($event.target.value);">
+        <mat-error [hidden]="(this.editExpenseRequest.controls.hour.valid 
+          || this.editExpenseRequest.controls.hour.untouched)">
+          Field is Required
+        </mat-error>
+      </mat-form-field>
+      <p *ngIf="showhideRate && !showhideRateInput" class="category">Rate per hour: Rs. {{this.rate}}</p>
+    </div>
+
+    <div *ngIf="this.editExpenseRequest.controls.category?.value?.expenseCategoryType == 'Distance'">
+      <div class="fullLength">
+        <ng-select [items]="tempCategoryFieldList" bindLabel="fieldName" placeholder="Select Type"
+          formControlName="expenseTempFields" class="custom-ng-select-Style"
+          (change)="findRate(this.editExpenseRequest.controls.expenseTempFields.value);">
+        </ng-select>
+        <span style="color: red;" [hidden]="(this.editExpenseRequest.controls.expenseTempFields.valid 
+        || this.editExpenseRequest.controls.expenseTempFields.untouched)">
+          Field is Required
+        </span>
+      </div>
+
+      <mat-form-field class="fullLength" *ngIf="showhideRate && showhideRateInput">
+        <input matInput type="number" placeholder="Rate" formControlName="rate"
+          (keyup)="calculate1($event.target.value)">
+        <mat-error [hidden]="(this.editExpenseRequest.controls.rate.valid 
+        || this.editExpenseRequest.controls.rate.untouched)">
+          Field is Required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="fullLength">
+        <div class="row">
+          <div class="col-md-8">
+            <input matInput type="number" placeholder="Distance" formControlName="distance"
+              (keyup)="calculate($event.target.value);">
+          </div>
+          <div class="col-md-4">
+            {{this.type}}
+          </div>
+        </div>
+        <mat-error
+          [hidden]="(this.editExpenseRequest.controls.distance.valid || this.editExpenseRequest.controls.distance.untouched)">
+          Field is Required
+        </mat-error>
+      </mat-form-field>
+      <p *ngIf="showhideRate && !showhideRateInput" class="category">Rate per {{this.type}} : Rs. {{this.rate}}</p>
+    </div>
+
+
+
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="Amount" type="number" formControlName="amount" [readonly]="!amountEnable">
+      <mat-error [hidden]="(this.editExpenseRequest.controls.amount.valid 
+            || this.editExpenseRequest.controls.amount.untouched)">
+        Field is Required
+      </mat-error>
+    </mat-form-field>
+
+    <div formArrayName="expensesFieldList">
+      <div *ngFor="let field of editExpenseRequest.get('expensesFieldList')['controls']; let idx=index">
+        <div [formGroupName]="idx">
+          <div
+            *ngIf="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldType.value == 'DROPDOWN'">
+            <mat-form-field class="fullLength">
+              <mat-select
+                placeholder="{{this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldName.value}}"
+                formControlName="fieldValue"
+                [required]="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.isMandatoryForSubmission.value">
+                <mat-option
+                  *ngFor="let option of this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.dropDownList.value"
+                  [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+            *ngIf="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldType.value === 'TEXTFIELD'">
+            <mat-form-field class="fullLength">
+              <textarea matInput
+                placeholder="{{this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldName.value}}"
+                matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5" formControlName="fieldValue"
+                [required]="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.isMandatoryForSubmission.value"></textarea>
+            </mat-form-field>
+          </div>
+          <div
+            *ngIf="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldType.value === 'NUMBER'">
+            <mat-form-field class="fullLength">
+              <input matInput
+                placeholder="{{this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldName.value}}"
+                type="number" formControlName="fieldValue"
+                [required]="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.isMandatoryForSubmission.value">
+            </mat-form-field>
+          </div>
+          <div
+            *ngIf="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldType.value === 'DATERANGE'">
+            <mat-form-field class="fullLength">
+              <!-- <input matInput [matDatepicker]="picker" placeholder="{{this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldName.value}}"
+                formControlName="fieldValue" [required]="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.isMandatoryForSubmission.value">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker> -->
+              <input matInput type="date"
+                placeholder="{{this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldName.value}} Start Day"
+                formControlName="fromDate"
+                [required]="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.isMandatoryForSubmission.value">
+              <input matInput type="date"
+                placeholder="{{this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.fieldName.value}} End Day"
+                formControlName="toDate"
+                [required]="this.editExpenseRequest.controls.expensesFieldList.controls[idx].controls.isMandatoryForSubmission.value">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div class="fullLength">
+        <mat-checkbox class="col-md-6" formControlName="isBillable">Billable
+        </mat-checkbox>
+        <mat-checkbox class="col-md-6" formControlName="isReImbursable">Reimbursable
+        </mat-checkbox>
+      </div> -->
+    <mat-checkbox [checked]="this.editExpenseRequest.controls.isReImbursable.value"
+      (change)="isChecked($event,'isReImbursable')">Reimbursable</mat-checkbox>
+    <mat-checkbox [checked]="this.editExpenseRequest.controls.isBillable.value"
+      (change)="isChecked($event,'isBillable')">Billable</mat-checkbox>
+
+    <mat-form-field class="fullLength">
+      <ng-container *ngIf="!isHpAdhesives">
+        <textarea matInput placeholder="Reason" formControlName="expenseReason">
+        </textarea>
+      </ng-container>
+      <ng-container *ngIf="isHpAdhesives">
+        <textarea matInput placeholder="Remarks" formControlName="expenseReason">
+              </textarea>
+      </ng-container>
+    </mat-form-field>
+    <div>
+      <p class="category" style="color:#404A56;">Upload the Document</p>
+      <p class="category" style="color:#404A56;">Accepted Formats are .txt, .pdf, .jpg, .png, .xls,.xlsx,
+        .doc,.docx </p>
+      <!-- <input name="myFile" type="file" (change)="selectFile($event)"
+            style="padding-top:10px; padding-bottom:20px;"> -->
+      <div class="input-inlinefile-Items">
+        <input type="file" name="file" id="files" (change)="onFileSelect($event)" class="hidden" />
+        <div class="choosen_file-label">
+          <label for="files"><i class="fa fa-cloud-upload"></i> Select File</label>
+        </div>
+        <span
+          *ngIf="this.editExpenseRequest.controls.expenseAttachment.value">{{this.editExpenseRequest.controls.expenseAttachment.value}}
+          <a (click)="deleteFile();" class="delbtn"><i class="fa fa-trash"></i></a> </span>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" (click)="onNoClick()">Cancel
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="onSubmitRequest();">Submit
+    </button>
+  </div>
+</mat-dialog-actions>

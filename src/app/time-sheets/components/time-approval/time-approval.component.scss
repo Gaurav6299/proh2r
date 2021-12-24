@@ -1,0 +1,80 @@
+@import "~assets/sass/md/customCSS";
+
+.calender-listing li {
+  display: inline-block;
+  padding: 0 5px;
+  vertical-align: middle;
+}
+
+.calender-listing .monthTitle h2 {
+  font-size: 25px;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+}
+
+.calender-listing li span .fa-angle-left,
+.fa-calendar,
+.fa-angle-right {
+  background: #f0f0f0;
+  padding: 10px;
+  font-weight: 600;
+  color: #888;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.timeSheetsApprovalRecordsList ul li {
+  list-style: none;
+  margin: 5px 2px;
+  display: inline-block;
+}
+
+.timeSheetsApprovalRecordsList ul li>.draft,
+.approved,
+.notApplicable,
+.pending,
+.rejected {
+  font-size: 12px;
+  text-align: center;
+  font-weight: 600;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+  width: 160px;
+  display: block;
+}
+
+.timeSheetsApprovalRecordsList ul li>.draft {
+  background-color: #0084ff;
+}
+
+.timeSheetsApprovalRecordsList ul li>.approved {
+  background-color: #008000;
+}
+
+.timeSheetsApprovalRecordsList ul li>.notApplicable {
+  background-color: #777777;
+}
+
+.timeSheetsApprovalRecordsList ul li>.pending {
+  background-color: #ffa500;
+}
+
+.timeSheetsApprovalRecordsList ul li>.rejected {
+  background-color: #f44336;
+}
+
+.card-content .timeApprovalRecord {
+  font-size: 12px;
+  text-align: center;
+  font-weight: 400;
+  color: #fff;
+  width: 130px;
+  padding: 4px 6px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+  display: block;
+  cursor: pointer;
+}

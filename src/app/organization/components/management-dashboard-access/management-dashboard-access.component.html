@@ -1,0 +1,117 @@
+<div class="card-content">
+  <app-mange-edit-content [activePane]="isLeftVisible ? 'right' : 'left'">
+    <div leftPane class="divtoggleDiv">
+      <div class="text-right" style="margin-top: 10px;" *ngIf="!isLeftVisible">
+        <button class="btn header-button" (click)="addManageDashboardAdmin();">
+          <span>
+            <i class="fa fa-plus-square" aria-hidden="true"></i>
+            Add</span>
+        </button>
+      </div>
+      <div class="searchBox text-right">
+        <i class="fa fa-search"></i>
+        <input type="text" pInputText size="50" placeholder="Search"
+          (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </div>
+      <p-table #dt1 [columns]="columns" [value]="managementDashboardAccessListData" [rows]="5" [paginator]="true"
+        [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true"
+        [responsive]="true">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+              <div class="mat-cell">
+                <div class="mat-element-icon" *ngIf="col.field=='actions'">
+                  <span class="edit" matTooltip="Update" (click)="editManagementDashboardAccess(car);">
+                    <i class="fa fa-pencil-square-o"></i>
+                  </span>
+                  <span class="delete" matTooltip="Delete" (click)="openDeleteManagementDashboardAccessDialog(car);">
+                    <i class="fa fa-trash-o"></i>
+                  </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div rightPane class="divtoggleDiv">
+      <div class="card-content">
+        <div class="text-right" style="margin-top: 10px;" *ngIf="isLeftVisible">
+          <button class=" btn header-button" (click)="cancelPanel();">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              Back</span>
+          </button>
+        </div>
+        <form #myForm="ngForm" [formGroup]="managementDashboardPermissionsForm">
+          <div class="card-content-type">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="category showFieldMandatory">Select an Employee for Access Permissions</p>
+              </div>
+              <div class="col-md-6">
+                <ng-select [items]="employeeList" appendTo="body" [searchable]="true" [clearable]="true"
+                  bindLabel="viewValue" bindValue="value" placeholder="Select Employee" formControlName="empCode"
+                  class="custom-ng-select-Style">
+                </ng-select>
+                <div class="dropDown-errorClass" [hidden]="(managementDashboardPermissionsForm.controls.empCode.valid || 
+                managementDashboardPermissionsForm.controls.empCode.untouched)">
+                  This Field is required.
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-6">
+                <p class="category showFieldMandatory">Select Organization</p>
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <ng-select #select [items]="orgProfile" [compareWith]="compareFn" appendTo="body" [multiple]="true"
+                  [selectableGroup]="true" [selectableGroupAsModel]="false" [closeOnSelect]="false"
+                  [selectableGroupAsModel]="false" [searchable]="true" bindLabel="viewValue" bindValue="value"
+                  placeholder="Select Organization" formControlName="orgProfile" class="custom-ng-select-Style">
+                  <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+                      [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+                  </ng-template>
+                </ng-select>
+                <div class="dropDown-errorClass" [hidden]="(managementDashboardPermissionsForm.controls.orgProfile.valid || 
+                managementDashboardPermissionsForm.controls.orgProfile.untouched)">
+                  This Field is required.
+                </div>
+              </div>
+            </div>
+            <div class="text-center" *ngIf="isLeftVisible">
+              <button class="btn header-button" (click)="cancelPanel()">
+                <span>
+                  <i class="fa fa-times" aria-hidden="true"></i>
+                  Cancel</span>
+              </button>
+              <button class="btn header-button" *ngIf="showHideSaveButton"
+                (click)="saveManagementDashboardAccessForm();">
+                <span>
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                  Save</span>
+              </button>
+              <button *ngIf="showHideUpdateButton" class="btn header-button"
+                (click)="updateManagementDashboardAccessForm();">
+                <span>
+                  <i class=" fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Update</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </app-mange-edit-content>
+</div>

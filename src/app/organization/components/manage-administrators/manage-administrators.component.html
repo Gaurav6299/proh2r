@@ -1,0 +1,544 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-content">
+        <mat-tab-group class="tabs" (selectedTabChange)="selectedTabChange($event)">
+          <mat-tab label="Manage Administrator">
+            <app-mange-edit-content [activePane]="isLeftVisible ? 'left' : 'right'">
+              <div leftPane class="divtoggleDiv">
+                <div>
+                  <div class="text-right">
+                    <div style="margin-top: 10px" *ngIf="isLeftVisible">
+                      <button class="btn header-button" (click)="
+                          isLeftVisible = !isLeftVisible; addAdministrator()
+                        ">
+                        <span>
+                          <i class="fa fa-plus-square" aria-hidden="true"></i>
+                          Admin</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="searchBox" style="text-align: right; margin-top: 8px">
+                  <i class="fa fa-search"></i>
+                  <input type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width: auto" />
+                </div>
+                <p-table #dt1 [columns]="columns" [value]="manageAdministratorListData" [rows]="5" [paginator]="true"
+                  [pageLinks]="5" [rowsPerPageOptions]="[5, 10, 20]" [resizableColumns]="true" [autoLayout]="true"
+                  [responsive]="true">
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{ col.header }}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-car let-columns="columns">
+                    <tr>
+                      <td *ngFor="let col of columns">
+                        <div *ngIf="col.field != 'adminId'">
+                          {{ car[col.field] }}
+                        </div>
+                        <div class="mat-cell">
+                          <div class="mat-element-icon">
+                            <span class="edit" matTooltip="Update" *ngIf="col.field == 'adminId'">
+                              <i class="fa fa-pencil-square-o" (click)="getAuthentication(car)"></i>
+                            </span>
+                            <span class="delete" matTooltip="Delete" *ngIf="col.field == 'adminId'">
+                              <i class="fa fa-trash-o" (click)="deleteAdministrator(car)"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <div rightPane class="divtoggleDiv">
+                <div class="card-content">
+                  <div class="text-right" style="margin-top: 10px" *ngIf="!isLeftVisible">
+                    <button class="btn header-button" (click)="
+                        isLeftVisible = !isLeftVisible;
+                        aaddButtonVisible = true;
+                        cancelAdministrator()
+                      ">
+                      <span>
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                        Back</span>
+                    </button>
+                  </div>
+                  <form [formGroup]="permissions">
+                    <div class="card-content-type">
+                      <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                          <p class="category showFieldMandatory">
+                            Select an Employee for Access Permissions
+                          </p>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                          <div *ngIf="addNewEmployeeShowHide">
+                            <ng-select [items]="employeeList" appendTo="body" [searchable]="true" bindLabel="viewValue"
+                              bindValue="value" (click)="onClickEvent()" placeholder="Select Employee"
+                              formControlName="selectEmployee" class="custom-ng-select-Style">
+                            </ng-select>
+                          </div>
+                          <div *ngIf="editNewEmployeeShowHide">
+                            <ng-select appendTo="body" [searchable]="false" [clearable]="false"
+                              formControlName="selectEmployee" class="custom-ng-select-Style">
+                              <ng-option *ngFor="let item of employeeList" [value]="item.value" [disabled]="true">
+                                {{ item.viewValue }}
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                          <p class="category showFieldMandatory">
+                            Select Type of Access
+                          </p>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                          <ng-select [items]="accessTypes" appendTo="body" [searchable]="true" bindLabel="viewValue"
+                            bindValue="value" placeholder="Select" formControlName="accessPermissions"
+                            class="custom-ng-select-Style">
+                          </ng-select>
+                          <div class="dropDown-errorClass" [hidden]="
+                              permissions.controls.accessPermissions.valid ||
+                              permissions.controls.accessPermissions.untouched
+                            ">
+                            {{ requiredDropdownButton }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Start New Administrator Template -->
+                    <div *ngIf="
+                        permissions.controls.accessPermissions.value ==
+                        'Restricted Access'
+                      ">
+                      <div class="card-header">
+                        <h6 class="title">Access Permissions</h6>
+                      </div>
+                      <div class="management_administration-accordion">
+                        <!-- Dashboard Module -->
+                        <!-- <p-panel [toggleable]="false" [style]="{'margin-bottom':'5px'}">
+                        <p-header>
+                          <mat-checkbox [value]="falseValue" formControlName="organizationStatus">Dashboard</mat-checkbox>
+                        </p-header>
+                      </p-panel> -->
+                        <!-- Organization Module -->
+                        <p-panel [toggleable]="true" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_organization_admin_full_access" label="Organization"
+                              [(ngModel)]="selectedOrganizationAccess" inputId="organization"
+                              [ngModelOptions]="{ standalone: true }" (onChange)="onChangeOrganizationAccess($event)">
+                            </p-checkbox>
+                          </p-header>
+                          <div class="panel-body" contenteditable="true">
+                            <p-checkbox value="proH2R_organization_setup" label="Organization Setup"
+                              [(ngModel)]="selectedOrganizationAccess" inputId="organizationSetup"
+                              [binary]="isDisableOrganizationdAccess" [disabled]="isDisableOrganizationdAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleOrgComponents($event, selectedOrganizationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_employee_fields" label="Employee Fields"
+                              [(ngModel)]="selectedOrganizationAccess" inputId="employeeFields"
+                              [binary]="isDisableOrganizationdAccess" [disabled]="isDisableOrganizationdAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleOrgComponents($event, selectedOrganizationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_employee_tree" label="Employee Tree"
+                              [(ngModel)]="selectedOrganizationAccess" inputId="employeeTree"
+                              [binary]="isDisableOrganizationdAccess" [disabled]="isDisableOrganizationdAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleOrgComponents($event, selectedOrganizationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_documents" label="Documents"
+                              [(ngModel)]="selectedOrganizationAccess" inputId="documents"
+                              [binary]="isDisableOrganizationdAccess" [disabled]="isDisableOrganizationdAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleOrgComponents($event, selectedOrganizationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_asset_management" label="Asset Management"
+                              [(ngModel)]="selectedOrganizationAccess" inputId="assetManagement"
+                              [binary]="isDisableOrganizationdAccess" [disabled]="isDisableOrganizationdAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleOrgComponents($event, selectedOrganizationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_access_management" label="Access Management"
+                              [(ngModel)]="selectedOrganizationAccess" inputId="accessManagement"
+                              [binary]="isDisableOrganizationdAccess" [disabled]="isDisableOrganizationdAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleOrgComponents($event, selectedOrganizationAccess)">
+                            </p-checkbox>
+                          </div>
+                        </p-panel>
+                        <!-- Dashboard Module -->
+                        <p-panel [toggleable]="false" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_dashboard_full_access" label="Dashboard"
+                              [(ngModel)]="selectedDashboardAccess" inputId="dashboard"
+                              [ngModelOptions]="{ standalone: true }">
+                            </p-checkbox>
+                          </p-header>
+                        </p-panel>
+                        <!-- Employees Module -->
+                        <p-panel [toggleable]="false" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_employees_admin_full_access" label="Employees"
+                              [(ngModel)]="selectedEmployeesAccess" inputId="employees"
+                              [ngModelOptions]="{ standalone: true }">
+                            </p-checkbox>
+                          </p-header>
+                        </p-panel>
+                        <!-- Calendar Module -->
+                        <p-panel [toggleable]="false" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_calendar_admin_full_access" label="Calendar"
+                              [(ngModel)]="selectedCalendarAccess" inputId="calendar"
+                              [ngModelOptions]="{ standalone: true }">
+                            </p-checkbox>
+                          </p-header>
+                        </p-panel>
+                        <!-- Attendance Module -->
+                        <p-panel [toggleable]="true" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_attendance_admin_full_access" label="Attendance"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="attendance"
+                              [ngModelOptions]="{ standalone: true }" (onChange)="onChangeAttendanceAccess($event)">
+                            </p-checkbox>
+                          </p-header>
+                          <div class="panel-body">
+                            <p-checkbox value="proH2R_attendance_settings" label="Settings"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="attendSettings"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_attendance_records" label="Attendance Records"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="attendanceRecords"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_roster_records" label="Roster Records"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="rosterRecords"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_regularization_requests" label="Regularization Requests"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="regularizationRequests"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_on_duty_requests" label="On Duty Requests"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="onDutyRequests"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_attendance_audit" label="Attendance Audit"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="attendanceAudit"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_attendance_process" label="Attendance Process"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="attendanceProcess"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_attendance_reconciliation" label="Attendance Reconciliation"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="attendanceReconciliation"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_biometric_logs" label="Biometric Logs"
+                              [(ngModel)]="selectedAttendanceAccess" inputId="biometricLogs"
+                              [binary]="isDisableAttendanceAccess" [disabled]="isDisableAttendanceAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleAttendanceComponents($event, selectedAttendanceAccess)">
+                            </p-checkbox><br />
+                          </div>
+                        </p-panel>
+                        <!-- TimeSheets Module -->
+                        <p-panel [toggleable]="true" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_timesheets_admin_full_access" label="Time Sheets"
+                              [(ngModel)]="selectedTimesheetsAccess" inputId="timeSheets"
+                              [ngModelOptions]="{ standalone: true }" (onChange)="onChangeTimeSheetsAccess($event)">
+                            </p-checkbox>
+                          </p-header>
+                          <div class="panel-body">
+                            <p-checkbox value="proH2R_timesheets_settings" label="Settings"
+                              [(ngModel)]="selectedTimesheetsAccess" inputId="Timesheetsettings"
+                              [binary]="isDisabledTimesheetsAccess" [disabled]="isDisabledTimesheetsAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleTimesheetsComponents($event, selectedTimesheetsAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_timesheets_projects" label="Projects"
+                              [(ngModel)]="selectedTimesheetsAccess" inputId="projects"
+                              [binary]="isDisabledTimesheetsAccess" [disabled]="isDisabledTimesheetsAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleTimesheetsComponents($event, selectedTimesheetsAccess)">
+                            </p-checkbox>
+                            <br />
+
+                            <p-checkbox value="proH2R_timesheets" label="Timesheets"
+                              [(ngModel)]="selectedTimesheetsAccess" inputId="timesheets"
+                              [binary]="isDisabledTimesheetsAccess" [disabled]="isDisabledTimesheetsAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleTimesheetsComponents($event, selectedTimesheetsAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_time_approvals" label="Time Approvals"
+                              [(ngModel)]="selectedTimesheetsAccess" inputId="timeApprovals"
+                              [binary]="isDisabledTimesheetsAccess" [disabled]="isDisabledTimesheetsAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleTimesheetsComponents($event, selectedTimesheetsAccess)">
+                            </p-checkbox>
+                          </div>
+                        </p-panel>
+                        <!-- Leave Module -->
+                        <p-panel [toggleable]="true" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_leave_admin_full_access" label="Leave"
+                              [(ngModel)]="selectedLeaveAccess" inputId="leave" [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeLeaveAccess($event)">
+                            </p-checkbox>
+                          </p-header>
+                          <div class="panel-body">
+                            <p-checkbox value="proH2R_leave_settings" label="Settings" [(ngModel)]="selectedLeaveAccess"
+                              inputId="leaveSettings" [binary]="isDisabledLeaveAccess"
+                              [disabled]="isDisabledLeaveAccess" [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleLeaveComponents($event, selectedLeaveAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_leave_grant" label="Leave Grant" [(ngModel)]="selectedLeaveAccess"
+                              inputId="leaveGrant" [binary]="isDisabledLeaveAccess" [disabled]="isDisabledLeaveAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleLeaveComponents($event, selectedLeaveAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_leave_balance" label="Leave Balance"
+                              [(ngModel)]="selectedLeaveAccess" inputId="leaveBalance" [binary]="isDisabledLeaveAccess"
+                              [disabled]="isDisabledLeaveAccess" [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleLeaveComponents($event, selectedLeaveAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_leave_application" label="Leave Application"
+                              [(ngModel)]="selectedLeaveAccess" inputId="leaveApplication"
+                              [binary]="isDisabledLeaveAccess" [disabled]="isDisabledLeaveAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleLeaveComponents($event, selectedLeaveAccess)">
+                            </p-checkbox>
+                          </div>
+                        </p-panel>
+                        <!-- Expenses Module -->
+                        <p-panel [toggleable]="true" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_expense_admin_full_access" label="Expenses"
+                              [(ngModel)]="selectedExpenseAccess" inputId="expenses"
+                              [ngModelOptions]="{ standalone: true }" (onChange)="onChangeExpenseAccess($event)">
+                            </p-checkbox>
+                          </p-header>
+                          <div class="panel-body">
+                            <p-checkbox value="proH2R_expense_settings" label="Settings"
+                              [(ngModel)]="selectedExpenseAccess" inputId="expenseSettings"
+                              [binary]="isDisabledExpenseAccess" [disabled]="isDisabledExpenseAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleExpenseComponents($event, selectedExpenseAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_expense_reports" label="Expense Reports"
+                              [(ngModel)]="selectedExpenseAccess" inputId="expenseReports"
+                              [binary]="isDisabledExpenseAccess" [disabled]="isDisabledExpenseAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleExpenseComponents($event, selectedExpenseAccess)">
+                            </p-checkbox>
+                          </div>
+                        </p-panel>
+                        <!-- Payroll Module -->
+                        <p-panel [toggleable]="true" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_payroll_admin_full_access" label="Payroll"
+                              [(ngModel)]="selectedPayrollAccess" inputId="payroll"
+                              [ngModelOptions]="{ standalone: true }" (onChange)="onChangePayrollAccess($event)">
+                            </p-checkbox>
+                          </p-header>
+                          <div class="panel-body">
+                            <p-checkbox value="proH2R_payroll_settings" label="Settings"
+                              [(ngModel)]="selectedPayrollAccess" inputId="payrollSettings"
+                              [binary]="isDisabledPayrollAccess" [disabled]="isDisabledPayrollAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRolePayrollComponents($event, selectedPayrollAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_ctc_templates" label="CTC Templates"
+                              [(ngModel)]="selectedPayrollAccess" inputId="ctcTemplates"
+                              [binary]="isDisabledPayrollAccess" [disabled]="isDisabledPayrollAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRolePayrollComponents($event, selectedPayrollAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_lop_reversal" label="LOP Reversal"
+                              [(ngModel)]="selectedPayrollAccess" inputId="lopReversal"
+                              [binary]="isDisabledPayrollAccess" [disabled]="isDisabledPayrollAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRolePayrollComponents($event, selectedPayrollAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_run_payroll" label="Run Payroll"
+                              [(ngModel)]="selectedPayrollAccess" inputId="runPayroll"
+                              [binary]="isDisabledPayrollAccess" [disabled]="isDisabledPayrollAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRolePayrollComponents($event, selectedPayrollAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_payslips" label="Payslips" [(ngModel)]="selectedPayrollAccess"
+                              inputId="payslips" [binary]="isDisabledPayrollAccess" [disabled]="isDisabledPayrollAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRolePayrollComponents($event, selectedPayrollAccess)">
+                            </p-checkbox>
+                          </div>
+                        </p-panel>
+                        <!-- Taxation Module -->
+                        <p-panel [toggleable]="true" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_taxation_admin_full_access" label="Taxation"
+                              [(ngModel)]="selectedTaxationAccess" inputId="taxation"
+                              [ngModelOptions]="{ standalone: true }" (onChange)="onChangeTaxationAccess($event)">
+                            </p-checkbox>
+                          </p-header>
+                          <div class="panel-body">
+                            <p-checkbox value="proH2R_taxation_settings" label="Settings"
+                              [(ngModel)]="selectedTaxationAccess" inputId="taxationSettings"
+                              [binary]="isDisabledTaxationAccess" [disabled]="isDisabledTaxationAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleTaxationComponents($event, selectedTaxationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_tax_exemptions" label="Tax Exemptions"
+                              [(ngModel)]="selectedTaxationAccess" inputId="taxExemptions"
+                              [binary]="isDisabledTaxationAccess" [disabled]="isDisabledTaxationAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleTaxationComponents($event, selectedTaxationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_tax_declarations" label="Tax Declarations"
+                              [(ngModel)]="selectedTaxationAccess" inputId="taxDeclarations"
+                              [binary]="isDisabledTaxationAccess" [disabled]="isDisabledTaxationAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleTaxationComponents($event, selectedTaxationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_taxation_etds" label="eTDS" [(ngModel)]="selectedTaxationAccess"
+                              inputId="eTDS" [binary]="isDisabledTaxationAccess" [disabled]="isDisabledTaxationAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleTaxationComponents($event, selectedTaxationAccess)">
+                            </p-checkbox>
+                          </div>
+                        </p-panel>
+                        <!-- Reports Module -->
+                        <p-panel [toggleable]="false" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_reports_admin_full_access" label="Reports"
+                              [(ngModel)]="selectedReportsAccess" inputId="reports"
+                              [ngModelOptions]="{ standalone: true }">
+                            </p-checkbox>
+                          </p-header>
+                        </p-panel>
+                        <!-- Separation Module -->
+                        <p-panel [toggleable]="true" [style]="{ 'margin-bottom': '5px' }">
+                          <p-header>
+                            <p-checkbox value="proH2R_separation_admin_full_access" label="Separation"
+                              [(ngModel)]="selectedSeparationAccess" inputId="separation"
+                              [ngModelOptions]="{ standalone: true }" (onChange)="onChangeSeparationAccess($event)">
+                            </p-checkbox>
+                          </p-header>
+                          <div class="panel-body">
+                            <p-checkbox value="proH2R_separation_settings" label="Settings"
+                              [(ngModel)]="selectedSeparationAccess" inputId="separationSettings"
+                              [binary]="isDisabledSeparationAccess" [disabled]="isDisabledSeparationAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleSeparationComponents($event, selectedSeparationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_separation_requests" label="All Separation Requests"
+                              [(ngModel)]="selectedSeparationAccess" inputId="allSeparationRequests"
+                              [binary]="isDisabledSeparationAccess" [disabled]="isDisabledSeparationAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleSeparationComponents($event, selectedSeparationAccess)">
+                            </p-checkbox><br />
+
+                            <p-checkbox value="proH2R_asset_deallocation_requests" label="Asset Deallocation Requests"
+                              [(ngModel)]="selectedSeparationAccess" inputId="assetDeallocationRequests"
+                              [binary]="isDisabledSeparationAccess" [disabled]="isDisabledSeparationAccess"
+                              [ngModelOptions]="{ standalone: true }"
+                              (onChange)="onChangeRoleSeparationComponents($event, selectedSeparationAccess)">
+                            </p-checkbox>
+                          </div>
+                        </p-panel>
+                      </div>
+                    </div>
+                    <!-- End New Administrator Template -->
+                  </form>
+                  <div class="text-center">
+                    <button class="btn header-button" (click)="
+                        isLeftVisible = !isLeftVisible;
+                        addButtonVisible = true;
+                        setPanel()
+                      ">
+                      <span>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        Cancel</span>
+                    </button>
+                    <button *ngIf="addButtonVisible" class="btn header-button"
+                      (click)="saveAdministratorInfo(permissions)">
+                      <span>
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        Save</span>
+                    </button>
+                    <button *ngIf="updateButtonVisible" class="btn header-button" (click)="
+                        isLeftVisible = !isLeftVisible;
+                        UpdateAdministratorInfo(permissions);
+                        setPanel()
+                      ">
+                      <span>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        Update</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </app-mange-edit-content>
+          </mat-tab>
+          <mat-tab label="Management Dashboard Access">
+            <app-management-dashboard-access></app-management-dashboard-access>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+@import "~assets/sass/md/model";
+.example-radio-group {
+    display: inline-flex;
+    flex-direction: column;
+  }
+  
+  .example-radio-button {
+    margin: 5px;
+  }
+  
+  .right-field {
+    width: 49%;
+    margin-left: 1%;
+  }
+
+  .left-field {
+    width: 49%;
+  }
+ 
+  

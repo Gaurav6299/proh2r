@@ -1,0 +1,72 @@
+<div class="card" style="box-shadow: none !important;">
+  <div>
+    <div style="text-align: right; padding-bottom: 5px;">
+      <button type="button" class="btn header-button" (click)="addLoanApplication()">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Apply Application</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="table-responsive example-container mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="loanCategoryLabel">
+          <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.loanCategoryLabel}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="totalEMI">
+          <mat-header-cell *matHeaderCellDef>Repayment Frequency</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.totalEMI}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="totalDisbursementAmount">
+          <mat-header-cell *matHeaderCellDef>Total Disbursement Amount</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.totalDisbursementAmount}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="totalDisbursedAmount">
+          <mat-header-cell *matHeaderCellDef>Disbursed Amount</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.totalDisbursedAmount}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loanStatus">
+          <mat-header-cell *matHeaderCellDef> Status</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.loanStatus}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <div class="mat-cell">
+              <div class="mat-element-icon">
+                <span class="view">
+                  <i (click)="viewLoanDetails(element)" class="fa fa-eye" aria-hidden="true" matTooltip="View"></i>
+                </span>
+                <span class="edit" *ngIf="element.loanStatus=='PENDING'">
+                  <i (click)="updateLoanDetails(element)" class="fa fa-pencil-square-o" aria-hidden="true"
+                    matTooltip="Edit"></i>
+                </span>
+                <span class="delete" *ngIf="element.loanStatus=='PENDING'">
+                  <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteRecord(element.loanApplicationId)"
+                    matTooltip="Delete"></i>
+                </span>
+              </div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>

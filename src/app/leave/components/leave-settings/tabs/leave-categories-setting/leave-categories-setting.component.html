@@ -1,0 +1,681 @@
+<div class="card" style="box-shadow: none !important">
+  <div class="card-header">
+    <div style="float: left;">
+      <h6 class="title">Leave Categories</h6>
+    </div>
+    <div style="text-align: right;">
+      <button *ngIf="!isLeftVisible" class="btn header-button" (click)="isLeftVisible = !isLeftVisible;formReset()">
+        <span>
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+          Leave Categories</span>
+      </button>
+      <button *ngIf="isLeftVisible" class="btn header-button" (click)="isLeftVisible = !isLeftVisible;setPanel()">
+        <span>
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          Back</span>
+      </button>
+    </div>
+  </div>
+  <!-- <ng-template #leaveCatViewOnly>
+    <div class="card-header">
+      <h6 class="title">Leave Categories</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+    <app-left-right-leve-categoriesy-panes [activePane]="isLeftVisible ? 'right' : 'left'">
+      <div leftPane class="divtoggleDiv">
+        <p-table #dt1 [columns]="displayedColumns" [value]="tableLeaveCatagoriesSetting" [rows]="5" [paginator]="true"
+          [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" exportFilename="Employee_Report" [resizableColumns]="true"
+          [autoLayout]="true" [responsive]="true">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                <div *ngIf="col.field!='action'">{{car[col.field]}}</div>
+                <div class="mat-cell">
+                  <div class="mat-element-icon">
+                    <span class="edit" *ngIf="col.field=='action'">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit" (click)="getData(car)"></i>
+                    </span>
+                    <span class="delete" *ngIf="col.field=='action' && car['defaultCategory']==false">
+                      <i class="fa fa-trash-o" aria-hidden="true" matTooltip="delete"
+                        (click)="openDeleteDialog(car.categoryId)"></i>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div rightPane class="divtoggleDiv">
+        <div class="card" style="box-shadow: none !important; border:1px solid #ddd;border-radius:3px;">
+          <form #leaveCategoriesSettingForm="ngForm" [formGroup]="LeaveCategoriesSetting">
+            <div class="row" style="text-align: center;">
+              <h5 class="left-rights-slider-title" *ngIf="!editMode">
+                Add New Leave Category
+              </h5>
+              <h5 class="left-rights-slider-title" *ngIf="editMode">
+                Update Leave Category
+              </h5>
+              <h6 class="left-rights-slider-Subtitle">
+                Leave Category for companies
+              </h6>
+            </div>
+            <div class="card-content">
+              <p class="category showFieldMandatory">Please choose the type of leave</p>
+              <mat-form-field class="fullLength">
+                <input *ngIf="editMode" matInput formControlName="typeOfLeave" [readonly]="true">
+                <mat-select *ngIf="!editMode" placeholder="Select Mode" formControlName="typeOfLeave"
+                  (selectionChange)="applyValidation();">
+                  <mat-option value="General_Leave">General Leave</mat-option>
+                  <mat-option value="Annual_Non_Accrual_Leave">Annual Non-Accrual Leave</mat-option>
+                  <!-- <mat-option value="Comp_Off">Compoff</mat-option>
+                  <mat-option value="Maternity_Leave">Maternity Leave</mat-option> -->
+                </mat-select>
+              </mat-form-field>
+              <span class="category" style="color: red;"
+                *ngIf="!LeaveCategoriesSetting.controls.typeOfLeave.value && checktypeOfLeave">
+                Field is required
+              </span>
+
+              <p class="category showFieldMandatory">Please provide a label for this leave</p>
+              <mat-form-field class="fullLength">
+                <input matInput placeholder="Custom Label" formControlName="leaveName" [readonly]='editMode'>
+              </mat-form-field>
+              <span class="category" style="color: red;"
+                *ngIf="!LeaveCategoriesSetting.controls.leaveName.value && checkleaveName">
+                Field is required
+              </span>
+
+              <p class="category showFieldMandatory">Please provide an abbreviation for this leave</p>
+              <mat-form-field class="fullLength">
+                <input matInput placeholder="Abbreviation Label" formControlName="leaveAbbrv" [readonly]='editMode'>
+              </mat-form-field>
+              <span class="category" style="color: red;"
+                *ngIf="!LeaveCategoriesSetting.controls.leaveAbbrv.value && checkleaveAbbrv">
+                Field is required
+              </span>
+
+
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category showFieldMandatory">Select your leave accrual period</p>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Mode" formControlName="leaveAccrualPeriod">
+                    <mat-option value="Annually">Annually</mat-option>
+                    <mat-option value="Semi_Annually">Semi-Annually</mat-option>
+                    <mat-option value="Quarterly">Quarterly</mat-option>
+                    <mat-option value="Bi_Monthly">Bi-Monthly</mat-option>
+                    <mat-option value="Monthly">Monthly</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.leaveAccrualPeriod.valid 
+                || LeaveCategoriesSetting.controls.leaveAccrualPeriod.untouched)">
+                  Field is required
+                </span>
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category">Do your employees accrue leave in advance?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="advanceAccrueLeave">
+                    <mat-radio-button value="true">Yes</mat-radio-button>
+                    <mat-radio-button value="false">No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <!-- <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.advanceAccrueLeave.valid || 
+                           LeaveCategoriesSetting.controls.advanceAccrueLeave.untouched)">
+                  {{requiredRadioButton}}
+                </div> -->
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category showFieldMandatory">What is your policy with regards to carryover limits?</p>
+                <mat-form-field class="fullLength">
+                  <mat-select placeholder="Select Mode" formControlName="carryOverLimitsPolicy">
+                    <mat-option value="No_Carryover">No Carryover</mat-option>
+                    <mat-option value="Carryover_Cap">Carryover Cap</mat-option>
+                    <mat-option value="No_Limit">No Limit</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.carryOverLimitsPolicy.valid || 
+                LeaveCategoriesSetting.controls.carryOverLimitsPolicy.untouched)">
+                  Field is required
+                </span>
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category">Are employees allowed to have negative leave balance?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="negativeLeaveBalance">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <!-- <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.negativeLeaveBalance.valid || 
+                           LeaveCategoriesSetting.controls.negativeLeaveBalance.untouched)">
+                  {{requiredRadioButton}}
+                </div> -->
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category">Would you like to round-off the leave accrual to the nearest 0.5 unit?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="roundOffAccrual">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <!-- <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.roundOffAccrual.valid || 
+                           LeaveCategoriesSetting.controls.roundOffAccrual.untouched)">
+                  {{requiredRadioButton}}
+                </div> -->
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category">Is intra-cycle lapse applicable for this category?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="intraCycleLaps" (change)="lapsValidation();">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <!-- <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.intraCycleLaps.valid || 
+                           LeaveCategoriesSetting.controls.intraCycleLaps.untouched)">
+                  {{requiredRadioButton}}
+                </div> -->
+
+                <!-- <div *ngIf="LeaveCategoriesSetting.controls.intraCycleLaps.value =='true'">
+                  <p class="category">Number of days after this leave caategory laps</p>
+                  <mat-form-field class="fullLength">
+                    <input pattern="(?<=\s|^)\d+(?=\s|$)" matInput placeholder="Days"
+                      formControlName="lapsTimeDurations">
+                    <mat-error [hidden]="(LeaveCategoriesSetting.controls.lapsTimeDurations.valid || 
+                    LeaveCategoriesSetting.controls.lapsTimeDurations.untouched)">
+                      Invalid Input
+                    </mat-error>
+                  </mat-form-field> 
+                   <p class="category">Number of leave deducted after laps</p>
+                  <mat-form-field class="fullLength">
+                    <input pattern="(?<=\s|^)\d+(?=\s|$)" matInput placeholder="number"
+                      formControlName="leaveLapsAmount">
+                    <mat-error [hidden]="(LeaveCategoriesSetting.controls.leaveLapsAmount.valid || 
+                    LeaveCategoriesSetting.controls.leaveLapsAmount.untouched)">
+                      Invalid Input
+                    </mat-error>
+                  </mat-form-field> 
+                </div>-->
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category">How would you like to pro-rate the first month’s accrual for new joinees?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="fixedCutoffDay">
+                    <mat-radio-button value='true'>Fixed cut-off day of the month </mat-radio-button>
+                    <mat-radio-button value='false'>Pro-ration by joining date in the calendar month</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <!-- <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.fixedCutoffDay.valid || 
+                           LeaveCategoriesSetting.controls.fixedCutoffDay.untouched)">
+                  {{requiredRadioButton}}
+                </div> -->
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <div *ngIf="LeaveCategoriesSetting.controls.fixedCutoffDay.value==='true'">
+                  <p class="category">What day of the month will the employee have to join on to get credit for that
+                    month?</p>
+                  <mat-form-field class="fullLength">
+                    <input pattern="(?<=\s|^)\d+(?=\s|$)" matInput placeholder="day of the month"
+                      formControlName="joinDayOfTheMonth">
+                  </mat-form-field>
+                  <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.joinDayOfTheMonth.valid || 
+                           LeaveCategoriesSetting.controls.joinDayOfTheMonth.untouched)">
+                    Invalid Input
+                  </span>
+                  <p class="category">What day of the month will the employee have to resign on to get credit for that
+                    month?</p>
+                  <mat-form-field class="fullLength">
+                    <input pattern="(?<=\s|^)\d+(?=\s|$)" matInput placeholder="day of the month"
+                      formControlName="resignDayOfTheMonth">
+                  </mat-form-field>
+                  <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.resignDayOfTheMonth.valid || 
+                           LeaveCategoriesSetting.controls.resignDayOfTheMonth.untouched)">
+                    Invalid Input
+                  </span>
+                </div>
+              </div>
+              <p class="category showFieldMandatory">Can employee apply a leave for this category?</p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="canEmpApplyForThisLeaveCat">
+                  <mat-radio-button value='true'>Yes</mat-radio-button>
+                  <mat-radio-button value='false'>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.canEmpApplyForThisLeaveCat.valid || 
+                           LeaveCategoriesSetting.controls.canEmpApplyForThisLeaveCat.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave' 
+              || LeaveCategoriesSetting.controls.typeOfLeave.value==='Annual_Non_Accrual_Leave'">
+                <p class="category ">Is this category eligible for leave encashment during rollover?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="encashmentOnRollover">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.encashmentOnRollover.valid || 
+                             LeaveCategoriesSetting.controls.encashmentOnRollover.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <p class="category ">Is this category eligible for leave encashment/recovery during
+                  FNF?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="encashmentRecoveryOnFNF">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.encashmentRecoveryOnFNF.valid || 
+                             LeaveCategoriesSetting.controls.encashmentRecoveryOnFNF.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='Comp_Off'">
+                <p class="category ">Can employee apply for Compoff Earning?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="applicableCompOffEarning">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <p class="category ">Do you want to provide a half-day option for this type of leave?
+              </p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="halfDayOption">
+                  <mat-radio-button (click)="selectedHalfDayOption()" value='true'>Yes</mat-radio-button>
+                  <mat-radio-button (click)="selectedHalfDayOption()" value='false'>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.halfDayOption.valid || 
+                           LeaveCategoriesSetting.controls.halfDayOption.untouched)">
+                {{requiredRadioButton}}
+              </div>
+              <div *ngIf="(LeaveCategoriesSetting.controls.halfDayOption.value==='true')">
+                <p class="category">If an weekly off/holiday is part of the half day leave request, should it be
+                  included in the number of days
+                  taken?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeWeeklyOffHalfdayRequest">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeWeeklyOffHalfdayRequest.valid || 
+                           LeaveCategoriesSetting.controls.includeWeeklyOffHalfdayRequest.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='Maternity_Leave'">
+                <p class="category">Is this a paid Leave?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="leavePaid">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.leavePaid.valid || 
+                           LeaveCategoriesSetting.controls.leavePaid.untouched)">
+                  {{requiredRadioButton}}
+                </span>
+                <p class="category showFieldMandatory"> Maximum number of days precede of the expected delivery for
+                  Maternity Leave</p>
+                <mat-form-field class="fullLength">
+                  <input pattern="(?<=\s|^)\d+(?=\s|$)" matInput placeholder="Days"
+                    formControlName="daysBeforeDelivery">
+                  <mat-error [hidden]="(LeaveCategoriesSetting.controls.daysBeforeDelivery.valid || 
+                LeaveCategoriesSetting.controls.daysBeforeDelivery.untouched)">
+                    Invalid Input
+                  </mat-error>
+                </mat-form-field>
+                <!-- <p class="category">Number of days before which the leave application must be submitted (leave blank
+                  for
+                  no limit)</p>
+                <mat-form-field class="fullLength">
+                  <input pattern="(?<=\s|^)\d+(?=\s|$)" matInput placeholder="Days" formControlName="submitLeaveBefore">
+                  <mat-error [hidden]="(LeaveCategoriesSetting.controls.submitLeaveBefore.valid || 
+                LeaveCategoriesSetting.controls.submitLeaveBefore.untouched)">
+                    Invalid Input
+                  </mat-error>
+                </mat-form-field>
+                <p class="category">Maximum number of consecutive leave days allowed (leave blank for no limit)</p>
+                <mat-form-field class="fullLength">
+                  <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Days"
+                    formControlName="maxConsecutiveLeaveDays">
+                  <mat-error [hidden]="(LeaveCategoriesSetting.controls.maxConsecutiveLeaveDays.valid || 
+                           LeaveCategoriesSetting.controls.maxConsecutiveLeaveDays.untouched)">
+                    Invalid Input
+                  </mat-error>
+                </mat-form-field>
+                <p class="category">Minimum number of days allowed (leave blank for no limit)</p>
+                <mat-form-field class="fullLength">
+                  <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Days"
+                    formControlName="minConsecutiveLeaveDays">
+                  <mat-error [hidden]="(LeaveCategoriesSetting.controls.minConsecutiveLeaveDays.valid || 
+                           LeaveCategoriesSetting.controls.minConsecutiveLeaveDays.untouched)">
+                    Invalid Input
+                  </mat-error>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value =='Comp_Off'">
+                <p class="category ">Do you want to add lapse time for this Comp Off?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="lapsTimeForCompOffs" (change)="lapsValidation();">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.lapsTimeForCompOffs.valid || 
+                           LeaveCategoriesSetting.controls.lapsTimeForCompOffs.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <div *ngIf="LeaveCategoriesSetting.controls.lapsTimeForCompOffs.value =='true'">
+                  <p class="category">Number of days after CompOff laps</p>
+                  <mat-form-field class="fullLength">
+                    <input pattern="(?<=\s|^)\d+(?=\s|$)" matInput placeholder="Days"
+                      formControlName="lapsTimeDurations">
+                    <mat-error [hidden]="(LeaveCategoriesSetting.controls.lapsTimeDurations.valid || 
+                    LeaveCategoriesSetting.controls.lapsTimeDurations.untouched)">
+                      Invalid Input
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <p class="category">If an Annual Holiday is part of the leave request, should it be included in the
+                  number of days taken?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeAnnualHoliday">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeAnnualHoliday.valid || 
+                  LeaveCategoriesSetting.controls.includeAnnualHoliday.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <p class="category">If a weekly off is part of the leave request, should it be included in the number
+                  of
+                  days taken?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeWeeklyOff">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeWeeklyOff.valid || 
+                  LeaveCategoriesSetting.controls.includeWeeklyOff.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+
+                <!-- <p class="category">If an Annual Holiday is prefixed/suffixed with a leave, should it be included in the
+                  number of days taken?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeAnnualHolidayPrefixSuffix">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div> -->
+                <!-- <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeAnnualHolidayPrefixSuffix.valid || 
+                  LeaveCategoriesSetting.controls.includeAnnualHolidayPrefixSuffix.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <p class="category">If a weekly off is prefixed/suffixed with a leave, should it be included in the
+                  number of days taken?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeWeeklyOffPrefixSuffix">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeWeeklyOffPrefixSuffix.valid || 
+                  LeaveCategoriesSetting.controls.includeWeeklyOffPrefixSuffix.untouched)">
+                  {{requiredRadioButton}}
+                </div> -->
+
+
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave' 
+              || LeaveCategoriesSetting.controls.typeOfLeave.value==='Annual_Non_Accrual_Leave'">
+                <p class="category">If an Annual Holiday is part of the leave request, should it be included in the
+                  number of days taken?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeAnnualHoliday">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeAnnualHoliday.valid || 
+                LeaveCategoriesSetting.controls.includeAnnualHoliday.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <p class="category">If a weekly off is part of the leave request, should it be included in the number
+                  of
+                  days taken?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeWeeklyOff">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeWeeklyOff.valid || 
+                LeaveCategoriesSetting.controls.includeWeeklyOff.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+
+                <!-- <p class="category">If an Annual Holiday is prefixed/suffixed with a leave, should it be included in the
+                  number of days taken?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeAnnualHolidayPrefixSuffix">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div> -->
+                <!-- <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeAnnualHolidayPrefixSuffix.valid || 
+                  LeaveCategoriesSetting.controls.includeAnnualHolidayPrefixSuffix.untouched)">
+                  {{requiredRadioButton}}
+                </div>
+                <p class="category">If a weekly off is prefixed/suffixed with a leave, should it be included in the
+                  number of days taken?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="includeWeeklyOffPrefixSuffix">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeWeeklyOffPrefixSuffix.valid || 
+                  LeaveCategoriesSetting.controls.includeWeeklyOffPrefixSuffix.untouched)">
+                  {{requiredRadioButton}}
+                </div> -->
+
+                <p class="category">Is this a paid Leave?</p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="leavePaid">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.leavePaid.valid || 
+                           LeaveCategoriesSetting.controls.leavePaid.untouched)">
+                  {{requiredRadioButton}}
+                </span>
+
+              </div>
+
+              <p class="category">Number of days before which the leave application must be submitted (leave blank
+                for
+                no limit)</p>
+              <mat-form-field class="fullLength">
+                <input pattern="(?<=\s|^)\d+(?=\s|$)" matInput placeholder="Days" formControlName="submitLeaveBefore">
+                <mat-error [hidden]="(LeaveCategoriesSetting.controls.submitLeaveBefore.valid || 
+                LeaveCategoriesSetting.controls.submitLeaveBefore.untouched)">
+                  Invalid Input
+                </mat-error>
+              </mat-form-field>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category">Maximum number of consecutive leave days allowed (leave blank for no limit)</p>
+                <mat-form-field class="fullLength">
+                  <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Days"
+                    formControlName="maxConsecutiveLeaveDays">
+                  <mat-error [hidden]="(LeaveCategoriesSetting.controls.maxConsecutiveLeaveDays.valid || 
+                             LeaveCategoriesSetting.controls.maxConsecutiveLeaveDays.untouched)">
+                    Invalid Input
+                  </mat-error>
+                </mat-form-field>
+                <p class="category">Minimum number of days allowed (leave blank for no limit)</p>
+                <mat-form-field class="fullLength">
+                  <input pattern="(-?[0-9]+(\.[0-9][0-9]?)?)" matInput placeholder="Days"
+                    formControlName="minConsecutiveLeaveDays">
+                  <mat-error [hidden]="(LeaveCategoriesSetting.controls.minConsecutiveLeaveDays.valid || 
+                             LeaveCategoriesSetting.controls.minConsecutiveLeaveDays.untouched)">
+                    Invalid Input
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <!-- <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category">Are leaves separated by a weekly off considered consecutive?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="seperateLeaveByWeekOff">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.seperateLeaveByWeekOff.valid || 
+                           LeaveCategoriesSetting.controls.seperateLeaveByWeekOff.untouched)">
+                  {{requiredRadioButton}}
+                </span>
+              </div>
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave'">
+                <p class="category">Are leaves separated by a holiday considered consecutive?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="leaveSeperatedByHoliday">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.leaveSeperatedByHoliday.valid || 
+                           LeaveCategoriesSetting.controls.leaveSeperatedByHoliday.untouched)">
+                  {{requiredRadioButton}}
+                </span>
+              </div> -->
+
+              <div *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='General_Leave' 
+                || LeaveCategoriesSetting.controls.typeOfLeave.value==='Annual_Non_Accrual_Leave'
+                || LeaveCategoriesSetting.controls.typeOfLeave.value==='Maternity_Leave'">
+                <p class="category">Is there any document required to be uploaded for this category?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="uploadDocument">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.uploadDocument.valid || 
+                           LeaveCategoriesSetting.controls.uploadDocument.untouched)">
+                  {{requiredRadioButton}}
+                </span>
+
+                <div *ngIf="LeaveCategoriesSetting.controls.uploadDocument.value==='true'">
+                  <p class="category">Does document upload mandatory for this category?</p>
+                  <div class="radio-wrapper">
+                    <mat-radio-group formControlName="uploadingDocMandatory">
+                      <mat-radio-button value='true'>Yes</mat-radio-button>
+                      <mat-radio-button value='false'>No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.uploadingDocMandatory.valid || 
+                           LeaveCategoriesSetting.controls.uploadingDocMandatory.untouched)">
+                    {{requiredRadioButton}}
+                  </span>
+                </div>
+              </div>
+              <p class="category">Would you like to display the closing balance in the employee's payslips?
+              </p>
+              <div class="radio-wrapper">
+                <mat-radio-group formControlName="includeInPayslip">
+                  <mat-radio-button value='true'>Yes</mat-radio-button>
+                  <mat-radio-button value='false'>No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.includeInPayslip.valid || 
+                           LeaveCategoriesSetting.controls.includeInPayslip.untouched)">
+                {{requiredRadioButton}}
+              </span>
+              <div
+                *ngIf="LeaveCategoriesSetting.controls.typeOfLeave.value==='Annual_Non_Accrual_Leave' 
+              && (LeaveCategoriesSetting.controls.defaultCategory.value=='false'|| LeaveCategoriesSetting.controls.defaultCategory.value == null)">
+                <p class="category">Is there a date restriction as to when the employee can apply?
+                </p>
+                <div class="radio-wrapper">
+                  <mat-radio-group formControlName="dateRestriction">
+                    <mat-radio-button value='true'>Yes</mat-radio-button>
+                    <mat-radio-button value='false'>No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <span class="category" style="color: red;" [hidden]="(LeaveCategoriesSetting.controls.dateRestriction.valid || 
+                           LeaveCategoriesSetting.controls.dateRestriction.untouched)">
+                  {{requiredRadioButton}}
+                </span>
+
+                <div *ngIf="LeaveCategoriesSetting.controls.dateRestriction.value==='true'">
+                  <p class="category">Please select what date employee can apply on?</p>
+                  <mat-form-field class="fullLength">
+                    <mat-select placeholder="Select Mode" formControlName="dateDescription">
+                      <mat-option value="Birthday">Birthday</mat-option>
+                      <mat-option value="WorkAnniversary">Work Anniversary</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div *ngIf="showbudatebutton">
+                <div class="col-md-12" *ngIf="isLeftVisible"
+                  style="text-align: center;margin-bottom:15px; margin-top:15x; ">
+                  <button class="btn header-button">
+                    <span (click)="isLeftVisible = !isLeftVisible;setPanel()">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                      Cancel</span>
+                  </button>
+                  <button class="btn header-button" *ngIf="isLeftVisible" (click)="udateLeaveCategories();">
+                    <span>
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                      Update Leave </span>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="showsavebutton">
+                <div class="col-md-12" *ngIf="isLeftVisible"
+                  style="text-align: center;margin-bottom:15px; margin-top:15x; ">
+                  <button class="btn header-button">
+                    <span (click)="isLeftVisible = !isLeftVisible;setPanel()">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                      Cancel</span>
+                  </button>
+                  <button class="btn header-button" *ngIf="isLeftVisible" (click)="saveLeaveCategories();">
+                    <span>
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                      Save Leave </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <!-- <pre>{{LeaveCategoriesSetting.value|json}}</pre> -->
+        </div>
+      </div>
+    </app-left-right-leve-categoriesy-panes>
+  </div>
+</div>

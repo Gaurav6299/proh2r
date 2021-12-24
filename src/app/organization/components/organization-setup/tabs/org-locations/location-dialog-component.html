@@ -1,0 +1,100 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png" />
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Add Locations</h4>
+  <form [formGroup]="locationDialog">
+    <mat-form-field class="fullLength">
+      <input matInput class="uppercase" placeholder="Location Code" formControlName="locationCode">
+      <mat-error [hidden]="(this.locationDialog.controls.locationCode.valid 
+      || this.locationDialog.controls.locationCode.untouched)">
+        Please provide a location code
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <mat-select #singleSelect1 placeholder="Select Country" formControlName="country" (selectionChange)="getStates($event.value)">
+        <ngx-mat-select-search [placeholderLabel]="'Search Country'" [noEntriesFoundLabel]="'No matching records found'" [formControl]="countryFilterCtrl">
+        </ngx-mat-select-search>
+        <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
+          {{ country.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(this.locationDialog.controls.country.valid 
+              || this.locationDialog.controls.country.untouched)">
+        {{requiredDropdownButton}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="fullLength">
+      <mat-select #singleSelect2 placeholder="Select State" formControlName="state" (selectionChange)="getCities($event.value)">
+        <ngx-mat-select-search [placeholderLabel]="'Search State'" [noEntriesFoundLabel]="'No matching records found'" [formControl]="stateFilterCtrl">
+        </ngx-mat-select-search>
+        <mat-option *ngFor="let state of filteredStates|async" [value]="state">
+          {{ state.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(this.locationDialog.controls.state.valid 
+                || this.locationDialog.controls.state.untouched)">
+        {{requiredDropdownButton}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="fullLength">
+      <mat-select #singleSelect3 placeholder="Select City" formControlName="city">
+        <ngx-mat-select-search [placeholderLabel]="'Search City'" [noEntriesFoundLabel]="'No matching records found'" [formControl]="cityFilterCtrl">
+        </ngx-mat-select-search>
+        <mat-option *ngFor="let city of filteredCities |async" [value]="city">
+          {{ city.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(this.locationDialog.controls.city.valid 
+                || this.locationDialog.controls.city.untouched)">
+        {{requiredDropdownButton}}
+      </mat-error>
+    </mat-form-field>
+
+
+
+    <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Organizations" formControlName="organizations" multiple>
+        <mat-option *ngFor="let item of organizationInfo" [value]="item">
+          {{item.companyName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="fullLength">
+      <input matInput class="uppercase" placeholder="Provident Fund Registration Code" formControlName="pfRegistrationCode">
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <input matInput class="uppercase" placeholder="ESIC Registration Code" formControlName="esicRegistrationCode">
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <input matInput class="uppercase" placeholder="Professional Tax Registration Code" formControlName="professionalTaxRegistrationCode">
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <input matInput class="uppercase" placeholder="LWF Registration Code" formControlName="lwfRegistrationCode">
+    </mat-form-field>
+
+    <ng-select [items]="employeeList" appendTo="body" [searchable]="true" bindLabel="viewValue" bindValue="value" formControlName="selectedEmployee"
+      placeholder="Select Tax Declaration Approvers" class="custom-ng-select-Style" [multiple]="true">
+    </ng-select>
+    <span class="dropDown-errorClass" [hidden]="(locationDialog.controls.selectedEmployee.valid || 
+  locationDialog.controls.selectedEmployee.untouched)">
+      This field is required.
+    </span>
+
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="saveLocation()">Save
+    </button>
+  </div>
+</mat-dialog-actions>

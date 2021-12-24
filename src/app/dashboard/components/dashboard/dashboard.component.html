@@ -1,0 +1,1425 @@
+<div class="main-dashboard-headerBottom">
+  <ul class="card-header-dashboard-bottom-left">
+    <div class="">
+      <img src="assets/images/dashboardSpeedometer.png" class="img-responsive" width="50">
+    </div>
+    <div class="card-header-dashboard-bottom-header-list">
+      <h2 class="dashboard-bottom-header-title">Dashboard</h2>
+      <ng-select appendTo="body" [disabled]="!isAdminDashboardShowHide" [(ngModel)]="dashboardType"
+        [items]="dashboardTypeList" bindLabel="viewValue" bindValue="value"
+        (change)="getDashboardDisplaySummary(dashboardType);" [clearable]="false" [searchable]="false"
+        placeholder="Select Type" class="custom-ng-select-Style disable-arrow header-bottom-dashboard_dropdown"
+        style="min-width: 120px;">
+      </ng-select>
+    </div>
+  </ul>
+
+  <ul class="card-header-navbar">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-2" role="group" aria-label="Second group">
+        <button type="button" class="btn dashboard-header-button" pTooltip="Refresh" tooltipPosition="bottom"
+          (click)="refreshDashboard();">
+          <span><i aria-hidden="true" class="fa fa-refresh"></i>Refresh</span>
+        </button>
+        <button type="button" class="btn dashboard-header-button card-headerNav-nav-link dropdown-toggle"
+          (click)="toggleDropDown()" pTooltip="Select Widgets" tooltipPosition="bottom">
+          <span><i aria-hidden="true" class="fa fa-sliders"></i>Edit</span>&nbsp;&nbsp;
+          <span class="caret"></span>
+        </button>
+        <div class="dropDopwn_menu_dashboardlisting" *ngIf="showDropDown">
+          <div class="card-header-dropDopwn_menu_title">
+            <h2>Select Widgets</h2>
+            <span class="close_dropdown_menu" (click)="closeDropDown()">
+              <i class="material-icons">close</i>
+            </span>
+          </div>
+          <div class="divider"></div>
+          <ul class="dropdown-menu-item-list">
+            <ng-container *ngIf="dashboardDisplayProfileList!=null && dashboardDisplayProfileList.length>0;">
+              <label class="dropdown-menu-item-list-modules"><img [src]="profile"
+                  class="module-icon">&nbsp;&nbsp;Profile</label>
+              <li class="dropdown-menu-item-list-link" *ngFor="let item of dashboardDisplayProfileList">
+                <mat-checkbox class="example-margin" [(ngModel)]="item.isvalid"
+                  (change)="updateDashboardDisplaySummary($event,item)">
+                  {{item.widgetsName}}
+                </mat-checkbox>
+              </li>
+            </ng-container>
+            <!-- --------------------/Profile Module------------------------ -->
+            <ng-container *ngIf="dashboardDisplayOrganizationList!=null && dashboardDisplayOrganizationList.length>0;">
+              <label class="dropdown-menu-item-list-modules"><img [src]="organization"
+                  class="module-icon">&nbsp;&nbsp;Organization</label>
+              <li class="dropdown-menu-item-list-link" *ngFor="let item of dashboardDisplayOrganizationList">
+                <mat-checkbox class="example-margin" [(ngModel)]="item.isvalid"
+                  (change)="updateDashboardDisplaySummary($event,item)">
+                  {{item.widgetsName}}
+                </mat-checkbox>
+              </li>
+            </ng-container>
+            <!-- --------------------/Organization Module------------------------ -->
+            <ng-container *ngIf="dashboardDisplayAttendanceList!=null && dashboardDisplayAttendanceList.length>0;">
+              <label class="dropdown-menu-item-list-modules"><img [src]="attendance"
+                  class="module-icon">&nbsp;&nbsp;Attendance</label>
+              <li class="dropdown-menu-item-list-link" *ngFor="let item of dashboardDisplayAttendanceList">
+                <mat-checkbox class="example-margin" [(ngModel)]="item.isvalid"
+                  (change)="updateDashboardDisplaySummary($event,item)">
+                  {{item.widgetsName}}
+                </mat-checkbox>
+              </li>
+            </ng-container>
+            <!-- --------------------/Attendance Module------------------------ -->
+            <ng-container *ngIf="dashboardDisplayTimesheetsList!=null && dashboardDisplayTimesheetsList.length>0;">
+              <label class="dropdown-menu-item-list-modules"><img [src]="timesheets"
+                  class="module-icon">&nbsp;&nbsp;Timesheets</label>
+              <li class="dropdown-menu-item-list-link" *ngFor="let item of dashboardDisplayTimesheetsList">
+                <mat-checkbox class="example-margin" [(ngModel)]="item.isvalid"
+                  (change)="updateDashboardDisplaySummary($event,item)">
+                  {{item.widgetsName}}
+                </mat-checkbox>
+              </li>
+            </ng-container>
+            <!-- --------------------/Timesheets Module------------------------ -->
+            <ng-container *ngIf="dashboardDisplayLeaveList!=null && dashboardDisplayLeaveList.length>0;">
+              <label class="dropdown-menu-item-list-modules"><img [src]="leave"
+                  class="module-icon">&nbsp;&nbsp;Leave</label>
+              <li class="dropdown-menu-item-list-link" *ngFor="let item of dashboardDisplayLeaveList">
+                <mat-checkbox class="example-margin" [(ngModel)]="item.isvalid"
+                  (change)="updateDashboardDisplaySummary($event,item)">
+                  {{item.widgetsName}}
+                </mat-checkbox>
+              </li>
+            </ng-container>
+            <!-- --------------------/Leave Module------------------------ -->
+            <ng-container *ngIf="dashboardDisplayExpenseList!=null && dashboardDisplayExpenseList.length>0;">
+              <label class="dropdown-menu-item-list-modules"><img [src]="expense"
+                  class="module-icon">&nbsp;&nbsp;Expense</label>
+              <li class="dropdown-menu-item-list-link" *ngFor="let item of dashboardDisplayExpenseList">
+                <mat-checkbox class="example-margin" [(ngModel)]="item.isvalid"
+                  (change)="updateDashboardDisplaySummary($event,item)">
+                  {{item.widgetsName}}
+                </mat-checkbox>
+              </li>
+            </ng-container>
+            <!-- --------------------/Expense Module------------------------ -->
+            <ng-container *ngIf="dashboardDisplayTaxationList!=null && dashboardDisplayTaxationList.length>0;">
+              <label class="dropdown-menu-item-list-modules"><img [src]="taxation"
+                  class="module-icon">&nbsp;&nbsp;Taxation</label>
+              <li class="dropdown-menu-item-list-link" *ngFor="let item of dashboardDisplayTaxationList">
+                <mat-checkbox class="example-margin" [(ngModel)]="item.isvalid"
+                  (change)="updateDashboardDisplaySummary($event,item)">
+                  {{item.widgetsName}}
+                </mat-checkbox>
+              </li>
+            </ng-container>
+            <!-- --------------------/Taxation Module------------------------ -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </ul>
+</div>
+
+<div class="main-container" style="margin-top: 75px;">
+  <div class="dash-main">
+    <div class="container-fluid">
+      <div class="row">
+        <ng-container *ngFor="let item of dashboardDisplayProfileList;">
+          <div class="col-md-4 column_padding" *ngIf="item.widgetsName==='My Tasks' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag profile">
+                <h3 class="dash-title">My Tasks</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div *ngIf="isMyTasksloading$; else content">
+                  <div class="spinner__loading">
+                    <mat-spinner diameter="40"></mat-spinner>
+                  </div>
+                </div>
+                <ng-template #content>
+                  <div class="dashboard-card-01 jumbotron">
+                    <h1 class="display-4">Hello {{employeeName | titlecase}}!</h1>
+                    <div class="dashboard-card-dash_img_0Q1">
+                      <img src="assets/images/Group 2338@2x.png" class="img-responsive" width="200">
+                    </div>
+                    <div class="dashboard-body-01">
+                      <owl-carousel [options]="customOptionsNotifY" [items]="getResults()"
+                        [carouselClasses]="['owl-theme', 'sliding']">
+                        <div class="item userProfile_Derscription" *ngFor="let messages of getResults()">
+                          <h2
+                            [ngStyle]="{'color':messages.subHeading.includes('Pending')===true ? '#4aa3df':messages.subHeading.includes('missing')===true ? '#e03737': '' }">
+                            {{messages.heading}}</h2>
+                          <p>{{messages.subHeading}}</p>
+                        </div>
+                      </owl-carousel>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngFor="let item of dashboardDisplayProfileList;">
+          <div class="col-md-4 column_padding" *ngIf="item.widgetsName==='Employee Connect' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag profile">
+                <h3 class="dash-title">Employee Connect</h3>
+              </div>
+              <div *ngIf="isEmployeeConnectloading$; else content">
+                <div class="spinner__loading">
+                  <mat-spinner diameter="40"></mat-spinner>
+                </div>
+              </div>
+              <ng-template #content>
+                <div class="nav-tabs-navigation">
+                  <div class="nav-tabs-wrapper">
+                    <ul class="nav nav-tabs employee_tab_list" data-tabs="tabs" role="tablist">
+                      <li role="presentation" class="active">
+                        <a href="#birthday" aria-controls="birthday" role="tab" data-toggle="tab">Birthday</a>
+                      </li>
+                      <li role="presentation">
+                        <a href="#anniversary" aria-controls="anniversary" role="tab" data-toggle="tab">Anniversary</a>
+                      </li>
+                      <li role="presentation">
+                        <a href="#newJoinee" aria-controls="newJoinee" role="tab" data-toggle="tab">New
+                          Joinee</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dash-body">
+                  <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="birthday">
+                      <div
+                        *ngIf="dashboardBirthDayList != null && dashboardBirthDayList.length>0; else noBirthDaysDataTemplate">
+                        <owl-carousel [options]="customOptions" [items]="dashboardBirthDayList"
+                          [carouselClasses]="['owl-theme', 'row', 'sliding']">
+                          <div class="item" *ngFor="let birthdayRow of dashboardBirthDayList;">
+                            <div class="birthdaycard-frame">
+                              <div class="inner-frame">
+                                <img *ngIf="birthdayRow.daysLeft != 'Today'" src="assets/images/Ellipse 5@2x.png"
+                                  class="img-responsive inner-frameMediaImg" />
+                                <div class="overlay_buffer" *ngIf="birthdayRow.daysLeft === 'Today'">
+                                  <img src="assets/images/Group 2340@2x.png"
+                                    class="img-responsive inner-frameBirthday" />
+                                  <span><img src="assets/images/Group 2223@2x.png"
+                                      class="img-responsive birthday_ripple" /></span>
+                                </div>
+                                <div class="profile-media" *ngIf="birthdayRow.profileImg != null;else initial">
+                                  <img src={{birthdayRow.profileImg}} class="img-responsive" />
+                                </div>
+                              </div>
+                              <ng-template #initial>
+                                <div id="profileImageInitials">
+                                  {{birthdayRow.firstName.split('',1)}}{{birthdayRow.lastName.split('',1)}}
+                                </div>
+                              </ng-template>
+                              <div class="employee-connect-title">
+                                <span>{{birthdayRow.firstName}}
+                                  {{birthdayRow.lastName}}</span>
+                                <p class="category-title">{{birthdayRow.date |
+                                                                    titlecase}}
+                                </p>
+                              </div>
+                              <div class="daysleft_budge">
+                                <span class="daysLeft">{{birthdayRow.daysLeft}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </owl-carousel>
+                      </div>
+                      <ng-template #noBirthDaysDataTemplate>
+                        <div class="dash-data">
+                          <div class="no-data">
+                            <span><img src="assets/images/002-research.png"></span>
+                            <h5 class="no-data-msg">No Birthday buddies found.</h5>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="anniversary">
+                      <div
+                        *ngIf="dashboardWorkAnniversariesList != null && dashboardWorkAnniversariesList.length>0; else noAnniversaryDataTemplate">
+                        <owl-carousel [options]="customOptions" [items]="dashboardWorkAnniversariesList"
+                          [carouselClasses]="['owl-theme', 'row', 'sliding']">
+                          <div class="item" *ngFor="let anniversariesRow of dashboardWorkAnniversariesList">
+                            <div class="birthdaycard-frame">
+                              <div class="inner-frame">
+                                <img *ngIf="anniversariesRow.daysLeft != 'Today'" src="assets/images/Ellipse 5@2x.png"
+                                  class="img-responsive inner-frameMediaImg" />
+                                <div class="overlay_buffer" *ngIf="anniversariesRow.daysLeft === 'Today'">
+                                  <img src="assets/images/Group 2341@2x.png"
+                                    class="img-responsive inner-frameAnniversary" />
+                                  <span><img src="assets/images/Group 2227@2x.png"
+                                      class="img-responsive anniversary_ripple" /></span>
+                                </div>
+                                <div class="profile-media" *ngIf="anniversariesRow.profileImg != null;else initial">
+                                  <img src={{anniversariesRow.profileImg}} class="img-responsive" />
+                                </div>
+                              </div>
+                              <ng-template #initial>
+                                <div id="profileImageInitials">
+                                  {{anniversariesRow.firstName.split('',1)}}{{anniversariesRow.lastName.split('',1)}}
+                                </div>
+                              </ng-template>
+                              <div class="employee-connect-title">
+                                <span>{{anniversariesRow.firstName}}
+                                  {{anniversariesRow.lastName}}</span>
+                                <p class="category-title">{{anniversariesRow.date |
+                                                                    titlecase}}
+                                </p>
+                              </div>
+                              <div class="daysleft_budge">
+                                <span class="daysLeft">{{anniversariesRow.daysLeft}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </owl-carousel>
+                      </div>
+                      <ng-template #noAnniversaryDataTemplate>
+                        <div class="dash-data">
+                          <div class="no-data">
+                            <span><img src="assets/images/002-research.png"></span>
+                            <h5 class="no-data-msg">No Anniversary buddies found.</h5>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="newJoinee">
+                      <div
+                        *ngIf="dashboardNewJoiniesList != null && dashboardNewJoiniesList.length>0; else noNewJoiniesDataTemplate">
+                        <owl-carousel [options]="customOptions" [items]="dashboardNewJoiniesList"
+                          [carouselClasses]="['owl-theme', 'row', 'sliding']">
+                          <div class="item" *ngFor="let newJoiniesRow of dashboardNewJoiniesList">
+                            <div class="birthdaycard-frame">
+                              <div class="inner-frame">
+                                <img *ngIf="newJoiniesRow.daysLeft != 'Today'" src="assets/images/Ellipse 5@2x.png"
+                                  class="img-responsive inner-frameMediaImg" />
+                                <div class="overlay_buffer" *ngIf="newJoiniesRow.daysLeft === 'Today'">
+                                  <img src="assets/images/Group 2342@2x.png"
+                                    class="img-responsive inner-frameNewJoinies" />
+                                  <span><img src="assets/images/Group 2228@2x.png"
+                                      class="img-responsive newJoinee_ripple" /></span>
+                                </div>
+                                <div class="profile-media" *ngIf="newJoiniesRow.profileImg != null;else initial">
+                                  <img src={{newJoiniesRow.profileImg}} class="img-responsive img" />
+                                </div>
+                              </div>
+                              <ng-template #initial>
+                                <div id="profileImageInitials">
+                                  {{newJoiniesRow.firstName.split('',1)}}{{newJoiniesRow.lastName.split('',1)}}
+                                </div>
+                              </ng-template>
+                              <div class="employee-connect-title">
+                                <span>{{newJoiniesRow.firstName}}
+                                  {{newJoiniesRow.lastName}}</span>
+                                <p class="category-title">{{newJoiniesRow.date |
+                                                                    titlecase}}
+                                </p>
+                              </div>
+                              <div class="daysleft_budge">
+                                <span class="daysLeft">{{newJoiniesRow.daysLeft}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </owl-carousel>
+                      </div>
+                      <ng-template #noNewJoiniesDataTemplate>
+                        <div class="dash-data">
+                          <div class="no-data">
+                            <span><img src="assets/images/002-research.png"></span>
+                            <h5 class="no-data-msg">No New Joinees found.</h5>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngFor="let item of dashboardDisplayLeaveList;">
+          <div class="col-md-4 column_padding" *ngIf="item.widgetsName==='Daily Leave Count' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag leave">
+                <h3 class="dash-title">Daily Leave Count</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div class="dash-data">
+                  <div *ngIf="isDailyLeaveCountloading$; else content">
+                    <div class="spinner__loading">
+                      <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+                  </div>
+                  <ng-template #content>
+                    <div class="nav-container" *ngIf="showLeaveData">
+                      <div class="dashboard-leave-report-card">
+                        <ul class="list-group">
+                          <div class="leave_data" *ngFor="let data of employeeLeaveArray">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              {{data.leaveName}}
+                              <span class="badge badge-primary badge-pill badge_score">
+                                {{data.leaveCount}}
+                              </span>
+                            </li>
+                            <mat-progress-bar mode="determinate" [value]="(data.leaveCount)">
+                            </mat-progress-bar>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <div class="no-data" *ngIf="!showLeaveData">
+                    <span>
+                      <img src="assets/images/002-research.png">
+                    </span>
+                    <h5 class="no-data-msg">No report illustrated yet</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row">
+        <ng-container *ngFor="let item of dashboardDisplayTimesheetsList;">
+          <div class="col-md-8 column_padding" *ngIf="item.widgetsName==='Timesheets' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag timesheets">
+                <h3 class="dash-title">Timesheets</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div *ngIf="isTimesheetsloading$; else content">
+                  <div class="spinner__loading">
+                    <mat-spinner diameter="40"></mat-spinner>
+                  </div>
+                </div>
+                <ng-template #content>
+                  <div class="dash-data nav-container">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <ng-select [items]="employeeList" [(ngModel)]="selectedEmployee" [clearable]="true"
+                          appendTo="body" [searchable]="true" bindLabel="viewValue" bindValue="value"
+                          (change)="getTimesheetsRecord(selectedEmployee);" placeholder="Select Employee"
+                          class="custom-ng-select-Style">
+                        </ng-select>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="dashboard-data_counter text-center">
+                          <ul>
+                            <li class="dashboard-data_counter-list">
+                              <div class="card-counter">
+                                <span class="count-numbers Pending">{{timeSheetsPendingCount}}</span>
+                              </div>
+                              <div class="card-counter-label">
+                                <span class="count-name">Submitted</span>
+                              </div>
+                            </li>
+
+                            <li class="dashboard-data_counter-list">
+                              <div class="card-counter">
+                                <span class="count-numbers Drafted">{{timeSheetsDraftCount}}</span>
+                              </div>
+                              <div class="card-counter-label">
+                                <span class="count-name">Unsubmitted</span>
+                              </div>
+                            </li>
+
+                            <li class="dashboard-data_counter-list">
+                              <div class="card-counter">
+                                <span class="count-numbers Approved">{{timeSheetsApprovedCount}}</span>
+                              </div>
+                              <div class="card-counter-label">
+                                <span class="count-name">Approved</span>
+                              </div>
+                            </li>
+
+                            <li class="dashboard-data_counter-list">
+                              <div class="card-counter">
+                                <span class="count-numbers Rejected">{{timeSheetsRejectedCount}}</span>
+                              </div>
+                              <div class="card-counter-label">
+                                <span class="count-name">Rejected</span>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="nav-container">
+                      <div class="card-content card-content-tab">
+                        <mat-tab-group class="tabs">
+                          <mat-tab label="Submitted">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtTimesheetSubmitted [columns]="columnsTimeSheets"
+                                [value]="timesheetsPendingRecordList" [rows]="3" [paginator]="true" [pageLinks]="5"
+                                [rowsPerPageOptions]="[3,5,10]" [resizableColumns]="true" [autoLayout]="true">
+                                <ng-template pTemplate="colgroup" let-columns>
+                                  <colgroup>
+                                    <col *ngFor="let col of columns">
+                                  </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                      {{col.header}}
+                                      <p-sortIcon *ngIf="col.field" [field]="col.field">
+                                      </p-sortIcon>
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr>
+                                    <td *ngFor="let col of columns">
+                                      <div *ngIf="col.field!='actions'">
+                                        <div *ngIf="col.field==='empName'">
+                                          {{car[col.field]}}
+                                        </div>
+                                        <div *ngIf="col.field==='fromDate'">
+                                          {{car[col.field]
+                                                                                    |
+                                                                                    date:'dd-MM-yyyy'}}</div>
+                                        <div *ngIf="col.field==='toDate'">
+                                          {{car[col.field] |
+                                                                                    date:'dd-MM-yyyy'}}</div>
+                                        <div *ngIf="col.field==='totalHours'">
+                                          {{car[col.field]}}
+                                        </div>
+                                        <div *ngIf="col.field==='timeSheetApprovalStatus'">
+                                          {{car[col.field]| titlecase}}</div>
+                                        <div style="color: #4CAF50;cursor: pointer;"
+                                          *ngIf="col.field!='empName'&& col.field!='fromDate' && col.field!='toDate' && col.field!='totalHours' && col.field!='timeSheetApprovalStatus'"
+                                          (click)="openTimeSheetViewDialog(car,col.field)">
+                                          {{car[col.field]}}</div>
+                                      </div>
+
+                                      <div class="mat-cell" *ngIf="col.field==='actions'">
+                                        <div class="mat-element-icon">
+                                          <span class="check" mattooltip="Approve"
+                                            (click)="openApproveRejectTimesheetDialog('approve',car);">
+                                            <i aria-hidden="true" class="fa fa-check-square"></i>
+                                          </span>
+                                          <span class="reject" mattooltip="Reject"
+                                            (click)="openApproveRejectTimesheetDialog('reject',car);">
+                                            <i aria-hidden="true" class="fa fa-window-close"></i>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                          <mat-tab label="Unsubmitted">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtTimesheetUnsubmitted [columns]="columnsTimeSheets"
+                                [value]="timesheetsDraftedRecordList" [rows]="3" [paginator]="true" [pageLinks]="5"
+                                [rowsPerPageOptions]="[3,5,10]" [resizableColumns]="true" [autoLayout]="true">
+                                <ng-template pTemplate="colgroup" let-columns>
+                                  <colgroup>
+                                    <col *ngFor="let col of columns">
+                                  </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                      {{col.header}}
+                                      <p-sortIcon *ngIf="col.field" [field]="col.field">
+                                      </p-sortIcon>
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr>
+                                    <td *ngFor="let col of columns">
+                                      <div *ngIf="col.field==='empName'">
+                                        {{car[col.field]}}
+                                      </div>
+                                      <div *ngIf="col.field==='fromDate'">
+                                        {{car[col.field]
+                                                                                |
+                                                                                date:'dd-MM-yyyy'}}</div>
+                                      <div *ngIf="col.field==='toDate'">
+                                        {{car[col.field] |
+                                                                                date:'dd-MM-yyyy'}}</div>
+                                      <div *ngIf="col.field==='totalHours'">
+                                        {{car[col.field]}}
+                                      </div>
+                                      <div *ngIf="col.field==='timeSheetApprovalStatus'">
+                                        {{car[col.field]| titlecase}}</div>
+                                      <div style="color: #4CAF50;cursor: pointer;"
+                                        *ngIf="col.field!='empName' && col.field!='fromDate' && col.field!='toDate' && col.field!='totalHours' && col.field!='timeSheetApprovalStatus'"
+                                        (click)="openTimeSheetViewDialog(car,col.field)">
+                                        {{car[col.field]}}</div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                          <mat-tab label="Approved">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtTimesheetApproved [columns]="columnsTimeSheets"
+                                [value]="timesheetsApprovedRecordList" [rows]="3" [paginator]="true" [pageLinks]="5"
+                                [rowsPerPageOptions]="[3,5,10]" [resizableColumns]="true" [autoLayout]="true">
+                                <ng-template pTemplate="colgroup" let-columns>
+                                  <colgroup>
+                                    <col *ngFor="let col of columns">
+                                  </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                      {{col.header}}
+                                      <p-sortIcon *ngIf="col.field" [field]="col.field">
+                                      </p-sortIcon>
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr>
+                                    <td *ngFor="let col of columns">
+                                      <div *ngIf="col.field!='actions'">
+                                        <div *ngIf="col.field==='empName'">
+                                          {{car[col.field]}}
+                                        </div>
+                                        <div *ngIf="col.field==='fromDate'">
+                                          {{car[col.field] | date:'dd-MM-yyyy'}}</div>
+                                        <div *ngIf="col.field==='toDate'">
+                                          {{car[col.field] | date:'dd-MM-yyyy'}}</div>
+                                        <div *ngIf="col.field==='totalHours'">
+                                          {{car[col.field]}}
+                                        </div>
+                                        <div *ngIf="col.field==='timeSheetApprovalStatus'">
+                                          {{car[col.field]| titlecase}}</div>
+                                        <div style="color: #4CAF50;cursor: pointer;"
+                                          *ngIf="col.field!='empName' && col.field!='fromDate' && col.field!='toDate' && col.field!='totalHours' && col.field!='timeSheetApprovalStatus'"
+                                          (click)="openTimeSheetViewDialog(car,col.field)">
+                                          {{car[col.field]}}</div>
+                                      </div>
+
+                                      <div class="mat-cell" *ngIf="col.field==='actions'">
+                                        <div class="mat-element-icon">
+                                          <span class="reject " matTooltip="Cancel"
+                                            (click)="openApproveRejectTimesheetDialog('cancel',car);">
+                                            <i class="fa fa-ban" aria-hidden="true "></i>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                          <mat-tab label="Rejected">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtTimesheetRejected [columns]="columnsTimeSheets"
+                                [value]="timesheetsRejectedRecordList" [rows]="3" [paginator]="true" [pageLinks]="5"
+                                [rowsPerPageOptions]="[3,5,10]" [resizableColumns]="true" [autoLayout]="true">
+                                <ng-template pTemplate="colgroup" let-columns>
+                                  <colgroup>
+                                    <col *ngFor="let col of columns">
+                                  </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                      {{col.header}}
+                                      <p-sortIcon *ngIf="col.field" [field]="col.field">
+                                      </p-sortIcon>
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr>
+                                    <td *ngFor="let col of columns">
+                                      <div *ngIf="col.field==='empName'">
+                                        {{car[col.field]}}
+                                      </div>
+                                      <div *ngIf="col.field==='fromDate'">
+                                        {{car[col.field] | date:'dd-MM-yyyy'}}</div>
+                                      <div *ngIf="col.field==='toDate'">
+                                        {{car[col.field] | date:'dd-MM-yyyy'}}</div>
+                                      <div *ngIf="col.field==='totalHours'">
+                                        {{car[col.field]}}
+                                      </div>
+                                      <div *ngIf="col.field==='timeSheetApprovalStatus'">
+                                        {{car[col.field]| titlecase}}</div>
+                                      <div style="color: #4CAF50;cursor: pointer;"
+                                        *ngIf="col.field!='empName' && col.field!='fromDate' && col.field!='toDate' && col.field!='totalHours' && col.field!='timeSheetApprovalStatus'"
+                                        (click)="openTimeSheetViewDialog(car,col.field)">
+                                        {{car[col.field]}}</div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                        </mat-tab-group>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngFor="let item of dashboardDisplayOrganizationList;">
+          <div class="col-md-4 column_padding" *ngIf="item.widgetsName==='Employee Status' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag organization">
+                <h3 class="dash-title">Employee Status</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div *ngIf="isEmployeeStatusloading$; else content">
+                  <div class="spinner__loading">
+                    <mat-spinner diameter="40"></mat-spinner>
+                  </div>
+                </div>
+                <ng-template #content>
+                  <div class="dash-data">
+                    <div *ngIf="showEmployeeChart">
+                      <div echarts [options]="employeeStatusChartGraphData" class="demo-chart">
+                      </div>
+                    </div>
+                    <div class="no-data" *ngIf="!showEmployeeChart">
+                      <span>
+                        <img src="assets/images/002-research.png">
+                      </span>
+                      <h5 class="no-data-msg">No record found</h5>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row">
+        <ng-container *ngFor="let item of dashboardDisplayAttendanceList;">
+          <div class="col-md-8 column_padding"
+            *ngIf="item.widgetsName==='Attendance Regularisation Requests' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag attendance">
+                <h3 class="dash-title">Attendance Regularisation Requests</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div class="dash-data">
+                  <div *ngIf="isRegularisationRequestsloading$; else content">
+                    <div class="spinner__loading">
+                      <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+                  </div>
+                  <ng-template #content>
+                    <div class="nav-container">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <ng-select [items]="employeeList" [(ngModel)]="selectedRegEmployee" [clearable]="true"
+                            appendTo="body" [searchable]="true" bindLabel="viewValue" bindValue="value"
+                            (change)="getAllRegRequest();" placeholder="Select Employee" class="custom-ng-select-Style">
+                          </ng-select>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="dashboard-data_counter text-center">
+                            <ul>
+                              <li class="dashboard-data_counter-list">
+                                <div class="card-counter">
+                                  <span class="count-numbers Pending">{{regularizationPendingReqcounts}}</span>
+                                </div>
+                                <div class="card-counter-label">
+                                  <span class="count-name">Pending</span>
+                                </div>
+                              </li>
+                              <li class="dashboard-data_counter-list">
+                                <div class="card-counter">
+                                  <span class="count-numbers Approved">{{regularizationApprovedReqcounts}}</span>
+                                </div>
+                                <div class="card-counter-label">
+                                  <span class="count-name">Approved</span>
+                                </div>
+                              </li>
+                              <li class="dashboard-data_counter-list">
+                                <div class="card-counter">
+                                  <span class="count-numbers Cancelled">{{regularizationCancelledReqcounts}}</span>
+                                </div>
+                                <div class="card-counter-label">
+                                  <span class="count-name">Cancelled</span>
+                                </div>
+                              </li>
+                              <li class="dashboard-data_counter-list">
+                                <div class="card-counter">
+                                  <span class="count-numbers Rejected">{{regularizationRejectedReqcounts}}</span>
+                                </div>
+                                <div class="card-counter-label">
+                                  <span class="count-name">Rejected</span>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-content card-content-tab">
+                        <mat-tab-group class="tabs">
+                          <mat-tab label="Pending">
+                            <div class="text-right" style="padding: 5px 0;">
+                              <button class="btn header-button"
+                                (click)="approveMultipleRegularizationRequest('approveMultipleRequest');">
+                                <span>
+                                  <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                  Approve</span>
+                              </button>
+                            </div>
+                            <p-table #dtRegPending [columns]="columnsRegularization"
+                              [value]="regularizationPendingReqList" [rows]="3" [paginator]="true" [pageLinks]="5"
+                              [rowsPerPageOptions]="[3,5,10]" [resizableColumns]="true" [autoLayout]="true"
+                              [responsive]="true" [(selection)]="selectedRows">
+                              <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                  <th style="width: 2.25em">
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                  </th>
+                                  <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                  </th>
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-car let-columns="columns">
+                                <tr [pSelectableRow]="car">
+                                  <td>
+                                    <p-tableCheckbox [value]="car">
+                                    </p-tableCheckbox>
+                                  </td>
+                                  <td *ngFor="let col of columns">
+                                    <div
+                                      *ngIf="col.field!='action' && col.field!='requestType' && col.field!='regularizationDate'">
+                                      {{car[col.field]}}</div>
+                                    <div
+                                      *ngIf="col.field!='action' && col.field!='requestType' && col.field=='regularizationDate'">
+                                      {{car[col.field] | date:'MMM dd, yyyy' }}
+                                    </div>
+                                    <div
+                                      *ngIf="col.field!='action' && col.field=='requestType' && col.field!='regularizationDate'">
+                                      {{car[col.field]}}
+                                    </div>
+                                    <div class="mat-cell" *ngIf="col.field=='action'">
+                                      <div class="mat-element-icon">
+                                        <span class="check"
+                                          *ngIf="(car.regularizationStatus==='Pending' && col.field!='requestType')">
+                                          <i class="fa fa-check-square" aria-hidden="true" matTooltip="Approve"
+                                            (click)="approveRegularizationDialog(car.regularizationRequestsId)"></i>
+                                        </span>
+                                        <span class="view"
+                                          *ngIf="(car.regularizationStatus == 'Pending' && col.field!='requestType')">
+                                          <i class="fa fa-eye" aria-hidden="true" matTooltip="View"
+                                            (click)="viewRegularizationRequest(car);"></i>
+                                        </span>
+                                        <span class="reject"
+                                          *ngIf="(car.regularizationStatus==='Pending' && col.field!='requestType')">
+                                          <i class="fa fa-window-close" aria-hidden="true" matTooltip="Reject"
+                                            (click)="rejectRegularizationDialog(car.regularizationRequestsId)"></i>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </ng-template>
+                            </p-table>
+                          </mat-tab>
+                          <mat-tab label="Approved">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtRegApproved [columns]="columnsRegularization"
+                                [value]="regularizationApprovedReqList" [rows]="3" [paginator]="true" [pageLinks]="5"
+                                [rowsPerPageOptions]="[3,5,10]" [resizableColumns]="true" [autoLayout]="true"
+                                [responsive]="true">
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns">
+                                      {{col.header}}
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr [pSelectableRow]="car">
+                                    <td *ngFor="let col of columns">
+                                      <div
+                                        *ngIf="col.field!='action' && col.field!='requestType' && col.field!='regularizationDate'">
+                                        {{car[col.field]}}</div>
+                                      <div
+                                        *ngIf="col.field!='action' && col.field!='requestType' && col.field=='regularizationDate'">
+                                        {{car[col.field] | date:'MMM dd, yyyy'
+                                                                                }}
+                                      </div>
+                                      <div
+                                        *ngIf="col.field!='action' && col.field=='requestType' && col.field!='regularizationDate'">
+                                        {{car[col.field]}}
+                                      </div>
+                                      <div class="mat-cell" *ngIf="col.field=='action'">
+                                        <div class="mat-element-icon">
+                                          <span class="ban"
+                                            *ngIf="(car.regularizationStatus==='Approved'  && col.field!='requestType')">
+                                            <i class="fa fa-ban" aria-hidden="true" matTooltip="Cancel"
+                                              (click)="cancelRegularizationDialog(car.regularizationRequestsId)"></i>
+                                          </span>
+                                          <span class="view"
+                                            *ngIf="(car.regularizationStatus == 'Approved' && col.field!='requestType')">
+                                            <i class="fa fa-eye" aria-hidden="true" matTooltip="View"
+                                              (click)="viewRegularizationRequest(car);"></i>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                          <mat-tab label="Cancelled">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtRegCancelled [columns]="columnsRegularization"
+                                [value]="regularizationCancelledReqList" [rows]="3" [paginator]="true" [pageLinks]="5"
+                                [rowsPerPageOptions]="[3,5,10]" [resizableColumns]="true" [autoLayout]="true"
+                                [responsive]="true">
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns">
+                                      {{col.header}}
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr [pSelectableRow]="car">
+                                    <td *ngFor="let col of columns">
+                                      <div
+                                        *ngIf="col.field!='action' && col.field!='requestType' && col.field!='regularizationDate'">
+                                        {{car[col.field]}}</div>
+                                      <div
+                                        *ngIf="col.field!='action' && col.field!='requestType' && col.field=='regularizationDate'">
+                                        {{car[col.field] | date:'MMM dd, yyyy'
+                                                                                }}
+                                      </div>
+                                      <div
+                                        *ngIf="col.field!='action' && col.field=='requestType' && col.field!='regularizationDate'">
+                                        {{car[col.field]}}
+                                      </div>
+                                      <div class="mat-cell" *ngIf="col.field=='action'">
+                                        <div class="mat-element-icon">
+                                          <span class="view"
+                                            *ngIf="(car.regularizationStatus == 'Cancelled' && col.field!='requestType')">
+                                            <i class="fa fa-eye" aria-hidden="true" matTooltip="View"
+                                              (click)="viewRegularizationRequest(car);"></i>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                          <mat-tab label="Rejected">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtRegRejected [columns]="columnsRegularization"
+                                [value]="regularizationRejectedReqList" [rows]="3" [paginator]="true" [pageLinks]="5"
+                                [rowsPerPageOptions]="[3,5,10]" [resizableColumns]="true" [autoLayout]="true"
+                                [responsive]="true">
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns">
+                                      {{col.header}}
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr [pSelectableRow]="car">
+                                    <td *ngFor="let col of columns">
+                                      <div
+                                        *ngIf="col.field!='action' && col.field!='requestType' && col.field!='regularizationDate'">
+                                        {{car[col.field]}}</div>
+                                      <div
+                                        *ngIf="col.field!='action' && col.field!='requestType' && col.field=='regularizationDate'">
+                                        {{car[col.field] | date:'MMM dd, yyyy'
+                                                                                }}
+                                      </div>
+                                      <div
+                                        *ngIf="col.field!='action' && col.field=='requestType' && col.field!='regularizationDate'">
+                                        {{car[col.field]}}
+                                      </div>
+                                      <div class="mat-cell" *ngIf="col.field=='action'">
+                                        <div class="mat-element-icon">
+                                          <span class="view"
+                                            *ngIf="(car.regularizationStatus == 'Rejected' && col.field!='requestType')">
+                                            <i class="fa fa-eye" aria-hidden="true" matTooltip="View"
+                                              (click)="viewRegularizationRequest(car);"></i>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                        </mat-tab-group>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngFor="let item of dashboardDisplayAttendanceList;">
+          <div class="col-md-4 column_padding" *ngIf="item.widgetsName==='Attendance Report' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag attendance">
+                <h3 class="dash-title">Attendance Report</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div *ngIf="isAttendanceReportloading$; else content">
+                  <div class="spinner__loading">
+                    <mat-spinner diameter="40"></mat-spinner>
+                  </div>
+                </div>
+                <ng-template #content>
+                  <div class="dash-data">
+                    <div *ngIf="showAttendanceChart">
+                      <div echarts [options]="chartOptionsAttendance" class="demo-chart"></div>
+                    </div>
+                    <div class="no-data" *ngIf="!showAttendanceChart">
+                      <span>
+                        <img src="assets/images/002-research.png">
+                      </span>
+                      <h5 class="no-data-msg">No activity recorded</h5>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row">
+
+        <ng-container *ngFor="let item of dashboardDisplayExpenseList;">
+          <div class="col-md-8 column_padding" *ngIf="item.widgetsName==='Expense Report' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag expences">
+                <h3 class="dash-title">Expense Report</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div class="dash-data">
+                  <div *ngIf="isExpenseReportloading$; else content">
+                    <div class="spinner__loading">
+                      <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+                  </div>
+                  <ng-template #content>
+                    <div class="nav-container">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <ng-select [items]="employeeList" [(ngModel)]="selectedExpEmployee" [clearable]="true"
+                            appendTo="body" [searchable]="true" bindLabel="viewValue" bindValue="value"
+                            (change)="getAllExpApplication();" placeholder="Select Employee"
+                            class="custom-ng-select-Style">
+                          </ng-select>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="dashboard-data_counter text-center">
+                            <ul>
+                              <li class="dashboard-data_counter-list">
+                                <div class="card-counter">
+                                  <span class="count-numbers Pending">{{expensePendingReqcounts}}</span>
+                                </div>
+                                <div class="card-counter-label">
+                                  <span class="count-name">Pending</span>
+                                </div>
+                              </li>
+                              <li class="dashboard-data_counter-list">
+                                <div class="card-counter">
+                                  <span class="count-numbers Approved">{{expenseApprovedReqcounts}}</span>
+                                </div>
+                                <div class="card-counter-label">
+                                  <span class="count-name">Approved</span>
+                                </div>
+                              </li>
+                              <li class="dashboard-data_counter-list">
+                                <div class="card-counter">
+                                  <span class="count-numbers Cancelled">{{expenseCancelledReqcounts}}</span>
+                                </div>
+                                <div class="card-counter-label">
+                                  <span class="count-name">Cancelled</span>
+                                </div>
+                              </li>
+                              <li class="dashboard-data_counter-list">
+                                <div class="card-counter">
+                                  <span class="count-numbers Rejected">{{expenseRejectedReqcounts}}</span>
+                                </div>
+                                <div class="card-counter-label">
+                                  <span class="count-name">Rejected</span>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-content card-content-tab">
+                        <mat-tab-group class="tabs">
+                          <mat-tab label="Pending">
+                            <div class="text-right" style="padding: 5px 0;">
+                              <button class="btn header-button"
+                                (click)="onChangebulkActions('approveMultipleRequest');">
+                                <span>
+                                  <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                  Approve</span>
+                              </button>
+                            </div>
+                            <p-table #dtExpPending [columns]="columnsExpense" [value]="pendingExpenseRequest" [rows]="3"
+                              [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[3,5,10]"
+                              exportFilename="Expense_Report" [resizableColumns]="true" [autoLayout]="true"
+                              [responsive]="true" [(selection)]="checkedRowData">
+                              <ng-template pTemplate="colgroup" let-columns>
+                                <colgroup>
+                                  <col *ngFor="let col of columns">
+                                </colgroup>
+                              </ng-template>
+                              <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                  <th>
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                  </th>
+                                  <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                  </th>
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-car let-columns="columns">
+                                <tr [pSelectableRow]="car">
+                                  <td>
+                                    <p-tableCheckbox [value]="car">
+                                    </p-tableCheckbox>
+                                  </td>
+                                  <td *ngFor="let col of columns">
+                                    <div *ngIf="col.field!='actions'">
+                                      {{car[col.field]}}</div>
+                                    <div class="mat-cell" *ngIf="col.field=='actions'">
+                                      <div class="mat-element-icon">
+                                        <div *ngIf="car.expenseStatus == 'Level 1 Approval Pending'">
+                                          <span class="check">
+                                            <i class="fa fa-check-square-o" aria-hidden="true" matTooltip="Approve"
+                                              (click)="approveSingleExpense(car.expenseRepId)"></i></span>
+                                          <span class="reject">
+                                            <i class="fa fa-times-circle" aria-hidden="true" matTooltip="Reject"
+                                              (click)="rejectSingleExpense(car.expenseRepId);"></i></span>
+                                          <span class="view">
+                                            <i class="fa fa-eye" aria-hidden="true"
+                                              (click)="showExpenseHistoryDialog(car);" matTooltip="View"></i>
+                                          </span>
+                                        </div>
+                                        <div *ngIf="car.expenseStatus == 'Level 2 Approval Pending'">
+                                          <span class="check">
+                                            <i class="fa fa-check-square-o" aria-hidden="true" matTooltip="Approve"
+                                              (click)="approveSingleExpense(car.expenseRepId)"></i></span>
+                                          <span class="reject">
+                                            <i class="fa fa-times-circle" aria-hidden="true" matTooltip="Reject"
+                                              (click)="rejectSingleExpense(car.expenseRepId);"></i>
+                                          </span>
+                                          <span class="view">
+                                            <i class="fa fa-eye" aria-hidden="true" (click)="showHistoryDialog(car);"
+                                              matTooltip="View"></i></span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </ng-template>
+                            </p-table>
+                          </mat-tab>
+                          <mat-tab label="Approved">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtExpApproved [columns]="columnsExpense" [value]="approvedExpenseRequest"
+                                [rows]="3" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[3,5,10]"
+                                [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+                                <ng-template pTemplate="colgroup" let-columns>
+                                  <colgroup>
+                                    <col *ngFor="let col of columns">
+                                  </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns">
+                                      {{col.header}}
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr [pSelectableRow]="car">
+                                    <td *ngFor="let col of columns">
+                                      <div *ngIf="col.field!='actions'">
+                                        {{car[col.field]}}</div>
+                                      <div class="mat-cell" *ngIf="col.field=='actions'">
+                                        <div class="mat-element-icon">
+                                          <div *ngIf="car.expenseStatus == 'Approved'">
+                                            <span class="view">
+                                              <i class="fa fa-eye" aria-hidden="true"
+                                                (click)="showExpenseHistoryDialog(car);" matTooltip="View"></i>
+                                            </span>
+                                            <span class="ban">
+                                              <i class="fa fa-ban" aria-hidden="true"
+                                                (click)="cancelExpApplication(car.expenseRepId)"
+                                                matTooltip="Cancel"></i>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                          <mat-tab label="Cancelled">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtExpCancelled [columns]="columnsExpense" [value]="cancelledExpenseRequest"
+                                [rows]="3" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[3,5,10]"
+                                [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+                                <ng-template pTemplate="colgroup" let-columns>
+                                  <colgroup>
+                                    <col *ngFor="let col of columns">
+                                  </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns">
+                                      {{col.header}}
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr [pSelectableRow]="car">
+                                    <td *ngFor="let col of columns">
+                                      <div *ngIf="col.field!='actions'">
+                                        {{car[col.field]}}</div>
+                                      <div class="mat-cell" *ngIf="col.field=='actions'">
+                                        <div class="mat-element-icon">
+                                          <div *ngIf="car.expenseStatus == 'Cancelled'">
+                                            <span class="view">
+                                              <i class="fa fa-eye" aria-hidden="true"
+                                                (click)="showExpenseHistoryDialog(car);" matTooltip="View"></i>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                          <mat-tab label="Rejected">
+                            <div class="dashboard-data-table_dt">
+                              <p-table #dtExpRejected [columns]="columnsExpense" [value]="rejectedExpenseRequest"
+                                [rows]="3" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[3,5,10]"
+                                [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+                                <ng-template pTemplate="colgroup" let-columns>
+                                  <colgroup>
+                                    <col *ngFor="let col of columns">
+                                  </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                  <tr>
+                                    <th *ngFor="let col of columns">
+                                      {{col.header}}
+                                    </th>
+                                  </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-car let-columns="columns">
+                                  <tr [pSelectableRow]="car">
+                                    <td *ngFor="let col of columns">
+                                      <div *ngIf="col.field!='actions'">
+                                        {{car[col.field]}}</div>
+                                      <div class="mat-cell" *ngIf="col.field=='actions'">
+                                        <div class="mat-element-icon">
+                                          <div *ngIf="car.expenseStatus == 'Rejected'">
+                                            <span class="view">
+                                              <i class="fa fa-eye" aria-hidden="true"
+                                                (click)="showExpenseHistoryDialog(car);" matTooltip="View"></i>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </ng-template>
+                              </p-table>
+                            </div>
+                          </mat-tab>
+                        </mat-tab-group>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngFor="let item of dashboardDisplayLeaveList;">
+          <div class="col-md-4 column_padding"
+            *ngIf="item.widgetsName==='Monthly Leave Report' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag leave">
+                <h3 class="dash-title">Monthly Leave Report</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div class="dash-data">
+                  <div *ngIf="isMonthlyLeaveReportloading$; else content">
+                    <div class="spinner__loading">
+                      <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+                  </div>
+                  <ng-template #content>
+                    <div class="nav-container">
+                      <div class="row">
+                        <div class="col-md-7 column_padding">
+                          <div class="holiday_calendar-dashboard">
+                            <p-calendar #myCalendar [(ngModel)]="date" [style]="{'width': '100%'}" [inline]="true"
+                              [monthNavigator]="false" [showOtherMonths]="false"
+                              (onSelect)="selectDateForLeaveCalendar($event)" [selectOtherMonths]="false"
+                              [monthNavigator]="false" [disabledDates]="" [disabledDays]="" dateFormat="yyyy-mm-dd">
+                              <ng-template pTemplate="date1" let-date>
+                                <span [mdePopoverTriggerFor]="leaveSummaryPopover" mdePopoverTriggerOn="click"
+                                  #popoverTrigger="mdePopoverTrigger"
+                                  [ngStyle]="{'background-color': getDashboardLeaveDataColor(date)?.colorCode}"
+                                  style="border-radius:50%;color: #ffffff; font-weight: 400; display: flex;align-items: center;justify-content: center; font-size: 12px; text-align: center;width: 28px; height: 28px;">{{date.day}}</span>
+                              </ng-template>
+                            </p-calendar>
+                          </div>
+                        </div>
+                        <div class="col-md-5 column_padding">
+                          <div class="dashboard-data-listing-card">
+                            <h4 class="lable-title">Today</h4>
+                            <ul class="dashboard-data-listing-card-open">
+                              <div
+                                *ngIf="leaveDetailsListCopy!=null && leaveDetailsListCopy.length>0; else noMemberLeaveDataTemplate">
+                                <li class="dashboard-data-listing-description"
+                                  *ngFor="let data of leaveDetailsListCopy">
+                                  <h2>{{data.applicantName}}</h2>
+                                  <p>{{data.leaveName}}</p>
+                                </li>
+                              </div>
+                              <ng-template #noMemberLeaveDataTemplate>
+                                <div class="no-data" style="margin: 4em 0;">
+                                  <span>
+                                    <img src="assets/images/002-research.png">
+                                  </span>
+                                  <h5 class="no-data-msg">No Member on
+                                    Leave</h5>
+                                </div>
+                              </ng-template>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row">
+        <ng-container *ngFor="let item of dashboardDisplayTaxationList;">
+          <div class="col-md-4 column_padding"
+            *ngIf="item.widgetsName==='Tax Declaration Components' && item.isvalid=== true">
+            <div class="dash-card">
+              <div class="dash-head IC-drag taxation">
+                <h3 class="dash-title">Tax Declaration Components</h3>
+                <span class="icon">
+                  <b></b>
+                </span>
+              </div>
+              <div class="dash-body">
+                <div *ngIf="isTaxDeclarationloading$; else content">
+                  <div class="spinner__loading">
+                    <mat-spinner diameter="40"></mat-spinner>
+                  </div>
+                </div>
+                <ng-template #content>
+                  <div class="dash-data">
+                    <div echarts [options]="chartOptionsTaxComponents" class="demo-chart"></div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popover For Leave Members -->
+<mde-popover #leaveSummaryPopover="mdePopover" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
+  [mdePopoverCloseOnClick]="false" mdePopoverPositionY="below">
+  <mat-card style="min-width: 350px;max-height: 80vh;padding: 10px;overflow-y: auto;">
+    <mat-card-content>
+      <div class="dashboard_data-popover" style="padding: 0;">
+        <div class="calendar-card-head-title">
+          <h3>{{showDayName}}</h3>
+          <p>{{showDate}}</p>
+        </div>
+        <div class="dashboard_data-details_45GW"
+          *ngIf="leaveDetailsPopupDataList!=null && leaveDetailsPopupDataList.length>0; else noTeamLeaveDataTemplate">
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let data of leaveDetailsPopupDataList">
+              {{data.applicantName}}
+              <span class="badge">{{data.leaveName}}</span>
+            </li>
+          </ul>
+        </div>
+        <ng-template #noTeamLeaveDataTemplate>
+          <div class="no-data" style="margin: 0;">
+            <span>
+              <img src="assets/images/002-research.png">
+            </span>
+            <h5 class="no-data-msg">No activity recorded</h5>
+          </div>
+        </ng-template>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</mde-popover>

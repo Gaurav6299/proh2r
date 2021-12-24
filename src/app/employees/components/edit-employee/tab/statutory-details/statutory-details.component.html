@@ -1,0 +1,689 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div style="float:left">
+      <h6 class="title">Statutory</h6>
+    </div>
+    <div style="text-align: right;">
+      <div *ngIf="readonly">
+        <button class="btn header-button" (click)="editForm(satutoryDetails)">
+          <span>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            Edit</span>
+        </button>
+      </div>
+      <div *ngIf="readwrite">
+        <button class=" btn header-button" (click)="cancelForm()">
+          <span>
+            <i class="fa fa-times" aria-hidden="true"></i> Cancel</span>
+        </button>
+        <button type="button" class="btn header-button" (click)="saveStatutory(satutoryDetails)">
+          <span>
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Save</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- readwrite -->
+  <div *ngIf="readwrite">
+    <form [formGroup]="satutoryDetails">
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Is this employee eligible for the Provident Fund deduction?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isPfDeuctible" [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isPfDeuctible.valid || 
+            satutoryDetails.controls.isPfDeuctible.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Will this Employee's Provident Fund contribution be capped at the Provident Fund
+              Ceiling? (Rs 15,000)</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isEmployeePfCaped" [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isEmployeePfCaped.valid || 
+            satutoryDetails.controls.isEmployeePfCaped.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Will this Employer's Provident Fund contribution be capped at the Provident Fund
+              Ceiling? (Rs 15,000)</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isEmployerPfCaped" [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isEmployerPfCaped.valid || 
+            satutoryDetails.controls.isEmployerPfCaped.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is this Employee's Provident Fund Joining Date?</p>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="full-width">
+              <input matInput type="date" formControlName="pfJoiningDate">
+              <mat-error [hidden]="(satutoryDetails.controls.pfJoiningDate.valid || 
+            satutoryDetails.controls.pfJoiningDate.untouched)">
+                Field is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is this employee's Provident Fund number?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="PF Number" formControlName="empPfNumber">
+              </mat-form-field>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.empPfNumber.valid || 
+            satutoryDetails.controls.empPfNumber.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is this employee's UAN number?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="UAN Number" formControlName="empUanNumber">
+              </mat-form-field>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.empUanNumber.valid || 
+            satutoryDetails.controls.empUanNumber.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Would you like to set a fixed amount for your Provident Fund Wage?</p>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="full-width">
+              <input matInput pattern="(?<=\s|^)\d+(?=\s|$)" placeholder="PF Wage" formControlName="pfWage" readonly>
+            </mat-form-field>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.pfWage.valid || 
+            satutoryDetails.controls.pfWage.untouched)">
+              Invalid Field
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What additional PF contribution % would this employee voluntarily contribute, above and
+              beyond the mandated 12%?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-form-field class="full-width">
+                <input matInput pattern="(?<=\s|^)\d+(?=\s|$)" placeholder="PF Contribution Pecentage"
+                  formControlName="pfContributionPecentage">
+              </mat-form-field>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.pfContributionPecentage.valid || 
+            satutoryDetails.controls.pfContributionPecentage.untouched)">
+              Invalid Field
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">If found eligible, would this employee have ESIC deducted from his / her salary?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isEsicDeductible" [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isEsicDeductible.valid || 
+            satutoryDetails.controls.isEsicDeductible.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is the employee's ESIC Number?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="ESIC Number" formControlName="empEsicNumber">
+              </mat-form-field>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.empEsicNumber.valid || 
+            satutoryDetails.controls.empEsicNumber.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Should Professional Tax be deducted from this employee's payslip (if applicable for
+              his/her branch location)?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isProfessionalTaxDeductible" (change)="ptDeductable();"
+                [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isProfessionalTaxDeductible.valid || 
+            satutoryDetails.controls.isProfessionalTaxDeductible.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Should LWF be deducted from this employee's payslip (if applicable for his/her branch
+              location)?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isLwfDeductible" (change)="lwfDeductable();" [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isLwfDeductible.valid || 
+            satutoryDetails.controls.isLwfDeductible.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">If applicable, should Income Tax be deducted from the employee's salary?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isIncomeTaxDeductible" [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isIncomeTaxDeductible.valid || 
+            satutoryDetails.controls.isIncomeTaxDeductible.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Is this employee eligible for Gratuity?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isGratuityEligible" [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isGratuityEligible.valid || 
+            satutoryDetails.controls.isGratuityEligible.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is the employee’s Tax Regime?</p>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="fullLength">
+              <mat-select placeholder="Select Tax Regime" formControlName="taxRegime">
+                <mat-option *ngFor="let item of taxRegime" [value]="item.value">{{item.viewValue}}
+                </mat-option>
+              </mat-select>
+              <mat-error [hidden]="(satutoryDetails.controls.taxRegime.valid || 
+              satutoryDetails.controls.taxRegime.untouched)">
+                This field is required.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">When was the Tax Regime updated?</p>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="fullLength">
+              <input matInput type="text" formControlName="taxRegimeUpdateAt" readonly>
+              <!-- <mat-error [hidden]="(satutoryDetails.controls.taxRegimeUpdateAt.valid || 
+            satutoryDetails.controls.taxRegimeUpdateAt.untouched)">
+                Field is required
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Who updated the Tax Regime?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Employee Name" formControlName="taxRegimeUpdateBy" readonly>
+                <!-- <mat-error [hidden]="(satutoryDetails.controls.taxRegimeUpdateBy.valid || 
+                satutoryDetails.controls.taxRegimeUpdateBy.untouched)">
+                  Field is required
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="this.satutoryDetails.controls.isLwfDeductible.value=='true'">
+          <div class="col-md-8">
+            <p class="category">Select Labour Welfare Fund state :</p>
+          </div>
+          <div class="col-md-4">
+            <!-- <ng-select [items]="lwfStates" bindLabel="viewValue" bindValue="value" placeholder="Choose"
+             formControlName="lwfStateId" >
+            </ng-select> -->
+            <mat-form-field class="full-width">
+              <input matInput  readonly>{{ this.lwfStatesName}}
+            </mat-form-field>
+          
+            <!-- <div class="category" style="color: red;" [hidden]="(satutoryDetails.controls.lwfStateId.valid || 
+            satutoryDetails.controls.lwfStateId.untouched)">Field is required</div> -->
+          </div>
+        </div>
+
+        <div class="row" *ngIf="this.satutoryDetails.controls.isProfessionalTaxDeductible.value=='true'">
+          <div class="col-md-8">
+            <p class="category">Select Professional Tax state :</p>
+          </div>
+          <div class="col-md-4">
+            <!-- <ng-select [items]="ptStates" bindLabel="viewValue" bindValue="value" placeholder="Choose" 
+              formControlName="ptState">
+            </ng-select> -->
+            <mat-form-field class="full-width">
+              <input matInput readonly>{{ this.ptStatesName}}
+            </mat-form-field>
+            <!-- <div class="category" style="color: red;" [hidden]="(satutoryDetails.controls.ptState.valid || 
+            satutoryDetails.controls.ptState.untouched)">Field is required</div> -->
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Is the round off applicable for this employee?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isRoundOffApplicable" [disabled]="true">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isRoundOffApplicable.valid || 
+            satutoryDetails.controls.isRoundOffApplicable.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Is daily wage applicable for this employee?</p>
+          </div>
+          <div class="col-md-4">
+            <div class="radio-wrapper">
+              <mat-radio-group formControlName="isDailyWageApplicable" [disabled]="false">
+                <mat-radio-button value="true">Yes</mat-radio-button>
+                <mat-radio-button value="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="input-errorClass" [hidden]="(satutoryDetails.controls.isDailyWageApplicable.valid || 
+            satutoryDetails.controls.isDailyWageApplicable.untouched)">
+              Field is required
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  <!-- readonly -->
+  <div *ngIf="readonly">
+    <form [formGroup]="satutoryDetails">
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Is this employee eligible for the Provident Fund deduction?</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isPfDeuctible.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isPfDeuctible.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Will this Employee's Provident Fund contribution be capped at the Provident Fund
+              Ceiling? (Rs 15,000)</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isEmployeePfCaped.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isEmployeePfCaped.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Will this Employer's Provident Fund contribution be capped at the Provident Fund
+              Ceiling? (Rs 15,000)</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isEmployerPfCaped.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isEmployerPfCaped.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is this Employee's Provident Fund Joining Date?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="pfJoiningDate" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is this employee's Provident Fund number?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="empPfNumber" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is this employee's UAN number?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="empUanNumber" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Would you like to set a fixed amount for your Provident Fund Wage?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="pfWage" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What additional PF contribution % would this employee voluntarily contribute, above and
+              beyond the mandated 12%?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="pfContributionPecentage" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">If found eligible, would this employee have ESIC deducted from his / her salary?</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isEsicDeductible.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isEsicDeductible.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is the employee's ESIC Number?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="empEsicNumber" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Should Professional Tax be deducted from this employee's payslip (if applicable for
+              his/her branch location)?</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isProfessionalTaxDeductible.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isProfessionalTaxDeductible.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Should LWF be deducted from this employee's payslip (if applicable for his/her branch
+              location)?</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isLwfDeductible.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isLwfDeductible.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">If applicable, should Income Tax be deducted from the employee's salary?</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isIncomeTaxDeductible.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isIncomeTaxDeductible.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Is this employee eligible for Gratuity?</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isGratuityEligible.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isGratuityEligible.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">What is the employee’s Tax Regime?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="taxRegime"
+              [value]="((satutoryDetails.get('taxRegime').value | customUnderscorePipe)|titlecase)" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">When was the Tax Regime updated?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="taxRegimeUpdateAt" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Who updated the Tax Regime?</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" formControlName="taxRegimeUpdateBy" readonly>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="this.satutoryDetails.controls.isLwfDeductible.value =='true'">
+          <div class="col-md-8">
+            <p class="category">Select Labour Welfare Fund state :</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" [value]="lwfStatesName" readonly>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="this.satutoryDetails.controls.isProfessionalTaxDeductible.value =='true'">
+          <div class="col-md-8">
+            <p class="category">Select Professional Tax state :</p>
+          </div>
+          <div class="col-md-4">
+            <input matInput type="text" [value]="ptStatesName" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Is the round off applicable for this employee?</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isRoundOffApplicable.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isRoundOffApplicable.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <p class="category">Is daily wage applicable for this employee?</p>
+          </div>
+          <div class="col-md-4">
+            <span *ngIf="this.satutoryDetails.controls.isDailyWageApplicable.value=='true'"
+              [ngStyle]="{'color': '#008000', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-check-circle"></i>
+            </span>
+
+            <span *ngIf="this.satutoryDetails.controls.isDailyWageApplicable.value=='false'"
+              [ngStyle]="{'color': '#e03737', 'font-size': '18px','font-weight': 'bold'}">
+              <i class="fa fa-times-circle"></i>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>

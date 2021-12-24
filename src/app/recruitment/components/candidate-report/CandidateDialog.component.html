@@ -1,0 +1,50 @@
+<div class="card">
+    <div class="card-header" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">Candidate Status</h6>
+                </div>
+                <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+        <form [formGroup]="CandidateOptions" style="margin-top: 12px">
+            <p style="    float: left;margin-top: 14px;margin-left: 1px;font-size: 18px">Select a relavent option</p>
+            <mat-form-field style="float: left;margin-left: 115px">
+                <mat-select [(value)]="Selected" formControlName="SelectedOption" placeholder="Select">
+                    <mat-option value="SHORTLIST">Shortlist</mat-option>
+                   
+                    <mat-option value="REJECT">reject</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <p style="width: 50%;font-size: 18px">Select Interviewer</p>
+            <mat-form-field class="fullLength">
+                <mat-select placeholder="Please Select Interviewer" formControlName="selectEmployee">
+                    
+                    <mat-option *ngFor="let item of employeeList" [value]="item.value" (click)=selected(item)>
+                        {{item.fullName}}
+                    </mat-option>
+                </mat-select>
+
+            </mat-form-field>
+            <div class="btn0">
+                <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width:76px; margin-left:147px;margin-bottom:22px;    margin-top: 15px;"
+                    data-background-color="cyan">
+                    <span class="category" style="color:#fff; display: inline;">
+                        <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+                        Cancel</span>
+                </button>
+                <button class="dialog-button" cdkFocusInitial (click)="actionRequest(CandidateOptions)" style="width: 76px; margin-bottom:22px;    margin-top: 15px;"
+                    data-background-color="cyan">
+                    <span class="category" style="color:#fff; display: inline;">
+                        <i class="fa fa-trash-o" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size:18px;"></i>
+                        Submit</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

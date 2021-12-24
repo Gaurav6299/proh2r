@@ -1,0 +1,129 @@
+<!-- <div class="myModel">
+    <div class="card">
+        <div class="card-header" data-background-color="cyan"
+            style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+            <div data-background-color="blue">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h6 style="text-transform: uppercase;font-weight: 600">
+                            Calendar
+                        </h6>
+                    </div>
+                    <div class="col-md-2"
+                        style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                        <i class="material-icons" style="cursor:pointer;vertical-align: middle;"
+                            (click)="onNoClick()">close</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <table class="table table-hover table-responsive" style="border: 1px solid #ddd;">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <h5>LOP Type</h5>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let type of lopTypes">
+                                    <td>
+                                        <div class="radio-wrapper">
+                                            <mat-radio-group name="lopDayTypes" [(ngModel)]="lop"
+                                                (change)="setData($event)">
+                                                <mat-radio-button class="example-radio-button" [value]="type">
+                                                    {{type}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-8">
+                        <div id='calendar'></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+                        <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;"
+                            data-background-color="cyan">
+                            <span class="category" style="color:#fff; display: inline">
+                                <i class="fa fa-times" aria-hidden="true"
+                                    style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                                Cancel</span>
+                        </button>
+                        <button class="dialog-button" [mat-dialog-close]="lopDays" cdkFocusInitial style="width: 76px;"
+                            data-background-color="cyan">
+                            <span class="category" style="color:#fff; display: inline">
+                                <i class="fa fa-check" aria-hidden="true"
+                                    style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                                Generate</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Attendance Record</h4>
+    <div class="card-content">
+        <p-table #dt1 [columns]="columns" [value]="attendanceRecords" [rows]="20" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div *ngIf="col.field=='date'">{{car[col.field]}}</div>
+                        <div *ngIf="col.field!='actions'&& col.field!='date' && car.updatedStatus == undefined">
+                            {{car[col.field]}}</div>
+                        <div *ngIf="col.field!='actions'&& col.field!='date' && car.updatedStatus != undefined">
+                            {{car.updatedStatus}}</div>
+                        <div class="mat-cell" *ngIf="col.field=='actions'">
+                            <!-- <ng-container > -->
+                            <div class="mat-element-icon"
+                                *ngIf="car['afterProcessStatus'].includes('HDP') || car['afterProcessStatus'].includes('LOP') || car['afterProcessStatus'] == 'P' || car['afterProcessStatus'] == 'WO' || car['afterProcessStatus'] == 'H'">
+                                <span class="edit" (click)="updateDateSatus(car)">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"></i>
+                                </span>
+                            </div>
+                            <!-- </ng-container> -->
+                            <!-- <ng-container #elseBlock>
+
+                            </ng-container> -->
+
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <mat-dialog-actions>
+        <div class="model-footer">
+            <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+            </button>
+            <button class="dialog-buttons" cdkFocusInitial (click)="confirm()"> Confirm
+            </button>
+        </div>
+    </mat-dialog-actions>
+</mat-dialog-content>

@@ -1,0 +1,77 @@
+<div class="myModel">
+  <div class="card">
+    <div class="card-header" data-background-color="cyan"
+      style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+      <div data-background-color="blue">
+        <div class="row">
+          <div class="col-md-10">
+            <h6 style="text-transform: uppercase;font-weight: 600">
+              Generate Bulk Payslips for {{date | date: 'MM-yyyy'}}
+            </h6>
+          </div>
+          <div class="col-md-2"
+            style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+            <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Payslip Type" (selectionChange)="changeGroupType($event)">
+          <mat-option *ngFor="let groupByList of groupByList" [value]="groupByList.value">
+            {{ groupByList.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <p class="category" style="margin-top: 15px; margin-bottom:15px;color:#404A56;font-weight:600;">
+        Which Employees Do You Want to Include in this Report?
+      </p>
+      <div class="radio-wrapper">
+        <mat-radio-group>
+          <mat-radio-button value="All" (click)="clickradioforallemployee()">All Employees </mat-radio-button>
+          <mat-radio-button value="Specific" (click)="fospecificeEmployee()"> Specific Employees</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div *ngIf="hideShowDivForSpecificEemployee">
+        <p class="category"
+          style="margin-top: 15px;    margin-left: -13px; margin-bottom:15px;color:#404A56;font-weight:600;">Select
+          Employee(s) From the List Below:</p>
+
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Select Employees" [formControl]="selectEmployeeForPayroll" multiple
+            style="margin-left: 19px;" (selectionChange)="setComponentOnGratuityCalculation()">
+            <mat-select-trigger>
+              {{selectEmployeeForPayroll.value ? selectEmployeeForPayroll.value[0] : ''}}
+              <span *ngIf="selectEmployeeForPayroll.value?.length > 1" class="example-additional-selection">
+                (+{{selectEmployeeForPayroll.value.length - 1}} others)
+              </span>
+            </mat-select-trigger>
+            <mat-form-field style="width: 100%; margin-top: 10px;">
+              <input type="text" placeholder="Search" aria-label="Number" matInput [formControl]="myControl"
+                (keyup)="searchGratuityComponents($event)">
+            </mat-form-field>
+            <mat-option *ngFor="let topping of optionsData" [value]="topping.value">{{topping.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+        <button class="dialog-button" cdkFocusInitial (click)="onNoClick()">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Cancel</span>
+        </button>
+        <button class="dialog-button" cdkFocusInitial style="width: 76px;" data-background-color="cyan">
+          <span class="category" style="color:#fff; display: inline">
+            <i class="fa fa-check" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+            Generate</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

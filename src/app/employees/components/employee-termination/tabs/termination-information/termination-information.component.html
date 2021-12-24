@@ -1,0 +1,161 @@
+<div class="card">
+  <div class="card-header" style="margin-bottom:0px;">
+    <div style="float:left;">
+      <h6 class="title">Employement Termination</h6>
+    </div>
+    <div style="text-align: right;">
+
+
+      <button class=" btn header-button">
+        <span>
+          <i class="fa fa-ban" aria-hidden="true"></i>
+          Process Termination</span></button>
+
+    </div>
+  </div>
+  <div class="card-content">
+    <form>
+      <div class="col-md-8" style="padding-left:6px;">
+        <p class="category">What is the Employee's Employment Code?</p>
+      </div>
+      <div class="col-md-4">
+        <p class="category" style="font-weight:600;">1101</p>
+      </div>
+      <div class="col-md-8">
+        <p class="category">What is the Employee's Work Location?</p>
+      </div>
+      <div class="col-md-4">
+        <p class="category" style="font-weight:600;">Noida</p>
+      </div>
+      <div class="col-md-8">
+        <p class="category">What is the Employee's Joining Date?</p>
+      </div>
+      <div class="col-md-4">
+        <p class="category" style="font-weight:600;">1/10/2018</p>
+      </div>
+      <div class="col-md-8">
+        <p class="category">What Designation is the Employee hired for?</p>
+      </div>
+      <div class="col-md-4">
+        <p class="category" style="font-weight:600;">Manager</p>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">When did the employee apply for resignation?</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <input matInput [matDatepicker]="applyDate" placeholder="Resignation Application Date">
+          <mat-datepicker-toggle matSuffix [for]="applyDate"></mat-datepicker-toggle>
+          <mat-datepicker #applyDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">What is the employee's last working date?</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <input matInput [matDatepicker]="lastDate" placeholder="Last Working Date">
+          <mat-datepicker-toggle matSuffix [for]="lastDate"></mat-datepicker-toggle>
+          <mat-datepicker #lastDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">Notice Period Days</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <input matInput placeholder="Notice Period Days">
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">Type of separation</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Reason for Leaving">
+            <mat-option value="absconding">Absconding</mat-option>
+            <mat-option value="resigned">Resigned</mat-option>
+            <mat-option value="retired">Retired</mat-option>
+            <mat-option value="terminated">Terminated</mat-option>
+            <mat-option value="deceased">Deceased</mat-option>
+            <mat-option value="transfer">Transfer</mat-option>
+            <mat-option value="permanentDisablement">Permanent Disablement</mat-option>
+            <mat-option value="other">Other</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">Reason for leaving</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <textarea matInput placeholder="Additional Comments"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">What Payroll Month is the Employee's Full and Final Settlement to be done?</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <mat-select placeholder="Settlement Month">
+            <mat-option value="january2018">January-2018</mat-option>
+            <mat-option value="february2018">February-2018</mat-option>
+            <mat-option value="march2018">March-2018</mat-option>
+            <mat-option value="april2018">April-2018</mat-option>
+            <mat-option value="may2018">May-2018</mat-option>
+            <mat-option value="june2018">June-2018</mat-option>
+            <mat-option value="july2018">July-2018</mat-option>
+            <mat-option value="august2018">August-2018</mat-option>
+            <mat-option value="september2018">September-2018</mat-option>
+            <mat-option value="december2018">December-2018</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">Leave Encashment to be Paid Out</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <input matInput placeholder="Amount">
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">Leave Encashment Days</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <input matInput placeholder="Encashment Days">
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">How would like to calculate Leave Encashment Exemption? </p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <div class="radio-wrapper">
+          <mat-radio-group>
+            <mat-radio-button value="1">Manually Enter the Amount</mat-radio-button><br>
+            <mat-radio-button value="2">Automatically calculate as per Government's<br>Limit ( <i class="fa fa-inr"
+                aria-hidden="true"></i> 300,000 )</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">Leave Encashment Days</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <input matInput placeholder="Encashment Days">
+        </mat-form-field>
+      </div>
+      <div class="col-md-8" style="padding-top:15px;">
+        <p class="category">Gratuity to be paid</p>
+      </div>
+      <div class="col-md-4" style="padding:0px;">
+        <mat-form-field class="fullLength">
+          <input matInput placeholder="Amount">
+        </mat-form-field>
+      </div>
+
+    </form>
+  </div>
+</div>

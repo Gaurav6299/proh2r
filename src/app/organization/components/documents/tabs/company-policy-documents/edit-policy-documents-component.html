@@ -1,0 +1,139 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Edit Company Policy</h4>
+  <form [formGroup]="AddPolicyDocument" novalidate enctype="multipart/form-data">
+    <p class="category showFieldMandatory">Name the Policy Document
+      <br>for eg. Leave Policy, HR Policy, Reimbursement policy etc.
+    </p>
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="Document Name" formControlName="documentName">
+      <mat-error [hidden]="(this.AddPolicyDocument.controls.documentName.valid
+      || this.AddPolicyDocument.controls.documentName.untouched)">
+        <div
+          *ngIf="(this.AddPolicyDocument.controls.documentName.value === '' || this.AddPolicyDocument.controls.documentName.value === null)">
+          {{requiredTextField}}
+        </div>
+
+        <!-- <div *ngIf="this.AddPolicyDocument.controls.documentName.value !== ''">
+          {{ this.AddPolicyDocument.controls.documentName.errors != null ? this.AddPolicyDocument.controls.documentName.errors.messages
+          : ''}}
+        </div> -->
+      </mat-error>
+    </mat-form-field>
+    <p class="category">Upload Document
+      <br> Accepted Formats are .pdf, .doc, .docx, .png, .jpeg, .pps, .ppt, .pptx, .xls, .xlsx, .html .zip .rar
+    </p>
+    <div style="display: inline-flex;">
+      <div style="border: 1px solid #ddd;display: flex;align-items: center;padding: 5px;">
+        <input type="file" name="file" [value]="file.value"
+          accept=".pdf, .doc, .docx, .png, .jpeg, .pps, .ppt, .pptx, .xls, .xlsx, .html .zip .rar"
+          formControlName="file" (change)="onFileSelect($event)" #file />
+        <!-- {{this.AddPolicyDocument.controls.file.value}} -->
+        <div class="input-errorClass"
+          [hidden]="AddPolicyDocument.controls.file.valid||AddPolicyDocument.controls.file.untouched">
+          Please select a file.
+        </div>
+      </div>
+      <button class="btn header-button" cdkFocusInitial (click)="downloadCompanyPolicyDoc()">
+        <span>
+          <i class="fa fa-download" aria-hidden="true"></i>
+          Download</span>
+      </button>
+    </div>
+
+    <p class="category showFieldMandatory">Level of Access</p>
+    <div class="radio-wrapper">
+      <mat-radio-group formControlName="accessLevel">
+        <mat-radio-button value="Invisible">Invisible</mat-radio-button>
+        <mat-radio-button value="View">View Only</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="category" class="input-errorClass"
+      [hidden]="(AddPolicyDocument.controls.accessLevel.valid || AddPolicyDocument.controls.accessLevel.untouched)">
+      {{requiredRadioButton}}
+    </div>
+
+    <!-- <p class="category">Policy Acknowlwdgement Mandetory*</p>
+    <div class="radio-wrapper">
+      <mat-radio-group formControlName="ackType">
+        <mat-radio-button value="true">Yes </mat-radio-button>
+        <mat-radio-button value="false">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div style="color: red;" [hidden]="(AddPolicyDocument.controls.ackType.valid 
+    || AddPolicyDocument.controls.ackType.untouched)">
+      {{requiredRadioButton}}
+    </div> -->
+
+    <p class="category showFieldMandatory"> Map Policy Document to Employees</p>
+    <div class="radio-wrapper">
+      <mat-radio-group formControlName="employeeType" (change)="selectSpecificEmp()">
+        <mat-radio-button value="ALL">All the Employees </mat-radio-button>
+        <mat-radio-button value="SPECIFIC">Specific Employees</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="category" class="input-errorClass" [hidden]="(AddPolicyDocument.controls.employeeType.valid ||
+       AddPolicyDocument.controls.employeeType.untouched)">
+      {{requiredRadioButton}}
+    </div>
+
+    <div *ngIf="AddPolicyDocument.controls.employeeType.value==='SPECIFIC'">
+      <!-- <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Employee" (click)="onClickResetSearch_Array();" [formControl]="selectedEmployee"
+          [(ngModel)]="mySelectedEmpList" multiple>
+          <mat-select-trigger>
+            {{selectedEmployee.value ? selectedEmployee.value[0] : ''}}
+            <span *ngIf=" selectedEmployee.value?.length> 1" class="example-additional-selection">
+              (+{{selectedEmployee.value.length - 1}} others)
+            </span>
+          </mat-select-trigger>
+          <mat-form-field class="fullLength">
+            <input type="text" placeholder="Search Employee" aria-label="Number" matInput [formControl]="myControl"
+              (keyup)="searchEmployeeName($event)">
+          </mat-form-field>
+          <mat-option *ngFor="let emp of employeeList" [value]="emp.value" (click)="selectEmpCode(emp.value, $event)">
+            {{emp.viewValue}}</mat-option>
+        </mat-select>
+        <!-- <mat-error [hidden]="showErrorMessage ||(this.AddPolicyDocument.controls.allSelections.value.length!=0 || this.AddPolicyDocument.controls.seletedEmployee.value!=='')">
+          <div *ngIf="(this.AddPolicyDocument.controls.seletedEmployee.value === '' || 
+              this.AddPolicyDocument.controls.seletedEmployee.value === null || !this.selectedEmployee.value )">
+            {{requiredDropdownButton}}
+          </div>
+        </mat-error> -->
+      <!-- </mat-form-field> -->
+      <div>
+        <p class="category">Select Specific Locations Departments Bands Designations or Employees for Policy </p>
+        <ng-select #select [items]="filterSelection" [multiple]="true" bindLabel="viewValue" groupBy="type"
+          [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false" [closeOnSelect]="false"
+          [selectableGroupAsModel]="false" formControlName="allSelections">
+          <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+              [ngModelOptions]="{ standalone : true }" /> {{item.type}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+              [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="dropDown-errorClass"
+        [hidden]="this.AddPolicyDocument.controls.allSelections.untouched || errShow || this.AddPolicyDocument.controls.allSelections.valid">
+        {{requiredDropdownButton}}
+      </div>
+    </div>
+  </form>
+  <!-- <pre>{{this.AddPolicyDocument.value|json}}</pre> -->
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" (click)="onNoClick();">Cancel
+    </button>
+    <button class="dialog-buttons" (click)="UpdateCompanyPolicyDocument();">Update
+    </button>
+  </div>
+</mat-dialog-actions>

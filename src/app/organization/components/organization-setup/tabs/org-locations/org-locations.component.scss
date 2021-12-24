@@ -1,0 +1,11 @@
+@import "~assets/sass/md/customCSS";
+::ng-deep .mat-sort-header-container {
+  display:flex;
+  justify-content:center;
+}
+.card .card-header:after{
+  display: none;
+}
+.card .card-header {
+  border : 0;
+}

@@ -1,0 +1,14 @@
+@import "~assets/sass/md/customCSS";
+
+.table-responsive .time-sheets-table-head th {
+  font-size: 13px;
+  font-weight: 600 !important;
+  text-transform: capitalize;
+  color: #000000;
+}
+
+.table-responsive tbody td {
+  font-size: 13px;
+  font-weight: 400 !important;
+  color: #000000;
+}

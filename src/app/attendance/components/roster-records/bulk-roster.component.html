@@ -1,0 +1,95 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> {{header}}</h4>
+    <form [formGroup]=rosterAssignment>
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Shift" formControlName="shiftId">
+                <mat-option *ngFor="let shift of shifts" [value]="shift.shiftRecordId">
+                    <span class="mat-option-text" *ngIf="shift.offShift==true">
+                        {{shift.shiftName}}
+                    </span>
+                    <span class="mat-option-text" *ngIf="shift.offShift==false">
+                        {{shift.shiftName}} [{{shift.shiftStartTime}} - {{shift.shiftEndTime}}]
+                    </span>
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(rosterAssignment.controls.shiftId.valid || 
+            rosterAssignment.controls.shiftId.untouched)">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+
+        <div class="row" *ngIf="this.data.type != 'bulk'">
+            <div class="col-md-10">
+                <p class="category">Repeat?</p>
+            </div>
+            <div class="col-md-2">
+                <mat-slide-toggle formControlName="repeatFlag" (change)="onChangeRepeatFlag($event)"></mat-slide-toggle>
+            </div>
+        </div>
+
+        <div *ngIf="this.rosterAssignment.controls.repeatFlag.value==true">
+
+            <mat-form-field class="fullLength">
+                <mat-select placeholder="Select Frequency" formControlName="rosterFrequency">
+                    <mat-option *ngFor="let freq of frequency" [value]="freq.value">{{freq.viewValue}}
+                    </mat-option>
+                </mat-select>
+                <mat-error [hidden]="(rosterAssignment.controls.rosterFrequency.valid || 
+                rosterAssignment.controls.rosterFrequency.untouched)">
+                    This field is required.
+                </mat-error>
+            </mat-form-field>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="category">Ends on?</p>
+                    <div class="radio-wrapper">
+                        <mat-radio-group formControlName="endsOnApplicable"
+                            (change)="onChangeEndsOnApplicableFlag($event)">
+                            <mat-radio-button value=false>Never</mat-radio-button>
+                            <mat-radio-button value=true>ON</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="input-errorClass" [hidden]="(rosterAssignment.controls.endsOnApplicable.valid || 
+                    rosterAssignment.controls.endsOnApplicable.untouched)">
+                        Field is required
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="roster-record-calendar-class" style="margin-top: 25px;"
+                        *ngIf="this.rosterAssignment.controls.endsOnApplicable.value=='true'">
+                        <p-calendar [style]="{ width: '100%' }" appendTo="body" placeholder="End Date"
+                            (onSelect)="onEndDateSelection($event);" formControlName="endsOnDate" [showIcon]="true"
+                            styleClass="only-icon" dateFormat="yy-mm-dd">
+                        </p-calendar>
+                    </div>
+                    <div class="input-errorClass" [hidden]="(rosterAssignment.controls.endsOnDate.valid || 
+                    rosterAssignment.controls.endsOnDate.untouched)">
+                        Field is required
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- <pre>
+        {{rosterAssignment.value | json}}
+    </pre> -->
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel</button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="openDeleteRostersDialog()" *ngIf="shiftId!=null"
+            style="margin: 0 2px;">Delete</button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveRosters()"
+            *ngIf="((shiftId==null)||(shiftId!=null && data.frequency== 'NA'))">Save</button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveRosters()"
+            *ngIf="shiftId!=null && data.frequency!='NA'">Save</button>
+    </div>
+</mat-dialog-actions>

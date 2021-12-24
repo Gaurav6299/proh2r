@@ -1,0 +1,65 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Upload Employee Investment Declarations</h4>
+    <div class="card-content">
+        <form [formGroup]="uploadInvestmentForm" #formDirective="ngForm">
+            <div class="instruction-Perquisites-label">
+                <label class="showFieldMandatory">Step - 1: Select type of upload</label>
+                <p class="category">Declared Investment Declarations - Upload all the Investment Details declared by
+                    your employees.</p>
+                <p class="category">
+                    Verified Investment Declarations - Upload all the employee Investment Details that have been
+                    physically verified.</p>
+                <div>
+                    <ng-select [clearable]="false" appendTo="body" [searchable]="true"
+                        placeholder="Select Type Of Upload" formControlName="verified" class="custom-ng-select-Style">
+                        <ng-option [value]="false">Declared Investments Details</ng-option>
+                        <ng-option [value]="true">Verified Investments Details</ng-option>
+                    </ng-select>
+                    <span class="dropDown-errorClass" [hidden]="(uploadInvestmentForm.controls.verified.valid || 
+                    uploadInvestmentForm.controls.verified.untouched)">
+                        This field is required.
+                    </span>
+                </div>
+            </div>
+
+            <div class="instruction-Perquisites-label">
+                <label>Step - 2: Download the investments global format</label><br>
+                <p class="category">Include the investment declarations of all employees.</p>
+                <button class="btn header-button" (click)="downloadEmployeeInvestment()">
+                    <span><i class="fa fa-cloud-download" aria-hidden="true"></i>Download</span>
+                </button>
+            </div>
+
+            <div class="instruction-Perquisites-label">
+                <label class="showFieldMandatory">Step 3: Make the necessary changes in the downloaded format template
+                    and upload</label>
+                <div class="file-upload_inputBar">
+                    <button class="btn header-button uploadFile_inputBTN" (click)="uploadFormat()">
+                        <span><i class="fa fa-cloud-upload" aria-hidden="true"></i>Choose File</span>
+                        <div class="file-upload">
+                            <input type="file" id="uploadFile" (change)="selectFile($event)" required>
+                        </div>
+                    </button>
+                    <label *ngIf="this.selectedFilesName">{{this.selectedFilesName}}</label>
+                </div>
+                <mat-error class="input-errorClass"
+                    *ngIf="uploadInvestmentForm.controls.file.hasError('required') || (formDirective.submitted && uploadInvestmentForm.controls.file.invalid)">
+                    Please select a file
+                </mat-error>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+        <button class="dialog-buttons" (click)="upload(this.uploadInvestmentForm.controls.verified.value)"
+            cdkFocusInitial>Upload</button>
+    </div>
+</mat-dialog-actions>

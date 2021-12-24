@@ -1,0 +1,51 @@
+@import "~assets/sass/md/customCSS";
+
+ ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color:#a5cdf4;
+}
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #2e5b88;
+}
+
+.selectClass {
+  position: relative;
+    
+  }
+  
+  .selectClass:after {
+    font-family: FontAwesome;
+    content: "\f058";
+    font-size: 23px;
+    color: #4CAF50;
+    background: rgba(232, 232, 232, 0.6);
+    left: 0;
+    right: 0;
+    top: 0px;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    padding: 7px;
+  }
+/**---------------------------------------------------------------------------------------------
+                              For Attendance Record Table 
+--------------------------------------------------------------------------------------------**/
+.card-content .ui-table .ui-table-tbody > tr > td {border: auto !important;}
+.attendanceRecordsList ul li {list-style: none;border-radius: 0;padding: 6px 10px;display: inline-block;}
+.attendanceRecordsList ul li>.absent,.present,.incomRecord,.in-out,.weekly-Off,.halfday,.leave,.holiday,.notApplicable {font-size: 13px;text-align: center;font-weight: 600;color: #fff;padding: 5px 10px;border-radius: 2px;letter-spacing: 0.5px;width: 150px;display: block;}
+.attendanceRecordsList ul li>.absent{background-color: #ea6153;}
+.attendanceRecordsList ul li>.present{background-color: #516b2d;}
+.attendanceRecordsList ul li>.in-out{background-color: #a9d56c;}
+.attendanceRecordsList ul li>.incomRecord{background-color: #eb7f37;}
+.attendanceRecordsList ul li>.halfday{background-color: #4aa3df;}
+.attendanceRecordsList ul li>.weekly-Off{background-color: #19B696;}
+.attendanceRecordsList ul li>.leave{background-color: #f59bad;}
+.attendanceRecordsList ul li>.holiday{background-color: #9796F2;}
+.attendanceRecordsList ul li>.notApplicable{background-color: #777777;}
+.card-content .weeklyRecord {font-size: 12px;text-align: center;font-weight: 400;color: #fff;width: 150px;padding: 4px 6px;border-radius: 2px;letter-spacing: 0.5px;display: block;cursor: pointer;}
+/**---------------------------------------------------------------------------------------------
+                                For Responsive 
+--------------------------------------------------------------------------------------------**/
+@media (max-width: 640px) {
+.card-content .weeklyRecord {width: auto !important;}
+} 

@@ -1,0 +1,59 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div class="pull-left">
+      <h6 class="title">Listing Processed Employees</h6>
+    </div>
+    <div class="text-right">
+      <button class="btn header-button" (click)="rerunSelectedEmployeesDialog();">
+        <span>Rerun selected employees</span>
+      </button>
+      <!-- <button class="btn header-button" (click)="bulkRerunForUploadEmployeesDialog()">
+        <span>Upload employee list to return</span>
+      </button> -->
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="text-center" style="padding-bottom: 20px;">
+      <h5 class="left-rights-slider-title">
+        Running Attendance Process for {{this.monthName | titlecase}}
+      </h5>
+      <!-- <h6 class="left-rights-slider-Subtitle">
+        Running Attendance Process is No More Tedious {{location}}
+      </h6> -->
+    </div>
+
+    <div class="searchBox text-right">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search" (input)="dt2.filterGlobal($event.target.value, 'contains')">
+    </div>
+    <p-table #dt2 [columns]="columns" [value]="processedEmployees" [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+      [resizableColumns]="true" [autoLayout]="true" [responsive]="true" [(selection)]="selectedRows">
+      <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+          <col *ngFor="let col of columns">
+        </colgroup>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th>
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th *ngFor="let col of columns">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr [pSelectableRow]="car">
+          <td>
+            <p-tableCheckbox [value]="car"></p-tableCheckbox>
+          </td>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field">
+              {{car[col.field]}}</div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title *ngIf="showHide">Add Tax declaration category</h4>
+    <h4 mat-dialog-title *ngIf="!showHide">Update Tax declaration category</h4>
+    <form [formGroup]="categoryForm">
+        <mat-form-field class="fullLength">
+            <input matInput type="text" placeholder="Category Name" formControlName="categoryName"/>
+            <mat-error [hidden]="(categoryForm.controls.categoryName.valid || 
+                       categoryForm.controls.categoryName.untouched)">
+                Field Required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput type="number" placeholder="Maximum Amount" formControlName="maximumAmount"/>
+            <mat-error [hidden]="(categoryForm.controls.maximumAmount.valid || 
+                       categoryForm.controls.maximumAmount.untouched)">
+                Field Required
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel</button>
+        <button class="dialog-buttons" cdkFocusInitial *ngIf="showHide" (click)="saveUpdate()">Save</button>
+        <button class="dialog-buttons" cdkFocusInitial *ngIf="!showHide" (click)="saveUpdate()">Update</button>
+    </div>
+</mat-dialog-actions>

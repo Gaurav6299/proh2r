@@ -1,0 +1,148 @@
+<div class="card">
+    <div class="card-header" data-background-color="cyan" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">
+                        Event
+                    </h6>
+                </div>
+                <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+            <div class="container" style="width: 100%">
+                    <div class="row" >
+                        <div class="col-md-3">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <h5 style="margin-right: 40px">Event :</h5>
+                                    </th>
+                                    <td style="margin-right: 20px">
+                                        <h6>{{events}}</h6>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <h6>Date :</h6>
+                                    </th>
+                                    <td style="margin-right: 20px">
+                                        <h6>{{date | date : "dd/MM/y" }}</h6>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <h6>Time :</h6>
+                                    </th>
+                                    <td style="margin-right: 20px">
+                                        <h6>{{time | date : "hh:mm" }}</h6>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-4" style="margin-left: 10px;width: 40%;">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <h6>Interviewer Name :</h6>
+                                    </th>
+                                    <td>
+                                        <h6>{{InterviewerName}}</h6>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <h5 style="margin-right: 40px">Candidate Name :</h5>
+                                    </th>
+                                    <td>
+                                        <h6>{{canName}}</h6>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <h5 style="margin-right: 40px">Interview Type:</h5>
+                                    </th>
+                                    <td>
+                                        <h6>{{interviewType}}</h6>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <h6>Candidate Status:</h6>
+                                    </th>
+                                    <td>
+                                        <h6>{{canStatus}}</h6>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <h5 style="margin-right: 40px">Reason :</h5>
+                                    </th>
+                                    <td>
+                                        <h6>{{reason}}</h6>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+            <div class="row" *ngIf="colour =='YELLOW'">
+                <h6>Comments</h6>
+                <form [formGroup]="comment" style="width:60%">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Comments</mat-label>
+                        <input matInput formControlName="comments" placeholder="write comments">
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+ <div *ngIf="colour =='MAROON'" style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+            <button class="dialog-button" cdkFocusInitial style="width: 76px;" (click)="deleteEvent()" data-background-color="cyan">
+                <span class="category" style="color:#fff; display: inline">
+                    <i class="fa fa-trash-o " aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                    Delete</span>
+            </button>
+        </div>
+      
+        <div *ngIf="colour =='GREEN'" style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+            <button class="dialog-button" cdkFocusInitial style="width: 76px;" (click)="CancelEvent()" data-background-color="cyan">
+                <span class="category" style="color:#fff; display: inline">
+                    <i class="fa fa-trash-o " aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                    Cancel</span>
+            </button>
+
+        </div>
+        <div *ngIf="colour =='YELLOW'" style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+            <button class="dialog-button" cdkFocusInitial (click)="approveRejectEvent('REJECT')" style="width: 76px;" data-background-color="cyan">
+                <span class="category" style="color:#fff; display: inline">
+                    <i class="fa fa-refresh" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                    REJECT</span>
+            </button>
+            <button class="dialog-button" cdkFocusInitial (click)="approveRejectEvent('APPROVE')" style="width: 76px;" data-background-color="cyan">
+                <span class="category" style="color:#fff; display: inline">
+                    <i class="fa fa-refresh" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                    APPROVE</span>
+            </button>
+            <button class="dialog-button" cdkFocusInitial style="width: 76px;" (click)="deleteEvent()" data-background-color="cyan">
+                <span class="category" style="color:#fff; display: inline">
+                    <i class="fa fa-trash-o " aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                    Delete</span>
+            </button>
+            <button class="dialog-button" cdkFocusInitial style="width: 76px;" (click)="CancelEvent()" data-background-color="cyan">
+                <span class="category" style="color:#fff; display: inline">
+                    <i class="fa fa-trash-o " aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                    Cancel</span>
+            </button>
+        </div>
+
+
+    </div>
+</div>

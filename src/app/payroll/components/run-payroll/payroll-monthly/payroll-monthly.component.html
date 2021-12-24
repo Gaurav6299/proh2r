@@ -1,0 +1,364 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Running Payroll for {{month | titlecase}} - {{year}} </h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" (click)="cancel();">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              Back</span>
+          </button>
+        </div>
+      </div>
+
+
+
+
+      <div class="main-payroll-stepper">
+        <mat-horizontal-stepper #stepper>
+          <ng-template matStepperIcon="edit">
+            <mat-icon>done</mat-icon>
+          </ng-template>
+          <mat-step label="Step 1">
+            <div class="text-center">
+              <!-- <h5 class="left-rights-slider-title"> Running Payroll is No More Tedious</h5> -->
+              <h6 class="left-rights-slider-Subtitle"> Step 1 - Employee Selection</h6>
+            </div>
+            <div class="card-content">
+              <mat-tab-group class="tabs" (selectedTabChange)="onLinkClick($event)" (animationDone)="onTabChange($event)">
+                <mat-tab label="Active Employees">
+                  <app-pending-employees [runPayrollId]="runPayrollId" (messageEvent)="receiveMessage($event,stepper)">
+                  </app-pending-employees>
+                </mat-tab>
+                <mat-tab label="Employees On-Hold">
+                  <app-employees-on-hold [runPayrollId]="runPayrollId"> </app-employees-on-hold>
+                </mat-tab>
+                <!-- <mat-tab label="FnF Employees">
+                  <app-fnf-employees></app-fnf-employees>
+                </mat-tab> -->
+                <mat-tab label="Processed Employees">
+                  <app-processed-employees [runPayrollId]="runPayrollId"></app-processed-employees>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+          </mat-step>
+          <mat-step label="Step 2">
+            <div class="text-center">
+              <!-- <h5 class="left-rights-slider-title"> Running Payroll is No More Tedious</h5> -->
+              <h6 class="left-rights-slider-Subtitle"> Step 2 - Attendance Details</h6>
+            </div>
+            <!-- <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                
+              </mat-tab>
+               <mat-tab label="FnF Employees">
+                <app-fnf-employee></app-fnf-employee>
+              </mat-tab>
+            </mat-tab-group> -->
+            <app-active-employee [runPayrollId]="runPayrollId" [monthYear]="monthYear" (messageEvent)="receiveMessage($event,stepper)"></app-active-employee>
+          </mat-step>
+          <mat-step label="Step 3">
+            <div class="text-center">
+              <!-- <h5 class="left-rights-slider-title"> Running Payroll is No More Tedious</h5> -->
+              <h6 class="left-rights-slider-Subtitle"> Step 3 - Upload Variable Pays</h6>
+            </div>
+            <!-- <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                
+              </mat-tab>
+               <mat-tab label="FnF Employees">
+                <app-run-payroll-upload-variable-fnf-employee></app-run-payroll-upload-variable-fnf-employee>
+              </mat-tab> 
+            </mat-tab-group> -->
+            <app-run-payroll-upload-variable-active-employee [runPayrollId]="runPayrollId" (messageEvent)="receiveMessage($event,stepper)"></app-run-payroll-upload-variable-active-employee>
+          </mat-step>
+          <mat-step label="Step 4">
+            <div class="text-center">
+              <!-- <h5 class="left-rights-slider-title"> Running Payroll is No More Tedious</h5> -->
+              <h6 class="left-rights-slider-Subtitle"> Step 4 - Loan and Advances</h6>
+            </div>
+            <!-- <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                
+              </mat-tab>
+             <mat-tab label="FnF Employees">
+                <app-loan-and-advances-fnf-employees></app-loan-and-advances-fnf-employees>
+              </mat-tab> 
+            </mat-tab-group> -->
+            <app-loan-and-advances-active-employees [runPayrollId]="runPayrollId" (messageEvent)="receiveMessage($event,stepper)"></app-loan-and-advances-active-employees>
+
+          </mat-step>
+          <!-- <mat-step>
+            <ng-template matStepLabel></ng-template>
+            <div class="text-center">
+              <h5 class="left-rights-slider-title"> Running Payroll is No More Tedious</h5>
+              <h6 class="left-rights-slider-Subtitle">Step 5 - Encashment and Recovery</h6>
+            </div>
+            <mat-tab-group class="tabs">
+              <mat-tab label="FnF Employees">
+                <app-encashment-and-recovery-fnf-employees></app-encashment-and-recovery-fnf-employees>
+              </mat-tab>
+            </mat-tab-group>
+          </mat-step> -->
+          <mat-step label="Step 5">
+            <div class="text-center">
+              <!-- <h5 class="left-rights-slider-title"> Running Payroll is No More Tedious</h5> -->
+              <h6 class="left-rights-slider-Subtitle">Step 5 - Arrears</h6>
+            </div>
+            <!-- <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+               
+              </mat-tab>
+               <mat-tab label="FnF Employees">
+                <app-arrears-fnf-employee></app-arrears-fnf-employee>
+              </mat-tab> 
+            </mat-tab-group> -->
+            <app-arrears-active-employee [runPayrollId]="runPayrollId" (messageEvent)="receiveMessage($event,stepper)"></app-arrears-active-employee>
+          </mat-step>
+          <mat-step label="Step 6">
+            <div class="text-center">
+              <!-- <h5 class="left-rights-slider-title"> Running Payroll is No More Tedious</h5> -->
+              <h6 class="left-rights-slider-Subtitle"> Step 6 - Flexi Benefits</h6>
+            </div>
+            <!-- <mat-tab-group class="tabs">
+               <mat-tab label="Active Employees">
+                <app-offcycle-payment-active-employee [runPayrollId]="runPayrollId" (messageEvent)="receiveMessage($event,stepper)"></app-offcycle-payment-active-employee>
+              </mat-tab> 
+              <mat-tab label="Active Employees">
+                
+              </mat-tab>
+            </mat-tab-group> -->
+            <app-flexi-benefits-active-employee [runPayrollId]="runPayrollId" (messageEvent)="receiveMessage($event,stepper)"></app-flexi-benefits-active-employee>
+          </mat-step>
+          <mat-step label="Step 7">
+            <div class="text-center">
+              <!-- <h5 class="left-rights-slider-title"> Running Payroll is No More Tedious</h5> -->
+              <h6 class="left-rights-slider-Subtitle"> Step 7 - Income Tax & Professional Tax Overwrite</h6>
+            </div>
+            <!-- <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+               
+              </mat-tab>
+               <mat-tab label="FnF Employees">
+                <app-it-pt-fnf-employee></app-it-pt-fnf-employee>
+              </mat-tab> 
+            </mat-tab-group> -->
+            <app-it-pt-active-employee [runPayrollId]="runPayrollId" (messageEvent)="receiveMessage($event,stepper)"></app-it-pt-active-employee>
+          </mat-step>
+          <mat-step label="Step 8">
+            <div class="text-center">
+              <h6 class="left-rights-slider-Subtitle"> Step 8 - Salary Register</h6>
+            </div>
+            <!-- <mat-tab-group class="tabs">
+              <mat-tab label="Salary Register">
+
+              </mat-tab>
+            </mat-tab-group> -->
+            <app-salary-register [runPayrollId]="runPayrollId" (messageEvent)="receiveMessage($event,stepper)">
+            </app-salary-register>
+          </mat-step>
+          <!-- <mat-step label="Step 9">
+            <app-run-payroll-complete></app-run-payroll-complete>
+          </mat-step> -->
+        </mat-horizontal-stepper>
+      </div>
+
+
+
+
+
+
+
+
+
+      <!-- <div class="card-content">
+        <div class="card-content" style="margin-top: 15px;">
+          <mat-tab-group class="tabs" (selectedTabChange)="onLinkClick($event)" (animationDone)="onTabChange($event)">
+            <mat-tab label="Pending Employees">
+              <app-pending-employees></app-pending-employees>
+            </mat-tab>
+            <mat-tab label="Employees On-Hold">
+              <app-employees-on-hold> </app-employees-on-hold>
+            </mat-tab>
+            <mat-tab label="Processed Employees">
+              <app-processed-employees></app-processed-employees>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div> -->
+      <!-- <mat-horizontal-stepper  #stepper="matHorizontalStepper">
+        <mat-step *ngIf="currentStep === 1">
+          <ng-template matStepLabel></ng-template>
+          <div style="text-align: center;">
+            <h5 style="color:#4b88dc;font-weight: 500">
+              Step 1 - Employee Selection
+            </h5>
+          </div>
+          <div class="card-content" style="margin-top: 15px;">
+            <mat-tab-group class="tabs">
+              <mat-tab label="Pending Employees">
+                <app-pending-employees></app-pending-employees>
+              </mat-tab>
+              <mat-tab label="Employees On-Hold">
+                <app-employees-on-hold></app-employees-on-hold>
+              </mat-tab>
+              <mat-tab label="FnF Employees">
+                <app-fnf-employees></app-fnf-employees>
+              </mat-tab>
+              <mat-tab label="Processed Employees">
+                <app-processed-employees></app-processed-employees>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </mat-step>
+        <mat-step>
+          <div *ngIf="currentStep === 2; else fillPreviousStep">
+            <ng-template matStepLabel></ng-template>
+            <div style="text-align: center;">
+              <h5 style="color:#4b88dc;font-weight: 500">
+                <p>Step 2 - Upload Attendance Details</p>
+              </h5>
+            </div>
+            <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                <app-active-employee></app-active-employee>
+              </mat-tab>
+              <mat-tab label="FnF Employees">
+                <app-fnf-employee></app-fnf-employee>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <ng-template #fillPreviousStep>
+            <div>Please Fill Previous Step</div>
+            <button class="btn header-button" mat-button (click)="onBack()">Back</button>
+          </ng-template>
+        </mat-step>
+        <mat-step>
+          <div *ngIf="currentStep === 3; else fillPreviousStep">
+            <ng-template matStepLabel></ng-template>
+            <div style="text-align: center;">
+              <h5 style="color:#4b88dc;font-weight: 500">
+                <p>Step 3 - Upload Variable Pays</p>
+              </h5>
+            </div>
+            <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                <app-run-payroll-upload-variable-active-employee></app-run-payroll-upload-variable-active-employee>
+              </mat-tab>
+              <mat-tab label="FnF Employees">
+                <app-run-payroll-upload-variable-fnf-employee></app-run-payroll-upload-variable-fnf-employee>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <ng-template #fillPreviousStep>
+            <div>Please Fill Previous Step</div>
+            <button class="btn header-button" mat-button (click)="onBack()">Back</button>
+          </ng-template>
+        </mat-step>
+        <mat-step>
+          <div *ngIf="currentStep === 4; else fillPreviousStep">
+            <ng-template matStepLabel></ng-template>
+            <div style="text-align: center;">
+              <h5 style="color:#4b88dc;font-weight: 500">
+                <p>Step 4 - Arrears</p>
+              </h5>
+            </div>
+            <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                <app-arrears-active-employee></app-arrears-active-employee>
+              </mat-tab>
+              <mat-tab label="FnF Employees">
+                <app-arrears-fnf-employee></app-arrears-fnf-employee>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <ng-template #fillPreviousStep>
+            <div>Please Fill Previous Step</div>
+            <button class="btn header-button" mat-button (click)="onBack()">Back</button>
+          </ng-template>
+        </mat-step>
+        <mat-step>
+          <div *ngIf="currentStep === 5; else fillPreviousStep">
+            <ng-template matStepLabel></ng-template>
+            <div style="text-align: center;">
+              <h5 style="color:#4b88dc;font-weight: 500">
+                <p>Step 5 - Offcycle Payments</p>
+              </h5>
+            </div>
+            <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                <app-offcycle-payment-active-employee></app-offcycle-payment-active-employee>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <ng-template #fillPreviousStep>
+            <div>Please Fill Previous Step</div>
+            <button class="btn header-button" mat-button (click)="onBack()">Back</button>
+          </ng-template>
+        </mat-step>
+        <mat-step>
+          <div *ngIf="currentStep === 6; else fillPreviousStep">
+            <ng-template matStepLabel></ng-template>
+            <div style="text-align: center;">
+              <h5 style="color:#4b88dc;font-weight: 500">
+                <p>Step 6 - Flexi Benefits</p>
+              </h5>
+            </div>
+            <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                <app-flexi-benefits-active-employee></app-flexi-benefits-active-employee>
+              </mat-tab>
+              <mat-tab label="FnF Employees">
+                <app-flexi-benefits-fnf-employee></app-flexi-benefits-fnf-employee>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <ng-template #fillPreviousStep>
+            <div>Please Fill Previous Step</div>
+            <button class="btn header-button" mat-button (click)="onBack()">Back</button>
+          </ng-template>
+        </mat-step>
+        <mat-step>
+          <div *ngIf="currentStep === 7; else fillPreviousStep">
+            <ng-template matStepLabel></ng-template>
+            <div style="text-align: center;">
+              <h5 style="color:#4b88dc;font-weight: 500">
+                <p>Step 7 - Income Tax & Professional Tax Overwrite</p>
+              </h5>
+            </div>
+            <mat-tab-group class="tabs">
+              <mat-tab label="Active Employees">
+                <app-it-pt-active-employee></app-it-pt-active-employee>
+              </mat-tab>
+              <mat-tab label="FnF Employees">
+                <app-it-pt-fnf-employee></app-it-pt-fnf-employee>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <ng-template #fillPreviousStep>
+            <div>Please Fill Previous Step</div>
+            <button class="btn header-button" mat-button (click)="onBack()">Back</button>
+          </ng-template>
+        </mat-step>
+        <mat-step>
+          <div *ngIf="currentStep === 8; else fillPreviousStep">
+            <ng-template matStepLabel></ng-template>
+            <div style="text-align: center;">
+              <h5 style="color:#4b88dc;font-weight: 500">
+                <p>Complete</p>
+              </h5>
+            </div>
+            <app-run-payroll-complete></app-run-payroll-complete>
+          </div>
+          <ng-template #fillPreviousStep>
+            <div>Please Fill Previous Step</div>
+            <button class="btn header-button" mat-button (click)="onBack()">Back</button>
+          </ng-template>
+        </mat-step>
+      </mat-horizontal-stepper> -->
+    </div>
+  </div>
+</div>

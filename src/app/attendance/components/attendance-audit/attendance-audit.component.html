@@ -1,0 +1,342 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="title">Attendance Audit</h6>
+      </div>
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="card">
+              <div class="card-header">
+                <h6 class="title">Filters</h6>
+              </div>
+              <div class="card-content">
+                <form [formGroup]="attendanceAuditForm">
+                  <div class="section_index">
+                    <p class="category">Step 1: Date Filters </p>
+                  </div>
+                  <mat-form-field class="fullLength">
+                    <mat-select #mySelect placeholder="Select Calender" [(value)]="month"
+                      (selectionChange)="changeMonth(month)" formControlName="monthAttendance">
+                      <mat-option *ngFor="let month of monthList" [value]="month">{{month}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="fullLength">
+                    <input type="date" matInput formControlName="fromDate" placeholder="From Date" />
+                  </mat-form-field>
+
+                  <mat-form-field class="fullLength">
+                    <input type="date" matInput formControlName="toDate" placeholder="To Date" />
+                  </mat-form-field>
+
+                  <div class="section_index">
+                    <p class="category">Step 2: Attendance Filters </p>
+                    <mat-checkbox formControlName="dayStatus">Day Status</mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.dayStatus.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Day Status" formControlName="attendanceStatusList" multiple>
+                          <mat-option *ngFor="let status of attdStatusList" [value]="status">{{status}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <mat-checkbox formControlName="workedHours" (change)="resetFilterValue($event)">Total hours
+                    </mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.workedHours.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Total Hours Worked" formControlName="selectworkingOption"
+                          (selectionChange)="onFilterChangeTotalHour($event)">
+                          <mat-option *ngFor="let totalHours of totalHoursWorkedList" [value]="totalHours">
+                            {{totalHours}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div *ngIf="attendanceAuditForm.controls.selectworkingOption.value!='Between'">
+                        <mat-form-field class="fullLength">
+                          <input matInput placeholder="Wokring Hours" formControlName="workingHours" atp-time-picker>
+                        </mat-form-field>
+                      </div>
+                      <!-- 2 -->
+                      <div *ngIf="attendanceAuditForm.controls.selectworkingOption.value=='Between'">
+                        <mat-form-field class="fullLength">
+                          <input matInput [mdePopoverTriggerFor]="appPopover" mdePopoverTriggerOn="click"
+                            placeholder="Wokring Hours" formControlName="workingHours">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <mat-checkbox formControlName="checkTime" (change)="resetFilterValue($event)">Check In Time
+                    </mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.checkTime.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Check In Time" formControlName="checkInTimeOptions"
+                          (selectionChange)="onFilterChangeCheckInTime($event)">
+                          <mat-option *ngFor="let checkIn of checkinList" [value]="checkIn">{{checkIn}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div *ngIf="attendanceAuditForm.controls.checkInTimeOptions.value!='Between'">
+                        <mat-form-field class="fullLength">
+                          <input matInput placeholder="Check In Time" formControlName="inputCheckInTime"
+                            atp-time-picker>
+                        </mat-form-field>
+                      </div>
+                      <!-- 2 -->
+                      <div *ngIf="attendanceAuditForm.controls.checkInTimeOptions.value=='Between'">
+                        <mat-form-field class="fullLength">
+                          <input matInput [mdePopoverTriggerFor]="appPopover1" mdePopoverTriggerOn="click"
+                            placeholder="Check In Time" formControlName="inputCheckInTime">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <mat-checkbox formControlName="checkOut" (change)="resetFilterValue($event)">Check Out Time
+                    </mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.checkOut.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Check Out Time" formControlName="checkOutTimeOption"
+                          (selectionChange)="onFilterChangeCheckOutTime($event)">
+                          <mat-option *ngFor="let checkOut of checkoutList" [value]="checkOut">{{checkOut}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div *ngIf="attendanceAuditForm.controls.checkOutTimeOption.value!='Between'">
+                        <mat-form-field class="fullLength">
+                          <input matInput placeholder="Check Out Time" formControlName="inputCheckOutTime"
+                            atp-time-picker>
+                        </mat-form-field>
+                      </div>
+                      <!-- 2 -->
+                      <div *ngIf="attendanceAuditForm.controls.checkOutTimeOption.value=='Between'">
+                        <mat-form-field class="fullLength">
+                          <input matInput [mdePopoverTriggerFor]="appPopover2" mdePopoverTriggerOn="click"
+                            placeholder="Check Out Time" formControlName="inputCheckOutTime">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <mat-checkbox formControlName="lateAndEarlyStatus">Late Mark Status</mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.lateAndEarlyStatus.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Late Mark status" formControlName="lateAndEarlyMarkStatus" multiple>
+                          <mat-option *ngFor="let status of lateAndEarlyStatus" [value]="status | uppercase">
+                            {{status }}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <mat-checkbox formControlName="checkedShift">Shift</mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.checkedShift.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Shift" formControlName="shiftStatus" multiple>
+                          <mat-option *ngFor="let shift of shiftsList" [value]="shift">{{shift}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="section_index">
+                    <p class="category">Step 3: Employee Filters </p>
+
+                    <mat-checkbox formControlName="employeeName">Name</mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.employeeName.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Name" formControlName="empName" multiple>
+                          <mat-option *ngFor="let employee of empList" [value]="employee.empCode">
+                            {{employee.name}} - {{employee.empCode}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <mat-checkbox formControlName="WorkLocation">Work Location</mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.WorkLocation.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Work Location" formControlName="wLocation" multiple>
+                          <mat-option *ngFor="let location of locationsList " [value]="location">{{location}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <mat-checkbox formControlName="attendanceTemplate">Attendance Template</mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.attendanceTemplate.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Attendance Template" formControlName="attTemplate" multiple>
+                          <mat-option *ngFor="let template of templatesList" [value]="template.id">{{template.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <mat-checkbox formControlName="dept">Department</mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.dept.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Department" formControlName="department" multiple>
+                          <mat-option *ngFor="let department of departmentsList" [value]="department.id">
+                            {{department.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <mat-checkbox formControlName="attendanceSupervisor">Attendace Supervisor</mat-checkbox><br>
+                    <div *ngIf="attendanceAuditForm.controls.attendanceSupervisor.value">
+                      <mat-form-field class="fullLength">
+                        <mat-select placeholder="Attendance Supervisor" formControlName="attSupervisor" multiple>
+                          <mat-option *ngFor="let supervisor of supervisorsList" [value]="supervisor.empCode">
+                            {{supervisor.name}} - {{supervisor.empCode}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+                <div class="text-center">
+                  <button class="btn header-button" (click)="CancelAuditFilter();"> <span>
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                      Clear</span>
+                  </button>
+                  <button class="btn header-button" (click)="applyAttendanceAuditFilter()"> <span>
+                      <i class="fa fa-plus-square" aria-hidden="true"></i>
+                      Apply</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <pre>{{attendanceAuditForm.value | json}}</pre> -->
+
+          <div class="col-md-9">
+            <div class="card">
+              <div class="card-header">
+                <h6 class="title">Audit Report</h6>
+              </div>
+              <div class="card-content">
+                <div class="searchBox" style="text-align: right">
+                  <i class="fa fa-search"></i>
+                  <input type="text" pInputText size="50" placeholder="Search"
+                    (input)="dt1.filterGlobal($event.target.value, 'contains')">
+                </div>
+                <p-table #dt1 [columns]="columns" [value]="assignedAttendenceData" [rows]="5" [paginator]="true"
+                  [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true"
+                  [responsive]="true">
+                  <ng-template pTemplate="caption">
+                    <div class="ui-helper-clearfix">
+                      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Download"
+                        (click)="dt1.exportCSV()" class="pull-right"></button>
+                    </div>
+                  </ng-template>
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-car let-columns="columns">
+                    <tr>
+                      <td *ngFor="let col of columns">
+                        <div *ngIf="col.field && car[col.field]!=null">{{car[col.field]}}</div>
+                        <div *ngIf="car[col.field]==null"> {{(car[col.field]!=null)?car[col.field]:'N/A'}}</div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Total_Hour-Between-Popup-->
+<mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false" [mdePopoverCloseOnClick]="false">
+  <mat-card style="min-width: 295px;">
+    <mat-card-content>
+      <form [formGroup]="attendanceAuditForm">
+        <div
+          *ngIf="this.attendanceAuditForm.controls.workedHours.value==true && attendanceAuditForm.controls.selectworkingOption.value=='Between'">
+          <div class="form-group">
+            <label>From Time</label>
+            <input matInput type="time" class="form-control" formControlName="fromTime"
+              (click)="openTimePicker($event,'fromTime')">
+          </div>
+          <div class="form-group">
+            <label>To Time</label>
+            <input matInput type="time" class="form-control" formControlName="toTime"
+              (click)="openTimePicker($event,'toTime')">
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="right">
+      <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="closePopover(0);">Cancel</button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="applyValues(0)">Apply</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</mde-popover>
+
+<!-- checkIn-Between-Popup-->
+<mde-popover #appPopover1="mdePopover" [mdePopoverOverlapTrigger]="false" [mdePopoverCloseOnClick]="false">
+  <mat-card style="min-width: 295px;">
+    <mat-card-content>
+      <form [formGroup]="attendanceAuditForm">
+        <!-- CheckIn -->
+        <div
+          *ngIf="this.attendanceAuditForm.controls.checkTime.value==true && attendanceAuditForm.controls.checkInTimeOptions.value=='Between'">
+          <div class="form-group">
+            <label>From CheckIn Time</label>
+            <input matInput type="time" class="form-control" formControlName="fromCheckInTime"
+              (click)="openTimePicker($event,'fromCheckInTime')">
+          </div>
+          <div class="form-group">
+            <label>To CheckIn Time</label>
+            <input matInput type="time" class="form-control" formControlName="toCheckInTime"
+              (click)="openTimePicker($event,'toCheckInTime')">
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="right">
+      <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="closePopover(1);">Cancel</button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="applyValues(1)">Apply</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</mde-popover>
+
+<!-- checkOut-Between-Popup-->
+<mde-popover #appPopover2="mdePopover" [mdePopoverOverlapTrigger]="false" [mdePopoverCloseOnClick]="false">
+  <mat-card style="min-width: 295px;">
+    <mat-card-content>
+      <form [formGroup]="attendanceAuditForm">
+        <!-- CheckOut -->
+        <div
+          *ngIf="this.attendanceAuditForm.controls.checkOut.value==true && attendanceAuditForm.controls.checkOutTimeOption.value=='Between'">
+          <div class="form-group">
+            <label>From CheckOut Time</label>
+            <input matInput type="time" class="form-control" formControlName="fromCheckOutTime"
+              (click)="openTimePicker($event,'fromCheckOutTime')">
+          </div>
+          <div class="form-group">
+            <label>To CheckOut Time</label>
+            <input matInput type="time" class="form-control" formControlName="toCheckOutTime"
+              (click)="openTimePicker($event,'toCheckOutTime')">
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="right">
+      <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="closePopover(2);">Cancel</button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="applyValues(2)">Apply</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</mde-popover>

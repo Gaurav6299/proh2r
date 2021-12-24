@@ -1,0 +1,104 @@
+.card [data-background-color="blue"] {
+  background: linear-gradient(60deg, #205081, #205081);
+  box-shadow: 0 12px 20px -10px rgba(9, 70, 78, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2);
+}
+
+
+.card {
+  margin: 0;
+}
+.row{
+  margin: 0 !important;
+}
+::ng-deep .card-content {
+  padding: 0px;
+}
+
+::ng-deep .row {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.card-header {
+  margin: 0;
+  border-radius: 0px;
+  padding-top: 5px;
+}
+.fullLength {
+  width: 100%;
+}
+.card [data-background-color="cyan"] {
+  background: linear-gradient(60deg, #26c6da, #00acc1);
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.mat-button {
+  border-radius: 25px;
+}
+.dialog-button{
+  color: #fff;
+  border-radius: 4px;
+  background-color: #205081;
+  text-transform: inherit;
+  border: none;
+  font-weight: 600;
+  padding: 0px;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  font-size: 13px;
+  cursor:pointer;
+  vertical-align: middle;
+}
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.dropdown-container, .instructions {
+    width: 200px;
+    margin: 20px auto 0;
+    font-size: 14px;
+    font-family: sans-serif;
+}
+
+.instructions {
+    width: 100%;
+    text-align: center;
+}
+
+.dropdown-button {
+    float: left;
+    width: 100%;
+    background: whitesmoke;
+    padding: 10px 12px;
+
+    cursor: pointer;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    
+    .dropdown-label, .dropdown-quantity {
+        float: left;
+    }
+    
+    .dropdown-quansstity {
+        margin-left: 4px;
+    }
+    
+    .fa-filter {
+        float: right;
+    }
+
+.alert {
+    border: 0;
+    border-radius: 0;
+    position: relative;
+    padding: 14px 15px;
+    line-height: 0px;
+}
+  .alert.alert-danger {
+    background-color: #f55a4e;
+    color: #ffffff;
+    border-radius: 33px;
+}
+}

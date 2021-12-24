@@ -1,0 +1,19 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Are you sure you want to {{action}} selected Leave?</h4>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">
+            Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="actionOnShortLeave()">
+            {{action}}
+        </button>
+    </div>
+</mat-dialog-actions>

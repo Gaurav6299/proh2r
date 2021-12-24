@@ -1,0 +1,32 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+
+        <div class="card">
+            <div class="card-header">
+                <h6 class="title">Interview Schedule</h6>
+                <form [formGroup]="selectEmp" class="select">
+
+
+                    <mat-form-field style="width: 70%;float: right;margin-top: 8px;">
+                        <mat-select placeholder="Please Select Interviewer" formControlName="selectEmployee">
+                            <mat-option *ngFor="let item of employeeList" [value]="item.value" (click)=selected(item)>
+                                {{item.fullName}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                </form>
+            
+            <div class="card-content">
+
+                <div class="col-md-12" style="padding:0px;">
+                    <div id='calendar'></div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>

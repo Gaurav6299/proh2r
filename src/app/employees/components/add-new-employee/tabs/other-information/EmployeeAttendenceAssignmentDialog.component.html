@@ -1,0 +1,59 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Allocate Attendance Template</h4>
+    <form [formGroup]="attendenceTemplateAssignment">
+        <p class="category" style="color:#404A56;">Select Attendence Template:</p>
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Template" formControlName="attendenceTemplate"
+                (selectionChange)="assignSuperviser($event)">
+                <mat-option *ngFor="let at of addTemplateList" [value]="at.viewValue">
+                    {{at.viewValue }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span class="category" style="color: red;" [hidden]="(attendenceTemplateAssignment.controls.attendenceTemplate.valid || 
+                       attendenceTemplateAssignment.controls.attendenceTemplate.untouched)">
+            Invalid Input
+        </span>
+        <p class="category" style="color:#404A56;">Select an employee for approval:</p>
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select employee" formControlName="templateApprover" [disabled]="templateWise">
+                <mat-option *ngFor="let emp of addApproverList" [value]="emp.value">
+                    {{emp.viewValue }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span class="category" style="color: red;" [hidden]="(attendenceTemplateAssignment.controls.templateApprover.valid || 
+                       attendenceTemplateAssignment.controls.templateApprover.untouched)">
+            Invalid Input
+        </span>
+        <mat-form-field class="fullLength">
+            <input matInput type="date" placeholder="Date" formControlName="effectiveDate">
+        </mat-form-field>
+        <span class="category" style="color: red;" [hidden]="(attendenceTemplateAssignment.controls.effectiveDate.valid || 
+                       attendenceTemplateAssignment.controls.effectiveDate.untouched)">
+            Invalid Input
+        </span>
+        <p class="category" style="color:#404A56;">Biometric Code</p>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Biometric Code" formControlName="biometricCode">
+        </mat-form-field>
+        <p class="category" style="color:#404A56;">Biometric Device Id</p>
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Biometric Decvice Id" formControlName="biometricDeviceId">
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveAttdTemplateAssingleUser()"> Save
+        </button>
+    </div>
+</mat-dialog-actions>

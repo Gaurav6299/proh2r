@@ -1,0 +1,52 @@
+@import "~assets/sass/md/customCSS";
+
+::ng-deep .tabs  .mat-tab-labels {
+    margin-top:-3px;
+   height:44px;
+   min-width:110px;
+   text-transform: uppercase;
+   font-weight: 600;
+}
+  ::ng-deep .mat-tab-label {
+    // font-family: 'Lato', sans-serif; 
+    height: 48px;
+    padding: 0 15px !important;
+    cursor: pointer;
+    box-sizing: border-box;
+    opacity: .6;
+    font-weight: 600;
+    font-size: 15px;
+    min-width: 160px;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    position: relative;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #4b88dc;
+}
+.card{
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+::ng-deep .tabs  .mat-tab-labels {
+    margin-top:-3px;
+   height:44px;
+    /* padding-left:-20px;padding-right:20px;
+   margin-left:0px; */
+   min-width:110px;
+   text-transform: uppercase;
+   font-weight: 600;
+}
+
+a.disabled {
+    color: gray;
+    cursor: not-allowed;
+    text-decoration: underline;
+}
+::ng-deep .mat-horizontal-content-container {
+  overflow: hidden;
+  padding: 0 0px 0px 0px !important;
+}

@@ -1,0 +1,50 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Add New Employee Field</h4>
+    <div class="card-content">
+        <h6 class="category">
+            For example, if you want to store department name for each of your employees, you can create a Custom
+            Field named Department.
+            With Custom Fields, you can add your own unique prompts or questions and set rules around who completes
+            the information.
+        </h6>
+        <p class="category">Follow the steps below to add a new custom field:
+        </p>
+        <div class="row">
+            <p class="category showFieldMandatory">Please provide a Label for this Custom Field</p>
+            <p class="category">e.g. Department, Cost Center etc</p>
+            <mat-form-field class="fullLength">
+                <input matInput placeholder="Custom Field Name">
+            </mat-form-field>
+            <p class="category showFieldMandatory">What Type of answer is this Custom Field? </p>
+            <p class="category">You can customize the type of answer you’re looking for. You
+                can also offer multiple choices by selecting “Dropdown”.</p>
+            <mat-form-field class="fullLength">
+                <mat-select placeholder="What Level of Access Your Employees Have on This Section?">
+                    <mat-option value="Manage">Manage</mat-option>
+                    <mat-option value="View Only">View Only</mat-option>
+                    <mat-option value="Invisible">Invisible</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <p class="category showFieldMandatory">In which section of employee profile would
+                you like to show this custom field?</p>
+            <p class="category">e.g. Personal Details,Bank Details,Other Information</p>
+            <mat-form-field class="fullLength">
+                <input matInput placeholder="Custom Field Name">
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="deleteLocation()"> Save
+        </button>
+    </div>
+</mat-dialog-actions>

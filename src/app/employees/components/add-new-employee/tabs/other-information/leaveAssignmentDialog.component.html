@@ -1,0 +1,85 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Leave Template Assignment</h4>
+  <form [formGroup]="leaveTemplateAssignment">
+    <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Leave Policy" formControlName="leaveTemplateName" (selectionChange)="selectValue($event)">
+        <mat-option *ngFor="let leave of TemplateList" [value]="leave.leaveTemplateName">
+          {{leave.leaveTemplateName}}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(leaveTemplateAssignment.controls.leaveTemplateName.valid || 
+                       leaveTemplateAssignment.controls.leaveTemplateName.untouched)">
+        Invalid Input
+      </mat-error>
+    </mat-form-field>
+    <div *ngIf="openPrimaryDiv">
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Primary Approver " formControlName="leavePrimaryApprover"
+          [disabled]="type=='TEMPLATEWISE'">
+          <mat-form-field class="fullLength">
+            <input type="text" placeholder="Search Employee" matInput [formControl]="myControl"
+              (keyup)="searchEmployeeName($event)">
+          </mat-form-field>
+          <mat-option *ngFor="let approver of approverList" [value]="approver.value" (click)="clearMyControl();"
+            (keydown)="clearMyControl();">
+            {{approver.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error [hidden]="(leaveTemplateAssignment.controls.leavePrimaryApprover.valid || 
+                       leaveTemplateAssignment.controls.leavePrimaryApprover.untouched)">
+          Invalid Input
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div *ngIf="openSecondaryDiv">
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Primary Approver" formControlName="leavePrimaryApprover"
+          [disabled]="type=='TEMPLATEWISE'">
+          <mat-form-field class="fullLength">
+            <input type="text" placeholder="Search Employee" matInput [formControl]="myControl1"
+              (keyup)="searchEmployeeNameForPrimarysupervisor($event)">
+          </mat-form-field>
+          <mat-option *ngFor="let approver of approverList1" [value]="approver.value" (click)="clearPrimaryMyControl();"
+            (keydown)="clearPrimaryMyControl();">
+            {{approver.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error [hidden]="(leaveTemplateAssignment.controls.leavePrimaryApprover.valid || 
+                       leaveTemplateAssignment.controls.leavePrimaryApprover.untouched)">
+          Invalid Input
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="fullLength">
+        <mat-select placeholder="Select Secondary Approver " formControlName="leaveSecondaryApprover"
+          [disabled]="type=='TEMPLATEWISE'">
+          <mat-form-field class="fullLength">
+            <input type="text" placeholder="Search Employee" matInput [formControl]="myControl2"
+              (keyup)="searchEmployeeNameForSecondarysupervisor($event)">
+          </mat-form-field>
+          <mat-option *ngFor="let approver of approverList2" [value]="approver.value"
+            (click)="clearSecondaryMyControl();" (keydown)="clearSecondaryMyControl();">
+            {{approver.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error [hidden]="(leaveTemplateAssignment.controls.leaveSecondaryApprover.valid || 
+                       leaveTemplateAssignment.controls.leaveSecondaryApprover.untouched)">
+          Invalid Input
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+    </button>
+    <button class="dialog-buttons" (click)="saveLeaveAssignmentData()"> Save
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,49 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Bulk Update Leave Balance</h4>
+    <div class="card-content">
+        <form [formGroup] = "form">
+            <p class="category">Select Leave Category</p>
+            <ng-select [items]="leavecategories" appendTo="body" [searchable]="true" bindLabel="leaveName" bindValue="categoryId" placeholder="Select"
+                class="custom-ng-select-Style" formControlName="leaveCategory">
+            </ng-select>
+            <span class="category" style="color: red;" [hidden]="(form.controls.leaveCategory.valid || 
+            form.controls.leaveCategory.untouched)">Field is required</span>
+            <p class="category">Select Leave Cycle</p>
+            <ng-select [items]="leaveCycles" appendTo="body" [searchable]="true" bindLabel="leaveCycleName" bindValue="leaveCycleName" placeholder="Select"
+                class="custom-ng-select-Style" formControlName="leaveCycle">
+            </ng-select>
+            <span class="category" style="color: red;" [hidden]="(form.controls.leaveCycle.valid || 
+            form.controls.leaveCycle.untouched)">Field is required</span>
+        </form>
+
+        <div class="instruction-checkin-times">
+            <p>Step - 1: Download Employee's Current Leave Balance of selected Leave Category :</p>
+            <button (click)="downloadFormat()" class="btn header-button">
+                <span><i class="fa fa-cloud-download" aria-hidden="true" ></i>Download</span>
+            </button>
+            <p>Step - 2: Make necessary changes in the downloaded file and upload</p>
+        </div>
+
+        <button (click)="uploadFormat()" class="btn header-button">
+            <span><i class="fa fa-cloud-upload" aria-hidden="true"></i>Upload</span>
+            <div class="file-upload">
+                <input type="file" id="uploadFile" (change)="selectFile($event)" required>
+            </div>
+        </button>
+        <span *ngIf="this.selectedFilesName">{{this.selectedFilesName}}</span>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="upload()"> Update
+        </button>
+    </div>
+</mat-dialog-actions>

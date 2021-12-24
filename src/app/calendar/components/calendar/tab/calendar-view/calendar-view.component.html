@@ -1,0 +1,79 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card" style="box-shadow: none !important;margin: 0;">
+      <div class="card-content calendar-data-view_Qw212">
+        <div class="row calendar-header-row">
+          <div class="col-md-4">
+            <h3 class="calendar-head-title">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+          </div>
+
+          <div class="col-md-4 text-center">
+            <div class="btn-group calendar-month-weeks_btnqw" style="position: relative;bottom: 35px;">
+              <button class="btn calendar-button-month" (click)="view = 'month';getCalendarData()"
+                [class.active]="view === 'month'">
+                Month
+              </button>
+              <button class="btn calendar-button-week" (click)="view = 'week';getCalendarData()"
+                [class.active]="view === 'week'">
+                Week
+              </button>
+            </div>
+          </div>
+
+
+          <div class="col-md-4 text-right">
+            <div class="btn-group calendar-month-weeks_btnqw">
+              <button class="btn calendar-button-previous" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                (viewDateChange)="getCalendarData();activeDayIsOpen = false">
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+              </button>
+
+              <button class="btn calendar-button-today" mwlCalendarToday [(viewDate)]="viewDate"
+                (viewDateChange)="getCalendarData();activeDayIsOpen = false" [(viewDate)]="viewDate">
+                Today
+              </button>
+
+              <button class="btn calendar-button-next" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                (viewDateChange)="getCalendarData();activeDayIsOpen = false">
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <ng-template #customCellTemplate let-day="day" let-locale="locale">
+          <div class="cal-cell-top">
+            <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal
+              }}</span>
+            <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+          </div>
+          <div class="cell-totals">
+            <span *ngFor="let group of day.eventGroups" class="badge badge"
+              [style.background-color]="group[1][0].color.primary">
+              {{ group[1].length }}
+            </span>
+          </div>
+        </ng-template>
+
+        <div *ngIf="events$ | async; let events">
+          <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events"
+              [cellTemplate]="customCellTemplate" [activeDayIsOpen]="activeDayIsOpen"
+              (beforeViewRender)="beforeMonthViewRender($event)" (dayClicked)="dayClicked($event.day)">
+            </mwl-calendar-month-view>
+
+            <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events">
+            </mwl-calendar-week-view>
+            <div class="calendar_data_stipe">
+              <ul class="calendar_data_stipe-pannel">
+                <li class="calendar_data_stipe-pannel_list" *ngFor="let val of legend$ | async;">
+                  <span class="customEvent"
+                    [style.background-color]="val.colorCode===null?'#4F4F4F':val.colorCode"></span> {{val.eventName}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

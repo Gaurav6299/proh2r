@@ -1,0 +1,59 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title>Resignation Templates Assignment</h4>
+  <form [formGroup]="addResignationAssignment">
+
+    <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Seperation Template" (selectionChange)="selectResignationTemplate($event);"
+        formControlName="resignationTemplateId">
+        <mat-option *ngFor="let template of resignationTemplate" [value]="template.resignationTemplateId">
+          {{template.resignationTemplateName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="fullLength" *ngIf="levelOfApprovers.indexOf('L1')>=0">
+      <mat-select placeholder="Select L1 Approver" formControlName="l1Supervisor">
+        <mat-option *ngFor="let emp of approvers" [value]="emp.value">
+          {{emp.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="fullLength" *ngIf="levelOfApprovers.indexOf('L2')>=0">
+      <mat-select placeholder="Select L2 Approver" formControlName="l2Supervisor">
+        <mat-option *ngFor="let emp of approvers" [value]="emp.value">
+          {{emp.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="fullLength" *ngIf="levelOfApprovers.indexOf('HR_Manager')>=0">
+      <mat-select placeholder="Select HR Approver" formControlName="hrmanagerSupervisor">
+        <mat-option *ngFor="let emp of approvers" [value]="emp.value">
+          {{emp.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <textarea matInput placeholder="Leave a comment" formControlName="comment"></textarea>
+    </mat-form-field>
+
+  </form>
+  <mat-dialog-actions>
+    <div class="model-footer">
+      <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">
+        Cancel
+      </button>
+      <button class="dialog-buttons" cdkFocusInitial (click)="assignResignationTemplate()">
+        Assign
+      </button>
+    </div>
+  </mat-dialog-actions>
+
+</mat-dialog-content>

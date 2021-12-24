@@ -1,0 +1,27 @@
+.card-content .table-responsive .workWeeks-table-head {
+  background: #fafafa;
+}
+
+.card-content .table-responsive .workWeeks-table-head tr>th {
+  font-size: 13px;
+  padding: 5px;
+  text-align: center;
+  font-weight: 500 !important;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.card-content .table-responsive .workWeeks-table-body tr>td {
+  min-width: 50px;
+  max-width: 50px;
+  text-align: center;
+  padding: 0;
+}
+
+.card-content .table-responsive .workWeeks-table-body tr>td input {
+  text-align: center;
+}
+
+//.card-content .table-responsive .mat-form-field-appearance-legacy .mat-form-field-underline {
+//   height: 0;
+// }

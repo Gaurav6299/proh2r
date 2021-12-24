@@ -1,0 +1,68 @@
+@import "~assets/sass/md/customCSS";
+
+hr {
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1px;
+}
+
+.no-padding {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.text-color {
+  color: #848484;
+}
+
+thead {
+  background-color: #a4d9e3;
+}
+
+thead th {
+  color: #404A56;
+}
+
+.table thead tr th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
+  padding: 5px 5px;
+  vertical-align: middle;
+}
+
+.mat-tab-label {
+  height: 40px;
+  padding: 0px 0px;
+  font-weight: 600;
+}
+
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+
+.selector {
+  margin-left: 100px;
+  padding-left: 100px;
+}
+
+th {
+  text-align: center;
+
+}
+
+td {
+  text-align: center;
+}

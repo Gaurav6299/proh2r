@@ -1,0 +1,57 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Upload Roster Records</h4>
+    <div class="card-content">
+        <form [formGroup]="uploadBulkRosterRecords" #formDirective="ngForm">
+            <div class="instruction-roster-label">
+                <label>Step - 1: Select month and year for download or upload</label>
+                <div>
+                    <ng-select [clearable]="false" appendTo="body" [searchable]="true" placeholder="Select Year"
+                        formControlName="month" class="custom-ng-select-Style">
+                        <ng-option *ngFor="let monthYear of monthList" [value]="monthYear">{{monthYear}}</ng-option>
+                    </ng-select>
+                    <span class="dropDown-errorClass" [hidden]="(uploadBulkRosterRecords.controls.month.valid || 
+                        uploadBulkRosterRecords.controls.month.untouched)">
+                        This field is required.
+                    </span>
+                </div>
+            </div>
+
+            <div class="instruction-roster-label">
+                <label>Step - 2: Download roster global format</label><br>
+                <button class="btn header-button" (click)="downloadRoster()">
+                    <span><i class="fa fa-cloud-download" aria-hidden="true"></i>Download</span>
+                </button>
+            </div>
+
+            <div class="instruction-roster-label">
+                <label>Step 3: Make necessary changes in the imported file and Upload</label>
+                <div class="file-upload_inputBar">
+                    <button class="btn header-button uploadFile_inputBTN" (click)="uploadFormat()">
+                        <span><i class="fa fa-cloud-upload" aria-hidden="true"></i>Choose File</span>
+                        <div class="file-upload">
+                            <input type="file" id="uploadFile" (change)="selectFile($event)" required>
+                        </div>
+                    </button>
+                    <label *ngIf="this.selectedFilesName">{{this.selectedFilesName}}</label>
+                </div>
+                <mat-error class="input-errorClass"
+                    *ngIf="uploadBulkRosterRecords.controls.file.hasError('required') || (formDirective.submitted && uploadBulkRosterRecords.controls.file.invalid)">
+                    Please select a file
+                </mat-error>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+        <button class="dialog-buttons" (click)="upload(this.uploadBulkRosterRecords.controls.month.value)"
+            cdkFocusInitial> Upload Rosters</button>
+    </div>
+</mat-dialog-actions>

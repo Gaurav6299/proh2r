@@ -1,0 +1,84 @@
+<mat-dialog-content>
+  <div class="logo">
+    <img src="assets/images/dialog-logo.png">
+  </div>
+  <div class="close-icon">
+    <i class="material-icons" (click)="onNoClick()">close</i>
+  </div>
+  <h4 mat-dialog-title> Letter Generation</h4>
+  <form [formGroup]="letterGeneration">
+    <mat-form-field class="fullLength">
+      <input matInput placeholder="Document Name" formControlName="docName">
+      <mat-error [hidden]="(this.letterGeneration.controls.docName.valid
+      || this.letterGeneration.controls.docName.untouched)">
+        <div
+          *ngIf="(this.letterGeneration.controls.docName.value === '' || this.letterGeneration.controls.docName.value === null)">
+          {{requiredTextField}}
+        </div>
+        <div *ngIf="this.letterGeneration.controls.docName.value !== ''">
+          {{ this.letterGeneration.controls.docName.errors != null ?
+          this.letterGeneration.controls.docName.errors.messages: ''}}
+        </div>
+      </mat-error>
+    </mat-form-field>
+    <!-- <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Employee(s)" formControlName="selectedEmployee" multiple>
+        <mat-option *ngFor="let emp of employee" [value]="emp.value">{{emp.viewValue}}</mat-option>
+      </mat-select>
+      <mat-error [hidden]="(letterGeneration.controls.selectedEmployee.valid ||
+            letterGeneration.controls.selectedEmployee.untouched)">
+        {{requiredDropdownButton}}
+      </mat-error>
+    </mat-form-field> -->
+    <ng-select #select [items]="employee" [multiple]="true" appendTo="body" bindLabel="viewValue" bindValue="value"
+      groupBy="type" [selectableGroup]="true" dropdownPosition="auto" [selectableGroupAsModel]="false"
+      [closeOnSelect]="false" [selectableGroupAsModel]="false" placeholder="Select Employee(s)"
+      formControlName="selectedEmployee" class="custom-ng-select-Style">
+      <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+          [ngModelOptions]="{ standalone : true }" /> {{item.value}}
+      </ng-template>
+      <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+        <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+          [ngModelOptions]="{ standalone : true }" /> {{item.viewValue}}
+      </ng-template>
+    </ng-select>
+    <span class="dropDown-errorClass" [hidden]="(letterGeneration.controls.selectedEmployee.valid ||
+    letterGeneration.controls.selectedEmployee.untouched)">
+      {{requiredDropdownButton}}
+    </span>
+
+    <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Template" formControlName="template">
+        <mat-option *ngFor="let letter of letterTemplate" [value]="letter.letterTemplateId">
+          {{ letter.templateLabel }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(letterGeneration.controls.template.valid ||
+      letterGeneration.controls.template.untouched)">
+        {{requiredDropdownButton}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullLength">
+      <mat-select placeholder="Select Signatory" formControlName="signatory">
+        <mat-option *ngFor="let signator of signatory" [value]="signator.authSignatoryId">
+          {{ signator.employeeName }}
+        </mat-option>
+      </mat-select>
+      <mat-error [hidden]="(letterGeneration.controls.signatory.valid ||
+            letterGeneration.controls.signatory.untouched)">
+        {{requiredDropdownButton}}
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="model-footer">
+    <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="generateLetter(false)">Save
+    </button>
+    <button class="dialog-buttons" cdkFocusInitial (click)="generateLetter(true)" style="margin: 0 5px;">Save & Publish
+    </button>
+  </div>
+</mat-dialog-actions>

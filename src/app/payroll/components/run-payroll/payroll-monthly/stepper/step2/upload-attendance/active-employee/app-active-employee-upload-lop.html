@@ -1,0 +1,88 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Update Attendance Record</h4>
+    <div class="card-content">
+        <mat-form-field class="fullLength">
+            <input matInput placeholder="Attendance Date" [value]="date" readonly>
+        </mat-form-field>
+        <!-- <div style="margin-top: 5px;" *ngIf="this.status == 'WO'">
+            <ng-select [items]="statusFirstHalfWO" bindLabel="viewValue" bindValue="value"
+                class="custom-ng-select-Style" appendTo="body" placeholder="Select Attendance Satus"
+                [(ngModel)]="requestType1">
+            </ng-select>
+        </div> -->
+        <!-- <div> -->
+        <div *ngIf="!this.showHideDiv.includes('WO') && this.showHideDiv!='H'">
+            <div *ngIf="!this.requestType1.includes('HD(') && !this.requestType1.includes('OD')">
+                <label class="input-label">First Half</label>
+                <div style="margin-top: 5px;">
+                    <ng-select [items]="status2" bindLabel="viewValue" bindValue="value" class="custom-ng-select-Style"
+                        appendTo="body" placeholder="Select Attendance Satus" [(ngModel)]="requestType1"
+                        (change)="CurrentStatus();">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div *ngIf="!this.requestType2.includes('HD(') && !this.requestType2.includes('OD')">
+                <label class="input-label">Second Half</label>
+                <div style="margin-top: 5px;">
+                    <ng-select [items]="status2" bindLabel="viewValue" bindValue="value" class="custom-ng-select-Style"
+                        appendTo="body" placeholder="Select Attendance Satus" [(ngModel)]="requestType2"
+                        (change)="CurrentStatus();">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+        <!-- -------------------------------------New Status Added--------------------------------------- -->
+        <div *ngIf="this.showHideDiv.includes('WO') && this.showHideDiv!='H'">
+            <div *ngIf="!this.requestType1.includes('HD(') && !this.requestType1.includes('OD')">
+                <label class="input-label">First Half</label>
+                <div style="margin-top: 5px;">
+                    <ng-select [items]="statusFirstHalfWO" bindLabel="viewValue" bindValue="value"
+                        class="custom-ng-select-Style" appendTo="body" placeholder="Select Attendance Satus"
+                        [(ngModel)]="requestType1" (change)="CurrentStatus();">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div *ngIf="!this.requestType2.includes('HD(') && !this.requestType2.includes('OD')">
+                <label class="input-label">Second Half</label>
+                <div style="margin-top: 5px;">
+                    <ng-select [items]="statusSecondHalfWO" bindLabel="viewValue" bindValue="value"
+                        class="custom-ng-select-Style" appendTo="body" placeholder="Select Attendance Satus"
+                        [(ngModel)]="requestType2" (change)="CurrentStatus();">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="this.showHideDiv=='H'">
+            <div *ngIf="!this.requestType1.includes('HD(') && !this.requestType1.includes('OD')">
+                <label class="input-label">Select</label>
+                <div style="margin-top: 5px;">
+                    <ng-select [items]="statusH" bindLabel="viewValue" bindValue="value" class="custom-ng-select-Style"
+                        appendTo="body" placeholder="Select Attendance Satus" [(ngModel)]="requestType1"
+                        (change)="CurrentStatus();">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+        <!-- -------------------------------------/New Status Added--------------------------------------- -->
+        <p class="category">Current Status: {{status}}</p>
+
+
+    </div>
+    <mat-dialog-actions>
+        <div class="model-footer">
+            <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+            </button>
+            <button class="dialog-buttons" cdkFocusInitial (click)="confirm()"> Confirm
+            </button>
+        </div>
+    </mat-dialog-actions>
+</mat-dialog-content>

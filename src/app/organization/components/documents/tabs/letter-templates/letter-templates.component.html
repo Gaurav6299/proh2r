@@ -1,0 +1,389 @@
+<!--     card 1  starts      -->
+
+<div class="card" style="box-shadow: none !important;">
+    <div class="card-header">
+        <div style="float:left;">
+            <h6 class="title">Letter Templates</h6>
+        </div>
+        <div style="text-align: right;">
+            <button class=" btn header-button" id="LetterTemplates" matTooltip="Add Letter Template"
+                (click)="openLetterTemplate()">
+                <span>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add Letter Template</span>
+            </button>
+        </div>
+    </div>
+    <!-- <ng-template #letterTempViewOnly>
+        <div class="card-header">
+            <h6 class="title">Letter Templates</h6>
+        </div>
+    </ng-template> -->
+    <div class="card-content">
+        <!-- <app-templateeditor style="z-index: 1;"></app-templateeditor> -->
+        <!-- <div class="example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="LetterTemplatesdataSource">
+                <ng-container matColumnDef="templateLabel">
+                    <mat-header-cell *matHeaderCellDef> Template Label </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.templateLabel}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="createdOn">
+                    <mat-header-cell *matHeaderCellDef> Created On </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.createdOn | date: 'dd/MM/yyyy'}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="lastUpdatedOn">
+                    <mat-header-cell *matHeaderCellDef> Last Updated On </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.lastUpdatedOn | date: 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span *ngIf="generateLetterByAdmin;else noEditLetterTemp">
+                            <i class="fa fa-pencil-square-o action-icon" matTooltip="Edit" aria-hidden="true"
+                                style="color:green;"
+                                (click)="editTemplate(element.letterTemplateId,'LETTER TEMPLATE');"></i>
+                        </span>
+                        <span>
+                            <ng-template #noEditLetterTemp>
+                                <i class="fa fa-pencil-square-o action-icon" matTooltip="Edit" aria-hidden="true"
+                                    style="color:green;" (click)="noAccess();"></i>
+                            </ng-template>
+                            <i class="fa fa-trash-o action-icon" aria-hidden="true" matTooltip="Delete"
+                                style="color:#e03737;" (click)="openDeleteLetterDialog(element)"></i>
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="LetterTemplatesColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: LetterTemplatesColumns;"></mat-row>
+            </mat-table>
+        </div> -->
+        <div class="searchBox" style="text-align: right;">
+            <i class="fa fa-search"></i>
+            <input type="text" pInputText size="50" placeholder="Search"
+                (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+        <p-table #dt1 [columns]="columns" [value]="Letter" [rows]="5" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='actions' && col.field!='createdOn' && col.field!='lastUpdatedOn'">
+                            {{car[col.field]}}</div>
+                        <div *ngIf="col.field!='actions' && col.field=='createdOn'">
+                            {{car[col.field] | date:'dd/MM/yyyy'}}</div>
+                        <div *ngIf="col.field!='actions' && col.field=='lastUpdatedOn'">
+                            {{car[col.field] | date:'dd/MM/yyyy'}}</div>
+                        <div class="mat-cell">
+                            <div class="mat-element-icon">
+                                <span class="edit"
+                                    *ngIf="col.field=='actions';else noEditLetterTemp">
+                                    <i class="fa fa-pencil-square-o" matTooltip="Edit" aria-hidden="true"
+                                        (click)="editTemplate(car.letterTemplateId,'LETTER TEMPLATE');"></i>
+                                    <ng-template #noEditLetterTemp>
+                                        <i class="fa fa-pencil-square-o" matTooltip="Edit" aria-hidden="true"
+                                            (click)="noAccess();"></i>
+                                    </ng-template>
+                                </span>
+                                <span class="delete" *ngIf="col.field=='actions'">
+                                    <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                                        (click)="openDeleteLetterDialog(car)"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<!--     card 1  ends      -->
+
+<!--     card 2  starts      -->
+<div class="card" style="box-shadow: none !important;">
+    <div class="card-header">
+        <div style="float:left;">
+            <h6 class="title">Header Templates</h6>
+        </div>
+        <div style="text-align: right;">
+            <button class=" btn header-button" id="HeaderTemplates" matTooltip="Add Header Template"
+                (click)="openHeaderTemplate()">
+                <span>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add Header Template</span>
+            </button>
+        </div>
+    </div>
+    <!-- <ng-template #headerTempViewOnly>
+        <div class="card-header">
+            <h6 class="title">Header Templates</h6>
+        </div>
+    </ng-template> -->
+    <div class="card-content">
+        <!-- <div class="example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="HeaderTemplatesdataSource">
+                <ng-container matColumnDef="templateLabel">
+                    <mat-header-cell *matHeaderCellDef> Template Label </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.templateLabel}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="createdOn">
+                    <mat-header-cell *matHeaderCellDef> Created On </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.createdOn | date: 'dd/MM/yyyy'}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="lastUpdatedOn">
+                    <mat-header-cell *matHeaderCellDef> Last Updated On </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.lastUpdatedOn | date: 'dd/MM/yyyy'}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span *ngIf="generateLetterByAdmin;else noEditHeaderTemp">
+                            <i class="fa fa-pencil-square-o action-icon" matTooltip="Edit" aria-hidden="true"
+                                style="color:green;" (click)="editTemplate(element.headerId,'HEADER TEMPLATE');"></i>
+                        </span>
+                        <span>
+                            <ng-template #noEditHeaderTemp>
+                                <i class="fa fa-pencil-square-o action-icon" matTooltip="Edit" aria-hidden="true"
+                                    style="color:green;" (click)="noAccess();"></i>
+                            </ng-template>
+                            <i class="fa fa-trash-o action-icon" aria-hidden="true" matTooltip="Delete"
+                                style="color:#e03737;" (click)="openHeaderDeleteDialog(element)"></i>
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="LetterTemplatesColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: LetterTemplatesColumns;"></mat-row>
+            </mat-table>
+        </div> -->
+        <div class="searchBox" style="text-align: right;">
+            <i class="fa fa-search"></i>
+            <input type="text" pInputText size="50" placeholder="Search"
+                (input)="dt2.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+        <p-table #dt2 [columns]="columns" [value]="header" [rows]="5" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='actions' && col.field!='createdOn' && col.field!='lastUpdatedOn'">
+                            {{car[col.field]}}</div>
+                        <div *ngIf="col.field!='actions' && col.field=='createdOn'">
+                            {{car[col.field] | date:'dd/MM/yyyy'}}</div>
+                        <div *ngIf="col.field!='actions' && col.field=='lastUpdatedOn'">
+                            {{car[col.field] | date:'dd/MM/yyyy'}}</div>
+                        <div class="mat-cell">
+                            <div class="mat-element-icon">
+                                <span class="edit"
+                                    *ngIf="col.field=='actions';else noEditHeaderTemp">
+                                    <i class="fa fa-pencil-square-o" matTooltip="Edit" aria-hidden="true"
+                                        (click)="editTemplate(car.headerId,'HEADER TEMPLATE');"></i>
+                                    <ng-template #noEditHeaderTemp>
+                                        <i class="fa fa-pencil-square-o" matTooltip="Edit" aria-hidden="true"
+                                            (click)="noAccess();"></i>
+                                    </ng-template>
+                                </span>
+                                <span class="delete" *ngIf="col.field=='actions'">
+                                    <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                                        (click)="openHeaderDeleteDialog(car)"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<div class="card" style="box-shadow: none !important;">
+    <div class="card-header">
+        <div style="float:left;">
+            <h6 class="title">Footer Templates</h6>
+        </div>
+        <div style="text-align: right;">
+            <button class=" btn header-button" matTooltip="Add Footer Template" (click)="openFooterTemplate()">
+                <span>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add Footer Template</span>
+            </button>
+        </div>
+    </div>
+    <!-- <ng-template #footerTempViewOnly>
+        <div class="card-header">
+            <h6 class="title">Footer Templates</h6>
+        </div>
+    </ng-template> -->
+    <div class="card-content">
+        <!-- <div class="example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="FooterTemplatesdataSource">
+                <ng-container matColumnDef="templateLabel">
+                    <mat-header-cell *matHeaderCellDef> Template Label </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.templateLabel}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="createdOn">
+                    <mat-header-cell *matHeaderCellDef> Created On </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.createdOn | date: 'dd/MM/yyyy'}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="lastUpdatedOn">
+                    <mat-header-cell *matHeaderCellDef> Last Updated On </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.lastUpdatedOn | date: 'dd/MM/yyyy'}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span *ngIf="generateLetterByAdmin;else noEditFooterTemp">
+                            <i class="fa fa-pencil-square-o action-icon" matTooltip="Edit" aria-hidden="true"
+                                style="color:green;" (click)="editTemplate(element.footerId,'FOOTER TEMPLATE');"></i>
+                        </span>
+                        <span>
+                            <ng-template #noEditFooterTemp>
+                                <i class="fa fa-pencil-square-o action-icon" matTooltip="Edit" aria-hidden="true"
+                                    style="color:green;" (click="noAccess();" )></i>
+                            </ng-template>
+                            <i class="fa fa-trash-o action-icon" matTooltip="Delete" aria-hidden="true"
+                                style="color:#e03737;" (click)="openFooterDeleteDialog(element)"></i>
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="LetterTemplatesColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: LetterTemplatesColumns;"></mat-row>
+            </mat-table>
+        </div> -->
+        <div class="searchBox" style="text-align: right;">
+            <i class="fa fa-search"></i>
+            <input type="text" pInputText size="50" placeholder="Search"
+                (input)="dt3.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+        <p-table #dt3 [columns]="columns" [value]="footer" [rows]="5" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='actions' && col.field!='createdOn' && col.field!='lastUpdatedOn'">
+                            {{car[col.field]}}</div>
+                        <div *ngIf="col.field!='actions' && col.field=='createdOn'">
+                            {{car[col.field] | date:'dd/MM/yyyy'}}</div>
+                        <div *ngIf="col.field!='actions' && col.field=='lastUpdatedOn'">
+                            {{car[col.field] | date:'dd/MM/yyyy'}}</div>
+                        <div class="mat-cell">
+                            <div class="mat-element-icon">
+                                <span class="edit"
+                                    *ngIf="col.field=='actions';else noEditFooterTemp">
+                                    <i class="fa fa-pencil-square-o" matTooltip="Edit" aria-hidden="true"
+                                        (click)="editTemplate(car.footerId,'FOOTER TEMPLATE');"></i>
+                                    <ng-template #noEditFooterTemp>
+                                        <i class="fa fa-pencil-square-o" matTooltip="Edit" aria-hidden="true"
+                                            (click="noAccess();"></i>
+                                    </ng-template>
+                                </span>
+                                <span class="delete" *ngIf="col.field=='actions'">
+                                    <i class="fa fa-trash-o" matTooltip="Delete" aria-hidden="true"
+                                        (click)="openFooterDeleteDialog(car)"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<!--     card 3  ends      -->
+<!--     card 4  starts      -->
+<div class="card" style="box-shadow: none !important;">
+    <div class="card-header">
+        <div style="float:left;">
+            <h6 class="title">Authorized Signatory</h6>
+        </div>
+        <div style="text-align: right;">
+            <button class=" btn header-button" matTooltip="Add Signatory" (click)="addSignatoryDialog();">
+                <span>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add Signatory</span>
+            </button>
+        </div>
+    </div>
+    <!-- <ng-template #authSignViewOnly>
+        <div class="card-header">
+            <h6 class="title">Authorized Signatory</h6>
+        </div>
+    </ng-template> -->
+    <div class="card-content">
+        <!-- <div class="example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="AuthorizedSignatorydataSource">
+                <ng-container matColumnDef="employeeName">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.employeeName}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="empDesignation">
+                    <mat-header-cell *matHeaderCellDef> Designation </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.empDesignation}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <i class="fa fa-trash-o action-icon" matTooltip="Delete" aria-hidden="true"
+                            style="color:#e03737;" (click)="openSignatoryDeleteDialog(element)"></i>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="AuthorizedSignatoryColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: AuthorizedSignatoryColumns;"></mat-row>
+            </mat-table>
+        </div> -->
+        <div class="searchBox" style="text-align: right;">
+            <i class="fa fa-search"></i>
+            <input type="text" pInputText size="50" placeholder="Search"
+                (input)="dt4.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+        <p-table #dt4 [columns]="columns1" [value]="signatory" [rows]="5" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+                        <div class="mat-cell">
+                            <div class="mat-element-icon">
+                                <span class="delete" *ngIf="col.field=='actions'">
+                                    <i class="fa fa-trash-o" matTooltip="Delete" aria-hidden="true"
+                                        (click)="openSignatoryDeleteDialog(car)"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<!--     card 4  ends      -->

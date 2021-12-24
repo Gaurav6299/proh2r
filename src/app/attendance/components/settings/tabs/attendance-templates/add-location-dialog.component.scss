@@ -1,0 +1,36 @@
+@import "~assets/sass/md/customCSS";
+.locationformRow {
+    background: #ffffff;
+    border: 2px solid #4a87dc;
+    border-radius: 5px;
+    padding: 12px 8px;
+    border-top-right-radius: initial;
+    border-top-left-radius: initial;
+    border-top: 0;
+    position: relative;
+    bottom: 10px;
+    min-height: 300px;}
+.locationGoogleMap {
+    padding: 5px;
+    background: #f6f0f0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+agm-map {
+    height: 400px;
+}
+.form-header-title {
+    background: linear-gradient(135deg, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+    position: relative;
+    border-radius: 5px;
+    border-bottom-right-radius: initial;
+    border-bottom-left-radius: initial;
+}
+.form-header-title h4 {
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 1px;
+    font-weight: 500;
+    color: #fff;
+    padding: 10px;
+}

@@ -1,0 +1,30 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Bulk Assign Advance Templates To Employees</h4>
+    <form [formGroup]="addAdvanceAssignment">
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Template" formControlName="advanceTemplateId" (selectionChange)="selectTemplate();">
+                <mat-option *ngFor="let template of advanceTemplate" [value]="template.advanceTemplateId">
+                    {{ template.templateName }}
+                </mat-option>
+            </mat-select>
+            <mat-error [hidden]="(this.addAdvanceAssignment.controls.advanceTemplateId.valid 
+                || this.addAdvanceAssignment.controls.advanceTemplateId.untouched)">
+                Field is Required
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="bulkAssign();"> Submit
+        </button>
+    </div>
+</mat-dialog-actions>

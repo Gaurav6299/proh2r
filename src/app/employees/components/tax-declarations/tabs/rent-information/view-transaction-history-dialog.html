@@ -1,0 +1,43 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Transaction History</h4>
+    <div class="card-content">
+        <div class="table-responsive">
+            <p-table #dt1 [columns]="columns" [value]="data.employeeRentDeclarationLogs" dataKey="id" [rows]="5"
+                [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true"
+                [autoLayout]="true" [responsive]="true">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-car let-columns="columns">
+                    <tr>
+                        <td *ngFor="let col of columns">
+                            <div *ngIf="col.field=='date'">
+                                {{car[col.field]}}
+                            </div>
+                            <div *ngIf="col.field!='date'">
+                                {{car[col.field]}}
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="dialog-buttons" cdkFocusInitial (click)="onNoClick();"> Close
+        </button>
+    </div>
+</mat-dialog-actions>

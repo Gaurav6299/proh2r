@@ -1,0 +1,122 @@
+<div class="card" style="margin-top: 0;">
+  <div class="card-header">
+    <div style="float:left;">
+      <h6 class="title">Employee Basic Information</h6>
+    </div>
+    <div style="text-align: right;">
+      <button matStepperNext class="btn header-button" (click)="save()" *ngIf="basicInformationForm.valid">
+        <span>
+          <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+          Continue</span>
+      </button>
+      <button class="btn header-button" (click)="save()" *ngIf="!basicInformationForm.valid">
+        <span>
+          <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+          Continue</span>
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <form [formGroup]="basicInformationForm" autocomplete="off">
+      <div formArrayName="fields">
+        <div *ngFor="let fields of  fields.controls; let i=index">
+          <div class="row" [formGroupName]="i">
+            <div class="col-md-8">
+              <p class="category">
+                {{this.basicInformationForm.controls.fields.controls[i].controls.fieldDescription.value}}</p>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.basicInformationForm.controls.fields.controls[i].controls.fieldType.value === 'SingleLineText'">
+              <mat-form-field class="fullLength">
+                <div
+                  *ngIf="!(this.basicInformationForm.controls.fields.controls[i].controls.fieldName.value === 'empEmail');else emailField">
+                  <!-- {{ (!this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.value=='')}}  -->
+                  <input matInput
+                    placeholder="{{this.basicInformationForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                    formControlName="fieldValue"
+                    [required]="this.basicInformationForm.controls.fields.controls[i].controls.mandatory.value">
+                </div>
+                <ng-template #emailField>
+                  <input matInput
+                    placeholder="{{this.basicInformationForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                    formControlName="fieldValue"
+                    [required]="this.basicInformationForm.controls.fields.controls[i].controls.mandatory.value || this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.untouched"
+                    email="true">
+                </ng-template>
+                <mat-error
+                  *ngIf="(this.basicInformationForm.controls.fields.controls[i].controls.fieldName.value != 'empEmail')"
+                  [hidden]="(this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.valid || 
+                           this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.untouched)">
+                  Field is required
+                </mat-error>
+                <mat-error
+                  *ngIf="(this.basicInformationForm.controls.fields.controls[i].controls.fieldName.value === 'empEmail'
+                     && (this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.untouched 
+                     || this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.valid) ); else emailMessage">
+                </mat-error>
+              </mat-form-field>
+
+              <ng-template #emailMessage>
+                <mat-error
+                  *ngIf="this.basicInformationForm.controls.fields.controls[i].controls.fieldName.value === 'empEmail' && (this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.value !== '')">
+                  {{invalidTextFields}}</mat-error>
+              </ng-template>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.basicInformationForm.controls.fields.controls[i].controls.fieldType.value === 'MultiLineText'">
+              <mat-form-field class="fullLength">
+                <textarea matInput
+                  placeholder="{{this.basicInformationForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  formControlName="fieldValue"
+                  [required]="this.basicInformationForm.controls.fields.controls[i].controls.mandatory.value"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.basicInformationForm.controls.fields.controls[i].controls.fieldType.value === 'Number'">
+              <mat-form-field class="fullLength">
+                <input matInput
+                  placeholder="{{this.basicInformationForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  type="number" formControlName="fieldValue"
+                  [required]="this.basicInformationForm.controls.fields.controls[i].controls.mandatory.value">
+              </mat-form-field>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.basicInformationForm.controls.fields.controls[i].controls.fieldType.value === 'Dropdown'">
+              <mat-form-field class="fullLength">
+                <mat-select
+                  placeholder="{{this.basicInformationForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  formControlName="fieldValue"
+                  [required]="this.basicInformationForm.controls.fields.controls[i].controls.mandatory.value">
+                  <mat-option
+                    *ngFor="let option of this.basicInformationForm.controls.fields.controls[i].controls.options.value"
+                    [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4"
+              *ngIf="this.basicInformationForm.controls.fields.controls[i].controls.fieldType.value === 'Date'">
+              <mat-form-field class="fullLength">
+                <!-- <input matInput [matDatepicker]="picker" placeholder="{{this.basicInformationForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                    formControlName="fieldValue"  [required]="this.basicInformationForm.controls.fields.controls[i].controls.mandatory.value">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker> -->
+                <input matInput type="date"
+                  placeholder="{{this.basicInformationForm.controls.fields.controls[i].controls.fieldPlaceholder.value}}"
+                  formControlName="fieldValue"
+                  [required]="this.basicInformationForm.controls.fields.controls[i].controls.mandatory.value">
+                  <mat-error
+                *ngIf="(this.basicInformationForm.controls.fields.controls[i].controls.fieldName.value != 'empEmail')"
+                [hidden]="(this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.valid || 
+                           this.basicInformationForm.controls.fields.controls[i].controls.fieldValue.untouched)">
+                Field is required
+              </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

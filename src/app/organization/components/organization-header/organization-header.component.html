@@ -1,0 +1,127 @@
+<div class="card">
+  <div class="card-header">
+    <div style="text-align: left">
+      <h6 class="title">{{companyName}}</h6>
+    </div>
+  </div>
+  <!-- <ng-template #orgHeaderViewOnly>
+    <div class="card-header">
+      <h6 class="title">{{companyName}}</h6>
+    </div>
+  </ng-template> -->
+  <div class="card-content">
+
+    <div class="card-row">
+      <div class="col-md-3 text-center">
+        <form enctype="multipart/form-data">
+          <div style="display: none;">
+            <input #FileInput type="file" id="uploadFile" multiple="true" (click)="FileInput.value = null" value=""
+              (change)="selectFile($event)" accept="image/*">
+          </div>
+          <div style="padding:10px;border: 1px solid #eee;">
+            <div class="proh-profile-media img1" (click)="uploadFile(); ">
+              <img class="image" src="{{companyImage.value}}" onerror="this.src='assets/images/fallback.jpg'" />
+              <div class="middle">
+                <div class="text">
+                  <i class="material-icons">edit</i><br>
+                  <span>Upload</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="upload-btns">
+          <label for="uploadFile">
+            <i class="fa fa-cloud-upload"></i>
+          </label>
+          <a (click)="deleteFile();"><i class="fa fa-trash"></i></a>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="card-row">
+          <div class="col-md-6">
+            <div class="proh-border-bottom">
+              <div class="card-row">
+                <div class="col-md-6">
+                  <label class="control-label" style="font-weight:500;color: #4b88dc;font-size:14px;">Located at
+                    :</label>
+                </div>
+
+                <div class="col-md-6 text-right">
+                  <label class="control-label" style="font-weight:500;">{{companyLocation.value}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="proh-border-bottom">
+              <div class="card-row">
+                <div class="col-md-6">
+                  <label class="control-label" style="font-weight:500;color: #4b88dc;font-size:14px;">No. of Admins
+                    :</label>
+                </div>
+                <div class="col-md-6 text-right">
+                  <label class="control-label" style="font-weight:500">{{totalAdmin.value}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="proh-border-bottom">
+              <div class="card-row">
+                <div class="col-md-6">
+                  <label class="control-label" style="font-weight:500;color: #4b88dc;font-size:14px;">No. of Employees
+                    :</label>
+                </div>
+                <div class="col-md-6 text-right">
+                  <label class="control-label" style="font-weight:500">{{totalEmployee.value}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="proh-border-bottom">
+              <div class="card-row">
+                <div class="col-md-6">
+                  <label class="control-label" style="font-weight:500;color: #4b88dc;font-size:14px;">No. of Payrolls
+                    :</label>
+                </div>
+                <div class="col-md-6 text-right">
+                  <label class="control-label" style="font-weight:500">{{tolatPayroll.value}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="proh-border-bottom">
+              <div class="card-row">
+                <div class="col-md-6">
+                  <label class="control-label" style="font-weight:500;color: #4b88dc;font-size:14px;">Authorized
+                    Signatory :</label>
+                </div>
+                <div class="col-md-6 text-right">
+                  <label class="control-label" style="font-weight:500">{{authorizedSignatory.value}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="proh-border-bottom">
+              <div class="card-row">
+                <div class="col-md-6">
+                  <label class="control-label" style="font-weight:500;color: #4b88dc;font-size:14px;">Part of proH2R
+                    since :</label>
+                </div>
+                <div class="col-md-6 text-right">
+                  <label class="control-label" style="font-weight:500">{{creationDate?.value}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

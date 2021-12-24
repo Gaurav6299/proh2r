@@ -1,0 +1,119 @@
+@import "~assets/sass/md/customCSS";
+.resignation-list .row{text-align: center;}
+.resignation-list .resignation-card {
+    display: inline-block;
+    width: 150px;
+    vertical-align: top;
+    background-color: transparent !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgb(235, 241, 250);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 4px;
+    margin: 10px 20px;
+}
+.resignation-list .resignation-card:hover {
+    box-shadow: 1px 3px 6px -2px #4b88dc;
+}
+.resignation-list .resignation-card .resignation-body{
+    display: block;
+    padding: 10px 10px 0;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    background-color: #ffffff;
+    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.04);
+    // height: 130px;
+}
+.resignation-list .resignation-card .resignation-body span{
+    display: inline-block;
+    height: 70px;
+    width: 70px;
+    vertical-align: top;
+    padding: 23px;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 500;
+    border-radius: 50%;
+    position: relative;
+  
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+}
+.resignation-list .resignation-card .resignation-body span img{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 18px 0px;
+}
+.resignation-list .resignation-card .resignation-body h2{
+    font-size: 14px;
+    margin-bottom: 0;
+    min-height: 35px;
+    max-height: 35px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+.resignation-list .resignation-card .resignation-body:hover>span{
+    transform: scale(1.2);
+    box-shadow: 1px 3px 6px -2px #4b88dc;
+}
+.resignation-list{margin-top: 10px;}
+.bg-blue {
+    background: #346ab3;
+    box-shadow: 1px 3px 6px -2px #4b88dc;
+   }
+   .bg-green {
+    background: green;
+    box-shadow: 1px 3px 6px -2px green;
+   }
+   .bg-orange {
+    background: orange;
+    box-shadow: 1px 3px 6px -2px orange;
+   }
+
+
+
+.separationType-data h2{color: #404A56;font-weight: 600;font-size: 14px; margin: 0;}
+.separationType-data .categorys{font-size: 14px !important;text-align: justify;margin-left: 10px;font-weight: 500;color: #404A56;}
+.separationType-data {display: inline-flex;}
+.Comments-data{position: relative;display: inline-flex;min-height: 1px;padding-right: 15px;padding-left: 15px;}
+.Comments-data h2{color: #404A56;font-weight: 600;font-size: 14px;margin: 0;}
+.Comments-data .categorys {font-size: 14px !important;margin-left: 10px;font-weight: 500;color: #404A56;}
+.CTC-Components-details{background: #edf2fb;padding: 20px;box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);margin: 10px 0; border: 1px solid #ccc;border-radius: 5px;}
+.process-header h2{text-align: center;font-size: 18px;font-weight: 600;color: #3f77c4;}
+.process-header-arrow-down p{margin: 0;color: #3f77c4;}
+.process-history-header {background: #ffffff;box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);border: 1px solid #e3dfdf;padding: 10px;width: 60%;border-radius: 50px;margin: 0 auto;}
+.process-history-header p{color: #000;font-size: 14px;font-weight: 600;margin: 0;}
+.timeline-title{color: #404A56;font-weight: 600;font-size: 14px;}
+.timeline {list-style: none;padding: 30px;position: relative;}
+.timeline:before {top: 100px;bottom: 100px;position: absolute;content: " "; width: 2px;background-color: #ccc;left: 0;margin-left: 30px;}
+.timeline > li {margin-bottom: 20px;position: relative;}
+.timeline > li:before,
+.timeline > li:after {content: " "; display: table;}
+.timeline > li:after {clear: both;}
+.timeline > li:before,
+.timeline > li:after {content: " ";display: table;}
+.timeline > li:after {clear: both;}
+.timeline > li > .timeline-panel {width: 96%;float: left;border: 1px solid #d4d4d4;border-radius: 2px;padding: 10px;position: relative;-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);}
+.timeline > li > .timeline-panel:before {position: absolute;top: 15px;right: -15px;display: inline-block;border-top: 15px solid transparent;border-left: 15px solid #ccc;border-right: 0 solid #ccc;border-bottom: 15px solid transparent;content: " ";}
+.timeline > li > .timeline-panel:after {position: absolute;top: 16px;right: -14px;display: inline-block;border-top: 14px solid transparent;border-left: 14px solid #fff;border-right: 0 solid #fff;border-bottom: 14px solid transparent;content: " ";}
+.timeline > li > .timeline-badge {color: #fff;width: 50px;height: 50px;line-height: 50px;font-size: 1.4em;text-align: center;position: absolute;top: 5px;left: 0;margin-left: -25px;background-color: #999999;z-index: 100;border-top-right-radius: 50%;border-top-left-radius: 50%;border-bottom-right-radius: 50%;border-bottom-left-radius: 50%;}
+.timeline > li.timeline-inverted > .timeline-panel {float: right;}
+.timeline > li.timeline-inverted > .timeline-panel:before {border-left-width: 0;border-right-width: 15px;left: -15px;right: auto;}
+.timeline > li.timeline-inverted > .timeline-panel:after {border-left-width: 0;border-right-width: 14px;left: -14px;right: auto;}
+.timeline-badge.primary {background-color: #2e6da4 !important;}
+.timeline-badge.warning {background-color: #f0ad4e !important;}
+.timeline-badge.danger {background-color: #d9534f !important;}
+.timeline-badge.info {background-color: #5bc0de !important;}
+.timeline-body > p,
+.timeline-body > ul {margin-bottom: 0;}
+.timeline-body > p + p {margin-top: 5px;}
+.timeline-ok{background: #28a745 !important;}
+@media (max-width: 767px) {
+ul.timeline:before {left: 40px;}
+ul.timeline > li > .timeline-panel { width: calc(100% - 90px);width: -moz-calc(100% - 90px);width: -webkit-calc(100% - 90px);}
+ul.timeline > li > .timeline-badge {left: 15px; margin-left: 0; top: 16px;}
+ul.timeline > li > .timeline-panel {float: right;}
+ul.timeline > li > .timeline-panel:before {border-left-width: 0;border-right-width: 15px;left: -15px;right: auto;}
+ul.timeline > li > .timeline-panel:after {border-left-width: 0;border-right-width: 14px;left: -14px;right: auto;}
+}

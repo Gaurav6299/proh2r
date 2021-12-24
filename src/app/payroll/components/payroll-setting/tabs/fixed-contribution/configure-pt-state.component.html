@@ -1,0 +1,45 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> {{title}}</h4>
+    <div style="text-align: right; margin: 10px 0;display: flow-root">
+        <button class="btn header-button" style="float:right;" (click)="addPTState();">
+            <span>
+                <i class="fa fa-plus-square" aria-hidden="true"></i> Add State</span>
+        </button>
+    </div>
+    <div class="card-content">
+        <p-table #dt1 [columns]="ptStateColumns" [value]="stateList" [rows]="5" [paginator]="true" [pageLinks]="5"
+            [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [responsive]="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div *ngIf="col.field!='actions'">{{car[col.field]}}</div>
+                        <div class="mat-cell" *ngIf="col.field=='actions'">
+                            <div class="mat-element-icon">
+                                <span class="edit" (click)="updatePTState(car);">
+                                    <i class="fa fa-pencil-square-o" matTooltip="Edit"></i>
+                                </span>
+                                <span class="delete" (click)="deletePTState(car);">
+                                    <i class="fa fa-trash-o" matTooltip="Delete"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+</mat-dialog-content>

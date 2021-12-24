@@ -1,0 +1,65 @@
+<div class="myModel">
+    <div class="card">
+        <div class="card-header" data-background-color="cyan" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;">
+            <div data-background-color="blue">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h6 style="text-transform: uppercase;font-weight: 600">
+                            Interview Schedular
+                        </h6>
+                    </div>
+                    <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                        <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <form [formGroup]="addNewEvent">
+                <p class="category" style="color:#404A56;">Select Candidate</p>
+                <mat-form-field class="fullLength">
+                    <mat-select placeholder="Please Select" formControlName="selectCandidate">
+                        <mat-option *ngFor="let item of Candidates" [value]="item.canID" (click)=expCheck(item.canExp)>
+                            {{item.canName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p *ngIf="show != false" class="category" style="color:#404A56;">Interview Type</p>
+                <mat-form-field class="fullLength" *ngIf="show != false">
+                    <mat-select placeholder="Please Select" formControlName="selectType">
+                            <mat-option value="FACE_TO_FACE">Face to face</mat-option>
+                            <mat-option value="TELEPHONIC">Telephonic</mat-option>
+                    </mat-select>
+                </mat-form-field>
+              
+                <p *ngIf="reqID == null " class="category" style="color:#404A56;">Select Interviewer</p>
+                <mat-form-field class="fullLength" *ngIf="reqID == null">
+                    <mat-select placeholder="Please Select" formControlName="selectEmployee">
+                        <mat-option *ngFor="let item of employeeList" [value]="item.value">
+                            {{item.fullName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            
+                <mat-form-field class="fullLength">
+                    <input matInput formControlName="event" placeholder="Title">
+                </mat-form-field>
+            </form>
+
+            <div style="text-align: center; padding-top: 7px;padding-bottom: 7px; ">
+                <button class="dialog-button" cdkFocusInitial (click)="onNoClick()" style="width: 76px;" data-background-color="cyan">
+                    <span class="category" style="color:#fff; display: inline">
+                        <i class="fa fa-times" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                        Cancel</span>
+                </button>
+
+                <button class="dialog-button" cdkFocusInitial (click)="addEvent()" style="width: 76px;" data-background-color="cyan">
+                    <span class="category" style="color:#fff; display: inline">
+                        <i class="fa fa-check" aria-hidden="true" style="margin-top:9px;margin-bottom:9px;font-size: 18px;"></i>
+                        Save</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

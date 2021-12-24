@@ -1,0 +1,267 @@
+<div id="mySidenav" class="sidenav" [style.width]="sidenavWidth" *ngIf="isAuthorized">
+    <div class="sidenavHeader" *ngIf="isSidenavOpen;else other_logo">
+        <img class="" src="assets/images/logo-full.png" />
+    </div>
+    <ng-template #other_logo>
+        <div class="sidenavHeaderShrink shrink-logo">
+            <img src="assets/images/icon.png" />
+        </div>
+    </ng-template>
+    <div class="sidenavMenu  disable-scrollbars">
+        <ul class="navul" *ngIf="isSidenavOpen;else other_ul">
+            <div *ngFor="let menuItem of menuItems;let i=index">
+                <li *ngIf="menuItem.isAvailable" routerLinkActive="active">
+                    <a [routerLink]="[menuItem.path]" *ngIf="menuItem.subMenus?.length == 0;else other_anchor">
+                        <i class="material-icons">{{menuItem.icon}}</i>
+                        <p>{{menuItem.title}}</p>
+                    </a>
+                    <ng-template #other_anchor>
+                        <a href="#{{menuItem.path}}" data-toggle="collapse" (click)="linkClicked(i)">
+                            <i class="material-icons">{{menuItem.icon}}</i>
+                            <p>{{menuItem.title}}</p>
+                            <i class="material-icons pull-right rotate expandArrow">keyboard_arrow_down</i>
+                        </a>
+                        <div [attr.id]="menuItem.path" class="collapse demo">
+                            <ul>
+                                <div *ngFor="let subMenu of menuItem.subMenus">
+                                    <li *ngIf="subMenu.isAvailable" routerLinkActive="active" class="{{subMenu.class}}">
+                                        <a [routerLink]="subMenu.path==='assets'?[subMenu.path]:[menuItem.path +'/'+subMenu.path]"
+                                            class="submenuAnchor " title="{{subMenu.tooltip}}">
+                                            <p>{{subMenu.title}}</p>
+                                        </a>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </ng-template>
+                </li>
+            </div>
+        </ul>
+        <ng-template #other_ul>
+            <div id="sidenavShrinked" style="background:#012454;">
+                <ul class="navul">
+                    <div *ngFor="let menuItem of menuItems;let v=index">
+                        <li *ngIf="menuItem.isAvailable" routerLinkActive="active" class="{{menuItem.class}}"
+                            (mouseenter)="onMouseEnterMenuItem(v)" (mouseleave)="onMouseLeaveMenuItem(v)">
+                            <a [routerLink]="[menuItem.path]" class="shrinkA"
+                                *ngIf="menuItem.subMenus?.length == 0;else other_anchor2">
+                                <i class="material-icons">{{menuItem.icon}}</i>
+                                <p>{{menuItem.title}}</p>
+                            </a>
+                            <ng-template #other_anchor2>
+                                <a class="shrinkA">
+                                    <i class="material-icons">{{menuItem.icon}}</i>
+                                    <p>{{menuItem.title}}</p>
+                                </a>
+                                <ul [attr.id]="'menulink'+v" class="collapsedUL">
+                                    <div *ngFor="let subMenu of menuItem.subMenus">
+                                        <li *ngIf="subMenu.isAvailable" routerLinkActive="active"
+                                            class="{{subMenu.class}}" style="list-style: none;">
+                                            <a [routerLink]="subMenu.path==='assets'?[subMenu.path]:[menuItem.path +'/'+subMenu.path]"
+                                                class="collapsedSubMenuAnchor " title="{{subMenu.tooltip}}">
+                                                <p>{{subMenu.title}}</p>
+                                            </a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </ng-template>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </ng-template>
+    </div>
+</div>
+<div id="mainPanel" class="mainPanel" [style.margin-left]="sidenavWidth" [style.width]="mainPanelWidth"
+    (window:resize)="onResize($event)" *ngIf="isAuthorized">
+    <div class="row mainPanelHeader">
+        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+            <div *ngIf="!isSidenavOpen;else other_Arrow">
+                <i class="material-icons toggleArrow" (click)="toggleSidenav()">format_align_left</i>
+            </div>
+            <ng-template #other_Arrow>
+                <i class="material-icons toggleArrow" (click)="toggleSidenav()">format_align_right</i>
+            </ng-template>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">
+            <div class="user-icons">
+                <!-- <div class="row"> -->
+                <!-- <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6"> -->
+                <div class="org-logo">
+                    <img [src]="logoPath" id="org-logo">
+                </div>
+                <!-- </div> -->
+                <!-- <div class="col-md-3 col-sm-3 col-xs-3 col-lg-3"> -->
+                <!-- <div class="btn-group notification dropdown">
+                    <img src="assets/images/002-ring.png" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <ul class="dropdown-menu dropdown-menu-right notification-menu"
+                        aria-labelledby="dropdownMenuButton">
+                        <li>
+                            <a class="notification-item">Action</a>
+                        </li>
+                        <li>
+                            <a class="notification-item">Another action</a>
+                        </li>
+                        <li>
+                            <a class="notification-item">Something else here</a>
+                        </li>
+                    </ul>
+                </div> -->
+                <!-- </div> -->
+                <!-- <div class="col-md-3 col-sm-3 col-xs-3 col-lg-3"> -->
+                <div class="usernav-side-profile">
+                    <a class="sidenav-toggle" (click)="sidenav.toggle()">
+                        <img [src]="profilePicUrl!= null ? profilePicUrl : defaultImgUrl"
+                            onerror="this.src='assets/images/user.png'">
+                    </a>
+                </div>
+                <!-- </div> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <div id="routing-div">
+        <mat-sidenav-container class="example-container-sidepanel" (backdropClick)="close('backdrop')">
+            <mat-sidenav #sidenav (keydown.escape)="close('escape')" disableClose position="end"
+                class="profile_side_nav">
+                <div class="profile_sideNavBar">
+                    <div class="sidenavBar">
+                        <div class="edit-profile proimg-box" routerLink='../employees/edit-employee/{{empCode}}'>
+                            <img [src]="profilePicUrl!= null ? profilePicUrl : defaultImgUrlSidePanel"
+                                onerror="this.src='assets/images/noUser.jpg'" class="proimg1">
+                            <div class="middle">
+                                <div class="text">
+                                    <i class="material-icons">edit</i>
+                                    <br>
+                                    <span>Edit Profile</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-edit-pro">
+                            <i aria-hidden="true" matTooltip="Edit Profile" [matTooltipPosition]="position"
+                                routerLink='../employees/edit-employee/{{empCode}}' class="fa fa-pencil-square-o"></i>
+                        </div>
+                        <div class="user-side-nav-details">
+                            <ul>
+                                <li>
+                                    <a class="anchor">{{userName}} -
+                                        <span> {{empCode}}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="anchor">{{positionedAs}}</a>
+                                </li>
+                                <li>
+                                    <a class="mailid">{{emailId}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="butns123">
+                            <a class="userbtn" href="{{redirectPath}}" id="add"> User Portal</a>
+                            <a class="signoutbtn" id="add" (click)="logout()"> Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkIn_checkOut_section">
+                    <div class="checkIn_col">
+                        <!-- <div matTooltip="You are already Checked-In" [matTooltipPosition]="position"
+                            [matTooltipDisabled]="recordCount == 0">
+                            <button class="btn btn_checkin" [disabled]="recordCount !== 0"
+                                (click)="punchInTimeStart();">
+                                <span> check-in <i class="material-icons"> query_builder</i></span>
+                            </button>
+                        </div> -->
+                        <div matTooltip="You are already Checked-In" [matTooltipPosition]="position"
+                            [matTooltipDisabled]="freezeButtonStatus != true">
+                            <button class="btn btn_checkin" [disabled]="freezeButtonStatus"
+                                (click)="punchInTimeStart();">
+                                <span> check-in
+                                    <i class="material-icons"> query_builder</i>
+                                </span>
+                            </button>
+                        </div>
+                        <p>{{punchInHours}} : {{punchInMinutes}} : {{punchInSecond}}</p>
+                    </div>
+                    <div class="checkOut_col">
+                        <button class="btn btn_checkout" [disabled]="recordCount == 0" (click)="punchOutTime();">
+                            <span> check-out
+                                <i class="material-icons"> query_builder</i>
+                            </span>
+                        </button>
+                        <p>{{punchOutHours}} : {{punchOutMinutes}} : {{punchOutSecond}}</p>
+                    </div>
+                </div>
+
+                <div class="alarm_clock">
+                    <img src="assets/images/005-clock-3.png">
+                    <div class="clock_date">
+                        <span> {{time | date:'MMM dd, yyyy HH:mm:ss'}}</span>
+                    </div>
+                    <div class="clock_time">
+                        <span> {{duration}}hrs</span>
+                    </div>
+                </div>
+
+                <div class="theaming_section">
+                    <ul>
+                        <li>
+                            <img src="assets/images/001-start-up.png">
+                            <a>Getting Started</a>
+                        </li>
+                        <li>
+                            <img src="assets/images/002-ask.png">
+                            <a>Help</a>
+                        </li>
+                        <li>
+                            <img src="assets/images/003-contact-us.png">
+                            <a>Contact Support</a>
+                        </li>
+                        <li>
+                            <img src="assets/images/004-add.png">
+                            <a>What's New</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer_sidebar_section">
+                    <ul class="sidebar_footer_icons">
+                        <li>
+                            <a>
+                                <img src="assets/images/002-android.png">
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <img src="assets/images/003-apple.png">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/Niletechnologies/" target="_blank">
+                                <img src="assets/images/001-facebook.png">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/NileTechPvtLtd" target="_blank">
+                                <img src="assets/images/twitter_icon.png">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </mat-sidenav>
+            <mat-sidenav-content>
+                <router-outlet></router-outlet>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+    </div>
+</div>
+<ngx-spinner bdColor="rgba(0,0,0,0.1)" loadingText="Loading..." size="large" color="#1e4f7f" type="ball-scale-multiple">
+</ngx-spinner>
+<!-- <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-triangle-path"></ngx-spinner> -->
+<!-- Loading spinner for API Calls -->
+<!-- <div class="loader-overlay">
+  <div>
+    <mat-progress-bar mode="indeterminate" *ngIf="apiLoader"></mat-progress-bar>
+  </div>
+</div> -->
+<!-- Loading spinner for API Calls -->

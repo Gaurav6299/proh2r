@@ -1,0 +1,46 @@
+<!-- Card Header Begins -->
+
+<div class="card">
+    <div class="card-header" style="padding-top:5px;padding-bottom: 5px; padding-left: 0px;padding-top:5px;padding-bottom:5px; padding-right: 0px;background-color: #36b3c8;">
+        <div data-background-color="blue">
+            <div class="row">
+                <div class="col-md-10">
+                    <h6 style="text-transform: uppercase;font-weight: 600">History Of Employee Attendance Assignments</h6>
+                </div>
+                <div class="col-md-2" style="float:right;padding-left:40px;padding-top:8px; vertical-align: middle; text-align: center;">
+                    <i class="material-icons" style="cursor:pointer;vertical-align: middle;" (click)="onNoClick()">close</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+        <div class="col-md-12 table-responsive example-container mat-elevation-z8" style="margin-top:15px;">
+            <mat-table #table [dataSource]="dataSource2">
+                <!-- Position Column -->
+                <ng-container matColumnDef="currentLeavePolicy">
+                    <mat-header-cell *matHeaderCellDef>Template</mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: left;">
+                        <span>{{element.currentLeavePolicy}}</span><br>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="effectiveFrom">
+                    <mat-header-cell *matHeaderCellDef>Supervisors</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.effectiveFrom}} </mat-cell>
+                </ng-container>
+               
+                <ng-container matColumnDef="effectiveTo">
+                    <mat-header-cell *matHeaderCellDef>Effective To</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{element.effectiveTo}}</mat-cell>
+                </ng-container>
+                 <ng-container matColumnDef="initialBalances">
+                    <mat-header-cell *matHeaderCellDef>Effective From</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>{{element.initialBalances}}</span><br>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div>

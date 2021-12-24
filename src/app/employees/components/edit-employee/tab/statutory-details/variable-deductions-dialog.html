@@ -1,0 +1,39 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title> Add Variable Deductions</h4>
+</mat-dialog-content>
+<form [formGroup]="variableDeductionForm">
+    <div class="row">
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Deductions*" formControlName="deductionId">
+                <mat-option *ngFor="let variableDeduction of variableDeductionsArr"
+                    [value]="variableDeduction.deductionId">
+                    {{variableDeduction.deductionName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <mat-select placeholder="Select Instalment*" formControlName="instalment">
+                <mat-option *ngFor="let instalment of instalmentArr" [value]="instalment">
+                    {{instalment }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="fullLength">
+            <input matInput type="number" placeholder="Enter Amount" formControlName="totalAmount">
+        </mat-form-field>
+    </div>
+</form>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()">Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="saveDeducaton();"> Submit
+        </button>
+    </div>
+</mat-dialog-actions>

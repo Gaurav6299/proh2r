@@ -1,0 +1,213 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="col-md-3" style="padding:0px;">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="title">Alerts</h6>
+        </div>
+        <div class="card-content" style="padding-top: 5px;">
+          <mat-nav-list>
+            <mat-list-item (click)="hideshowoverdue();">
+              <i class="fa fa-clock-o alerts-icon" aria-hidden="true"></i>
+              <a
+                style="text-transform: uppercase; font-size:14px;font-weight:600;color: #848484;cursor:pointer;width:100%;">
+                Overdue
+              </a>
+              <span class="label pull-right overdue-count" style="background-color: #f06632">{{overduelenth}}</span>
+            </mat-list-item>
+            <mat-list-item (click)="hideShowUpComming();">
+              <i class="fa fa-calendar-o alerts-icon" aria-hidden="true" style="font-size:18px;"></i>
+              <a
+                style="text-transform: uppercase; font-size:14px;font-weight:600;color: #848484;cursor:pointer;width:100%;">
+                Upcoming
+              </a>
+
+              <span class="label  label1 pull-right upcoming-count"
+                style="background-color: green">{{upcomminglength}}</span>
+
+            </mat-list-item>
+            <mat-list-item (click)="hideShowArchive();">
+
+              <i class="fa fa-archive alerts-icon" aria-hidden="true" style="font-size:18px;"></i>
+              <a
+                style="text-transform: uppercase; font-size:14px;font-weight:600;color: #848484;cursor:pointer;width:100%;">
+                Archived
+              </a>
+              <span class="label label2 pull-right archived-count"
+                style="background-color: #f00404">{{archievedlength}}</span>
+            </mat-list-item>
+          </mat-nav-list>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div *ngIf="isOverDueEnable" class="card">
+        <div class="card-header">
+          <div>
+            <h6 class="title"> Overdue</h6>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="table-responsive example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSourceForOverdue">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="LabelValue" style="width:150px;">
+                <mat-header-cell *matHeaderCellDef> Request Type </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+
+                  <p class="category" style="font-weight:600;padding-bottom:5px;">Run Payroll</p>
+                  <p>{{element.LabelValue}}</p>
+                </mat-cell>
+              </ng-container>
+              <!-- Name Column -->
+              <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Date}} </mat-cell>
+              </ng-container>
+
+
+
+              <!-- Symbol Column -->
+
+              <ng-container matColumnDef="actionid">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+
+                  <button class="btn header-button " (click)="runPayroll(element)">
+                    <span>
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      Run Payroll</span>
+                  </button>
+                  <span class="action-icon" style="padding:3px;">
+                    <i class="fa fa-archive" aria-hidden="true"></i>
+                  </span>
+
+
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayColumnForOverDue"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayColumnForOverDue;"></mat-row>
+            </mat-table>
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+      <!-- next table -->
+      <div *ngIf="isUpCommingEnable" class="card"
+        style="box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
+        <div class="card-header" data-background-color="blue">
+
+          <div>
+
+            <h6 class="title">Upcoming</h6>
+          </div>
+
+        </div>
+
+        <div class="card-content">
+
+
+          <div class="example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSourceUpComming">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="LabelValue" style="width:150px;">
+                <mat-header-cell *matHeaderCellDef> Request Type </mat-header-cell>
+                <mat-cell *matCellDef="let element" style="text-align: left;">
+                  <p style="color:#404A56;font-weight:600;text-align:center">{{element.LabelName}}</p>
+                  <p style="text-align:center">{{element.LabelValue}}</p>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="date" style="width:150px;">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let element" style="text-align: left;">
+                  <p style="text-align: center">{{element.Date}}</p>
+                </mat-cell>
+              </ng-container>
+
+
+
+
+              <ng-container matColumnDef="actionid">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+
+                  <span style="padding:3px;"><i class="fa fa-archive" aria-hidden="true"
+                      style="font-size:20px;color:#130909;vertical-align: top;cursor:pointer;"
+                      (click)="openDeleteDialog(element)"></i></span>
+
+
+                </mat-cell>
+              </ng-container>
+
+
+
+              <mat-header-row *matHeaderRowDef="displayColumnForUpComming"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayColumnForUpComming;"></mat-row>
+            </mat-table>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <!-- next table -->
+      <div *ngIf="isArchievedEnable" class="card"
+        style="box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
+        <div class="card-header" data-background-color="blue">
+
+          <div>
+
+            <h6 class="title">Archived</h6>
+          </div>
+
+        </div>
+
+        <div class="card-content">
+
+
+          <div class="example-container mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSourceArchive">
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="LabelValue" style="width:150px;">
+                <mat-header-cell *matHeaderCellDef> Request Type </mat-header-cell>
+                <mat-cell *matCellDef="let element" style="text-align: left;">
+                  <p style="color:#404A56;font-weight:600;text-align:center">{{element.LabelName}}</p>
+                  <p style="text-align:center">{{element.LabelValue}}</p>
+
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="actionid">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+
+                  <span style="padding:3px;"><i class="fa fa-undo" aria-hidden="true"
+                      style="font-size:20px;color:#130909;vertical-align: top;cursor:pointer;"
+                      (click)="clickToUndu(element)"></i></span>
+
+
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayColumnForArchive"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayColumnForArchive;"></mat-row>
+            </mat-table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>

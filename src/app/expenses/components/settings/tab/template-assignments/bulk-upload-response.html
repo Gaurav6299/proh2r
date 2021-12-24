@@ -1,0 +1,49 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>{{title}}</h4>
+    <div class="table-responsive example-container mat-elevation-z8">
+        <mat-table #table [dataSource]="dataSource">
+            <ng-container matColumnDef="empCode">
+                <mat-header-cell *matHeaderCellDef>Emp Code</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div>
+                        <span>{{element.empCode}}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="statusMsg">
+                <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.statusMsg}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="inviteStatus">
+                <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="icon-true">
+                        <i *ngIf="element.successfullyUploaded==true;else other_icon"
+                            class="fa fa-check-square-o action-icon"></i>
+                    </span>
+                    <ng-template #other_icon>
+                        <span class="icon-false">
+                            <i class="fa fa-times-circle action-icon"></i>
+                        </span>
+                    </ng-template>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+    <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+    </mat-paginator>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="dialog-buttons" cdkFocusInitial (click)="close()">Close
+        </button>
+    </div>
+</mat-dialog-actions>

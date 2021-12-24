@@ -1,0 +1,90 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="matTab-sectionButtons">
+    <div class="btn-group dropleft btn-group-actionsList" style="margin: 0;">
+      <button class="btn btn-default-actionsList dropdown-toggle" type="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Actions <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropleft">
+        <li class="dropdown-menu-list"><a class="dropdown-menu-item" (click)="assignTemplate('','bulk')">Assign
+            Template</a></li>
+        <li class="dropdown-menu-list"><a class="dropdown-menu-item"
+            (click)="openDialogToBulkUploadTemplateAssigment()">Bulk
+            Assign Template</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="searchBox" style="text-align: right">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search"
+        (input)="dt1.filterGlobal($event.target.value, 'contains')">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="onDutyTemplateAssignmentsArr" [rows]="5" [paginator]="true"
+      [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" [resizableColumns]="true" [autoLayout]="true" [responsive]="true"
+      [(selection)]="selectedRows">
+      <ng-template pTemplate="header" let-columns>
+        <tr [pSelectableRow]="car">
+          <th>
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+        <tr>
+          <th></th>
+          <th *ngFor="let col of columns" [ngSwitch]="col.field">
+            <p-multiSelect *ngSwitchCase="'location'" appendTo="body" defaultLabel="All" [options]="allLocation"
+              [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+            <p-multiSelect *ngSwitchCase="'band'" appendTo="body" defaultLabel="All" [options]="allBand"
+              [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')">
+            </p-multiSelect>
+            <p-multiSelect *ngSwitchCase="'department'" appendTo="body" defaultLabel="All" [options]="allDepartment"
+              [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+            <p-multiSelect *ngSwitchCase="'designation'" appendTo="body" defaultLabel="All" [options]="allDesignation"
+              [style]="{'width':'100%'}" (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr [pSelectableRow]="car">
+          <td>
+            <p-tableCheckbox [value]="car"></p-tableCheckbox>
+          </td>
+          <td *ngFor="let col of columns">
+            <div *ngIf="(car.onDutyAssignmentId!=null)">
+              <div *ngIf="col.field!='action' && col.field!='effectiveFrom'">{{car[col.field]}}</div>
+              <div *ngIf="col.field!='action' && col.field==='effectiveFrom'">{{car[col.field] | date:'MMM dd, yyyy'}}
+              </div>
+              <div class="mat-cell">
+                <div class="mat-element-icon">
+                  <span class="edit" *ngIf="col.field=='action'">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit"
+                      (click)="assignTemplate(car,'update')"></i></span>
+                  <span class="delete" *ngIf="col.field=='action'">
+                    <i class="fa fa-trash-o" aria-hidden="true" matTooltip="Delete"
+                      (click)="openDeleteOnDutyTemplate(car)"></i></span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="(car.onDutyAssignmentId===null)">
+              <div *ngIf="col.field!='action' && col.field!='effectiveFrom'">{{car[col.field]}}</div>
+
+              <div class="mat-cell">
+                <div class="mat-element-icon">
+                  <span class="add" *ngIf="col.field=='action'">
+                    <i class="fa fa-plus-square" aria-hidden="true" matTooltip="Add"
+                      (click)="assignTemplate(car,'new')"></i></span>
+                </div>
+              </div>
+            </div>
+
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

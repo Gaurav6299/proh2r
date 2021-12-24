@@ -1,0 +1,106 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h6 class="title">Employee Profile</h6>
+        </div>
+        <div style="text-align: right;">
+          <!-- <form enctype="multipart/form-data">
+            <div style="display:none;">
+              <input type="file" id="uploadFile" multiple="true" (change)="selectFile($event)" accept="image/*">
+            </div>
+            <button (click)="uploadFile();" class="btn header-button">
+              <span>
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</span>
+            </button>
+          </form> -->
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="profile-data">
+          <div class="row">
+            <div class="col-md-3 col-sm-12">
+              <form enctype="multipart/form-data">
+                <div style="display:none;">
+                  <input type="file" id="uploadFile" multiple="true" (change)="selectFile($event)" accept="image/*">
+                </div>
+                <div class="profile-media proh-profile-media proimg-box" (click)="uploadFile();">
+                  <img *ngIf="profileImgPath != null;else initial" class="img-fluid proimg1" src="{{profileImgPath}}" />
+                  <div class="middle">
+                    <div class="text">
+                      <i class="material-icons">camera_alt</i>
+                      <br>
+                      <span>Update</span>
+                    </div>
+                  </div>
+                  <ng-template #initial>
+                    <div id="profileImageInitials" class="initial">{{initials}}</div>
+                  </ng-template>
+                </div>
+              </form>
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <div class="user-details">
+                <h4>{{fullName}}</h4>
+                <label class="control-label">Positioned as {{designation}}</label>
+                <label class="control-label">Joined on {{joiningDate}}</label>
+                <label class="control-label">Works at {{workingLocation}}</label>
+              </div>
+            </div>
+            <div class="col-md-5 col-sm-12">
+              <div class="profile-data-meter">
+                <canvas id="profileChart" height="100"></canvas>
+              </div>
+              <div class="profileCompletion">
+                <p>Profile Completion</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top: 0;">
+      <div class="card-header">
+        <div style="float:left;">
+          <h6 class="title">Edit Employee</h6>
+        </div>
+        <div style="text-align: right;">
+          <button class="btn header-button" routerLink="/employees">
+            <span>
+              <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+              Back</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-content">
+        <mat-tab-group class="tabs" (selectedTabChange)="onLinkClick($event);">
+          <mat-tab label="Personal Details">
+            <app-personal-details (messageEvent)="receiveMessage($event)"></app-personal-details>
+          </mat-tab>
+          <mat-tab label="Employment Details">
+            <app-employment-details (messageEvent)="receiveMessage($event)"></app-employment-details>
+          </mat-tab>
+          <mat-tab label="Salary Details">
+            <app-salary-details></app-salary-details>
+          </mat-tab>
+          <mat-tab label="statutory">
+            <app-statutory-details> </app-statutory-details>
+          </mat-tab>
+          <mat-tab label="Loans/Advances">
+            <app-loans> </app-loans>
+          </mat-tab>
+          <mat-tab label="Tax">
+            <app-tax></app-tax>
+          </mat-tab>
+          <mat-tab label="Documents">
+            <app-document-details></app-document-details>
+          </mat-tab>
+          <mat-tab label="Asset Details">
+            <app-asset-details></app-asset-details>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

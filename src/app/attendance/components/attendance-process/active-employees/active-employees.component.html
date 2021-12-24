@@ -1,0 +1,65 @@
+<div class="card" style="box-shadow: none !important;">
+  <div class="card-header">
+    <div>
+      <h6 class="title">Listing Pending Employees</h6>
+    </div>
+  </div>
+  <div class="card-content">
+    <div class="text-center" style="padding-bottom: 20px;">
+      <h5 class="left-rights-slider-title">
+        Running Attendance Process for {{monthName | titlecase}}
+      </h5>
+      <!-- <h6 class="left-rights-slider-Subtitle">
+        Running Attendance Process is No More Tedious {{location}}
+      </h6> -->
+    </div>
+
+    <div class="searchBox" style="text-align: right">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search" (input)="dt1.filterGlobal($event.target.value, 'contains')">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="activeAttendanceRecords" [rows]="20" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+      [resizableColumns]="true" [autoLayout]="true" [responsive]="true" [(selection)]="selectedRows">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th>
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="car"></p-tableCheckbox>
+          </td>
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field!='action'">
+              {{car[col.field]}}
+            </div>
+            <div *ngIf="col.field=='action'">
+              <span (click)="viewAttendanceRecords(car);">
+                <i class="fa fa-eye action-icon" aria-hidden="true" matTooltip="View" style="color:#4b88dc;"></i>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="text-center" style="margin-top: 20px;">
+    <button class="btn header-button" routerLink="/attendance/attendance-process">
+      <span>
+        <i class="fa fa-times" aria-hidden="true"></i>
+        Cancel</span>
+    </button>
+    <button class="btn header-button" (click)="submitAttendanceRecord();">
+      <span>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Submit</span>
+    </button>
+  </div>
+</div>

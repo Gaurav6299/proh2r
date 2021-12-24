@@ -1,0 +1,66 @@
+<mat-dialog-content>
+    <div class="logo">
+        <img src="assets/images/dialog-logo.png">
+    </div>
+    <div class="close-icon">
+        <i class="material-icons" (click)="onNoClick()">close</i>
+    </div>
+    <h4 mat-dialog-title>Upload Attendance Records</h4>
+    <div class="card-content">
+        <form [formGroup]="uploadAttendanceRecords" #formDirective="ngForm">
+            <div class="instruction-checkin-times">
+                <p>Step - 1: Download Attendance Updation Format :</p>
+                <button (click)="downloadFormat()" class="btn header-button">
+                    <span><i class="fa fa-cloud-download" aria-hidden="true"></i>Download</span>
+                </button>
+            </div>
+            <!-- <p class="category showFieldMandatory " style="color:#404A56;font-weight: 600;">Step - 2: Select month and
+                year for upload attendance</p>
+            <div class="col-md-12">
+                <mat-form-field>
+                    <mat-select placeholder="Select" formControlName="month">
+                        <mat-option *ngFor="let monthYear of monthList" [value]="monthYear">{{monthYear}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="uploadAttendanceRecords.controls.month.hasError('required') || (formDirective.submitted && uploadAttendanceRecords.controls.month.invalid)">
+                        Field is required
+                    </mat-error>
+                </mat-form-field>
+            </div> -->
+            <div class="instruction-checkin-times" style="margin-top: 10px;">
+                <p>Step - 2:</p>
+                <p><span>Includes all your Employees with their pre-existing attendance records as per Company's
+                        Attendance Cycle Dates </span></p>
+                <p>Please follow the below instructions when uploading attendance: </p>
+                <p>1: <span> Includes Employees details with their attendance data. </span> </p>
+                <p>2: <span> Date, Employee Code, Check-In, Check-Out Time and Employee Shift fields are mandatory;
+                        please make sure to enter the correct data. </span> </p>
+                <p>3: <span> Enter the dates in format of 'DD/MM/YYYY'. (E.g. 15/01/2020)</span></p>
+                <p>4: <span> Enter the check-in and check-out time in 24 hour format of 'hh:mm:ss'. (E.g. 08:05:00 or
+                        16:30:00)</span></p>
+                <p>5: <span>Select the employee shift</span> </p>
+                <p class="showFieldMandatory">Make necessary changes in the downloaded file and upload</p>
+                <button (click)="uploadFormat()" class="btn header-button">
+                    <span><i class="fa fa-cloud-upload" aria-hidden="true"></i>Upload</span>
+                    <div class="file-upload">
+                        <input type="file" id="uploadFile" (change)="selectFile($event)" required>
+                    </div>
+                </button>
+                <p style="color: #f44336;font-size: 12px;"
+                    *ngIf="uploadAttendanceRecords.controls.file.hasError('required') || (formDirective.submitted && uploadAttendanceRecords.controls.file.invalid)">
+                    Please select a file
+                </p>
+                <span *ngIf="this.selectedFilesName">{{this.selectedFilesName}}</span>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="model-footer">
+        <button class="cancel-buttons" cdkFocusInitial (click)="onNoClick()"> Cancel
+        </button>
+        <button class="dialog-buttons" cdkFocusInitial (click)="upload()"> Upload Attendance
+        </button>
+    </div>
+</mat-dialog-actions>

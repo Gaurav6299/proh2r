@@ -1,0 +1,156 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <div class="pull-left">
+                    <h6 class="title">Expense Reports</h6>
+                </div>
+                <div class="text-right">
+                    <button class="btn header-button" (click)="onChangebulkActions('addSingleExp')">
+                        <span>
+                            <i class="fa fa-plus-square " aria-hidden="true "></i>
+                            Add Expenses</span>
+                    </button>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-tab">
+                    <mat-tab-group class="tabs" (animationDone)="onTabChange($event)">
+                        <mat-tab label="Pending">
+                            <app-pending-expenses (messageEvent)="receiveMessage($event)">
+                            </app-pending-expenses>
+                        </mat-tab>
+                        <mat-tab label="Approved">
+                            <app-approved-expenses (messageEvent)="receiveMessage($event)"></app-approved-expenses>
+                        </mat-tab>
+                        <mat-tab label="Cancelled">
+                            <app-cancelled-expenses></app-cancelled-expenses>
+                        </mat-tab>
+                        <mat-tab label="Rejected">
+                            <app-rejected-expenses></app-rejected-expenses>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+                <!-- <div class="searchBox" style="text-align: right">
+                    <i class="fa fa-search"></i>
+                    <input type="text" pInputText size="50" placeholder="Search"
+                        (input)="dt1.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                </div>
+                <p-table #dt1 [columns]="columns" [value]="expReports" [rows]="5" [paginator]="true" [pageLinks]="5"
+                    [rowsPerPageOptions]="[5,10,20]" exportFilename="Expense_Report" [resizableColumns]="true"
+                    [autoLayout]="true" [responsive]="true" exportFilename="Expense_Report"
+                    [(selection)]="checkedRowData">
+                    <ng-template pTemplate="caption">
+                        <div class="ui-helper-clearfix">
+                            <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Download"
+                                (click)="dt1.exportCSV()" class="pull-right"></button>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="colgroup" let-columns>
+                        <colgroup>
+                            <col *ngFor="let col of columns">
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th>
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                                <p-multiSelect *ngSwitchCase="'location'" appendTo="body" defaultLabel="All"
+                                    [options]="workLocations" [style]="{'width':'100%'}"
+                                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                                <p-multiSelect *ngSwitchCase="'department'" appendTo="body" defaultLabel="All"
+                                    [options]="departments" [style]="{'width':'100%'}"
+                                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                                <p-multiSelect *ngSwitchCase="'designation'" appendTo="body" defaultLabel="All"
+                                    [options]="designations" [style]="{'width':'100%'}"
+                                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                                <p-multiSelect *ngSwitchCase="'band'" appendTo="body" defaultLabel="All"
+                                    [options]="bands" [style]="{'width':'100%'}"
+                                    (onChange)="dt1.filter($event.value, col.field, 'in')">
+                                </p-multiSelect>
+                                <p-multiSelect *ngSwitchCase="'empName'" appendTo="body" defaultLabel="All"
+                                    [options]="filterByEmp" [style]="{'width':'100%'}"
+                                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                                <p-multiSelect *ngSwitchCase="'expenseStatus'" appendTo="body" defaultLabel="All"
+                                    [options]="filterByStatus" [style]="{'width':'100%'}"
+                                    (onChange)="dt1.filter($event.value, col.field, 'in')"></p-multiSelect>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-car let-columns="columns">
+                        <tr [pSelectableRow]="car">
+                            <td>
+                                <p-tableCheckbox [value]="car"></p-tableCheckbox>
+                            </td>
+                            <td *ngFor="let col of columns">
+                                <div *ngIf="col.field!='actions'">
+                                    {{car[col.field]}}</div>
+                                <div class="mat-cell" *ngIf="col.field=='actions'">
+                                    <div class="mat-element-icon">
+                                        <div *ngIf="car.expenseStatus == 'Level 1 Approval Pending'">
+                                            <span class="check">
+                                                <i class="fa fa-check-square-o" aria-hidden="true" matTooltip="Approve"
+                                                    (click)="approveSingleExpense(car.expenseRepId)"></i></span>
+                                            <span class="action-icon">
+                                                <i class="fa fa-times-circle" aria-hidden="true" style="color:#e03737;"
+                                                    matTooltip="Reject"
+                                                    (click)="rejectSingleExpense(car.expenseRepId);"></i></span>
+                                            <span class="view">
+                                                <i class="fa fa-eye" aria-hidden="true"
+                                                    (click)="showHistoryDialog(car);" matTooltip="View"></i>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="car.expenseStatus == 'Level 2 Approval Pending'">
+                                            <span class="check">
+                                                <i class="fa fa-check-square-o" aria-hidden="true" matTooltip="Approve"
+                                                    (click)="approveSingleExpense(car.expenseRepId)"></i></span>
+                                            <span class="action-icon">
+                                                <i class="fa fa-times-circle" aria-hidden="true" style="color:#e03737;"
+                                                    matTooltip="Reject"
+                                                    (click)="rejectSingleExpense(car.expenseRepId);"></i>
+                                            </span>
+                                            <span class="view">
+                                                <i class="fa fa-eye" aria-hidden="true"
+                                                    (click)="showHistoryDialog(car);" matTooltip="View"></i></span>
+                                        </div>
+                                        <div *ngIf="car.expenseStatus == 'Approved'">
+                                            <span class="view">
+                                                <i class="fa fa-eye" aria-hidden="true"
+                                                    (click)="showHistoryDialog(car);" matTooltip="View"></i>
+                                            </span>
+                                            <span class="ban">
+                                                <i class="fa fa-ban" aria-hidden="true"
+                                                    (click)="cancelExpApplication(car.expenseRepId)"
+                                                    matTooltip="Cancel"></i>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="car.expenseStatus == 'Rejected'">
+                                            <span class="view">
+                                                <i class="fa fa-eye" aria-hidden="true"
+                                                    (click)="showHistoryDialog(car);" matTooltip="View"></i>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="car.expenseStatus == 'Cancelled'">
+                                            <span class="view">
+                                                <i class="fa fa-eye" aria-hidden="true"
+                                                    (click)="showHistoryDialog(car);" matTooltip="View"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table> -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="card" style="box-shadow: none !important">
+  <div class="card-content">
+    <!-- <div class="card-header">
+      <h6 class="title">Listing Attendance Records for {{monthYear}}</h6>
+    </div> -->
+    <div class="searchBox" style="text-align: right">
+      <i class="fa fa-search"></i>
+      <input type="text" pInputText size="50" placeholder="Search" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+        style="width:auto">
+    </div>
+    <p-table #dt1 [columns]="columns" [value]="attendaceProcessDetails" [rows]="5" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]"
+      [resizableColumns]="true" [autoLayout]="true" [responsive]="true" [(selection)]="selectedRows">
+      <ng-template pTemplate="header" let-columns>
+        <tr [pSelectableRow]="car">
+          <!-- <th>
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th> -->
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car let-columns="columns">
+        <tr [pSelectableRow]="car">
+          <td *ngFor="let col of columns">
+            <div *ngIf="col.field=='empCode' || col.field=='empName'">
+              {{car[col.field]}}
+            </div>
+            <div *ngIf="col.field!='empCode' && col.field!='empName'">
+              {{car[col.field]|number : '1.1-1'}}
+            </div>
+            <div class="mat-cell" *ngIf="col.field=='action'">
+              <div class="mat-element-icon" *ngIf="car.attendanceData.length == 0">
+                <span class="edit" (click)="toggleEdit(car)">
+                  <i class="fa fa-pencil" aria-hidden="true" matTooltip="Edit Payble Days"></i>
+                </span>
+              </div>
+              <div class="mat-element-icon" *ngIf="car.attendanceData.length > 0">
+                <span class="edit" (click)="updateAttendace(car)">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" matTooltip="Edit Attendance Records"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div style="position: relative;top: 20px;text-align: center;">
+    <button class="btn header-button" cdkFocusInitial (click)="cancel();">
+      <span>
+        <i class="fa fa-times" aria-hidden="true"></i>
+        Cancel</span>
+    </button>
+    <button class="btn header-button" cdkFocusInitial (click)="onBack()">
+      <span>
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+        Back</span>
+    </button>
+    <button class="btn header-button" cdkFocusInitial (click)="onProceed()">
+      <span>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Proceed</span>
+    </button>
+  </div>
+</div>

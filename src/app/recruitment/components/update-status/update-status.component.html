@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-header" style="width: 90%">
+    <h6 class="title">Update Status</h6>
+  </div>
+  <div class="card-content"></div>
+  <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+
+    <ng-container matColumnDef="Name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let lesson">{{lesson.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Email">
+      <mat-header-cell *matHeaderCellDef>Email id</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let lesson">{{lesson.email}}</mat-cell>
+
+    </ng-container>
+
+    <ng-container matColumnDef="Phone">
+      <mat-header-cell *matHeaderCellDef>Phone no.</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let lesson">{{lesson.phone}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Experience">
+      <mat-header-cell *matHeaderCellDef>Experience</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let lesson">{{lesson.experience}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Skills">
+      <mat-header-cell *matHeaderCellDef>Skills</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let lesson">{{lesson.skills}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Action">
+      <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let lesson">
+        <i class="fa fa-eye action-icon" aria-hidden="true" style="color:#4b88dc;" matTooltip="View" (click)="statusDialog(lesson);"></i>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+  </mat-table>
+  <div class="col-md-12">
+    <mat-paginator #paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]">
+    </mat-paginator>
+  </div>
+</div>
